@@ -7,11 +7,11 @@ export type PlayerState = {
 export type RoundResult = {
   state: PlayerState;
 
+  rawPrice: number;
   price: number;
   priceChange: number;
 
   breakEven: number;
   threeRoundAverage: number;
-
   magicNumber: number;
 };

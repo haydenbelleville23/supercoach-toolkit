@@ -48,6 +48,8 @@ export type SuperCoachPlayer = {
   team: SuperCoachTeam;
   positions: SuperCoachPosition[];
   player_stats: SuperCoachPlayerStats[];
+  player_match_stats?: SuperCoachPlayerMatchStat[];
+  player_stat_history?: SuperCoachPlayerStats[];
 };
 
 opp?: {
@@ -70,3 +72,30 @@ opph?: number;
 opp1h?: number;
 opp2h?: number;
 opp3h?: number;
+
+export type SuperCoachPlayerMatchStat = {
+  player_id: number;
+  fixture_id: number;
+  round: number;
+  points: number;
+  games: number;
+  minutes_played: number;
+};
+
+export type SuperCoachPlayerStatHistory = {
+  player_id: number;
+  round: number;
+  points?: number | null;
+  price?: number | null;
+  price_change?: number | null;
+  games?: number | null;
+  total_games?: number | null;
+
+  opp?: {
+    id: number;
+    abbrev: string;
+    name: string;
+  } | null;
+
+  opph?: number | null;
+};

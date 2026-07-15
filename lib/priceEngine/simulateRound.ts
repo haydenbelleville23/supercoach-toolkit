@@ -2,7 +2,6 @@ import { getMagicNumber } from "@/lib/magicNumbers";
 
 import { calculateBreakEven } from "./calculateBreakEven";
 import { calculatePrice } from "./calculatePrice";
-import { rollingAverage } from "./rollingAverage";
 
 import type {
   PlayerState,
@@ -41,14 +40,11 @@ export function simulateRound(
   });
 
   return {
+    rawPrice: priceResult.rawProjectedPrice,
     price: priceResult.projectedPrice,
-
     priceChange: priceResult.priceChange,
-
     breakEven,
-
-    threeRoundAverage: rollingAverage(updatedScores),
-
+    threeRoundAverage: priceResult.threeRoundAverage,
     magicNumber,
 
     state: {

@@ -1,24 +1,48 @@
-import { getPlayers, getPlayerById } from "@/lib/players";
+import { getPlayers } from "@/lib/players";
 
 import type { Player } from "@/types/player";
 
 export class PlayerRepository {
+  private readonly players: Player[];
+
+  constructor(players: Player[]) {
+    this.players = players;
+  }
+
   getAll(): Player[] {
-    return getPlayers();
+    return this.players;
   }
 
   getById(id: number): Player | undefined {
-    return getPlayerById(id);
+    return this.players.find(
+      (player) => player.id === id,
+    );
   }
 
   search(query: string): Player[] {
-    const lower = query.toLowerCase();
+    const search = query.trim().toLowerCase();
 
-    return getPlayers().filter((player) =>
-      player.name.toLowerCase().includes(lower),
+    if (search === "") {
+      return this.players;
+    }
+
+    return this.players.filter((player) =>
+      player.name.toLowerCase().includes(search),
+    );
+  }
+
+  getByTeam(team: string): Player[] {
+    return this.players.filter(
+      (player) => player.team === team,
+    );
+  }
+
+  getByPosition(position: string): Player[] {
+    return this.players.filter((player) =>
+      player.positions.includes(position),
     );
   }
 }
 
 export const playerRepository =
-  new PlayerRepository();
+  new PlayerRepository(getPlayers());

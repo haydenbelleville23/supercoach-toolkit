@@ -30,9 +30,13 @@ export default function EnginePage() {
   const selectedPlayer =
     getPlayerById(selectedPlayerId) ?? players[0];
 
-  const projectedScore =
-    selectedPlayer.projectedScores[0] ??
-    Math.round(selectedPlayer.average);
+ const defaultProjectedScore =
+  selectedPlayer.projectedScores[0] ??
+  Math.round(selectedPlayer.average);
+
+const [projectedScore, setProjectedScore] = useState(
+  defaultProjectedScore,
+);
 
   const playerState = createPlayerState(selectedPlayer);
 
@@ -60,17 +64,17 @@ export default function EnginePage() {
     ? engineResult.breakEven - guideBreakEven
     : null;
 
-  const rawProjectedPrice = engineResult
-    ? (
-        selectedPlayer.price * 3 +
-        engineResult.threeRoundAverage *
-          engineResult.magicNumber
-      ) / 4
-    : null;
-
   function handlePlayerChange(playerId: number) {
-    setSelectedPlayerId(playerId);
-  }
+  const player =
+    getPlayerById(playerId) ?? players[0];
+
+  setSelectedPlayerId(player.id);
+
+  setProjectedScore(
+    player.projectedScores[0] ??
+      Math.round(player.average),
+  );
+}
 
   return (
     <main className="min-h-screen bg-slate-950 text-white">
@@ -147,7 +151,42 @@ export default function EnginePage() {
             ownership={selectedPlayer.ownership}
           />
         </section>
+        <section className="mt-8 rounded-2xl border border-slate-800 bg-slate-900 p-6">
+  <label
+    htmlFor="engine-score"
+    className="block text-sm font-semibold text-slate-300"
+  >
+    Test projected score
+  </label>
 
+  <input
+    id="engine-score"
+    type="number"
+    min={0}
+    max={250}
+    step={1}
+    inputMode="numeric"
+    value={projectedScore}
+    onFocus={(event) =>
+      event.currentTarget.select()
+    }
+    onChange={(event) => {
+      const value = event.target.value.replace(
+        /[^0-9]/g,
+        "",
+      );
+
+      setProjectedScore(
+        value === "" ? 0 : Number(value),
+      );
+    }}
+    className="mt-2 w-28 rounded-lg border border-slate-700 bg-slate-950 px-4 py-3 text-right font-semibold tabular-nums outline-none focus:border-emerald-500"
+  />
+
+  <p className="mt-2 text-xs text-slate-500">
+    Prefilled from the player projection and editable for testing.
+  </p>
+</section>
         {previousScores.length < 2 || !engineResult ? (
           <section className="mt-8 rounded-2xl border border-amber-500/30 bg-amber-500/10 p-6">
             <h2 className="font-semibold text-amber-300">
@@ -299,11 +338,7 @@ export default function EnginePage() {
                 </p>
 
                 <p className="mt-1 text-lg font-semibold text-white">
-                  {rawProjectedPrice === null
-                    ? "-"
-                    : formatMoney(
-                        Math.round(rawProjectedPrice),
-                      )}
+                {formatMoney(Math.round(engineResult.rawPrice))}
                 </p>
 
                 <p className="mt-4 text-slate-500">

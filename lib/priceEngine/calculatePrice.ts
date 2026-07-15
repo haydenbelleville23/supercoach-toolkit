@@ -8,6 +8,7 @@ export type CalculatePriceInput = {
 };
 
 export type CalculatePriceResult = {
+  rawProjectedPrice: number;
   projectedPrice: number;
   priceChange: number;
   threeRoundAverage: number;
@@ -28,6 +29,7 @@ export function calculatePrice({
   const projectedPrice = roundPriceUp(rawProjectedPrice);
 
   return {
+    rawProjectedPrice,
     projectedPrice,
     priceChange: projectedPrice - currentPrice,
     threeRoundAverage,

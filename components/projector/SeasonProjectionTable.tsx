@@ -32,12 +32,9 @@ export default function SeasonProjectionTable({
     ? rows
     : rows.filter((row) => row.round >= firstVisibleRound);
 
-  const finalPricedRow = [...rows]
-    .reverse()
-    .find((row) => row.price !== null);
-
-  const finalPrice = finalPricedRow?.price ?? startingPrice;
-  const totalChange = finalPrice - startingPrice;
+  const openingPrice =
+    rows.find((row) => row.round === 0)?.price ??
+    startingPrice;
 
   return (
     <section>
@@ -64,14 +61,15 @@ export default function SeasonProjectionTable({
       </div>
 
       <div className="overflow-x-auto rounded-xl border border-slate-800 bg-slate-900">
-        <table className="w-full min-w-[660px] table-fixed text-sm">
+        <table className="w-full min-w-[720px] table-fixed text-sm">
           <colgroup>
-            <col className="w-[130px]" />
-            <col className="w-[80px]" />
-            <col className="w-[65px]" />
-            <col className="w-[110px]" />
+            <col className="w-[50px]" />
+            <col className="w-[72px]" />
+            <col className="w-[60px]" />
+            <col className="w-[100px]" />
+            <col className="w-[85px]" />
             <col className="w-[95px]" />
-            <col className="w-[75px]" />
+            <col className="w-[68px]" />
           </colgroup>
 
           <thead className="bg-slate-950 text-slate-400">
@@ -93,7 +91,11 @@ export default function SeasonProjectionTable({
               </th>
 
               <th className="px-2 py-3 text-right">
-                Δ
+                Δ Rd
+              </th>
+
+              <th className="px-2 py-3 text-right">
+                Δ Season
               </th>
 
               <th className="px-2 py-3 text-right">
@@ -110,6 +112,11 @@ export default function SeasonProjectionTable({
               const positiveChange =
                 row.priceChange !== null &&
                 row.priceChange >= 0;
+
+                const seasonPriceChange =
+                row.price === null
+                  ? null
+                  : row.price - openingPrice;
 
               return (
                 <tr
@@ -131,9 +138,13 @@ export default function SeasonProjectionTable({
                       R{row.round}
                     </div>
 
-                    {row.opponent && row.homeAway && (
+                   {row.opponent && row.homeAway ? (
                       <div className="mt-0.5 whitespace-nowrap text-xs text-slate-500">
                         vs {row.opponent} ({row.homeAway})
+                      </div>
+                    ) : (
+                      <div className="mt-0.5 text-xs font-medium text-slate-500">
+                        BYE
                       </div>
                     )}
                   </td>
@@ -176,29 +187,46 @@ export default function SeasonProjectionTable({
                       ? "-"
                       : Math.ceil(row.breakEven)}
                   </td>
+                    {/* Price */}
+                    <td className="px-2 py-2.5 text-right font-semibold tabular-nums">
+                      {formatMoney(row.price)}
+                    </td>
 
-                  <td className="px-2 py-2.5 text-right font-semibold tabular-nums">
-                    {formatMoney(row.price)}
-                  </td>
-
-                  <td
-                    className={`px-2 py-2.5 text-right tabular-nums ${
-                      row.priceChange === null
+                    {/* Round price change */}
+                    <td
+                     className={`px-2 py-2.5 text-right tabular-nums ${
+                      row.priceChange === null || row.priceChange === 0
                         ? "text-slate-500"
-                        : positiveChange
+                        : row.priceChange > 0
                           ? "text-emerald-400"
                           : "text-red-400"
                     }`}
                   >
-                    {row.priceChange === null
+                    {row.priceChange === null || row.priceChange === 0
                       ? "-"
-                      : `${
-                          positiveChange ? "+" : "−"
-                        }${Math.abs(
+                      : `${row.priceChange > 0 ? "+" : "−"}${Math.abs(
                           row.priceChange,
                         ).toLocaleString()}`}
-                  </td>
+                    </td>
 
+                    {/* Season price change */}
+                    <td
+                      className={`px-2 py-2.5 text-right tabular-nums ${
+                        seasonPriceChange === null || seasonPriceChange === 0
+                          ? "text-slate-500"
+                          : seasonPriceChange > 0
+                            ? "text-emerald-400"
+                            : "text-red-400"
+                      }`}
+                    >
+                      {seasonPriceChange === null || seasonPriceChange === 0
+                        ? "-"
+                        : `${seasonPriceChange > 0 ? "+" : "−"}${Math.abs(
+                            seasonPriceChange,
+                          ).toLocaleString()}`}
+                    </td>
+
+                    {/* Magic Number */}
                   <td className="px-2 py-2.5 text-right tabular-nums text-slate-500">
                     {row.round === 0
                       ? "-"
@@ -207,32 +235,6 @@ export default function SeasonProjectionTable({
                 </tr>
               );
             })}
-
-            <tr className="border-t-2 border-emerald-500/50 bg-slate-950">
-              <td
-                colSpan={3}
-                className="px-3 py-4 text-right font-semibold text-slate-300"
-              >
-                Final price / cash made
-              </td>
-
-              <td className="px-2 py-4 text-right text-base font-bold tabular-nums">
-                {finalPrice.toLocaleString()}
-              </td>
-
-              <td
-                className={`px-2 py-4 text-right text-base font-bold tabular-nums ${
-                  totalChange >= 0
-                    ? "text-emerald-400"
-                    : "text-red-400"
-                }`}
-              >
-                {totalChange >= 0 ? "+" : "−"}
-                {Math.abs(totalChange).toLocaleString()}
-              </td>
-
-              <td className="px-2 py-4" />
-            </tr>
           </tbody>
         </table>
       </div>

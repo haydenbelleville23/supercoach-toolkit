@@ -8,7 +8,10 @@
     "start": "next start",
     "lint": "eslint",
     "test": "vitest",
-    "test:ui": "vitest --ui"
+    "test:ui": "vitest --ui",
+    "download:players": "node scripts/downloadPlayerDetails.mjs",
+    "build:players": "node scripts/buildPlayersDataset.mjs",
+    "download:fixtures": "node scripts/downloadFixtures.mjs"
   },
   "dependencies": {
     "next": "16.2.10",
