@@ -49,3 +49,24 @@ export type SuperCoachPlayer = {
   positions: SuperCoachPosition[];
   player_stats: SuperCoachPlayerStats[];
 };
+
+opp?: {
+  abbrev: string;
+};
+
+opp1?: {
+  abbrev: string;
+};
+
+opp2?: {
+  abbrev: string;
+};
+
+opp3?: {
+  abbrev: string;
+};
+
+opph?: number;
+opp1h?: number;
+opp2h?: number;
+opp3h?: number;

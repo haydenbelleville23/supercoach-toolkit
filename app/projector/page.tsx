@@ -13,6 +13,7 @@ import { calculatePrice } from "@/lib/priceEngine/calculatePrice";
 import { createSeasonRows } from "@/lib/priceEngine/createSeasonRows";
 import type { Player } from "@/types/player";
 import type { SeasonProjectionRow } from "@/types/projection";
+import PlayerHeader from "@/components/projector/PlayerHeader";
 
 const players = getPlayers();
 
@@ -36,6 +37,10 @@ function createRowsForPlayer(player: Player): SeasonProjectionRow[] {
       const projectionIndex =
         row.round - CURRENT_COMPLETED_ROUND - 1;
 
+      const fixture = player.upcomingFixtures.find(
+        (item) => item.round === row.round,
+      );
+
       const suggestedScore =
         player.projectedScores[projectionIndex] ??
         Math.round(player.average);
@@ -44,6 +49,8 @@ function createRowsForPlayer(player: Player): SeasonProjectionRow[] {
         ...row,
         played: true,
         score: suggestedScore,
+        opponent: fixture?.opponent ?? null,
+        homeAway: fixture?.homeAway ?? null,
       };
     }
 
@@ -224,6 +231,13 @@ export default function ProjectorPage() {
         </div>
 
         <section className="mt-10 rounded-2xl border border-slate-800 bg-slate-900 p-6">
+            <PlayerHeader
+            name={selectedPlayer.name}
+            team={selectedPlayer.team}
+            teamName={selectedPlayer.teamName}
+            positions={selectedPlayer.positions}
+            availability={selectedPlayer.availability}
+          />
           <PlayerSelector
             players={players}
             selectedPlayerId={selectedPlayerId}
@@ -239,43 +253,6 @@ export default function ProjectorPage() {
             average5={selectedPlayer.average5}
             ownership={selectedPlayer.ownership}
             />
-
-          <div className="mt-6 flex flex-wrap items-end justify-between gap-5 border-t border-slate-800 pt-6">
-            <div className="grid grid-cols-2 gap-6">
-              <div>
-                <p className="text-xs uppercase tracking-wide text-slate-500">
-                  Projected final price
-                </p>
-
-                <p className="mt-1 text-2xl font-bold">
-                  ${finalProjectedPrice.toLocaleString()}
-                </p>
-              </div>
-
-              <div>
-                <p className="text-xs uppercase tracking-wide text-slate-500">
-                  Projected change
-                </p>
-
-                <p
-                  className={`mt-1 text-2xl font-bold ${
-                    totalPriceChange >= 0
-                      ? "text-emerald-400"
-                      : "text-red-400"
-                  }`}
-                >
-                  {totalPriceChange >= 0 ? "+" : "−"}$
-                  {Math.abs(
-                    totalPriceChange,
-                  ).toLocaleString()}
-                </p>
-              </div>
-            </div>
-
-            <p className="text-sm text-slate-400">
-              Projections update automatically as scores change.
-            </p>
-          </div>
         </section>
 
         <div className="mt-8">

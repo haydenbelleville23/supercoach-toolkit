@@ -16,5 +16,7 @@ export function createSeasonRows(): SeasonProjectionRow[] {
     price: null,
     priceChange: null,
     threeRoundAverage: null,
+    opponent: null,
+    homeAway: null,
   }));
 }

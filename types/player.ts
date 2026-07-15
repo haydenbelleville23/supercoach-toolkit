@@ -19,5 +19,8 @@ export type Player = {
   ownership: number;
   active: boolean;
   availability: string | null;
-
-};
+  upcomingFixtures: {
+  round: number;
+  opponent: string;
+  homeAway: "H" | "A";
+  }[];

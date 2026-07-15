@@ -8,4 +8,6 @@ export type SeasonProjectionRow = {
   price: number | null;
   priceChange: number | null;
   threeRoundAverage: number | null;
+  opponent: string | null;
+  homeAway: "H" | "A" | null;
 };

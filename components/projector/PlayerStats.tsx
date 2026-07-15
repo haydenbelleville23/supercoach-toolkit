@@ -17,53 +17,39 @@ export default function PlayerStats({
   average5,
   ownership,
 }: PlayerStatsProps) {
-  const stats = [
-    {
-      label: "Price",
-      value: `$${price.toLocaleString()}`,
-    },
-    {
-      label: "BE",
-      value: breakeven.toString(),
-    },
-    {
-      label: "Games",
-      value: games.toString(),
-    },
-    {
-      label: "Average",
-      value: average.toFixed(1),
-    },
-    {
-      label: "3RA",
-      value: average3.toFixed(1),
-    },
-    {
-      label: "5RA",
-      value: average5.toFixed(1),
-    },
-    {
-      label: "Owned",
-      value: `${ownership.toFixed(1)}%`,
-    },
-  ];
-
   return (
-    <div className="mt-5 grid grid-cols-2 gap-2 sm:grid-cols-4 lg:grid-cols-7">
-      {stats.map((stat) => (
-        <div
-          key={stat.label}
-          className="rounded-lg bg-slate-950 px-3 py-2"
-        >
-          <p className="text-xs text-slate-500">
-            {stat.label}
-          </p>
+    <div className="mt-6 grid grid-cols-2 gap-x-16 gap-y-2 text-sm">
+      <Stat label="Price" value={price.toLocaleString()} />
+      <Stat label="Games" value={games.toString()} />
 
-          <p className="mt-0.5 font-semibold tabular-nums">
-            {stat.value}
-          </p>
-        </div>
-      ))}
+      <Stat label="BE" value={breakeven.toString()} />
+      <Stat label="Avg" value={average.toFixed(1)} />
+
+      <Stat label="3RA" value={average3.toFixed(1)} />
+      <Stat label="5RA" value={average5.toFixed(1)} />
+
+      <Stat
+        label="Owned"
+        value={`${ownership.toFixed(1)}%`}
+      />
+    </div>
+  );
+}
+
+function Stat({
+  label,
+  value,
+}: {
+  label: string;
+  value: string;
+}) {
+  return (
+    <div className="flex justify-between border-b border-slate-800 py-1">
+      <span className="text-slate-400">{label}</span>
+
+      <span className="font-semibold tabular-nums">
+        {value}
+      </span>
     </div>
   );
 }
