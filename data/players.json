@@ -1,0 +1,29 @@
+[
+  {
+    "id": 1,
+    "name": "Nick Daicos",
+    "team": "COLL",
+    "position": "MID",
+    "price": 650000,
+    "average": 115,
+    "breakeven": 120
+  },
+  {
+    "id": 2,
+    "name": "Harley Reid",
+    "team": "WCE",
+    "position": "MID",
+    "price": 420000,
+    "average": 85,
+    "breakeven": 65
+  },
+  {
+    "id": 3,
+    "name": "Sam Flanders",
+    "team": "GC",
+    "position": "MID",
+    "price": 560000,
+    "average": 105,
+    "breakeven": 95
+  }
+]
