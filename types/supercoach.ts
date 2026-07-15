@@ -1,96 +1,51 @@
-## Confirmed Players-CF Endpoint
+export type SuperCoachPosition = {
+  position: string;
+  position_long: string;
+  sort: number;
+};
 
-Endpoint:
+export type SuperCoachTeam = {
+  id: number;
+  abbrev: string;
+  name: string;
+};
 
-`/2026/api/afl/classic/v1/players-cf`
+export type SuperCoachPlayerStats = {
+  player_id: number;
+  round: number;
+  points: number;
+  price: number;
+  total_points: number;
+  total_games: number;
+  price_change: number;
+  total_price_change: number;
+  avg: number;
+  avg3: number;
+  avg5: number;
+  be1: number;
+  be2: number;
+  be3: number;
+  ppts: number;
+  ppts1: number;
+  ppts2: number;
+  ppts3: number;
+  pp1: number;
+  pp2: number;
+  pp3: number;
+  ppc1: number;
+  ppc2: number;
+  ppc3: number;
+  own: number;
+};
 
-Observed parameters:
-
-- embed
-- round
-- xredir
-- subid
-- subkey
-
-Do not record real subid or subkey values in the repository.
-
-## Confirmed Player Fields
-
-### Identity
-
-- id
-- first_name
-- last_name
-- team
-- positions
-- active
-- injury_suspension_status
-- played_status
-
-### Current Performance
-
-- points
-- total_points
-- games
-- total_games
-- avg
-- avg3
-- avg5
-- std
-
-### Price Data
-
-- price
-- price_change
-- total_price_change
-- be1
-- be2
-- be3
-- pp1
-- pp2
-- pp3
-- ppc1
-- ppc2
-- ppc3
-- ppcs
-
-### Projections
-
-- ppts
-- ppts1
-- ppts2
-- ppts3
-- pmin
-- pmax
-- prange
-
-### Ownership
-
-- own
-- own_raw
-- owned
-- ownc
-- ownc3
-- capt
-- vice
-
-### Fixture Data
-
-- opp
-- opp1
-- opp2
-- opp3
-- ven
-- ven1
-- ven2
-- ven3
-- opposition rankings
-
-## Key Finding
-
-The endpoint contains nearly all data required for the Price Projector,
-Cash Cow Finder, Break-even Tracker, Player Profiles and Fixture Analysis.
-
-Access appears linked to subscription parameters. Legal permission,
-terms of use and technical access constraints must be investigated before
-using it in a public application.
+export type SuperCoachPlayer = {
+  id: number;
+  first_name: string;
+  last_name: string;
+  active: boolean;
+  injury_suspension_status: string | null;
+  injury_suspension_status_text: string | null;
+  team: SuperCoachTeam;
+  positions: SuperCoachPosition[];
+  player_stats: SuperCoachPlayerStats[];
+};

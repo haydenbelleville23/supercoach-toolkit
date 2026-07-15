@@ -1,10 +1,12 @@
-import playerData from "@/data/players.json";
+import { normalisedSamplePlayer } from "@/lib/supercoach/sample";
 import type { Player } from "@/types/player";
 
+const players: Player[] = [normalisedSamplePlayer];
+
 export function getPlayers(): Player[] {
-  return playerData;
+  return players;
 }
 
 export function getPlayerById(playerId: number): Player | undefined {
-  return getPlayers().find((player) => player.id === playerId);
+  return players.find((player) => player.id === playerId);
 }
