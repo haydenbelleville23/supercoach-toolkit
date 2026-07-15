@@ -1,0 +1,409 @@
+"use client";
+
+import Link from "next/link";
+import { useState } from "react";
+
+import PlayerHeader from "@/components/projector/PlayerHeader";
+import PlayerSelector from "@/components/projector/PlayerSelector";
+import PlayerStats from "@/components/projector/PlayerStats";
+import { getPlayerById, getPlayers } from "@/lib/players";
+import { createPlayerState } from "@/lib/priceEngine/createPlayerState";
+import { projectSeason } from "@/lib/priceEngine/projectSeason";
+
+const players = getPlayers();
+
+function formatMoney(value: number): string {
+  return `$${value.toLocaleString()}`;
+}
+
+function formatDifference(value: number): string {
+  const sign = value > 0 ? "+" : value < 0 ? "−" : "";
+
+  return `${sign}$${Math.abs(value).toLocaleString()}`;
+}
+
+export default function EnginePage() {
+  const [selectedPlayerId, setSelectedPlayerId] = useState(
+    players[0].id,
+  );
+
+  const selectedPlayer =
+    getPlayerById(selectedPlayerId) ?? players[0];
+
+  const projectedScore =
+    selectedPlayer.projectedScores[0] ??
+    Math.round(selectedPlayer.average);
+
+  const playerState = createPlayerState(selectedPlayer);
+
+  const engineResult = projectSeason(
+    playerState,
+    [projectedScore],
+  )[0];
+
+  const previousScores =
+    selectedPlayer.recentScores.slice(-2);
+
+  const guidePrice =
+    selectedPlayer.projectedPrices[0] ?? null;
+
+  const guideBreakEven =
+    selectedPlayer.projectedBreakEvens[0] ??
+    selectedPlayer.breakeven;
+
+  const priceDifference =
+    engineResult && guidePrice !== null
+      ? engineResult.price - guidePrice
+      : null;
+
+  const breakEvenDifference = engineResult
+    ? engineResult.breakEven - guideBreakEven
+    : null;
+
+  const rawProjectedPrice = engineResult
+    ? (
+        selectedPlayer.price * 3 +
+        engineResult.threeRoundAverage *
+          engineResult.magicNumber
+      ) / 4
+    : null;
+
+  function handlePlayerChange(playerId: number) {
+    setSelectedPlayerId(playerId);
+  }
+
+  return (
+    <main className="min-h-screen bg-slate-950 text-white">
+      <header className="border-b border-slate-800">
+        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-5">
+          <div>
+            <p className="text-xl font-bold">
+              SuperCoach Toolkit
+            </p>
+
+            <p className="text-sm text-slate-400">
+              Engine validation
+            </p>
+          </div>
+
+          <div className="flex items-center gap-5 text-sm">
+            <Link
+              href="/projector"
+              className="text-slate-300 hover:text-white"
+            >
+              Price Projector
+            </Link>
+
+            <Link
+              href="/"
+              className="text-emerald-400 hover:text-emerald-300"
+            >
+              ← Dashboard
+            </Link>
+          </div>
+        </div>
+      </header>
+
+      <section className="mx-auto max-w-6xl px-6 py-12">
+        <div className="max-w-3xl">
+          <p className="text-sm font-semibold uppercase tracking-widest text-emerald-400">
+            Development tool
+          </p>
+
+          <h1 className="mt-3 text-4xl font-bold tracking-tight">
+            Price Engine
+          </h1>
+
+          <p className="mt-4 text-slate-300">
+            Inspect the inputs and outputs for a player&apos;s
+            next projected round.
+          </p>
+        </div>
+
+        <section className="mt-10 rounded-2xl border border-slate-800 bg-slate-900 p-6">
+          <PlayerHeader
+            name={selectedPlayer.name}
+            team={selectedPlayer.team}
+            teamName={selectedPlayer.teamName}
+            positions={selectedPlayer.positions}
+            availability={selectedPlayer.availability}
+          />
+
+          <div className="mt-6">
+            <PlayerSelector
+              players={players}
+              selectedPlayerId={selectedPlayerId}
+              onChange={handlePlayerChange}
+            />
+          </div>
+
+          <PlayerStats
+            price={selectedPlayer.price}
+            breakeven={selectedPlayer.breakeven}
+            games={selectedPlayer.games}
+            average={selectedPlayer.average}
+            average3={selectedPlayer.average3}
+            average5={selectedPlayer.average5}
+            ownership={selectedPlayer.ownership}
+          />
+        </section>
+
+        {previousScores.length < 2 || !engineResult ? (
+          <section className="mt-8 rounded-2xl border border-amber-500/30 bg-amber-500/10 p-6">
+            <h2 className="font-semibold text-amber-300">
+              Not enough score history
+            </h2>
+
+            <p className="mt-2 text-sm text-amber-100/70">
+              This player needs at least two recent scores before
+              the engine can calculate their next price.
+            </p>
+          </section>
+        ) : (
+          <>
+            <div className="mt-8 grid gap-6 md:grid-cols-2">
+              <ComparisonCard
+                title="API guide"
+                values={[
+                  {
+                    label: "Current price",
+                    value: formatMoney(selectedPlayer.price),
+                  },
+                  {
+                    label: "Projected score",
+                    value: projectedScore.toString(),
+                  },
+                  {
+                    label: "Break-even",
+                    value: guideBreakEven.toString(),
+                  },
+                  {
+                    label: "Projected price",
+                    value:
+                      guidePrice === null
+                        ? "-"
+                        : formatMoney(guidePrice),
+                  },
+                ]}
+              />
+
+              <ComparisonCard
+                title="Engine result"
+                values={[
+                  {
+                    label: "Current price",
+                    value: formatMoney(selectedPlayer.price),
+                  },
+                  {
+                    label: "Projected score",
+                    value: projectedScore.toString(),
+                  },
+                  {
+                    label: "Break-even",
+                    value: engineResult.breakEven.toString(),
+                  },
+                  {
+                    label: "Projected price",
+                    value: formatMoney(engineResult.price),
+                  },
+                ]}
+              />
+            </div>
+
+            <section className="mt-6 rounded-2xl border border-slate-800 bg-slate-900 p-6">
+              <h2 className="text-xl font-semibold">
+                Difference
+              </h2>
+
+              <div className="mt-5 grid gap-4 sm:grid-cols-2">
+                <DifferenceStat
+                  label="Projected price difference"
+                  value={
+                    priceDifference === null
+                      ? "-"
+                      : formatDifference(priceDifference)
+                  }
+                  difference={priceDifference}
+                />
+
+                <DifferenceStat
+                  label="Break-even difference"
+                  value={
+                    breakEvenDifference === null
+                      ? "-"
+                      : breakEvenDifference > 0
+                        ? `+${breakEvenDifference}`
+                        : breakEvenDifference.toString()
+                  }
+                  difference={breakEvenDifference}
+                />
+              </div>
+            </section>
+
+            <section className="mt-6 rounded-2xl border border-slate-800 bg-slate-900 p-6">
+              <h2 className="text-xl font-semibold">
+                Calculation inputs
+              </h2>
+
+              <div className="mt-5 grid gap-x-10 gap-y-3 sm:grid-cols-2">
+                <CalculationRow
+                  label="Previous score 1"
+                  value={previousScores[0].toString()}
+                />
+
+                <CalculationRow
+                  label="Previous score 2"
+                  value={previousScores[1].toString()}
+                />
+
+                <CalculationRow
+                  label="Projected score"
+                  value={projectedScore.toString()}
+                />
+
+                <CalculationRow
+                  label="Three-round average"
+                  value={engineResult.threeRoundAverage.toFixed(2)}
+                />
+
+                <CalculationRow
+                  label="Magic Number"
+                  value={engineResult.magicNumber.toString()}
+                />
+
+                <CalculationRow
+                  label="Price change"
+                  value={formatDifference(
+                    engineResult.priceChange,
+                  )}
+                />
+              </div>
+            </section>
+
+            <section className="mt-6 rounded-2xl border border-slate-800 bg-slate-900 p-6">
+              <h2 className="text-xl font-semibold">
+                Price calculation
+              </h2>
+
+              <div className="mt-5 overflow-x-auto rounded-xl bg-slate-950 p-5 font-mono text-sm text-slate-300">
+                <p>
+                  ({selectedPlayer.price.toLocaleString()} × 3 +
+                  {" "}
+                  {engineResult.threeRoundAverage.toFixed(2)} ×
+                  {" "}
+                  {engineResult.magicNumber}) ÷ 4
+                </p>
+
+                <p className="mt-3 text-slate-500">
+                  Raw price
+                </p>
+
+                <p className="mt-1 text-lg font-semibold text-white">
+                  {rawProjectedPrice === null
+                    ? "-"
+                    : formatMoney(
+                        Math.round(rawProjectedPrice),
+                      )}
+                </p>
+
+                <p className="mt-4 text-slate-500">
+                  Rounded price
+                </p>
+
+                <p className="mt-1 text-2xl font-bold text-emerald-400">
+                  {formatMoney(engineResult.price)}
+                </p>
+              </div>
+            </section>
+          </>
+        )}
+      </section>
+    </main>
+  );
+}
+
+type ComparisonValue = {
+  label: string;
+  value: string;
+};
+
+function ComparisonCard({
+  title,
+  values,
+}: {
+  title: string;
+  values: ComparisonValue[];
+}) {
+  return (
+    <section className="rounded-2xl border border-slate-800 bg-slate-900 p-6">
+      <h2 className="text-lg font-semibold">{title}</h2>
+
+      <div className="mt-5 space-y-3">
+        {values.map((item) => (
+          <div
+            key={item.label}
+            className="flex items-center justify-between gap-5 border-b border-slate-800 pb-3 last:border-0 last:pb-0"
+          >
+            <span className="text-sm text-slate-400">
+              {item.label}
+            </span>
+
+            <span className="font-semibold tabular-nums">
+              {item.value}
+            </span>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function DifferenceStat({
+  label,
+  value,
+  difference,
+}: {
+  label: string;
+  value: string;
+  difference: number | null;
+}) {
+  return (
+    <div className="rounded-xl bg-slate-950 p-4">
+      <p className="text-xs uppercase tracking-wide text-slate-500">
+        {label}
+      </p>
+
+      <p
+        className={`mt-2 text-2xl font-bold tabular-nums ${
+          difference === null || difference === 0
+            ? "text-slate-200"
+            : Math.abs(difference) <= 100
+              ? "text-emerald-400"
+              : "text-amber-400"
+        }`}
+      >
+        {value}
+      </p>
+    </div>
+  );
+}
+
+function CalculationRow({
+  label,
+  value,
+}: {
+  label: string;
+  value: string;
+}) {
+  return (
+    <div className="flex items-center justify-between border-b border-slate-800 py-2">
+      <span className="text-sm text-slate-400">
+        {label}
+      </span>
+
+      <span className="font-semibold tabular-nums">
+        {value}
+      </span>
+    </div>
+  );
+}
