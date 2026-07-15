@@ -5,6 +5,7 @@ export type Player = {
   teamName: string;
   positions: string[];
   price: number;
+  games: number;
   average: number;
   average3: number;
   average5: number;
@@ -18,4 +19,5 @@ export type Player = {
   ownership: number;
   active: boolean;
   availability: string | null;
+
 };

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import PlayerSelector from "@/components/projector/PlayerSelector";
 import PlayerStats from "@/components/projector/PlayerStats";
@@ -59,62 +59,19 @@ export default function ProjectorPage() {
   const selectedPlayer =
     getPlayerById(selectedPlayerId) ?? players[0];
 
-  const [seasonRows, setSeasonRows] = useState<SeasonProjectionRow[]>(
-    () => createRowsForPlayer(players[0]),
-  );
+  const [seasonRows, setSeasonRows] = useState<
+    SeasonProjectionRow[]
+  >(() => createRowsForPlayer(players[0]));
 
-  function handlePlayerChange(playerId: number) {
-    const player = getPlayerById(playerId) ?? players[0];
-
-    setSelectedPlayerId(player.id);
-    setSeasonRows(createRowsForPlayer(player));
-  }
-
-  function updateSeasonScore(
-    round: number,
-    score: number | null,
-  ) {
-    setSeasonRows((currentRows) =>
-      currentRows.map((row) =>
-        row.round === round ? { ...row, score } : row,
-      ),
-    );
-  }
-
-  function updatePlayedStatus(
-    round: number,
-    played: boolean,
-  ) {
-    setSeasonRows((currentRows) =>
-      currentRows.map((row) =>
-        row.round === round
-          ? {
-              ...row,
-              played,
-              score: played
-                ? row.score ?? Math.round(selectedPlayer.average)
-                : null,
-              breakEven: null,
-              price: null,
-              priceChange: null,
-              threeRoundAverage: null,
-            }
-          : row,
-      ),
-    );
-  }
-
-  function calculateFullSeason() {
-    let currentPrice = selectedPlayer.price;
-
-    const latestScores =
-      selectedPlayer.recentScores.slice(-2);
+  function calculateRows(
+    rowsToCalculate: SeasonProjectionRow[],
+    player: Player = selectedPlayer,
+  ): SeasonProjectionRow[] {
+    let currentPrice = player.price;
+    const latestScores = player.recentScores.slice(-2);
 
     if (latestScores.length < 2) {
-      alert(
-        "Two previous scores are required to calculate future prices.",
-      );
-      return;
+      return rowsToCalculate;
     }
 
     let rollingScores: [number, number] = [
@@ -122,7 +79,7 @@ export default function ProjectorPage() {
       latestScores[1],
     ];
 
-    const calculatedRows = seasonRows.map((row) => {
+    return rowsToCalculate.map((row) => {
       if (row.round < CURRENT_COMPLETED_ROUND) {
         return row;
       }
@@ -130,7 +87,8 @@ export default function ProjectorPage() {
       if (row.round === CURRENT_COMPLETED_ROUND) {
         return {
           ...row,
-          price: selectedPlayer.price,
+          price: player.price,
+          priceChange: null,
         };
       }
 
@@ -172,8 +130,7 @@ export default function ProjectorPage() {
         breakEven,
         price: priceResult.projectedPrice,
         priceChange: priceResult.priceChange,
-        threeRoundAverage:
-          priceResult.threeRoundAverage,
+        threeRoundAverage: priceResult.threeRoundAverage,
       };
 
       currentPrice = priceResult.projectedPrice;
@@ -181,9 +138,41 @@ export default function ProjectorPage() {
 
       return calculatedRow;
     });
-
-    setSeasonRows(calculatedRows);
   }
+
+  function handlePlayerChange(playerId: number) {
+    const player = getPlayerById(playerId) ?? players[0];
+    const newRows = createRowsForPlayer(player);
+
+    setSelectedPlayerId(player.id);
+    setSeasonRows(calculateRows(newRows, player));
+  }
+
+  function updateSeasonScore(
+    round: number,
+    score: number | null,
+  ) {
+    setSeasonRows((currentRows) => {
+      const updatedRows = currentRows.map((row) =>
+        row.round === round
+          ? {
+              ...row,
+              score,
+            }
+          : row,
+      );
+
+      return calculateRows(updatedRows);
+    });
+  }
+
+  useEffect(() => {
+    setSeasonRows((currentRows) =>
+      calculateRows(currentRows),
+    );
+    // Recalculate when the selected player changes.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedPlayerId]);
 
   const finalProjectedRow = [...seasonRows]
     .reverse()
@@ -243,9 +232,13 @@ export default function ProjectorPage() {
 
           <PlayerStats
             price={selectedPlayer.price}
-            average={selectedPlayer.average}
             breakeven={selectedPlayer.breakeven}
-          />
+            games={selectedPlayer.games}
+            average={selectedPlayer.average}
+            average3={selectedPlayer.average3}
+            average5={selectedPlayer.average5}
+            ownership={selectedPlayer.ownership}
+            />
 
           <div className="mt-6 flex flex-wrap items-end justify-between gap-5 border-t border-slate-800 pt-6">
             <div className="grid grid-cols-2 gap-6">
@@ -253,6 +246,7 @@ export default function ProjectorPage() {
                 <p className="text-xs uppercase tracking-wide text-slate-500">
                   Projected final price
                 </p>
+
                 <p className="mt-1 text-2xl font-bold">
                   ${finalProjectedPrice.toLocaleString()}
                 </p>
@@ -262,6 +256,7 @@ export default function ProjectorPage() {
                 <p className="text-xs uppercase tracking-wide text-slate-500">
                   Projected change
                 </p>
+
                 <p
                   className={`mt-1 text-2xl font-bold ${
                     totalPriceChange >= 0
@@ -277,29 +272,25 @@ export default function ProjectorPage() {
               </div>
             </div>
 
-            <button
-              type="button"
-              onClick={calculateFullSeason}
-              className="rounded-lg bg-emerald-500 px-6 py-3 font-semibold text-slate-950 transition hover:bg-emerald-400"
-            >
-              Calculate full season
-            </button>
+            <p className="text-sm text-slate-400">
+              Projections update automatically as scores change.
+            </p>
           </div>
         </section>
 
         <div className="mt-8">
           <SeasonProjectionTable
-            rows={seasonRows}
-            onScoreChange={updateSeasonScore}
-            onPlayedChange={updatePlayedStatus}
-          />
+                rows={seasonRows}
+                startingPrice={selectedPlayer.price}
+                onScoreChange={updateSeasonScore}
+            />
         </div>
 
         <p className="mt-5 text-xs leading-5 text-slate-500">
-          Magic Numbers are controlled by the Toolkit’s
-          season model and cannot be edited. Future values
-          may be estimates until confirmed using actual
-          weekly price movements.
+          Magic Numbers are controlled by the Toolkit&apos;s
+          season model and cannot be edited. Future values may
+          be estimates until confirmed using actual weekly price
+          movements.
         </p>
       </section>
     </main>

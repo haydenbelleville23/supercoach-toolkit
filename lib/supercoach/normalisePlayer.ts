@@ -19,6 +19,7 @@ export function normaliseSuperCoachPlayer(
     teamName: rawPlayer.team.name,
     positions: rawPlayer.positions.map((position) => position.position),
     price: stats.price,
+    games: stats.total_games,
     average: stats.avg,
     average3: stats.avg3,
     average5: stats.avg5,

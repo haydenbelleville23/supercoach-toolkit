@@ -1,28 +1,69 @@
 type PlayerStatsProps = {
   price: number;
-  average: number;
   breakeven: number;
+  games: number;
+  average: number;
+  average3: number;
+  average5: number;
+  ownership: number;
 };
 
 export default function PlayerStats({
   price,
-  average,
   breakeven,
+  games,
+  average,
+  average3,
+  average5,
+  ownership,
 }: PlayerStatsProps) {
-  return (
-    <div className="mt-6 grid grid-cols-3 gap-3">
-      <Stat label="Price" value={`$${price.toLocaleString()}`} />
-      <Stat label="Average" value={average.toString()} />
-      <Stat label="Break-even" value={breakeven.toString()} />
-    </div>
-  );
-}
+  const stats = [
+    {
+      label: "Price",
+      value: `$${price.toLocaleString()}`,
+    },
+    {
+      label: "BE",
+      value: breakeven.toString(),
+    },
+    {
+      label: "Games",
+      value: games.toString(),
+    },
+    {
+      label: "Average",
+      value: average.toFixed(1),
+    },
+    {
+      label: "3RA",
+      value: average3.toFixed(1),
+    },
+    {
+      label: "5RA",
+      value: average5.toFixed(1),
+    },
+    {
+      label: "Owned",
+      value: `${ownership.toFixed(1)}%`,
+    },
+  ];
 
-function Stat({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-xl bg-slate-950 p-3">
-      <p className="text-xs text-slate-500">{label}</p>
-      <p className="mt-1 font-semibold">{value}</p>
+    <div className="mt-5 grid grid-cols-2 gap-2 sm:grid-cols-4 lg:grid-cols-7">
+      {stats.map((stat) => (
+        <div
+          key={stat.label}
+          className="rounded-lg bg-slate-950 px-3 py-2"
+        >
+          <p className="text-xs text-slate-500">
+            {stat.label}
+          </p>
+
+          <p className="mt-0.5 font-semibold tabular-nums">
+            {stat.value}
+          </p>
+        </div>
+      ))}
     </div>
   );
 }
