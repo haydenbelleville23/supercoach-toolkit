@@ -225,3 +225,12 @@ Future
 - Minimise ongoing costs wherever possible.
 - Build for mobile first.
 - Keep advertisements unobtrusive.
+## Projection Data Policy
+
+SuperCoach website projections are treated as indicative only.
+
+They may be used for comparison and display, but they are not the source of
+truth for the Toolkit pricing engine.
+
+The Toolkit pricing model will be calibrated against actual published price
+changes and observed weekly Magic Numbers.

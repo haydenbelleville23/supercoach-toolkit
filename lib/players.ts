@@ -1,7 +1,12 @@
 import { normalisedSamplePlayer } from "@/lib/supercoach/sample";
 import type { Player } from "@/types/player";
 
-const players: Player[] = [normalisedSamplePlayer];
+const players: Player[] = [
+  {
+    ...normalisedSamplePlayer,
+    recentScores: [96, 107],
+  },
+];
 
 export function getPlayers(): Player[] {
   return players;

@@ -8,7 +8,9 @@ export type Player = {
   average: number;
   average3: number;
   average5: number;
+  recentScores: number[];
   breakeven: number;
+  projectedBreakEvens: number[];
   projectedScore: number;
   projectedScores: number[];
   projectedPrices: number[];

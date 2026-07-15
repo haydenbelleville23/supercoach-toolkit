@@ -22,6 +22,7 @@ export function normaliseSuperCoachPlayer(
     average: stats.avg,
     average3: stats.avg3,
     average5: stats.avg5,
+    recentScores: [],
     breakeven: stats.be1,
     projectedScore: stats.ppts,
     projectedScores: [stats.ppts1, stats.ppts2, stats.ppts3],
