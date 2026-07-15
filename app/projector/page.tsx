@@ -8,14 +8,15 @@ import PlayerStats from "@/components/projector/PlayerStats";
 import SeasonProjectionTable from "@/components/projector/SeasonProjectionTable";
 import { CURRENT_COMPLETED_ROUND } from "@/data/season";
 import { getPlayerById, getPlayers } from "@/lib/players";
-import { calculateBreakEven } from "@/lib/priceEngine/calculateBreakEven";
-import { calculatePrice } from "@/lib/priceEngine/calculatePrice";
 import { createSeasonRows } from "@/lib/priceEngine/createSeasonRows";
 import type { Player } from "@/types/player";
 import type { SeasonProjectionRow } from "@/types/projection";
 import PlayerHeader from "@/components/projector/PlayerHeader";
+import { createPlayerState } from "@/lib/priceEngine/createPlayerState";
+import { projectSeason } from "@/lib/priceEngine/projectSeason";
 
-const players = getPlayers();
+import { playerRepository } from "@/lib/repository/PlayerRepository";
+const players = playerRepository.getAll();
 
 function createRowsForPlayer(player: Player): SeasonProjectionRow[] {
   const rows = createSeasonRows();
@@ -64,88 +65,68 @@ export default function ProjectorPage() {
   );
 
   const selectedPlayer =
-    getPlayerById(selectedPlayerId) ?? players[0];
+    playerRepository.getById(selectedPlayerId) ?? players[0];
 
   const [seasonRows, setSeasonRows] = useState<
     SeasonProjectionRow[]
   >(() => createRowsForPlayer(players[0]));
 
   function calculateRows(
-    rowsToCalculate: SeasonProjectionRow[],
-    player: Player = selectedPlayer,
-  ): SeasonProjectionRow[] {
-    let currentPrice = player.price;
-    const latestScores = player.recentScores.slice(-2);
+  rowsToCalculate: SeasonProjectionRow[],
+  player: Player = selectedPlayer,
+): SeasonProjectionRow[] {
+  const state = createPlayerState(player);
 
-    if (latestScores.length < 2) {
-      return rowsToCalculate;
+  const futureRows = rowsToCalculate.filter(
+    (row) => row.round > CURRENT_COMPLETED_ROUND,
+  );
+
+  const projectedScores = futureRows.map(
+    (row) => row.score ?? Math.round(player.average),
+  );
+
+  const projections = projectSeason(
+    state,
+    projectedScores,
+  );
+
+  let projectionIndex = 0;
+
+  return rowsToCalculate.map((row) => {
+    if (row.round < CURRENT_COMPLETED_ROUND) {
+      return row;
     }
 
-    let rollingScores: [number, number] = [
-      latestScores[0],
-      latestScores[1],
-    ];
-
-    return rowsToCalculate.map((row) => {
-      if (row.round < CURRENT_COMPLETED_ROUND) {
-        return row;
-      }
-
-      if (row.round === CURRENT_COMPLETED_ROUND) {
-        return {
-          ...row,
-          price: player.price,
-          priceChange: null,
-        };
-      }
-
-      if (!row.played) {
-        return {
-          ...row,
-          breakEven: null,
-          price: currentPrice,
-          priceChange: 0,
-          threeRoundAverage: null,
-        };
-      }
-
-      if (row.score === null) {
-        return {
-          ...row,
-          breakEven: null,
-          price: null,
-          priceChange: null,
-          threeRoundAverage: null,
-        };
-      }
-
-      const breakEven = calculateBreakEven({
-        currentPrice,
-        previousScores: rollingScores,
-        magicNumber: row.magicNumber,
-      });
-
-      const priceResult = calculatePrice({
-        currentPrice,
-        previousScores: rollingScores,
-        projectedScore: row.score,
-        magicNumber: row.magicNumber,
-      });
-
-      const calculatedRow: SeasonProjectionRow = {
+    if (row.round === CURRENT_COMPLETED_ROUND) {
+      return {
         ...row,
-        breakEven,
-        price: priceResult.projectedPrice,
-        priceChange: priceResult.priceChange,
-        threeRoundAverage: priceResult.threeRoundAverage,
+        price: player.price,
+        priceChange: null,
       };
+    }
 
-      currentPrice = priceResult.projectedPrice;
-      rollingScores = [rollingScores[1], row.score];
+    if (!row.played || row.score === null) {
+      return {
+        ...row,
+        breakEven: null,
+        price: null,
+        priceChange: null,
+        threeRoundAverage: null,
+      };
+    }
 
-      return calculatedRow;
-    });
-  }
+    const projection = projections[projectionIndex++];
+
+    return {
+      ...row,
+      breakEven: projection.breakEven,
+      price: projection.price,
+      priceChange: projection.priceChange,
+      threeRoundAverage: projection.threeRoundAverage,
+      magicNumber: projection.magicNumber,
+    };
+  });
+}
 
   function handlePlayerChange(playerId: number) {
     const player = getPlayerById(playerId) ?? players[0];
