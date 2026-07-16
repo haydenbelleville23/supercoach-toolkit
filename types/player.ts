@@ -10,6 +10,7 @@ export type PlayerHistoryRow = {
 
 export type Player = {
   id: number;
+  championDataId: string | null;
   name: string;
 
   team: string;

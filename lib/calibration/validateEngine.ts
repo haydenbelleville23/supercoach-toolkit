@@ -1,6 +1,23 @@
 import { calculatePrice } from "@/lib/priceEngine/calculatePrice";
 
-export function validatePlayer(player, magicNumber: number) {
+export type ValidationPlayer = {
+  startingPrice: number;
+  previousScores: [number, number];
+  actualScore: number;
+  officialPrice: number;
+
+  [key: string]: unknown;
+};
+
+export type ValidationResult = ValidationPlayer & {
+  enginePrice: number;
+  difference: number;
+};
+
+export function validatePlayer(
+  player: ValidationPlayer,
+  magicNumber: number,
+): ValidationResult {
   const result = calculatePrice({
     currentPrice: player.startingPrice,
     previousScores: player.previousScores,
@@ -11,6 +28,7 @@ export function validatePlayer(player, magicNumber: number) {
   return {
     ...player,
     enginePrice: result.projectedPrice,
-    difference: result.projectedPrice - player.officialPrice,
+    difference:
+      result.projectedPrice - player.officialPrice,
   };
 }

@@ -1,11 +1,6 @@
 "use client";
 
-type ProjectionMode =
-  | "api"
-  | "season-average"
-  | "three-round-average"
-  | "five-round-average"
-  | "custom";
+import type { ProjectionMode } from "@/lib/projector";
 
 type ProjectionModeSelectorProps = {
   value: ProjectionMode;
@@ -17,8 +12,8 @@ const options: {
   label: string;
 }[] = [
   {
-    value: "api",
-    label: "API",
+    value: "projected",
+    label: "Projected",
   },
   {
     value: "season-average",

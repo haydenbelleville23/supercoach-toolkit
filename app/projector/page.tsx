@@ -8,151 +8,29 @@ import PlayerSelector from "@/components/projector/PlayerSelector";
 import PlayerStats from "@/components/projector/PlayerStats";
 import ProjectionModeSelector from "@/components/projector/ProjectionModeSelector";
 import SeasonProjectionTable from "@/components/projector/SeasonProjectionTable";
-
+import { getProjectedScore } from "@/lib/projector/getProjectedScore";
 import { CURRENT_COMPLETED_ROUND } from "@/data/season";
 import { getTeamFixture } from "@/lib/fixtures";
-import { createPlayerState } from "@/lib/priceEngine/createPlayerState";
 import { createSeasonRows } from "@/lib/priceEngine/createSeasonRows";
-import { projectSeason } from "@/lib/priceEngine/projectSeason";
 import { playerRepository } from "@/lib/repository/PlayerRepository";
+import { buildPlayerRows } from "@/lib/projector/buildPlayerRows";
+import { calculateProjectionRows } from "@/lib/projector/calculateProjectionRows";
 
+import type { ProjectionMode } from "@/lib/projector/projectionModes";
 import type { Player } from "@/types/player";
 import type { SeasonProjectionRow } from "@/types/projection";
 
 const players = playerRepository.getAll();
-
-type ProjectionMode =
-  | "api"
-  | "season-average"
-  | "three-round-average"
-  | "five-round-average"
-  | "custom";
-
-function getProjectedScore({
-  player,
-  projectionIndex,
-  mode,
-  existingScore,
-}: {
-  player: Player;
-  projectionIndex: number;
-  mode: ProjectionMode;
-  existingScore?: number | null;
-}): number {
-  switch (mode) {
-    case "api":
-      return (
-        player.projectedScores[projectionIndex] ??
-        Math.round(player.average)
-      );
-
-    case "season-average":
-      return Math.round(player.average);
-
-    case "three-round-average":
-      return Math.round(player.average3);
-
-    case "five-round-average":
-      return Math.round(player.average5);
-
-    case "custom":
-      return (
-        existingScore ??
-        player.projectedScores[projectionIndex] ??
-        Math.round(player.average)
-      );
-  }
-}
-
-function createRowsForPlayer(
-  player: Player,
-  mode: ProjectionMode = "api",
-  existingRows?: SeasonProjectionRow[],
-): SeasonProjectionRow[] {
-  const rows = createSeasonRows();
-
-  return rows.map((row) => {
-    const teamFixture = getTeamFixture(
-      player.team,
-      row.round,
-    );
-
-    const historicalRow = player.history.find(
-      (item) => item.round === row.round,
-    );
-
-    if (row.round <= CURRENT_COMPLETED_ROUND) {
-      if (!historicalRow) {
-        return {
-          ...row,
-          opponent: teamFixture?.opponent ?? null,
-          homeAway: teamFixture?.homeAway ?? null,
-        };
-      }
-
-      return {
-        ...row,
-        played: historicalRow.games > 0,
-        isActual: true,
-        score: historicalRow.score,
-
-        price:
-          row.round === CURRENT_COMPLETED_ROUND
-            ? player.price
-            : historicalRow.price,
-
-        priceChange:
-          row.round === CURRENT_COMPLETED_ROUND
-            ? null
-            : historicalRow.priceChange,
-
-        breakEven:
-          row.round === CURRENT_COMPLETED_ROUND
-            ? player.breakeven
-            : null,
-
-        opponent:
-          teamFixture?.opponent ??
-          historicalRow.opponent,
-
-        homeAway:
-          teamFixture?.homeAway ??
-          historicalRow.homeAway,
-      };
-    }
-
-    const projectionIndex =
-      row.round - CURRENT_COMPLETED_ROUND - 1;
-
-    const existingScore = existingRows?.find(
-      (existingRow) =>
-        existingRow.round === row.round,
-    )?.score;
-
-    const suggestedScore = getProjectedScore({
-      player,
-      projectionIndex,
-      mode,
-      existingScore,
-    });
-
-    return {
-      ...row,
-      played: true,
-      isActual: false,
-      score: suggestedScore,
-      opponent: teamFixture?.opponent ?? null,
-      homeAway: teamFixture?.homeAway ?? null,
-    };
-  });
-}
+console.log(
+  "Projector Players Count:",
+  players.length);
 
 export default function ProjectorPage() {
   const [selectedPlayerId, setSelectedPlayerId] =
     useState(players[0].id);
 
   const [projectionMode, setProjectionMode] =
-    useState<ProjectionMode>("api");
+    useState<ProjectionMode>("projected");
 
   const selectedPlayer =
     playerRepository.getById(selectedPlayerId) ??
@@ -161,92 +39,26 @@ export default function ProjectorPage() {
   const [seasonRows, setSeasonRows] = useState<
     SeasonProjectionRow[]
   >(() =>
-    calculateRowsForPlayer(
-      createRowsForPlayer(players[0], "api"),
+    calculateProjectionRows(
+      buildPlayerRows(players[0], "projected"),
       players[0],
     ),
   );
 
-  function calculateRowsForPlayer(
-    rowsToCalculate: SeasonProjectionRow[],
-    player: Player,
-  ): SeasonProjectionRow[] {
-    const state = createPlayerState(player);
-
-    const futureRows = rowsToCalculate.filter(
-      (row) =>
-        row.round > CURRENT_COMPLETED_ROUND,
-    );
-
-    const projectedScores = futureRows.map(
-      (row) =>
-        row.score ?? Math.round(player.average),
-    );
-
-    const projections = projectSeason(
-      state,
-      projectedScores,
-    );
-
-    let projectionIndex = 0;
-
-    return rowsToCalculate.map((row) => {
-      if (row.round < CURRENT_COMPLETED_ROUND) {
-        return row;
-      }
-
-      if (
-        row.round === CURRENT_COMPLETED_ROUND
-      ) {
-        return {
-          ...row,
-          price: player.price,
-          priceChange: null,
-        };
-      }
-
-      if (!row.played || row.score === null) {
-        return {
-          ...row,
-          breakEven: null,
-          price: null,
-          priceChange: null,
-          threeRoundAverage: null,
-        };
-      }
-
-      const projection =
-        projections[projectionIndex++];
-
-      if (!projection) {
-        return row;
-      }
-
-      return {
-        ...row,
-        breakEven: projection.breakEven,
-        price: projection.price,
-        priceChange: projection.priceChange,
-        threeRoundAverage:
-          projection.threeRoundAverage,
-        magicNumber: projection.magicNumber,
-      };
-    });
-  }
-
+ 
   function handlePlayerChange(playerId: number) {
     const player =
       playerRepository.getById(playerId) ??
       players[0];
 
-    const newRows = createRowsForPlayer(
+    const newRows = buildPlayerRows(
       player,
       projectionMode,
     );
 
     setSelectedPlayerId(player.id);
     setSeasonRows(
-      calculateRowsForPlayer(newRows, player),
+      calculateProjectionRows(newRows, player),
     );
   }
 
@@ -256,13 +68,13 @@ export default function ProjectorPage() {
     setProjectionMode(mode);
 
     setSeasonRows((currentRows) => {
-      const rebuiltRows = createRowsForPlayer(
+      const rebuiltRows = buildPlayerRows(
         selectedPlayer,
         mode,
         currentRows,
       );
 
-      return calculateRowsForPlayer(
+      return calculateProjectionRows(
         rebuiltRows,
         selectedPlayer,
       );
@@ -285,7 +97,7 @@ export default function ProjectorPage() {
           : row,
       );
 
-      return calculateRowsForPlayer(
+      return calculateProjectionRows(
         updatedRows,
         selectedPlayer,
       );

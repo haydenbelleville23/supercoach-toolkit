@@ -1,3 +1,5 @@
+import type { ValidationResult } from "@/types/validation";
+
 export function summarise(results: ValidationResult[]) {
   const differences = results.map((r) =>
     Math.abs(r.difference),

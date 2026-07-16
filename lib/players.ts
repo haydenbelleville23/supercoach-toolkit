@@ -5,7 +5,7 @@ import type { Player } from "@/types/player";
 import type { SuperCoachPlayer } from "@/types/supercoach";
 
 const players: Player[] = (
-  rawPlayers as SuperCoachPlayer[]
+  rawPlayers as unknown as SuperCoachPlayer[]
 )
   .map((rawPlayer) => {
     try {

@@ -30,13 +30,13 @@ export function calibratePlayer(
     projectedScore: player.projectedScores[0],
 
     officialProjectedPrice:
-      player.projectedPrice ?? result.price,
+      player.projectedPrices[0] ?? result.price,
 
     engineProjectedPrice:
       result.price,
 
     difference:
       result.price -
-      (player.projectedPrice ?? result.price),
+      (player.projectedPrices[0] ?? result.price),
   };
 }

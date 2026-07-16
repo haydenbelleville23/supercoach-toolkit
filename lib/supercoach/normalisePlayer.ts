@@ -34,9 +34,9 @@ const history = (rawPlayer.player_stat_history ?? [])
     round: item.round,
 
     score:
-      item.games > 0
-        ? Number(item.points ?? 0)
-        : null,
+    Number(item.games ?? 0) > 0
+    ? Number(item.points ?? 0)
+    : null,
 
     price:
       item.price == null
@@ -102,6 +102,12 @@ const history = (rawPlayer.player_stat_history ?? [])
 
   return {
     id: rawPlayer.id,
+    championDataId:
+    rawPlayer.feed_id == null
+    ? null
+    : rawPlayer.feed_id.startsWith("CD_I")
+      ? rawPlayer.feed_id
+      : `CD_I${rawPlayer.feed_id}`,
     name: `${rawPlayer.first_name} ${rawPlayer.last_name}`,
      team: teamAbbrev,
     teamName,
