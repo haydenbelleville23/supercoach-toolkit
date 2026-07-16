@@ -21,9 +21,6 @@ import type { Player } from "@/types/player";
 import type { SeasonProjectionRow } from "@/types/projection";
 
 const players = playerRepository.getAll();
-console.log(
-  "Projector Players Count:",
-  players.length);
 
 export default function ProjectorPage() {
   const [selectedPlayerId, setSelectedPlayerId] =

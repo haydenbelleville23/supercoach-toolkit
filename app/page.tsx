@@ -22,15 +22,32 @@ export default function Home() {
 
           <p className="mt-6 text-lg leading-8 text-slate-300">
             Project player prices, identify cash generation opportunities and
-            compare trades using clear, easy-to-understand tools.
+            follow live SuperCoach scoring using clear, easy-to-understand
+            tools.
           </p>
 
-          <Link
-            href="/projector"
-            className="mt-8 inline-block rounded-lg bg-emerald-500 px-5 py-3 font-semibold text-slate-950 transition hover:bg-emerald-400"
-          >
-            Open Price Projector
-          </Link>
+          <div className="mt-8 flex flex-wrap gap-4">
+            <Link
+              href="/projector"
+              className="rounded-lg bg-emerald-500 px-5 py-3 font-semibold text-slate-950 transition hover:bg-emerald-400"
+            >
+              📈 Price Projector
+            </Link>
+
+            <Link
+              href="/cash-cows"
+              className="rounded-lg border border-slate-700 bg-slate-900 px-5 py-3 font-semibold transition hover:border-emerald-500 hover:bg-slate-800"
+            >
+              🐄 Cash Cows
+            </Link>
+
+            <Link
+              href="/live"
+              className="rounded-lg border border-slate-700 bg-slate-900 px-5 py-3 font-semibold transition hover:border-emerald-500 hover:bg-slate-800"
+            >
+              🏉 Live Scores
+            </Link>
+          </div>
         </div>
 
         <div className="mt-16 grid gap-6 sm:grid-cols-2">
