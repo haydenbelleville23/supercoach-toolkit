@@ -1,7 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import Header from "@/components/layout/Header";
+import {
+  type UIEvent,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 
 import {
   calculateCashCowRows,
@@ -21,9 +27,31 @@ type SortMode =
   | "peak-gain"
   | "rise-1"
   | "rise-3"
-  | "rise-5";
+  | "rise-5"
+  | "price-high"
+  | "price-low"
+  | "breakeven-low"
+  | "breakeven-high";
+
+type PositionFilter =
+  | "ALL"
+  | "DEF"
+  | "MID"
+  | "RUC"
+  | "FWD";
+
+type PriceFilter =
+  | "all"
+  | "rookies"
+  | "mid-pricers"
+  | "premiums";
 
 const players = playerRepository.getAll();
+
+const clubs = Array.from(
+  new Set(players.map((player) => player.team)),
+).sort((a, b) => a.localeCompare(b));
+
 const futureRounds = Array.from(
   {
     length:
@@ -41,19 +69,19 @@ function formatMoney(value: number): string {
 }
 
 function formatGain(value: number | null): string {
-  if (value === null || value === 0) {
-    return "-";
-  }
+ if (value === null) {
+  return "-";
+}
 
-  const sign = value > 0 ? "+" : "−";
+  const sign = value > 0 ? "+" : "-";
 
-  return `${sign}${Math.abs(value).toLocaleString()}`;
+  return `${sign}$${Math.abs(value).toLocaleString()}`;
 }
 
 function getGainColour(
   value: number | null,
 ): string {
-  if (value === null || value === 0) {
+  if (value === null) {
     return "text-slate-500";
   }
 
@@ -70,30 +98,60 @@ function getGainColour(
   }
 
   if (value < 30_000) {
-    return "text-emerald-400";
+    return "text-amber-400";
   }
 
-  return "text-amber-400";
+  return "text-emerald-400";
 }
 
-function getSortValue(
+type CashCowRow = ReturnType<
+  typeof calculateCashCowRows
+>[number];
+
+function compareRows(
   sortMode: SortMode,
-  row: ReturnType<
-    typeof calculateCashCowRows
-  >[number],
+  a: CashCowRow,
+  b: CashCowRow,
 ): number {
   switch (sortMode) {
     case "peak-gain":
-      return row.toppedOutGain;
+      return b.toppedOutGain - a.toppedOutGain;
 
     case "rise-1":
-      return row.rise1 ?? Number.NEGATIVE_INFINITY;
+      return (
+        (b.rise1 ?? Number.NEGATIVE_INFINITY) -
+        (a.rise1 ?? Number.NEGATIVE_INFINITY)
+      );
 
     case "rise-3":
-      return row.rise3 ?? Number.NEGATIVE_INFINITY;
+      return (
+        (b.rise3 ?? Number.NEGATIVE_INFINITY) -
+        (a.rise3 ?? Number.NEGATIVE_INFINITY)
+      );
 
     case "rise-5":
-      return row.rise5 ?? Number.NEGATIVE_INFINITY;
+      return (
+        (b.rise5 ?? Number.NEGATIVE_INFINITY) -
+        (a.rise5 ?? Number.NEGATIVE_INFINITY)
+      );
+
+    case "price-high":
+      return b.player.price - a.player.price;
+
+    case "price-low":
+      return a.player.price - b.player.price;
+
+    case "breakeven-low":
+      return (
+        a.player.breakeven -
+        b.player.breakeven
+      );
+
+    case "breakeven-high":
+      return (
+        b.player.breakeven -
+        a.player.breakeven
+      );
   }
 }
 
@@ -107,43 +165,90 @@ export default function CashCowsPage() {
   const [sortMode, setSortMode] =
     useState<SortMode>("peak-gain");
 
-  const [rowLimit, setRowLimit] =
-    useState(100);
+  const [positionFilter, setPositionFilter] =
+  useState<PositionFilter>("ALL");
+
+  const [priceFilter, setPriceFilter] =
+    useState<PriceFilter>("all");
+
+  const [clubFilter, setClubFilter] =
+    useState("ALL");
+
+  const [visibleCount, setVisibleCount] =
+    useState(50);
 
   const [scoreOverrides, setScoreOverrides] =
   useState<CashCowScoreOverrides>({});
 
-  const visibleRows = useMemo(() => {
-    const normalisedSearch =
-      searchQuery.trim().toLowerCase();
+  const filteredRows = useMemo(() => {
+  const normalisedSearch =
+    searchQuery.trim().toLowerCase();
 
-        return calculateCashCowRows(
-        players,
-        projectionMode,
-        scoreOverrides,
-        )
-      .filter((row) => {
-        if (normalisedSearch === "") {
-          return true;
-        }
-
-        return row.player.name
+  return calculateCashCowRows(
+    players,
+    projectionMode,
+    scoreOverrides,
+  )
+    .filter((row) => {
+      const matchesSearch =
+        normalisedSearch === "" ||
+        row.player.name
           .toLowerCase()
           .includes(normalisedSearch);
-      })
-      .sort(
-        (a, b) =>
-          getSortValue(sortMode, b) -
-          getSortValue(sortMode, a),
-      )
-      .slice(0, rowLimit);
-  }, [
-    projectionMode,
-    searchQuery,
-    sortMode,
-    rowLimit,
-    scoreOverrides,
-  ]);
+
+      const matchesPosition =
+        positionFilter === "ALL" ||
+        row.player.positions.includes(
+          positionFilter,
+        );
+
+      const matchesClub =
+        clubFilter === "ALL" ||
+        row.player.team === clubFilter;
+
+      const matchesPrice = (() => {
+        switch (priceFilter) {
+          case "rookies":
+            return row.player.price < 300_000;
+
+          case "mid-pricers":
+            return (
+              row.player.price >= 300_000 &&
+              row.player.price <= 650_000
+            );
+
+          case "premiums":
+            return row.player.price > 650_000;
+
+          case "all":
+            return true;
+        }
+      })();
+
+      return (
+        matchesSearch &&
+        matchesPosition &&
+        matchesClub &&
+        matchesPrice
+      );
+    })
+    .sort((a, b) =>
+      compareRows(sortMode, a, b),
+    );
+}, [
+  projectionMode,
+  searchQuery,
+  sortMode,
+  scoreOverrides,
+  positionFilter,
+  priceFilter,
+  clubFilter,
+]);
+
+const visibleRows = useMemo(
+  () => filteredRows.slice(0, visibleCount),
+  [filteredRows, visibleCount],
+);
 
   function updateProjectedScore(
   playerId: number,
@@ -194,46 +299,57 @@ export default function CashCowsPage() {
   });
 }
 
+useEffect(() => {
+    setVisibleCount(50);
+  }, [
+    searchQuery,
+    projectionMode,
+    positionFilter,
+    priceFilter,
+    clubFilter,
+    sortMode,
+  ]);
+  function handleTableScroll(
+  event: UIEvent<HTMLDivElement>,
+) {
+  const container = event.currentTarget;
+
+  const distanceFromBottom =
+    container.scrollHeight -
+    container.scrollTop -
+    container.clientHeight;
+
+  if (distanceFromBottom > 300) {
+    return;
+  }
+
+  setVisibleCount((current) =>
+    Math.min(
+      current + 50,
+      filteredRows.length,
+    ),
+  );
+}
+
   return (
     <main className="min-h-screen bg-slate-950 text-white">
-      <header className="border-b border-slate-800">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5">
-          <div>
-            <p className="text-xl font-bold">
-              SuperCoach Toolkit
-            </p>
-
-            <p className="text-sm text-slate-400">
-              Cash Cows
-            </p>
-          </div>
-
-          <Link
-            href="/"
-            className="text-sm text-emerald-400 hover:text-emerald-300"
-          >
-            ← Dashboard
-          </Link>
-        </div>
-      </header>
-
+      <Header />
       <section className="mx-auto max-w-7xl px-6 py-12">
         <div className="max-w-3xl">
-          <p className="text-sm font-semibold uppercase tracking-widest text-emerald-400">
+          <p className="text-sm font-semibold uppercase tracking-widest text-violet-400">
             2026 season
           </p>
 
           <h1 className="mt-3 text-4xl font-bold tracking-tight">
-            Cash Cow Finder
+            Cash Cows
           </h1>
 
           <p className="mt-4 text-slate-300">
-            Compare projected cash generation across
-            the player pool.
+            Compare projected cash generation, breakevens and price rises across every Supercoach player.
           </p>
         </div>
 
-        <section className="mt-8 grid gap-4 rounded-2xl border border-slate-800 bg-slate-900 p-5 md:grid-cols-4">
+        <section className="mt-8 grid gap-4 rounded-2xl border border-slate-800 bg-slate-900 p-5 sm:grid-cols-2 lg:grid-cols-5">
           <label className="block">
             <span className="text-xs font-semibold uppercase tracking-wide text-slate-500">
               Projection
@@ -265,6 +381,80 @@ export default function CashCowsPage() {
               </option>
             </select>
           </label>
+
+          <label className="block">
+          <span className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+            Position
+          </span>
+
+          <select
+            value={positionFilter}
+            onChange={(event) =>
+              setPositionFilter(
+                event.target.value as PositionFilter,
+              )
+            }
+            className="mt-2 w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-sm outline-none focus:border-violet-500"
+          >
+            <option value="ALL">All</option>
+            <option value="DEF">DEF</option>
+            <option value="MID">MID</option>
+            <option value="RUC">RUC</option>
+            <option value="FWD">FWD</option>
+          </select>
+        </label>
+
+        <label className="block">
+          <span className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+            Price
+          </span>
+
+          <select
+            value={priceFilter}
+            onChange={(event) =>
+              setPriceFilter(
+                event.target.value as PriceFilter,
+              )
+            }
+            className="mt-2 w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-sm outline-none focus:border-violet-500"
+          >
+            <option value="all">All</option>
+            <option value="rookies">
+              Rookies (&lt;$300k)
+            </option>
+            <option value="mid-pricers">
+              Mid-pricers
+            </option>
+            <option value="premiums">
+              Premiums
+            </option>
+          </select>
+        </label>
+
+        <label className="block">
+          <span className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+            Club
+          </span>
+
+          <select
+            value={clubFilter}
+            onChange={(event) =>
+              setClubFilter(event.target.value)
+            }
+            className="mt-2 w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-sm outline-none focus:border-violet-500"
+          >
+            <option value="ALL">All Clubs</option>
+
+            {clubs.map((club) => (
+              <option
+                key={club}
+                value={club}
+              >
+                {club}
+              </option>
+            ))}
+          </select>
+        </label>
 
           <label className="block">
             <span className="text-xs font-semibold uppercase tracking-wide text-slate-500">
@@ -310,43 +500,74 @@ export default function CashCowsPage() {
               <option value="rise-5">
                 +5 Rounds
               </option>
-            </select>
-          </label>
 
-          <label className="block">
-            <span className="text-xs font-semibold uppercase tracking-wide text-slate-500">
-              Rows
-            </span>
+              <option value="price-high">
+                Price: High to Low
+              </option>
 
-            <select
-              value={rowLimit}
-              onChange={(event) =>
-                setRowLimit(
-                  Number(event.target.value),
-                )
-              }
-              className="mt-2 w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-sm outline-none focus:border-emerald-500"
-            >
-              <option value={50}>50</option>
-              <option value={100}>100</option>
-              <option value={250}>250</option>
-              <option value={1000}>
-                All
+              <option value="price-low">
+                Price: Low to High
+              </option>
+
+              <option value="breakeven-low">
+                Breakeven: Low to High
+              </option>
+
+              <option value="breakeven-high">
+                Breakeven: High to Low
               </option>
             </select>
           </label>
         </section>
 
-        <section className="mt-6 overflow-hidden rounded-2xl border border-slate-800 bg-slate-900">
-           <div className="max-h-[70vh] overflow-auto">
+        <div className="mt-3 flex flex-wrap items-center gap-x-5 gap-y-2 px-1 text-xs">
+          <span className="font-semibold text-slate-300">
+            Price Rise Guide
+          </span>
+
+          <span className="flex items-center gap-1.5 text-slate-300">
+            <span className="text-red-400">●</span>
+            Loss
+          </span>
+
+          <span className="flex items-center gap-1.5 text-slate-300">
+            <span className="text-slate-300">●</span>
+            $0–$9.9k
+          </span>
+
+          <span className="flex items-center gap-1.5 text-slate-300">
+            <span className="text-blue-400">●</span>
+            $10k–$19.9k
+          </span>
+
+          <span className="flex items-center gap-1.5 text-slate-300">
+            <span className="text-amber-400">●</span>
+            $20k–$29.9k
+          </span>
+
+          <span className="flex items-center gap-1.5 text-slate-300">
+            <span className="text-emerald-400">●</span>
+            $30k+
+          </span>
+        </div>
+
+        <p className="text-xs text-slate-500">
+          Showing {visibleRows.length} of {filteredRows.length} players
+        </p>
+
+        <section className="mt-3 overflow-hidden rounded-2xl border border-slate-800 bg-slate-900">
+           <div
+                className="max-h-[70vh] overflow-auto"
+                onScroll={handleTableScroll}
+              >
             <table className="w-full min-w-[1500px] text-sm">
               <thead className="sticky top-0 z-20 border-b border-slate-800 bg-slate-950">
                 <tr className="text-left text-xs uppercase tracking-wide text-slate-500">
-                  <th className="sticky left-0 z-30 bg-slate-950 px-4 py-3">
+                  <th className="sticky left-0 z-40 w-[180px] min-w-[180px] max-w-[180px] bg-slate-950 px-4 py-3">
                     Player
                   </th>
 
-                  <th className="px-3 py-3 text-right">
+                  <th className="sticky left-[180px] z-40 w-[100px] min-w-[100px] max-w-[100px] border-r border-slate-700 bg-slate-950 px-3 py-3 text-right shadow-[5px_0_8px_rgba(0,0,0,0.18)]">
                     Price
                   </th>
 
@@ -358,7 +579,7 @@ export default function CashCowsPage() {
                     Proj Avg
                   </th>
 
-                  <th className="px-3 py-3 text-right">
+                  <th className="w-[100px] min-w-[100px] px-3 py-3 text-right">
                     Topped Out Gain
                   </th>
 
@@ -366,15 +587,15 @@ export default function CashCowsPage() {
                     Topped Out Rd
                   </th>
 
-                  <th className="px-3 py-3 text-right">
+                  <th className="w-[100px] min-w-[100px] px-3 py-3 text-right">
                     +1R
                   </th>
 
-                  <th className="px-3 py-3 text-right">
+                  <th className="w-[100px] min-w-[100px] px-3 py-3 text-right">
                     +3R
                   </th>
 
-                  <th className="px-3 py-3 text-right">
+                  <th className="w-[100px] min-w-[100px] px-3 py-3 text-right">
                     +5R
                   </th>
                   {futureRounds.map((round) => (
@@ -397,7 +618,8 @@ export default function CashCowsPage() {
                     <td className="sticky left-0 z-10 bg-slate-900 px-4 py-3">
                       <Link
                         href={`/projector?player=${row.player.id}`}
-                        className="font-semibold text-white hover:text-emerald-400"
+                        className="font-semibold text-white hover:text-violet-400"
+                        title={row.player.name}
                       >
                         {row.player.name}
                       </Link>
@@ -410,17 +632,17 @@ export default function CashCowsPage() {
                       </div>
                     </td>
 
-                    <td className="sticky left-0 z-10 bg-slate-900 px-4 py-3">
+                    <td className="sticky left-[180px] z-20 w-[100px] min-w-[100px] max-w-[100px] border-r border-slate-700 bg-slate-900 px-3 py-3 text-right tabular-nums shadow-[5px_0_8px_rgba(0,0,0,0.18)] group-hover:bg-slate-800">
                       {formatMoney(
                         row.player.price,
                       )}
                     </td>
 
-                    <td className="sticky left-0 z-10 bg-slate-900 px-4 py-3">
+                    <td className="px-3 py-3 text-right tabular-nums text-slate-300">
                       {row.player.breakeven}
                     </td>
 
-                    <td className="sticky left-0 z-10 bg-slate-900 px-4 py-3">
+                    <td className="px-3 py-3 text-right tabular-nums text-slate-300">
                       {row.projectedAverage}
                     </td>
 
@@ -488,10 +710,12 @@ export default function CashCowsPage() {
         key={round}
         className="px-3 py-3 text-right"
         >
-        <div className="font-semibold tabular-nums text-slate-100">
-            {formatMoney(
-            projectedRound.price,
-            )}
+          <div
+         className={`font-semibold tabular-nums ${getGainColour(
+            projectedRound.price - row.player.price,
+          )}`}
+        >
+          {formatMoney(projectedRound.price)}
         </div>
 
         <input
@@ -525,72 +749,43 @@ export default function CashCowsPage() {
 
                 {visibleRows.length === 0 && (
                   <tr>
-                    <td
-                      colSpan={9 + futureRounds.length}
-                      className="px-4 py-12 text-center text-slate-500"
+                    <div className="flex flex-col items-center gap-3">
+                    <p>
+                      No matching players with enough score history.
+                    </p>
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setSearchQuery("");
+                        setPositionFilter("ALL");
+                        setPriceFilter("all");
+                        setClubFilter("ALL");
+                        setProjectionMode("projected");
+                        setSortMode("peak-gain");
+                      }}
+                      className="rounded-lg border border-violet-500/40 bg-violet-500/10 px-3 py-2 text-xs font-semibold text-violet-300 transition hover:bg-violet-500/20"
                     >
-                      No matching players with enough
-                      score history.
-                    </td>
+                      Reset Filters
+                    </button>
+                  </div>
                   </tr>
                 )}
                </tbody>
             </table>
+            {visibleRows.length < filteredRows.length && (
+            <div className="border-t border-slate-800 bg-slate-950 px-4 py-3 text-center text-xs text-slate-500">
+              Scroll to load more players
+            </div>
+          )}
+
+          {filteredRows.length > 50 &&
+            visibleRows.length === filteredRows.length && (
+              <div className="border-t border-slate-800 bg-slate-950 px-4 py-3 text-center text-xs text-slate-600">
+                All {filteredRows.length} players loaded
+              </div>
+            )}
           </div>
-        </section>
-
-        <section className="mt-6 rounded-xl border border-slate-800 bg-slate-900 p-4">
-          <p className="text-sm font-semibold text-slate-200">
-            Price Rise Guide
-          </p>
-
-          <div className="mt-3 flex flex-wrap gap-6 text-sm">
-            <div className="flex items-center gap-2">
-              <span className="font-bold text-red-400">
-                ●
-              </span>
-
-              <span className="text-slate-300">
-                &lt; $10k
-              </span>
-            </div>
-
-            <div className="flex items-center gap-2">
-              <span className="font-bold text-blue-400">
-                ●
-              </span>
-
-              <span className="text-slate-300">
-                $10k–$19.9k
-              </span>
-            </div>
-
-            <div className="flex items-center gap-2">
-              <span className="font-bold text-emerald-400">
-                ●
-              </span>
-
-              <span className="text-slate-300">
-                $20k–$29.9k
-              </span>
-            </div>
-
-            <div className="flex items-center gap-2">
-              <span className="font-bold text-amber-400">
-                ●
-              </span>
-
-              <span className="text-slate-300">
-                $30k+
-              </span>
-            </div>
-          </div>
-
-          <p className="mt-4 text-xs leading-5 text-slate-500">
-            Edit any projected score to instantly
-            recalculate future prices, break evens and
-            projected cash generation for that player.
-          </p>
         </section>
       </section>
     </main>
