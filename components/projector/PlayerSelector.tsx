@@ -2,6 +2,10 @@
 
 import Image from "next/image";
 import {
+  Search,
+} from "lucide-react";
+
+import {
   useEffect,
   useMemo,
   useState,
@@ -41,29 +45,24 @@ export default function PlayerSelector({
   }, [selectedPlayer, isOpen]);
 
   const filteredPlayers = useMemo(() => {
-    const cleanedQuery =
-      query.trim().toLowerCase();
+  const cleanedQuery = query.trim().toLowerCase();
 
-    if (!cleanedQuery) {
-      return players.slice(0, 20);
-    }
+  if (!cleanedQuery) {
+    return players;
+  }
 
-    return players
-      .filter((player) => {
-        const searchableText = [
-          player.name,
-          player.team,
-          player.teamName,
-          ...player.positions,
-        ]
-          .join(" ")
-          .toLowerCase();
+  return players.filter((player) => {
+    const searchableText = [
+      player.name,
+      player.team,
+      player.teamName,
+      ...player.positions,
+    ]
+      .join(" ")
+      .toLowerCase();
 
-        return searchableText.includes(
-          cleanedQuery,
-        );
-      })
-      .slice(0, 20);
+    return searchableText.includes(cleanedQuery);
+  });
   }, [players, query]);
 
   function selectPlayer(player: Player) {
@@ -86,6 +85,10 @@ export default function PlayerSelector({
         Search player
       </label>
 
+      <div className="relative mt-2">
+      <Search
+        className="pointer-events-none absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-500"
+      />
       <input
         id="player-search"
         type="text"
@@ -123,8 +126,9 @@ export default function PlayerSelector({
             );
           }
         }}
-        className="mt-2 w-full rounded-lg border border-slate-700 bg-slate-950 px-4 py-3 outline-none focus:border-emerald-500"
+        className="mt-2 w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 pl-11 text-white outline-none transition focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20"
       />
+      </div>
 
       {isOpen && (
         <div className="absolute z-30 mt-2 max-h-72 w-full overflow-y-auto rounded-lg border border-slate-700 bg-slate-950 shadow-xl">
@@ -143,7 +147,11 @@ export default function PlayerSelector({
                 onClick={() =>
                   selectPlayer(player)
                 }
-                className="flex w-full items-center gap-3 border-b border-slate-800 px-4 py-3 text-left last:border-b-0 hover:bg-slate-900"
+                className={`flex w-full items-center gap-3 border-b border-slate-800 px-4 py-3 text-left transition last:border-b-0 ${
+                  player.id === selectedPlayerId
+                    ? "bg-violet-500/10"
+                    : "hover:bg-slate-900"
+                }`}
               >
                 <Image
                   src={getTeamLogo(
@@ -161,9 +169,9 @@ export default function PlayerSelector({
                   </span>
 
                   <span className="block text-xs text-slate-500">
-                    {player.team}
-                    {" · "}
-                    {player.positions.join("/")}
+                    {player.teamName}
+                    {" • "}
+                    {player.positions.join(" / ")}
                   </span>
                 </span>
               </button>

@@ -1,8 +1,7 @@
 "use client";
 
-import Link from "next/link";
 import { useState } from "react";
-
+import Header from "@/components/layout/Header";
 import PlayerHeader from "@/components/projector/PlayerHeader";
 import PlayerSelector from "@/components/projector/PlayerSelector";
 import PlayerStats from "@/components/projector/PlayerStats";
@@ -103,41 +102,20 @@ export default function ProjectorPage() {
 
   return (
     <main className="min-h-screen bg-slate-950 text-white">
-      <header className="border-b border-slate-800">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5">
-          <div>
-            <p className="text-xl font-bold">
-              SuperCoach Toolkit
-            </p>
-
-            <p className="text-sm text-slate-400">
-              Price Projector
-            </p>
-          </div>
-
-          <Link
-            href="/"
-            className="text-sm text-emerald-400 hover:text-emerald-300"
-          >
-            ← Dashboard
-          </Link>
-        </div>
-      </header>
+      <Header />
 
       <section className="mx-auto max-w-7xl px-6 py-12">
         <div className="max-w-3xl">
-          <p className="text-sm font-semibold uppercase tracking-widest text-emerald-400">
+          <p className="text-sm font-semibold uppercase tracking-widest text-violet-400">
             2026 season
           </p>
 
           <h1 className="mt-3 text-4xl font-bold tracking-tight">
-            AFL SuperCoach Price Projector
+            Price Projector
           </h1>
 
           <p className="mt-4 text-slate-300">
-            Enter projected scores for the remaining
-            rounds. Prices use a rolling three-game
-            average and the weekly Magic Number.
+            Enter projected scores for the remaining rounds or select from one of the projection options. 
           </p>
         </div>
 
@@ -188,7 +166,7 @@ export default function ProjectorPage() {
 
         <p className="mt-5 text-xs leading-5 text-slate-500">
           Magic Numbers are controlled by the
-          Toolkit&apos;s season model and cannot be
+          season model and cannot be
           edited. Future values may be estimates until
           confirmed using actual weekly price
           movements.

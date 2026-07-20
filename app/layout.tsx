@@ -14,13 +14,74 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://sc-toolkit.vercel.app"),
+
   title: {
-    default: "SC Toolkit",
-    template: "%s | SC Toolkit",
+    default: "Fantasy King",
+    template: "%s | Fantasy King",
   },
+
   description:
-    "Price projections, cash cows and live SuperCoach tools.",
-  metadataBase: new URL("https://sc-toolkit.vercel.app"), // Update after first deployment if your URL differs
+    "Fantasy AFL tools including price projections, cash cows, live scores and trade planning.",
+
+  applicationName: "Fantasy King",
+
+  icons: {
+    icon: [
+      {
+        url: "/favicon.ico",
+      },
+      {
+        url: "/favicon-32x32.png",
+        sizes: "32x32",
+        type: "image/png",
+      },
+      {
+        url: "/favicon-48x48.png",
+        sizes: "48x48",
+        type: "image/png",
+      },
+    ],
+    apple: [
+      {
+        url: "/apple-touch-icon-180x180.png",
+        sizes: "180x180",
+        type: "image/png",
+      },
+    ],
+  },
+
+  manifest: "/site.webmanifest",
+
+  openGraph: {
+    type: "website",
+    siteName: "Fantasy King",
+    title: "Fantasy King",
+    description:
+      "Fantasy AFL tools including price projections, cash cows, live scores and trade planning.",
+    images: [
+      {
+        url: "/images/branding/fantasy-king-logo-full.png",
+        width: 1200,
+        height: 630,
+        alt: "Fantasy King",
+      },
+    ],
+  },
+
+  twitter: {
+    card: "summary_large_image",
+    title: "Fantasy King",
+    description:
+      "Fantasy AFL tools including price projections, cash cows, live scores and trade planning.",
+    images: ["/images/branding/fantasy-king-logo-full.png"],
+  },
+
+  appleWebApp: {
+    capable: true,
+    title: "Fantasy King",
+    statusBarStyle: "black-translucent",
+  },
 };
 
 export default function RootLayout({

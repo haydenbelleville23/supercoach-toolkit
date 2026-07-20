@@ -18,20 +18,14 @@ export default function PlayerStats({
   ownership,
 }: PlayerStatsProps) {
   return (
-    <div className="mt-6 grid grid-cols-2 gap-x-16 gap-y-2 text-sm">
-      <Stat label="Price" value={price.toLocaleString()} />
+    <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+      <Stat label="Price" value={`$${price.toLocaleString()}`} />
+      <Stat label="Breakeven" value={breakeven.toString()} />
+      <Stat label="Average" value={average.toFixed(1)} />
       <Stat label="Games" value={games.toString()} />
-
-      <Stat label="BE" value={breakeven.toString()} />
-      <Stat label="Avg" value={average.toFixed(1)} />
-
-      <Stat label="3RA" value={average3.toFixed(1)} />
-      <Stat label="5RA" value={average5.toFixed(1)} />
-
-      <Stat
-        label="Owned"
-        value={`${ownership.toFixed(1)}%`}
-      />
+      <Stat label="3 Round Avg" value={average3.toFixed(1)} />
+      <Stat label="5 Round Avg" value={average5.toFixed(1)} />
+      <Stat label="Ownership" value={`${ownership.toFixed(1)}%`} />
     </div>
   );
 }
@@ -44,12 +38,14 @@ function Stat({
   value: string;
 }) {
   return (
-    <div className="flex justify-between border-b border-slate-800 py-1">
-      <span className="text-slate-400">{label}</span>
+    <div className="rounded-xl border border-slate-800 bg-slate-950/60 px-4 py-3">
+      <p className="text-xs font-medium uppercase tracking-wide text-slate-500">
+        {label}
+      </p>
 
-      <span className="font-semibold tabular-nums">
+      <p className="mt-1 text-lg font-bold tabular-nums text-white">
         {value}
-      </span>
+      </p>
     </div>
   );
 }

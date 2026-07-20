@@ -1,30 +1,41 @@
+import {
+  ArrowRightLeft,
+  PiggyBank,
+  TrendingUp,
+  Trophy,
+} from "lucide-react";
+
 export const dashboardTools = [
   {
     title: "Price Projector",
     description:
-      "Enter projected scores and estimate how a player's price could change.",
+      "Project AFL Fantasy price changes from your expected scores.",
     href: "/projector",
     status: "Available",
+    icon: TrendingUp,
   },
   {
-    title: "Cash Cow Finder",
+    title: "Cash Cows",
     description:
-      "Identify players with the strongest projected price growth.",
-    href: "#",
-    status: "Coming soon",
+      "Find the best cash generators and compare projected price rises.",
+    href: "/cash-cows",
+    status: "Available",
+    icon: PiggyBank,
   },
   {
-    title: "Break-even Tracker",
+    title: "Live Scores",
     description:
-      "Search player break-evens and compare their upcoming price outlook.",
-    href: "#",
-    status: "Coming soon",
+      "Follow live fantasy scoring throughout every AFL match.",
+    href: "/live",
+    status: "Available",
+    icon: Trophy,
   },
   {
     title: "Trade Planner",
     description:
-      "Compare potential trades and their effect on scoring and team value.",
+      "Plan upgrades, downgrades and maximise your salary cap.",
     href: "#",
-    status: "Coming soon",
+    status: "Coming Soon",
+    icon: ArrowRightLeft,
   },
 ];
