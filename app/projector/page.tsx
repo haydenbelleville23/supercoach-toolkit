@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { use, useState } from "react";
 import Header from "@/components/layout/Header";
 import PlayerHeader from "@/components/projector/PlayerHeader";
 import PlayerSelector from "@/components/projector/PlayerSelector";
@@ -13,7 +13,8 @@ import { getTeamFixture } from "@/lib/fixtures";
 import { createSeasonRows } from "@/lib/priceEngine/createSeasonRows";
 import { playerRepository } from "@/lib/repository/PlayerRepository";
 import { buildPlayerRows } from "@/lib/projector/buildPlayerRows";
-import { calculateProjectionRows } from "@/lib/projector/calculateProjectionRows";
+import { calculateProjectionRows as calculateClassicProjectionRows } from "@/lib/projector/calculateProjectionRows";
+import { calculateScaledProjectionRows } from "@/lib/projector/calculateScaledProjectionRows";
 
 import type { ProjectionMode } from "@/lib/projector/projectionModes";
 import type { Player } from "@/types/player";
@@ -21,7 +22,18 @@ import type { SeasonProjectionRow } from "@/types/projection";
 
 const players = playerRepository.getAll();
 
-export default function ProjectorPage() {
+export default function ProjectorPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}) {
+  // Scaled model by default; /projector?model=classic keeps the old
+  // fixed-MN calculation for side-by-side comparison.
+  const calculateProjectionRows =
+    use(searchParams).model === "classic"
+      ? calculateClassicProjectionRows
+      : calculateScaledProjectionRows;
+
   const [selectedPlayerId, setSelectedPlayerId] =
     useState(players[0].id);
 
