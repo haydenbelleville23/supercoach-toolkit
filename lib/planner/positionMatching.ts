@@ -19,6 +19,8 @@ export interface MatchPlayer {
   name: string;
   eligible: Position[];
   pin?: { area: SlotArea; position: SlotPosition } | null;
+  /** Used to field the most expensive players first (like SuperCoach). */
+  price?: number;
 }
 
 export interface MatchResult {
@@ -67,16 +69,24 @@ function canFill(player: MatchPlayer, slot: Slot): boolean {
     : player.eligible.includes(slot.position);
 }
 
-/** Maximum bipartite matching of players to slots (augmenting paths). */
+/**
+ * Maximum bipartite matching of players to slots (augmenting paths).
+ * `allow` can further restrict which slots a player may take.
+ */
 export function matchPlayersToSlots(
   players: MatchPlayer[],
   slots: Slot[],
+  allow: (player: MatchPlayer, slot: Slot) => boolean = () => true,
 ): Map<number, Slot> {
   const slotOwner = new Map<string, number>(); // slot id -> player index
 
   const tryPlace = (index: number, seen: Set<string>): boolean => {
     for (const slot of slots) {
-      if (seen.has(slot.id) || !canFill(players[index], slot)) {
+      if (
+        seen.has(slot.id) ||
+        !canFill(players[index], slot) ||
+        !allow(players[index], slot)
+      ) {
         continue;
       }
 
@@ -141,10 +151,78 @@ function explainShortage(players: MatchPlayer[]): string[] {
   return [];
 }
 
+/**
+ * Places the squad the way SuperCoach auto-fields it: the most expensive
+ * players on the field, the cheapest on the bench, while keeping every
+ * player in a valid slot (dual positions and pins respected).
+ *
+ * Players are taken in price order (highest first); each joins the field
+ * group only if the field group still fits the on-field slots AND the
+ * whole squad can still be placed with that group on the field. This
+ * greedy choice gives the highest-value field (the field slots form a
+ * transversal matroid). If no valid placement exists, as many players as
+ * possible are placed.
+ */
+export function assignByPrice(players: MatchPlayer[]): Map<number, Slot> {
+  const allSlots = buildSlots();
+  const fieldSlots = buildSlots("field");
+  const bestSize = matchPlayersToSlots(players, allSlots).size;
+
+  const byPrice = [...players].sort(
+    (a, b) => (b.price ?? 0) - (a.price ?? 0) || a.id - b.id,
+  );
+
+  // Players pinned to the field are on it; then the rest by price.
+  const order = [
+    ...byPrice.filter((p) => p.pin?.area === "field"),
+    ...byPrice.filter((p) => p.pin?.area !== "field" && p.pin?.area !== "bench"),
+  ];
+
+  const field = new Set<number>();
+
+  for (const player of order) {
+    const trial = new Set(field).add(player.id);
+    const trialPlayers = players.filter((p) => trial.has(p.id));
+
+    if (matchPlayersToSlots(trialPlayers, fieldSlots).size !== trialPlayers.length) {
+      continue;
+    }
+
+    const placed = matchPlayersToSlots(
+      players,
+      allSlots,
+      (p, slot) => !trial.has(p.id) || slot.area === "field",
+    ).size;
+
+    if (placed >= bestSize) {
+      field.add(player.id);
+    }
+  }
+
+  const fieldFirst = matchPlayersToSlots(players, allSlots, (p, slot) =>
+    field.has(p.id) ? slot.area === "field" : slot.area === "bench",
+  );
+
+  if (fieldFirst.size >= bestSize) {
+    return fieldFirst;
+  }
+
+  // Field group can't fill every field slot (squad not complete yet):
+  // keep it on the field and let everyone else go anywhere.
+  const fieldOnly = matchPlayersToSlots(
+    players,
+    allSlots,
+    (p, slot) => !field.has(p.id) || slot.area === "field",
+  );
+
+  return fieldOnly.size >= bestSize
+    ? fieldOnly
+    : matchPlayersToSlots(players, allSlots);
+}
+
 /** Can the whole squad be placed in valid slots? */
 export function checkSquadPositions(players: MatchPlayer[]): MatchResult {
-  const slots = buildSlots();
-  const assignment = matchPlayersToSlots(players, slots);
+  const assignment = assignByPrice(players);
   const problems: string[] = [];
 
   if (players.length !== SQUAD_RULES.squadSize) {

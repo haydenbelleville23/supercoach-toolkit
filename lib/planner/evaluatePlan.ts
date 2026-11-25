@@ -48,12 +48,15 @@ export interface RoundSummary {
 export function toMatchPlayer(
   player: Player,
   pin: MatchPlayer["pin"] = null,
+  /** Price used to field the most expensive players (default: current). */
+  price: number = player.price,
 ): MatchPlayer {
   return {
     id: player.id,
     name: player.name,
     eligible: getEligiblePositions(player.positions),
     pin,
+    price,
   };
 }
 
@@ -175,8 +178,15 @@ export function evaluatePlan({
       .map((id) => playersById.get(id))
       .filter((p): p is Player => p !== undefined);
 
+    // Fielded by this round's prices, most expensive on the field.
     const match = checkSquadPositions(
-      squadPlayers.map((p) => toMatchPlayer(p, ins.has(p.id) ? null : pins.get(p.id) ?? null)),
+      squadPlayers.map((p) =>
+        toMatchPlayer(
+          p,
+          ins.has(p.id) ? null : pins.get(p.id) ?? null,
+          projector.getPriceBefore(p.id, round) ?? p.price,
+        ),
+      ),
     );
 
     if (squad.length !== SQUAD_RULES.squadSize) {

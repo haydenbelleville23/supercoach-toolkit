@@ -22,6 +22,7 @@ import {
 
 import type { Player } from "@/types/player";
 
+import NumberField from "./NumberField";
 import TeamFileControls from "./TeamFileControls";
 import {
   PLANNER_COMPLETED_ROUND,
@@ -122,8 +123,6 @@ export default function MyTeamTool() {
     grouped.set(key, [...(grouped.get(key) ?? []), { ...row, slot }]);
   }
 
-  const numberInput =
-    "mt-1 w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-sm tabular-nums outline-none focus:border-violet-500";
 
   return (
     <div className="mt-8 space-y-6">
@@ -160,41 +159,24 @@ export default function MyTeamTool() {
       )}
 
       <section className="grid gap-4 rounded-2xl border border-slate-800 bg-slate-900 p-5 sm:grid-cols-3">
-        <label className="block text-xs font-semibold uppercase tracking-wide text-slate-400">
-          Cash in bank ($)
-          <input
-            type="number"
-            inputMode="numeric"
-            step={100}
-            className={numberInput}
-            value={team.cashInBank}
-            onChange={(e) => update({ cashInBank: Number(e.target.value) || 0 })}
-          />
-        </label>
+        <NumberField
+          label="Cash in bank ($)"
+          money
+          value={team.cashInBank}
+          onChange={(cashInBank) => update({ cashInBank })}
+        />
 
-        <label className="block text-xs font-semibold uppercase tracking-wide text-slate-400">
-          Trades remaining (season)
-          <input
-            type="number"
-            inputMode="numeric"
-            min={0}
-            className={numberInput}
-            value={team.tradesRemaining}
-            onChange={(e) => update({ tradesRemaining: Math.max(0, Number(e.target.value) || 0) })}
-          />
-        </label>
+        <NumberField
+          label="Trades remaining (season)"
+          value={team.tradesRemaining}
+          onChange={(tradesRemaining) => update({ tradesRemaining })}
+        />
 
-        <label className="block text-xs font-semibold uppercase tracking-wide text-slate-400">
-          Boosts remaining
-          <input
-            type="number"
-            inputMode="numeric"
-            min={0}
-            className={numberInput}
-            value={team.boostsRemaining}
-            onChange={(e) => update({ boostsRemaining: Math.max(0, Number(e.target.value) || 0) })}
-          />
-        </label>
+        <NumberField
+          label="Boosts remaining"
+          value={team.boostsRemaining}
+          onChange={(boostsRemaining) => update({ boostsRemaining })}
+        />
       </section>
 
       <section
