@@ -11,7 +11,10 @@ import {
   useState,
 } from "react";
 
-import { CURRENT_COMPLETED_ROUND } from "@/data/season";
+import {
+  CURRENT_COMPLETED_ROUND,
+  DEBUG_AS_OF_ROUND,
+} from "@/data/season";
 import { getFixtures } from "@/lib/fixtures";
 import { formatChange, formatMoney } from "@/lib/format";
 import {
@@ -354,6 +357,11 @@ export default function LivePage() {
     useState<LiveScoreOverrides>({});
 
   useEffect(() => {
+    // DEBUG_AS_OF_ROUND: the live feed is ignored and never fetched.
+    if (DEBUG_AS_OF_ROUND !== null) {
+      return;
+    }
+
     let cancelled = false;
 
     async function loadLiveScores() {
@@ -684,6 +692,17 @@ export default function LivePage() {
     setSelectedFixtureId(fixtureId);
     setSelectedTeam("home");
     setManualScores({});
+  }
+
+  if (DEBUG_AS_OF_ROUND !== null) {
+    return (
+      <LiveLayout>
+        <LiveMessage>
+          Live scores are off while viewing as of
+          Round {DEBUG_AS_OF_ROUND}.
+        </LiveMessage>
+      </LiveLayout>
+    );
   }
 
   if (feedState.loading) {

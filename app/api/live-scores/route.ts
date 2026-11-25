@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 
+import { DEBUG_AS_OF_ROUND } from "@/lib/asOf/debugAsOfRound";
 import {
   normaliseDfsLiveFeed,
 } from "@/lib/liveMatch/dfsAustralia";
@@ -10,6 +11,18 @@ const DFS_LIVE_URL =
 export const revalidate = 30;
 
 export async function GET() {
+  // DEBUG_AS_OF_ROUND: the live feed is ignored, and never fetched.
+  if (DEBUG_AS_OF_ROUND !== null) {
+    return NextResponse.json(
+      {
+        error: `Live scores are off while viewing as of Round ${DEBUG_AS_OF_ROUND}.`,
+      },
+      {
+        status: 503,
+      },
+    );
+  }
+
   try {
     const response = await fetch(
       DFS_LIVE_URL,

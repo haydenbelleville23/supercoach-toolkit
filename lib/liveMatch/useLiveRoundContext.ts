@@ -2,7 +2,10 @@
 
 import { useEffect, useMemo, useState } from "react";
 
-import { CURRENT_COMPLETED_ROUND } from "@/data/season";
+import {
+  CURRENT_COMPLETED_ROUND,
+  DEBUG_AS_OF_ROUND,
+} from "@/data/season";
 import type { ScaledRoundContext } from "@/lib/priceEngine/estimateScaledRoundContexts";
 import { getFixtures } from "@/lib/fixtures";
 import { getScaledRoundContexts } from "@/lib/projector/getScaledRoundContexts";
@@ -54,6 +57,11 @@ export function useLiveRoundContext(): LiveRoundContextState {
   const [feed, setFeed] = useState<DfsLiveFeed | null>(null);
 
   useEffect(() => {
+    // DEBUG_AS_OF_ROUND: no live feed, and no real-date game windows.
+    if (DEBUG_AS_OF_ROUND !== null) {
+      return;
+    }
+
     const windows = getGameWindows(getFixtures(), LIVE_ROUND);
     let cancelled = false;
     let timer: number | undefined;

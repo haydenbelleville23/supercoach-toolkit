@@ -13,7 +13,8 @@
     "build:players": "node scripts/buildPlayersDataset.mjs && node scripts/build-players-normalised.ts",
     "download:fixtures": "node scripts/downloadFixtures.mjs",
     "update:weekly": "node scripts/update-weekly.mjs",
-    "accuracy:log": "node scripts/accuracy-log.ts"
+    "accuracy:log": "node scripts/accuracy-log.ts",
+    "backtest:as-of": "node scripts/as-of-backtest.ts"
   },
   "dependencies": {
     "lucide-react": "^1.25.0",
