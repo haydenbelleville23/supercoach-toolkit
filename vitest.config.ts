@@ -8,4 +8,8 @@ export default defineConfig({
       "@": path.resolve(__dirname),
     },
   },
+  test: {
+    // Tests that lock DEBUG_AS_OF_ROUND with vi.stubEnv never leak it.
+    unstubEnvs: true,
+  },
 });

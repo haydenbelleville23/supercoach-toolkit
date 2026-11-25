@@ -7,8 +7,6 @@ export interface SeasonFixture {
   kickoff: string | null;
 }
 
-/** How long after a round's last kickoff it still counts as "to come". */
-const ROUND_GRACE_MS = 7 * 24 * 60 * 60 * 1000;
 
 /**
  * Latest round in which every team with a fixture has at least one player
@@ -48,29 +46,4 @@ export function getLatestCompletedRound(
   }
 
   return latest;
-}
-
-/**
- * True when there is nothing left to project: no fixtures after the
- * completed round, or every remaining round's games kicked off more than
- * a week ago (the data has not been updated since the season ended).
- */
-export function isOffseason(
-  fixtures: SeasonFixture[],
-  completedRound: number,
-  now: Date = new Date(),
-): boolean {
-  const remaining = fixtures.filter((f) => f.round > completedRound);
-
-  if (remaining.length === 0) {
-    return true;
-  }
-
-  const latestKickoff = Math.max(
-    ...remaining.map((f) =>
-      f.kickoff ? Date.parse(f.kickoff) : Number.POSITIVE_INFINITY,
-    ),
-  );
-
-  return latestKickoff + ROUND_GRACE_MS < now.getTime();
 }

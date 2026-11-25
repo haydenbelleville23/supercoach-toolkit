@@ -1,4 +1,5 @@
 import accuracyIndex from "@/data/2026/accuracy/index.json";
+import { DEBUG_AS_OF_ROUND } from "@/lib/asOf/debugAsOfRound";
 
 type AccuracyRound = {
   round: number;
@@ -21,6 +22,11 @@ const index = accuracyIndex as {
   updatedAt: string;
   rounds: AccuracyRound[];
 };
+
+// Server component: under DEBUG_AS_OF_ROUND, later rounds are never rendered.
+const visibleRounds = index.rounds.filter(
+  (row) => DEBUG_AS_OF_ROUND === null || row.round <= DEBUG_AS_OF_ROUND,
+);
 
 const money = (value: number) =>
   `$${Math.round(value).toLocaleString("en-AU")}`;
@@ -62,7 +68,7 @@ export default function AccuracyLogTable() {
           </thead>
 
           <tbody>
-            {index.rounds.map((row) => (
+            {visibleRounds.map((row) => (
               <tr
                 key={row.round}
                 className="border-b border-slate-800/80 last:border-b-0"

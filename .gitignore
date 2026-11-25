@@ -50,3 +50,6 @@ Desktop.ini
 # Misc
 *.pem
 .vercel
+
+# DEBUG_AS_OF_ROUND trimmed data (generated)
+/.debug-data/

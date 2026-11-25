@@ -1,7 +1,6 @@
 import { Suspense } from "react";
 
 import Header from "@/components/layout/Header";
-import { isSeasonOver } from "@/data/season";
 import PageHeader from "@/components/layout/PageHeader";
 import ProjectorToolFromUrl from "@/components/projector/ProjectorTool";
 
@@ -32,13 +31,11 @@ export default function ProjectorPage() {
           <ProjectorToolFromUrl />
         </Suspense>
 
-        {!isSeasonOver() && (
-          <p className="mt-5 text-xs leading-5 text-slate-400">
-            Future prices are estimates based on the
-            scores entered above, until confirmed by
-            actual weekly price movements.
-          </p>
-        )}
+        <p className="mt-5 text-xs leading-5 text-slate-400">
+          Future prices are estimates based on the
+          scores entered above, until confirmed by
+          actual weekly price movements.
+        </p>
       </section>
     </main>
   );

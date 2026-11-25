@@ -1,6 +1,13 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
+
+// These tests need a round still to come, so they run "as of Round 18"
+// (the DEBUG_AS_OF_ROUND lock) whatever the latest data is.
+vi.hoisted(() => {
+  vi.stubEnv("DEBUG_AS_OF_ROUND", "18");
+});
 
 import { CURRENT_COMPLETED_ROUND } from "@/data/season";
+import { getFixtures } from "@/lib/fixtures";
 import { calculateLivePlayerProjection } from "@/lib/liveMatch/calculateLivePlayerProjection";
 import { buildPlayerRows } from "@/lib/projector/buildPlayerRows";
 import { calculateScaledProjectionRows } from "@/lib/projector/calculateScaledProjectionRows";
@@ -13,7 +20,11 @@ describe("projectNextRoundPrice", () => {
   const player = getPlayers().find(
     (p) =>
       p.history.filter((h) => h.games > 0).length >= 5 &&
-      p.upcomingFixtures.length > 0,
+      getFixtures().some(
+        (f) =>
+          f.round === nextRound &&
+          (f.homeTeam === p.team || f.awayTeam === p.team),
+      ),
   )!;
 
   it.each([50, 100, 120])(

@@ -1,4 +1,9 @@
 import rawFixtureData from "@/data/2026/fixtures-raw.json";
+import { DEBUG_AS_OF_ROUND } from "@/lib/asOf/debugAsOfRound";
+import {
+  trimFixturesToRound,
+  type RawFixtureFile as AsOfFixtureFile,
+} from "@/lib/asOf/trimToRound";
 
 import type {
   PlayerFixture,
@@ -32,7 +37,21 @@ type RawFixtureFile = {
   rounds: RawFixtureRound[];
 };
 
-const fixtureFile = rawFixtureData as RawFixtureFile;
+// Under DEBUG_AS_OF_ROUND the build already imports trimmed data (see
+// next.config.ts); trimming again here is a no-op there and keeps scripts
+// and tests that import this module locked too.
+const fixtureFile: RawFixtureFile =
+  DEBUG_AS_OF_ROUND === null
+    ? (rawFixtureData as RawFixtureFile)
+    : (trimFixturesToRound(
+        rawFixtureData as unknown as AsOfFixtureFile,
+        DEBUG_AS_OF_ROUND,
+      ) as unknown as RawFixtureFile);
+
+/** The fixture file as the app sees it (trimmed under the debug lock). */
+export function getRawFixtureFile(): AsOfFixtureFile {
+  return fixtureFile as unknown as AsOfFixtureFile;
+}
 
 const fixtures: TeamFixture[] = fixtureFile.rounds.flatMap(
   (roundEntry) =>
