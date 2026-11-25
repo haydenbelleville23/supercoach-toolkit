@@ -1,15 +1,18 @@
-import { createPlayerState } from "@/lib/priceEngine/createPlayerState";
-import { projectSeason } from "@/lib/priceEngine/projectSeason";
+import { projectNextRoundPrice } from "@/lib/projector/projectNextRoundPrice";
 
 import type { Player } from "@/types/player";
 import type { LivePlayerProjection } from "./types";
 
+/**
+ * Projected end-of-round price if the player's live score is their final
+ * score, using the scaled price model (see projectNextRoundPrice), plus the
+ * following round's breakeven after that price change.
+ */
 export function calculateLivePlayerProjection(
   player: Player,
   liveScore: number,
 ): LivePlayerProjection | null {
   if (
-    player.recentScores.length < 2 ||
     !Number.isFinite(player.price) ||
     !Number.isFinite(liveScore)
   ) {
@@ -21,28 +24,12 @@ export function calculateLivePlayerProjection(
     Math.round(liveScore),
   );
 
-  const state = createPlayerState(player);
-
-  /*
-   * The first result calculates this round using the
-   * supplied live score as the assumed final score.
-   *
-   * The second result is only used to obtain the
-   * following round's break-even after this score and
-   * price movement have been applied.
-   */
-  const projections = projectSeason(state, [
+  const projection = projectNextRoundPrice(
+    player,
     safeLiveScore,
-    0,
-  ]);
+  );
 
-  const currentRoundProjection =
-    projections[0];
-
-  const nextRoundProjection =
-    projections[1];
-
-  if (!currentRoundProjection) {
+  if (!projection) {
     return null;
   }
 
@@ -54,13 +41,11 @@ export function calculateLivePlayerProjection(
     currentPrice: player.price,
     currentBreakEven: player.breakeven,
 
-    projectedPrice:
-      currentRoundProjection.price,
+    projectedPrice: projection.price,
 
     projectedPriceChange:
-      currentRoundProjection.priceChange,
+      projection.priceChange,
 
-    nextBreakEven:
-      nextRoundProjection?.breakEven ?? null,
+    nextBreakEven: projection.nextBreakEven,
   };
 }

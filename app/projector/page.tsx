@@ -1,6 +1,6 @@
 "use client";
 
-import { use, useState } from "react";
+import { useState } from "react";
 import Header from "@/components/layout/Header";
 import PlayerHeader from "@/components/projector/PlayerHeader";
 import PlayerSelector from "@/components/projector/PlayerSelector";
@@ -9,26 +9,14 @@ import ProjectionModeSelector from "@/components/projector/ProjectionModeSelecto
 import SeasonProjectionTable from "@/components/projector/SeasonProjectionTable";
 import { playerRepository } from "@/lib/repository/PlayerRepository";
 import { buildPlayerRows } from "@/lib/projector/buildPlayerRows";
-import { calculateProjectionRows as calculateClassicProjectionRows } from "@/lib/projector/calculateProjectionRows";
-import { calculateScaledProjectionRows } from "@/lib/projector/calculateScaledProjectionRows";
+import { calculateScaledProjectionRows as calculateProjectionRows } from "@/lib/projector/calculateScaledProjectionRows";
 
 import type { ProjectionMode } from "@/lib/projector/projectionModes";
 import type { SeasonProjectionRow } from "@/types/projection";
 
 const players = playerRepository.getAll();
 
-export default function ProjectorPage({
-  searchParams,
-}: {
-  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
-}) {
-  // Scaled model by default; /projector?model=classic keeps the old
-  // calculation for side-by-side comparison.
-  const calculateProjectionRows =
-    use(searchParams).model === "classic"
-      ? calculateClassicProjectionRows
-      : calculateScaledProjectionRows;
-
+export default function ProjectorPage() {
   const [selectedPlayerId, setSelectedPlayerId] =
     useState(players[0].id);
 
