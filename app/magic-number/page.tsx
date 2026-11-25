@@ -1,167 +1,295 @@
-import Link from "next/link";
-
+import { magicNumberHistory } from "@/data/2026/magic-number-history";
+import {
+  getMagicNumberDifference,
+} from "@/lib/priceEngine/calculateRoundMagicNumber";
 import { getPlayers } from "@/lib/players";
-import { buildCompetitionState } from "@/lib/priceEngine/buildCompetitionState";
-import { calculateRoundMagicNumber } from "@/lib/priceEngine/calculateRoundMagicNumber";
+import { calculateRoundPlayerPricePool } from "@/lib/priceEngine/calculateRoundPlayerPricePool";
+import { solveMagicNumber } from "@/lib/priceEngine/solveMagicNumber";
+import { BASE_MAGIC_NUMBER_2026 } from "@/lib/priceEngine/baseMagicNumber";
+import { evaluateScaledRound } from "@/lib/priceEngine/evaluateScaledRound";
 
-function formatMoney(value: number): string {
-  return `$${value.toLocaleString()}`;
+function formatMagicNumber(value: number | null): string {
+  if (value === null) {
+    return "—";
+  }
+
+  return value.toLocaleString("en-AU", {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 2,
+  });
+}
+
+function formatMoney(value: number | null): string {
+  if (value === null) {
+    return "—";
+  }
+
+  return value.toLocaleString("en-AU", {
+    style: "currency",
+    currency: "AUD",
+    maximumFractionDigits: 0,
+  });
+}
+
+function formatDifference(value: number | null): string {
+  if (value === null) {
+    return "—";
+  }
+
+  if (value === 0) {
+    return "0";
+  }
+
+  const sign = value > 0 ? "+" : "";
+
+  return `${sign}${value.toLocaleString("en-AU", {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 2,
+  })}`;
+}
+
+function getDifferenceClassName(
+  value: number | null,
+): string {
+  if (value === null) {
+    return "text-slate-500";
+  }
+
+  const absoluteDifference = Math.abs(value);
+
+  if (absoluteDifference <= 2) {
+    return "text-emerald-400";
+  }
+
+  if (absoluteDifference <= 10) {
+    return "text-amber-400";
+  }
+
+  return "text-red-400";
 }
 
 export default function MagicNumberPage() {
   const players = getPlayers();
-
-  const competitionState =
-    buildCompetitionState(players, 0);
-
-  const observedSalaryPool = players.reduce(
-    (total, player) => total + player.price,
-    0,
-  );
-
-  const result = calculateRoundMagicNumber(
-    competitionState,
-    observedSalaryPool,
-  );
-
   return (
-    <main className="min-h-screen bg-slate-950 text-white">
-      <header className="border-b border-slate-800">
-        <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-5">
-          <div>
-            <p className="text-xl font-bold">
-              SuperCoach Toolkit
-            </p>
-            <p className="text-sm text-slate-400">
-              Magic Number Calculator
+    <main className="min-h-screen bg-slate-950 px-4 py-6 text-slate-100 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-[1500px]">
+        <div className="mb-6">
+          <p className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-violet-400">
+            Internal Tool
+          </p>
+
+          <h1 className="text-2xl font-bold tracking-tight text-white sm:text-3xl">
+            SuperCoach Magic Number
+          </h1>
+
+          <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-400">
+              Compare the observed SuperCoach magic number with our
+              round-by-round estimate and retrospective calculation.
+          </p>
+        </div>
+
+        <section className="overflow-hidden rounded-xl border border-slate-800 bg-slate-900/60 shadow-2xl shadow-black/20">
+          <div className="border-b border-slate-800 px-4 py-4 sm:px-5">
+            <h2 className="font-semibold text-white">
+              Season Reconstruction
+            </h2>
+
+            <p className="mt-1 text-xs text-slate-500">
+              2026 round-by-round pricing reconstruction.
             </p>
           </div>
 
-          <Link
-            href="/"
-            className="text-sm text-emerald-400 hover:text-emerald-300"
-          >
-            ← Dashboard
-          </Link>
-        </div>
-      </header>
+          <div className="overflow-x-auto">
+            <table className="min-w-[900px] w-full border-collapse text-sm">
+              <thead>
+                <tr className="border-b border-slate-800 bg-slate-950/70 text-xs uppercase tracking-wide text-slate-500">
+                  <th className="w-[90px] px-4 py-3 text-left font-semibold">
+                    Round
+                  </th>
 
-      <section className="mx-auto max-w-5xl px-6 py-12">
-        <div className="max-w-3xl">
-          <p className="text-sm font-semibold uppercase tracking-widest text-emerald-400">
-            2026 model
-          </p>
+                  <th className="px-4 py-3 text-right font-semibold">
+                    Official MN
+                  </th>
 
-          <h1 className="mt-3 text-4xl font-bold">
-            Round Magic Number
-          </h1>
+                  <th className="px-4 py-3 text-right font-semibold">
+                    Total Player Price Pool
+                  </th>
 
-          <p className="mt-4 text-slate-300">
-            Competition-wide estimate based on the current player
-            pool, projected scores and the salary-pool constraint.
-          </p>
-        </div>
+                  <th className="px-4 py-3 text-right font-semibold">
+                    Players
+                  </th>
 
-        <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          <Stat
-            label="Calculated MN"
-            value={result.magicNumber.toFixed(2)}
-          />
+                  <th className="px-4 py-3 text-right font-semibold">
+                    Our Estimate MN
+                  </th>
 
-          <Stat
-            label="Players eligible"
-            value={result.eligiblePlayers.toString()}
-          />
+                  <th className="px-4 py-3 text-right font-semibold">
+                    Calculated MN
+                  </th>
 
-          <Stat
-            label="Locked players"
-            value={result.lockedPlayers.toString()}
-          />
+                  <th className="px-4 py-3 text-right font-semibold">
+                    Difference
+                  </th>
 
-          <Stat
-            label="Target salary pool"
-            value={formatMoney(result.targetSalaryPool)}
-          />
+                  <th className="px-4 py-3 text-right font-semibold">
+                    Base MN
+                  </th>
 
-          <Stat
-            label="Calculated salary pool"
-            value={formatMoney(result.calculatedSalaryPool)}
-          />
+                  <th className="px-4 py-3 text-right font-semibold">
+                    k
+                  </th>
 
-          <Stat
-            label="Pool difference"
-            value={formatMoney(result.salaryPoolDifference)}
-          />
-        </div>
+                  <th className="px-4 py-3 text-right font-semibold">
+                    Effective MN
+                  </th>
 
-        <section className="mt-8 rounded-2xl border border-slate-800 bg-slate-900 p-6">
-          <h2 className="text-lg font-semibold">
-            Calculation totals
-          </h2>
+                  <th className="px-4 py-3 text-right font-semibold">
+                    Scaled Avg Error
+                  </th>
+                </tr>
+              </thead>
 
-          <div className="mt-5 space-y-3 text-sm">
-            <Row
-              label="Locked salary"
-              value={formatMoney(result.lockedSalary)}
-            />
+              <tbody>
+                  {magicNumberHistory.map((row) => {
+                    const playerPricePool =
+                      calculateRoundPlayerPricePool(
+                        players,
+                        row.round,
+                      );
 
-            <Row
-              label="Eligible previous salary"
-              value={formatMoney(
-                result.changingPlayerPreviousSalary,
-              )}
-            />
+                    const solvedMagicNumber =
+                      solveMagicNumber(players, row.round);
+                      console.log(
+                        `Round ${row.round}`,
+                        solvedMagicNumber,
+                      );
 
-            <Row
-              label="Eligible 3RA total"
-              value={result.changingPlayerAverageTotal.toFixed(2)}
-            />
+                    const difference =
+                      getMagicNumberDifference(row);
+
+                    const scaledRound = evaluateScaledRound(
+                      players,
+                      row.round,
+                      BASE_MAGIC_NUMBER_2026,
+                    );
+
+                    return (
+                    <tr
+                      key={row.round}
+                      className="border-b border-slate-800/80 transition hover:bg-violet-500/[0.04] last:border-b-0"
+                    >
+                      <td className="px-4 py-3.5 font-semibold text-white">
+                        Round {row.round}
+                      </td>
+
+                      <td className="px-4 py-3.5 text-right font-medium tabular-nums text-slate-200">
+                        {formatMagicNumber(
+                          row.magicNumber,
+                        )}
+                      </td>
+
+                      <td className="px-4 py-3.5 text-right tabular-nums text-slate-300">
+                        {playerPricePool.playersIncluded > 0
+                          ? formatMoney(
+                              playerPricePool.totalPricePool,
+                            )
+                          : "—"}
+                      </td>
+                    
+                      <td className="px-4 py-3.5 text-right tabular-nums text-slate-400">
+                        {playerPricePool.playersIncluded > 0
+                          ? playerPricePool.playersIncluded.toLocaleString(
+                              "en-AU",
+                            )
+                          : "—"}
+                      </td>
+
+                      <td className="px-4 py-3.5 text-right tabular-nums text-slate-300">
+                        {formatMagicNumber(
+                          row.estimatedMagicNumber,
+                        )}
+                      </td>
+
+                      <td className="px-4 py-3.5 text-right font-semibold tabular-nums text-violet-300">
+                      {solvedMagicNumber ? (
+                        <>
+                          {formatMagicNumber(solvedMagicNumber.magicNumber)}
+
+                          <div className="text-xs text-slate-500">
+                            {solvedMagicNumber.playersCompared} players
+                          </div>
+
+                          <div className="text-xs text-slate-500">
+                            Avg error $
+                            {Math.round(
+                              solvedMagicNumber.averagePriceError,
+                            ).toLocaleString("en-AU")}
+                          </div>
+                        </>
+                      ) : (
+                        "—"
+                      )}
+                    </td>
+
+                      <td
+                        className={`px-4 py-3.5 text-right tabular-nums ${getDifferenceClassName(
+                          difference,
+                        )}`}
+                      >
+                        {formatDifference(difference)}
+                      </td>
+
+                      <td className="px-4 py-3.5 text-right tabular-nums text-slate-300">
+                        {scaledRound
+                          ? formatMagicNumber(
+                              scaledRound.baseMagicNumber,
+                            )
+                          : "—"}
+                      </td>
+
+                      <td className="px-4 py-3.5 text-right tabular-nums text-slate-300">
+                        {scaledRound
+                          ? scaledRound.k.toFixed(5)
+                          : "—"}
+                      </td>
+
+                      <td className="px-4 py-3.5 text-right tabular-nums text-slate-300">
+                        {scaledRound
+                          ? formatMagicNumber(
+                              scaledRound.effectiveMagicNumber,
+                            )
+                          : "—"}
+                      </td>
+
+                      <td className="px-4 py-3.5 text-right font-semibold tabular-nums text-emerald-300">
+                        {scaledRound ? (
+                          <>
+                            $
+                            {Math.round(
+                              scaledRound.averagePriceError,
+                            ).toLocaleString("en-AU")}
+
+                            <div className="text-xs font-normal text-slate-500">
+                              {scaledRound.playersCompared} players
+                            </div>
+                          </>
+                        ) : (
+                          "—"
+                        )}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
           </div>
         </section>
 
-        <p className="mt-5 text-xs leading-5 text-slate-500">
-          This is an exploratory 2026 estimate. It depends on the
-          completeness of the player list, recent scores and projected
-          scores supplied to the competition solver.
+        <p className="mt-4 text-xs leading-5 text-slate-600">
+          This page is intended for internal pricing research and
+          is not linked from the public Fantasy King navigation.
         </p>
-      </section>
+      </div>
     </main>
-  );
-}
-
-function Stat({
-  label,
-  value,
-}: {
-  label: string;
-  value: string;
-}) {
-  return (
-    <div className="rounded-xl border border-slate-800 bg-slate-900 p-5">
-      <p className="text-xs uppercase tracking-wide text-slate-500">
-        {label}
-      </p>
-
-      <p className="mt-2 text-2xl font-bold tabular-nums">
-        {value}
-      </p>
-    </div>
-  );
-}
-
-function Row({
-  label,
-  value,
-}: {
-  label: string;
-  value: string;
-}) {
-  return (
-    <div className="flex items-center justify-between border-b border-slate-800 pb-3 last:border-0 last:pb-0">
-      <span className="text-slate-400">{label}</span>
-      <span className="font-semibold tabular-nums">
-        {value}
-      </span>
-    </div>
   );
 }
