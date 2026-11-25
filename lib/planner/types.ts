@@ -1,9 +1,21 @@
+import type { Position } from "@/lib/rules/squadRules";
+
 import type { SlotArea, SlotPosition } from "./positionMatching";
 
 /** A player in the saved squad, optionally pinned to a slot group. */
 export interface SquadEntry {
   id: number;
   pin: { area: SlotArea; position: SlotPosition } | null;
+}
+
+/**
+ * A "Rookie (TBC)" placeholder. Ids are negative so they never clash with
+ * real player ids. No team means it plays every round (no bye).
+ */
+export interface RookiePlaceholder {
+  id: number;
+  position: Position;
+  team: string | null;
 }
 
 /** One trade: a player out and a player in (either may be unpicked yet). */
@@ -24,6 +36,12 @@ export interface TradePlan {
   rounds: Record<number, PlanRound>;
   /** Custom projected scores: playerId -> round -> score. */
   scoreOverrides: Record<number, Record<number, number>>;
+  /** How many rounds the plan shows, from the next round (default 3). */
+  roundCount?: number;
+  /** Rounds whose card is collapsed (their data is kept). */
+  collapsedRounds?: number[];
+  /** Rounds whose field diagram is open. */
+  openFields?: number[];
 }
 
 export interface MyTeam {
@@ -32,12 +50,16 @@ export interface MyTeam {
   /** The completed round the squad and starting numbers belong to. */
   asOfRound: number;
   players: SquadEntry[];
+  /** Rookie placeholders used in the squad or in plans. */
+  placeholders?: RookiePlaceholder[];
   cashInBank: number;
   /** Season trade pool remaining at the starting point. */
   tradesRemaining: number;
   boostsRemaining: number;
   plans: TradePlan[];
   activePlanId: string | null;
+  /** Trade Planner view (saved so it reopens the same way). */
+  plannerView?: "plan" | "scores";
   updatedAt: string;
 }
 

@@ -1,6 +1,11 @@
 import { TRADE_RULES } from "@/lib/rules/squadRules";
 
-import { MAX_PLANS, type MyTeam, type TradePlan } from "./types";
+import {
+  MAX_PLANS,
+  type MyTeam,
+  type RookiePlaceholder,
+  type TradePlan,
+} from "./types";
 
 export function createEmptyTeam(season: number, asOfRound: number): MyTeam {
   return {
@@ -83,5 +88,16 @@ export function parseTeamFile(value: unknown): MyTeam | string {
     plans: plans as TradePlan[],
     activePlanId:
       typeof value.activePlanId === "string" ? value.activePlanId : null,
+    placeholders: Array.isArray(value.placeholders)
+      ? (value.placeholders as unknown[]).filter(
+          (p): p is RookiePlaceholder =>
+            isRecord(p) &&
+            isNumber(p.id) &&
+            p.id < 0 &&
+            typeof p.position === "string" &&
+            (p.team === null || typeof p.team === "string"),
+        )
+      : [],
+    plannerView: value.plannerView === "scores" ? "scores" : "plan",
   };
 }

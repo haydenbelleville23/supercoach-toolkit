@@ -1,30 +1,119 @@
 "use client";
 
+import { useState } from "react";
+
 import { formatMoney } from "@/lib/format";
-import type { RoundSummary } from "@/lib/planner/evaluatePlan";
-import type { PlanRound } from "@/lib/planner/types";
+import { getAddTradeState, type RoundSummary } from "@/lib/planner/evaluatePlan";
+import { buildFieldLayout } from "@/lib/planner/fieldLayout";
+import { isPlaceholderId } from "@/lib/planner/placeholders";
+import type { RoundProjection } from "@/lib/planner/pricePaths";
+import type { PlanRound, RookiePlaceholder } from "@/lib/planner/types";
+import type { Position } from "@/lib/rules/squadRules";
 
 import type { Player } from "@/types/player";
 
+import FieldDiagram from "./FieldDiagram";
 import PlayerPicker from "./PlayerPicker";
+import { plannerTeams } from "./plannerData";
 
-export default function RoundCard({
-  summary,
-  planRound,
-  squadBefore,
-  playersById,
-  playersByLabel,
-  listId,
-  onChange,
-}: {
+export interface RoundCardProps {
   summary: RoundSummary;
   planRound: PlanRound;
   /** Squad going into this round (before its trades). */
   squadBefore: number[];
   playersById: Map<number, Player>;
   playersByLabel: Map<string, Player>;
+  placeholders: RookiePlaceholder[];
   listId: string;
+  collapsed: boolean;
+  fieldOpen: boolean;
+  /** This round's projection for a player (score, override, bye). */
+  getProjection: (playerId: number) => RoundProjection | undefined;
   onChange: (next: PlanRound) => void;
+  onToggleCollapsed: () => void;
+  onToggleField: () => void;
+  onNewRookie: (tradeIndex: number, position: Position) => void;
+  onPlaceholderTeam: (placeholderId: number, team: string | null) => void;
+  onOverride: (playerId: number, score: number | null) => void;
+}
+
+export default function RoundCard(props: RoundCardProps) {
+  const { summary, planRound, collapsed } = props;
+  const addState = getAddTradeState(summary);
+  const overLimit = summary.tradesUsed > summary.tradeLimit;
+
+  return (
+    <section className="rounded-2xl border border-slate-800 bg-slate-900 p-4 sm:p-5">
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <button
+          type="button"
+          onClick={props.onToggleCollapsed}
+          aria-expanded={!collapsed}
+          className="flex items-center gap-2 text-left text-lg font-semibold"
+        >
+          <span aria-hidden="true" className="text-sm text-slate-400">
+            {collapsed ? "▶" : "▼"}
+          </span>
+          Round {summary.round}
+          {summary.byeTeams.length > 0 && (
+            <span className="rounded-full bg-amber-500/15 px-2 py-0.5 text-xs font-semibold text-amber-300">
+              Bye round
+            </span>
+          )}
+        </button>
+
+        <label className="flex items-center gap-2 text-sm">
+          <input
+            type="checkbox"
+            checked={planRound.boost}
+            disabled={!planRound.boost && summary.boostsLeftBefore <= 0}
+            onChange={(e) => props.onChange({ ...planRound, boost: e.target.checked })}
+            className="h-4 w-4 accent-violet-500"
+          />
+          Boost (+1 trade)
+          {!planRound.boost && summary.boostsLeftBefore <= 0 && (
+            <span className="text-xs text-slate-400">none left</span>
+          )}
+        </label>
+      </div>
+
+      {collapsed ? (
+        <p className="mt-2 text-xs text-slate-400">
+          Trades {summary.tradesUsed}/{summary.tradeLimit} · Cash {formatMoney(summary.cashAfter)} ·
+          Trades left {summary.tradesLeftAfter}
+          {summary.warnings.length > 0 && (
+            <span className="ml-1 font-semibold text-amber-300">
+              · {summary.warnings.length} warning{summary.warnings.length === 1 ? "" : "s"}
+            </span>
+          )}
+        </p>
+      ) : (
+        <RoundBody {...props} addState={addState} overLimit={overLimit} />
+      )}
+    </section>
+  );
+}
+
+function RoundBody({
+  summary,
+  planRound,
+  squadBefore,
+  playersById,
+  playersByLabel,
+  placeholders,
+  listId,
+  fieldOpen,
+  getProjection,
+  onChange,
+  onToggleField,
+  onNewRookie,
+  onPlaceholderTeam,
+  onOverride,
+  addState,
+  overLimit,
+}: RoundCardProps & {
+  addState: ReturnType<typeof getAddTradeState>;
+  overLimit: boolean;
 }) {
   const squadOptions = squadBefore
     .map((id) => playersById.get(id))
@@ -37,36 +126,13 @@ export default function RoundCard({
       trades: planRound.trades.map((t, i) => (i === index ? { ...t, ...change } : t)),
     });
 
-  const overLimit = summary.tradesUsed > summary.tradeLimit;
-
   return (
-    <section className="rounded-2xl border border-slate-800 bg-slate-900 p-4 sm:p-5">
-      <div className="flex flex-wrap items-center justify-between gap-2">
-        <h2 className="text-lg font-semibold">
-          Round {summary.round}
-          {summary.byeTeams.length > 0 && (
-            <span className="ml-2 rounded-full bg-amber-500/15 px-2 py-0.5 text-xs font-semibold text-amber-300">
-              Bye round
-            </span>
-          )}
-        </h2>
-
-        <label className="flex items-center gap-2 text-sm">
-          <input
-            type="checkbox"
-            checked={planRound.boost}
-            disabled={!planRound.boost && summary.boostsLeftBefore <= 0}
-            onChange={(e) => onChange({ ...planRound, boost: e.target.checked })}
-            className="h-4 w-4 accent-violet-500"
-          />
-          Use a boost (+1 trade)
-        </label>
-      </div>
-
+    <>
       {/* Trades */}
       <div className="mt-3 space-y-2">
         {planRound.trades.map((trade, index) => {
           const line = summary.trades[index];
+          const inPlaceholder = placeholders.find((p) => p.id === trade.inId);
 
           return (
             <div
@@ -90,13 +156,22 @@ export default function RoundCard({
                   )}
                   {squadOptions.map((p) => (
                     <option key={p.id} value={p.id}>
-                      {p.name} ({p.positions.join("/")})
+                      {p.name}
+                      {isPlaceholderId(p.id) ? "" : ` (${p.positions.join("/")})`}
                     </option>
                   ))}
                 </select>
-                <p className="mt-1 text-xs tabular-nums text-red-300">
-                  {line?.outPrice != null ? `Out ${formatMoney(line.outPrice)}` : " "}
-                </p>
+
+                {trade.outId !== null && line?.outPrice != null && (
+                  <PriceTap
+                    tone="out"
+                    price={line.outPrice}
+                    playerId={trade.outId}
+                    round={summary.round}
+                    projection={getProjection(trade.outId)}
+                    onOverride={onOverride}
+                  />
+                )}
               </div>
 
               <div>
@@ -107,10 +182,38 @@ export default function RoundCard({
                   players={playersByLabel}
                   selected={trade.inId === null ? null : playersById.get(trade.inId) ?? null}
                   onSelect={(inId) => setTrade(index, { inId })}
+                  onNewRookie={(position) => onNewRookie(index, position)}
                 />
-                <p className="mt-1 text-xs tabular-nums text-emerald-300">
-                  {line?.inPrice != null ? `In ${formatMoney(line.inPrice)}` : " "}
-                </p>
+
+                {inPlaceholder && (
+                  <label className="mt-1 flex items-center gap-1.5 text-xs text-violet-200">
+                    <span className="rounded bg-violet-500/30 px-1 font-bold">TBC</span>
+                    Team
+                    <select
+                      value={inPlaceholder.team ?? ""}
+                      onChange={(e) => onPlaceholderTeam(inPlaceholder.id, e.target.value || null)}
+                      className="rounded border border-slate-700 bg-slate-950 px-1.5 py-1 text-xs text-slate-200"
+                    >
+                      <option value="">None (no bye)</option>
+                      {plannerTeams.map((team) => (
+                        <option key={team} value={team}>
+                          {team}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                )}
+
+                {trade.inId !== null && line?.inPrice != null && (
+                  <PriceTap
+                    tone="in"
+                    price={line.inPrice}
+                    playerId={trade.inId}
+                    round={summary.round}
+                    projection={getProjection(trade.inId)}
+                    onOverride={onOverride}
+                  />
+                )}
               </div>
 
               <button
@@ -127,24 +230,28 @@ export default function RoundCard({
           );
         })}
 
-        <button
-          type="button"
-          onClick={() =>
-            onChange({ ...planRound, trades: [...planRound.trades, { outId: null, inId: null }] })
-          }
-          className="rounded-lg border border-violet-500/50 px-3 py-1.5 text-xs font-semibold text-violet-200"
-        >
-          + Add trade
-        </button>
+        <div className="flex flex-wrap items-center gap-2">
+          <button
+            type="button"
+            disabled={addState.disabled}
+            title={addState.reason ?? undefined}
+            onClick={() =>
+              onChange({ ...planRound, trades: [...planRound.trades, { outId: null, inId: null }] })
+            }
+            className="rounded-lg border border-violet-500/50 px-3 py-1.5 text-xs font-semibold text-violet-200 disabled:cursor-not-allowed disabled:border-slate-700 disabled:text-slate-500"
+          >
+            + Add trade
+          </button>
+
+          {addState.reason && (
+            <span className="text-xs text-slate-400">{addState.reason}</span>
+          )}
+        </div>
       </div>
 
       {/* Carry-forward summary */}
       <dl className="mt-4 grid grid-cols-2 gap-x-4 gap-y-2 text-sm sm:grid-cols-4">
-        <Stat
-          label="Trades"
-          value={`${summary.tradesUsed} / ${summary.tradeLimit}`}
-          tone={overLimit ? "bad" : undefined}
-        />
+        <Stat label="Trades" value={`${summary.tradesUsed} / ${summary.tradeLimit}`} tone={overLimit ? "bad" : undefined} />
         <Stat label="Players out" value={formatMoney(summary.outTotal)} />
         <Stat label="Players in" value={formatMoney(summary.inTotal)} />
         <Stat
@@ -155,15 +262,10 @@ export default function RoundCard({
         />
         <Stat label="Squad value" value={formatMoney(summary.squadValue)} />
         <Stat label="Team value" value={formatMoney(summary.squadValue + summary.cashAfter)} />
-        <Stat
-          label="Trades left"
-          value={String(summary.tradesLeftAfter)}
-          tone={summary.tradesLeftAfter < 0 ? "bad" : undefined}
-        />
+        <Stat label="Trades left" value={String(summary.tradesLeftAfter)} tone={summary.tradesLeftAfter < 0 ? "bad" : undefined} />
         <Stat label="Boosts left" value={String(summary.boostsLeftAfter)} />
       </dl>
 
-      {/* Byes */}
       <p className="mt-3 text-xs text-slate-400">
         {summary.byeTeams.length > 0 ? `On bye: ${summary.byeTeams.join(", ")}. ` : "No byes. "}
         Squad on bye: {summary.onBye} · Playing: {summary.playing} (on field{" "}
@@ -180,7 +282,95 @@ export default function RoundCard({
           ))}
         </ul>
       )}
-    </section>
+
+      {/* Field */}
+      <div className="mt-3">
+        <button
+          type="button"
+          onClick={onToggleField}
+          aria-expanded={fieldOpen}
+          className="text-xs font-semibold text-violet-300 hover:text-violet-200"
+        >
+          {fieldOpen ? "Hide field" : "Show field"}
+        </button>
+
+        {fieldOpen && (
+          <div className="mt-2 rounded-xl border border-slate-800 bg-slate-950/50 p-3">
+            <FieldDiagram layout={buildFieldLayout(summary, playersById)} />
+          </div>
+        )}
+      </div>
+    </>
+  );
+}
+
+/**
+ * A trade row's price. Tap it to set that player's score for this round;
+ * the override feeds the price engine (later rounds update).
+ */
+function PriceTap({
+  tone,
+  price,
+  playerId,
+  round,
+  projection,
+  onOverride,
+}: {
+  tone: "in" | "out";
+  price: number;
+  playerId: number;
+  round: number;
+  projection: RoundProjection | undefined;
+  onOverride: (playerId: number, score: number | null) => void;
+}) {
+  const [editing, setEditing] = useState(false);
+  const canEdit = !isPlaceholderId(playerId) && projection && !projection.onBye;
+  const colour = tone === "out" ? "text-red-300" : "text-emerald-300";
+
+  return (
+    <div className="mt-1 flex flex-wrap items-center gap-2 text-xs">
+      <button
+        type="button"
+        disabled={!canEdit}
+        onClick={() => setEditing((v) => !v)}
+        title={canEdit ? "Tap to set this player's score for the round" : undefined}
+        className={`tabular-nums ${colour} ${canEdit ? "underline decoration-dotted underline-offset-2" : ""}`}
+      >
+        {tone === "out" ? "Out" : "In"} {formatMoney(price)}
+      </button>
+
+      {isPlaceholderId(playerId) && (
+        <span className="rounded bg-violet-500/30 px-1 font-bold text-violet-100">TBC</span>
+      )}
+
+      {editing && canEdit && (
+        <label className="flex items-center gap-1 text-slate-300">
+          R{round} score
+          <input
+            type="text"
+            inputMode="numeric"
+            autoFocus
+            aria-label={`Round ${round} score`}
+            value={
+              projection.overridden
+                ? String(projection.score)
+                : projection.score === null
+                  ? ""
+                  : String(Math.round(projection.score))
+            }
+            onChange={(e) => {
+              const clean = e.target.value.replace(/[^0-9]/g, "");
+              onOverride(playerId, clean === "" ? null : Number(clean));
+            }}
+            className={`w-14 rounded border px-1.5 py-0.5 text-right tabular-nums ${
+              projection.overridden
+                ? "border-violet-500 bg-violet-500/15 text-violet-200"
+                : "border-slate-700 bg-slate-950"
+            }`}
+          />
+        </label>
+      )}
+    </div>
   );
 }
 

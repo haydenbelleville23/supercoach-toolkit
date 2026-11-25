@@ -13,26 +13,52 @@ import type { Player } from "@/types/player";
 export default function PriceGrid({
   players,
   projector,
+  lastRound,
   overrides,
   onOverride,
+  onReset,
 }: {
   players: Player[];
   projector: PriceProjector;
+  /** Last round shown in the plan. */
+  lastRound: number;
   overrides: Record<number, Record<number, number>>;
   onOverride: (playerId: number, round: number, score: number | null) => void;
+  onReset: () => void;
 }) {
   const rounds = Array.from(
-    { length: projector.lastRound - projector.firstRound + 1 },
+    { length: lastRound - projector.firstRound + 1 },
     (_, i) => projector.firstRound + i,
+  );
+
+  const overrideCount = Object.values(overrides).reduce(
+    (total, byRound) => total + Object.keys(byRound).length,
+    0,
   );
 
   return (
     <section className="rounded-2xl border border-slate-800 bg-slate-900">
       <div className="px-4 py-3 sm:px-5">
-        <h2 className="text-lg font-semibold">Prices and projected scores</h2>
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <h2 className="text-lg font-semibold">Projected scores</h2>
+          <button
+            type="button"
+            disabled={overrideCount === 0}
+            onClick={() => {
+              if (window.confirm("Clear every score override in this plan?")) {
+                onReset();
+              }
+            }}
+            className="rounded-lg border border-slate-700 px-3 py-1.5 text-xs font-semibold text-slate-200 disabled:opacity-40"
+          >
+            Reset overrides{overrideCount > 0 ? ` (${overrideCount})` : ""}
+          </button>
+        </div>
         <p className="mt-1 text-xs text-slate-400">
-          Price shown is before the round&apos;s games (what a trade that round costs). Scores
-          default to the season average; type a score to override it (highlighted).
+          Players in the squad or in trades. Scores default to the season average; type a
+          score to override it (highlighted). Overrides feed the price engine, so later prices
+          update. Price shown is before the round&apos;s games. Rookie placeholders have no
+          scores and are not listed.
         </p>
       </div>
 
@@ -62,7 +88,7 @@ export default function PriceGrid({
                     </div>
                   </td>
 
-                  {path.map((cell) => {
+                  {path.filter((cell) => cell.round <= lastRound).map((cell) => {
                     const overridden = overrides[player.id]?.[cell.round] !== undefined;
 
                     return (

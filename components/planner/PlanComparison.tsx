@@ -8,8 +8,10 @@ import type { MyTeam, TradePlan } from "@/lib/planner/types";
 
 import {
   createPlanProjector,
+  PLANNER_COMPLETED_ROUND,
+  planRoundCount,
   plannerFixtures,
-  plannerPlayersById,
+  teamPlayersById,
 } from "./plannerData";
 
 function evaluateFor(team: MyTeam, plan: TradePlan | null) {
@@ -17,9 +19,10 @@ function evaluateFor(team: MyTeam, plan: TradePlan | null) {
     ? evaluatePlan({
         team,
         plan,
-        playersById: plannerPlayersById,
-        projector: createPlanProjector(plan),
+        playersById: teamPlayersById(team),
+        projector: createPlanProjector(plan, team),
         fixtures: plannerFixtures,
+        lastRound: PLANNER_COMPLETED_ROUND + planRoundCount(plan),
       })
     : [];
 }

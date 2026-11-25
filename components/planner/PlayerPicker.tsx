@@ -2,14 +2,18 @@
 
 import { useState } from "react";
 
+import type { Position } from "@/lib/rules/squadRules";
 import type { Player } from "@/types/player";
 
-import { playerLabel } from "./plannerData";
+import { playerLabel, ROOKIE_OPTIONS } from "./plannerData";
 
 /** One shared suggestion list for every picker on the page. */
 export function PlayerOptions({ id, players }: { id: string; players: Player[] }) {
   return (
     <datalist id={id}>
+      {ROOKIE_OPTIONS.map((option) => (
+        <option key={option.label} value={option.label} />
+      ))}
       {players.map((player) => (
         <option key={player.id} value={playerLabel(player)} />
       ))}
@@ -19,7 +23,8 @@ export function PlayerOptions({ id, players }: { id: string; players: Player[] }
 
 /**
  * Text box using a shared suggestion list (native datalist, phone
- * friendly). Typing or picking a full label selects that player.
+ * friendly). Typing or picking a full label selects that player; picking
+ * "+ New Rookie (TBC) …" creates a placeholder rookie.
  */
 export default function PlayerPicker({
   listId,
@@ -27,12 +32,14 @@ export default function PlayerPicker({
   players,
   selected,
   onSelect,
+  onNewRookie,
 }: {
   listId: string;
   label: string;
   players: Map<string, Player>;
   selected: Player | null;
   onSelect: (playerId: number | null) => void;
+  onNewRookie: (position: Position) => void;
 }) {
   const [text, setText] = useState(selected ? playerLabel(selected) : "");
 
@@ -49,6 +56,12 @@ export default function PlayerPicker({
 
         if (value === "") {
           onSelect(null);
+          return;
+        }
+
+        const rookie = ROOKIE_OPTIONS.find((option) => option.label === value);
+        if (rookie) {
+          onNewRookie(rookie.position);
           return;
         }
 
