@@ -11,13 +11,16 @@ import {
   type SlotArea,
   type SlotPosition,
 } from "@/lib/planner/positionMatching";
+import { addPlaceholder, isPlaceholderId } from "@/lib/planner/placeholders";
 import { createEmptyTeam } from "@/lib/planner/teamFile";
 import type { MyTeam, SquadEntry } from "@/lib/planner/types";
 import { saveMyTeam, useMyTeam } from "@/lib/planner/useMyTeam";
 import {
   getEligiblePositions,
   POSITIONS,
+  ROOKIE_PLACEHOLDER,
   SQUAD_RULES,
+  type Position,
 } from "@/lib/rules/squadRules";
 
 import type { Player } from "@/types/player";
@@ -28,7 +31,8 @@ import {
   PLANNER_COMPLETED_ROUND,
   PLANNER_SEASON,
   plannerPlayers,
-  plannerPlayersById,
+  plannerTeams,
+  teamPlayersById,
 } from "./plannerData";
 
 const SLOT_ORDER: SlotPosition[] = ["DEF", "MID", "RUC", "FWD", "FLEX"];
@@ -49,6 +53,11 @@ function parsePin(value: string): SquadEntry["pin"] {
 export default function MyTeamTool() {
   const team = useMyTeam();
   const [query, setQuery] = useState("");
+  const [rookiePosition, setRookiePosition] = useState<Position>("MID");
+  const [rookieTeam, setRookieTeam] = useState("");
+
+  // Real players plus this team's "Rookie (TBC)" placeholders.
+  const playersById = useMemo(() => teamPlayersById(team), [team]);
 
   const update = (changes: Partial<MyTeam>) => {
     if (team) {
@@ -59,12 +68,12 @@ export default function MyTeamTool() {
   const squadPlayers = useMemo(
     () =>
       (team?.players ?? [])
-        .map((entry) => ({ entry, player: plannerPlayersById.get(entry.id) }))
+        .map((entry) => ({ entry, player: playersById.get(entry.id) }))
         .filter((row): row is { entry: SquadEntry; player: Player } => !!row.player),
-    [team],
+    [team, playersById],
   );
 
-  const missing = (team?.players ?? []).filter((e) => !plannerPlayersById.has(e.id));
+  const missing = (team?.players ?? []).filter((e) => !playersById.has(e.id));
 
   const match = useMemo(
     () =>
@@ -150,7 +159,7 @@ export default function MyTeamTool() {
             type="button"
             className="font-semibold underline"
             onClick={() =>
-              update({ players: team.players.filter((e) => plannerPlayersById.has(e.id)) })
+              update({ players: team.players.filter((e) => playersById.has(e.id)) })
             }
           >
             Remove them
@@ -243,6 +252,60 @@ export default function MyTeamTool() {
             ))}
           </ul>
         )}
+
+        <div className="mt-4 flex flex-wrap items-end gap-2 border-t border-slate-800 pt-4">
+          <p className="w-full text-xs text-slate-400">
+            Don&apos;t know the player yet? Add a{" "}
+            <strong className="text-violet-200">Rookie (TBC)</strong> placeholder at{" "}
+            {formatMoney(ROOKIE_PLACEHOLDER.price)}. With no team it plays every round.
+          </p>
+
+          <label className="text-xs text-slate-400">
+            Position
+            <select
+              value={rookiePosition}
+              onChange={(e) => setRookiePosition(e.target.value as Position)}
+              className="mt-1 block rounded-lg border border-slate-700 bg-slate-950 px-2.5 py-2 text-sm text-white"
+            >
+              {POSITIONS.map((p) => (
+                <option key={p} value={p}>
+                  {p}
+                </option>
+              ))}
+            </select>
+          </label>
+
+          <label className="text-xs text-slate-400">
+            Team (optional)
+            <select
+              value={rookieTeam}
+              onChange={(e) => setRookieTeam(e.target.value)}
+              className="mt-1 block rounded-lg border border-slate-700 bg-slate-950 px-2.5 py-2 text-sm text-white"
+            >
+              <option value="">None (no bye)</option>
+              {plannerTeams.map((code) => (
+                <option key={code} value={code}>
+                  {code}
+                </option>
+              ))}
+            </select>
+          </label>
+
+          <button
+            type="button"
+            disabled={full}
+            onClick={() => {
+              const created = addPlaceholder(team, rookiePosition, rookieTeam || null);
+              saveMyTeam({
+                ...created.team,
+                players: [...team.players, { id: created.id, pin: null }],
+              });
+            }}
+            className="rounded-lg border border-violet-500/50 px-3 py-2 text-xs font-semibold text-violet-200 disabled:opacity-40"
+          >
+            {full ? "Squad full" : "Add rookie (TBC)"}
+          </button>
+        </div>
       </section>
 
       <section className="space-y-4">
@@ -344,9 +407,16 @@ function SquadRow({
   return (
     <li className="flex flex-wrap items-center gap-x-3 gap-y-1 py-2">
       <div className="min-w-0 flex-1">
-        <p className="truncate font-semibold">{player.name}</p>
+        <p className="truncate font-semibold">
+          {player.name}
+          {isPlaceholderId(player.id) && (
+            <span className="ml-1.5 rounded bg-violet-500/30 px-1 text-[10px] font-bold text-violet-100">
+              TBC
+            </span>
+          )}
+        </p>
         <p className="text-xs text-slate-400">
-          {player.team} · {player.positions.join("/")} · {formatMoney(player.price)}
+          {player.team || "No team"} · {player.positions.join("/")} · {formatMoney(player.price)}
         </p>
       </div>
 

@@ -48,6 +48,7 @@ export function createPriceProjector({
   completedRound,
   lastRound,
   scoreOverrides = {},
+  placeholders = new Map(),
 }: {
   players: Player[];
   contexts: Map<number, ScaledRoundContext>;
@@ -55,6 +56,8 @@ export function createPriceProjector({
   completedRound: number;
   lastRound: number;
   scoreOverrides?: Record<number, Record<number, number>>;
+  /** "Rookie (TBC)" placeholders: fixed price, no score projection. */
+  placeholders?: Map<number, Player>;
 }): PriceProjector {
   const firstRound = completedRound + 1;
   const byId = new Map(players.map((p) => [p.id, p]));
@@ -72,6 +75,29 @@ export function createPriceProjector({
     const cached = cache.get(playerId);
     if (cached) {
       return cached;
+    }
+
+    // Placeholder rookie: same price every round, no score, and a bye only
+    // if it was given a team.
+    const placeholder = placeholders.get(playerId);
+    if (placeholder) {
+      const path: RoundProjection[] = [];
+
+      for (let round = firstRound; round <= lastRound; round++) {
+        path.push({
+          round,
+          priceBefore: placeholder.price,
+          score: null,
+          overridden: false,
+          onBye:
+            placeholder.team !== "" &&
+            !teamsByRound.get(round)?.has(placeholder.team),
+          priceAfter: placeholder.price,
+        });
+      }
+
+      cache.set(playerId, path);
+      return path;
     }
 
     const player = byId.get(playerId);

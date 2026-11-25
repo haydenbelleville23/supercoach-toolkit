@@ -77,23 +77,44 @@ export function matchPlayersToSlots(
   players: MatchPlayer[],
   slots: Slot[],
   allow: (player: MatchPlayer, slot: Slot) => boolean = () => true,
+  /** Player id -> slot id to try first (keeps assignments stable). */
+  preferred?: Map<number, string>,
 ): Map<number, Slot> {
   const slotOwner = new Map<string, number>(); // slot id -> player index
 
+  const slotOrder = (index: number): Slot[] => {
+    const want = preferred?.get(players[index].id);
+    if (!want) {
+      return slots;
+    }
+    const first = slots.find((slot) => slot.id === want);
+    return first ? [first, ...slots.filter((slot) => slot !== first)] : slots;
+  };
+
   const tryPlace = (index: number, seen: Set<string>): boolean => {
-    for (const slot of slots) {
-      if (
-        seen.has(slot.id) ||
-        !canFill(players[index], slot) ||
-        !allow(players[index], slot)
-      ) {
+    const options = slotOrder(index).filter(
+      (slot) =>
+        !seen.has(slot.id) && canFill(players[index], slot) && allow(players[index], slot),
+    );
+
+    // Take a free slot if there is one, so nobody is moved needlessly.
+    const free = options.find((slot) => !slotOwner.has(slot.id));
+    if (free) {
+      seen.add(free.id);
+      slotOwner.set(free.id, index);
+      return true;
+    }
+
+    // Otherwise move an occupant along an augmenting path.
+    for (const slot of options) {
+      if (seen.has(slot.id)) {
         continue;
       }
 
       seen.add(slot.id);
-      const owner = slotOwner.get(slot.id);
+      const owner = slotOwner.get(slot.id)!;
 
-      if (owner === undefined || tryPlace(owner, seen)) {
+      if (tryPlace(owner, seen)) {
         slotOwner.set(slot.id, index);
         return true;
       }
@@ -102,7 +123,23 @@ export function matchPlayersToSlots(
     return false;
   };
 
-  players.forEach((_, index) => tryPlace(index, new Set()));
+  // Seat everyone in their preferred (previous) slot first where it is
+  // still allowed, so players only move when the matching needs them to.
+  if (preferred) {
+    players.forEach((player, index) => {
+      const slot = slots.find((s) => s.id === preferred.get(player.id));
+      if (slot && !slotOwner.has(slot.id) && canFill(player, slot) && allow(player, slot)) {
+        slotOwner.set(slot.id, index);
+      }
+    });
+  }
+
+  const seated = new Set(slotOwner.values());
+  players.forEach((_, index) => {
+    if (!seated.has(index)) {
+      tryPlace(index, new Set());
+    }
+  });
 
   const assignment = new Map<number, Slot>();
   const slotById = new Map(slots.map((slot) => [slot.id, slot]));
@@ -163,7 +200,11 @@ function explainShortage(players: MatchPlayer[]): string[] {
  * transversal matroid). If no valid placement exists, as many players as
  * possible are placed.
  */
-export function assignByPrice(players: MatchPlayer[]): Map<number, Slot> {
+export function assignByPrice(
+  players: MatchPlayer[],
+  /** Previous slots to keep where still valid (stable between rounds). */
+  preferred?: Map<number, string>,
+): Map<number, Slot> {
   const allSlots = buildSlots();
   const fieldSlots = buildSlots("field");
   const bestSize = matchPlayersToSlots(players, allSlots).size;
@@ -199,8 +240,11 @@ export function assignByPrice(players: MatchPlayer[]): Map<number, Slot> {
     }
   }
 
-  const fieldFirst = matchPlayersToSlots(players, allSlots, (p, slot) =>
-    field.has(p.id) ? slot.area === "field" : slot.area === "bench",
+  const fieldFirst = matchPlayersToSlots(
+    players,
+    allSlots,
+    (p, slot) => (field.has(p.id) ? slot.area === "field" : slot.area === "bench"),
+    preferred,
   );
 
   if (fieldFirst.size >= bestSize) {
@@ -213,16 +257,21 @@ export function assignByPrice(players: MatchPlayer[]): Map<number, Slot> {
     players,
     allSlots,
     (p, slot) => !field.has(p.id) || slot.area === "field",
+    preferred,
   );
 
   return fieldOnly.size >= bestSize
     ? fieldOnly
-    : matchPlayersToSlots(players, allSlots);
+    : matchPlayersToSlots(players, allSlots, undefined, preferred);
 }
 
 /** Can the whole squad be placed in valid slots? */
-export function checkSquadPositions(players: MatchPlayer[]): MatchResult {
-  const assignment = assignByPrice(players);
+export function checkSquadPositions(
+  players: MatchPlayer[],
+  /** Previous slots to keep where still valid (stable between rounds). */
+  preferred?: Map<number, string>,
+): MatchResult {
+  const assignment = assignByPrice(players, preferred);
   const problems: string[] = [];
 
   if (players.length !== SQUAD_RULES.squadSize) {

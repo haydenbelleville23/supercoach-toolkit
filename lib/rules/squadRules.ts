@@ -31,6 +31,15 @@ export const TRADE_RULES = {
   maxBoostsPerRound: 1,
 };
 
+/** Placeholder rookie ("Rookie (TBC)") for players not yet known. */
+export const ROOKIE_PLACEHOLDER = {
+  /** Bought and sold at this fixed price; no score projection. */
+  price: 99_100,
+};
+
+/** Rounds shown when a plan is first created. */
+export const PLAN_START_ROUNDS = 3;
+
 export interface RuleFixture {
   round: number;
   homeTeam: string;

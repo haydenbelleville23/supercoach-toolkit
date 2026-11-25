@@ -10,6 +10,7 @@ import {
   checkOnFieldPlaying,
   checkSquadPositions,
   type MatchPlayer,
+  type Slot,
 } from "./positionMatching";
 import type { PlannerFixture, PriceProjector } from "./pricePaths";
 import type { MyTeam, PlannedTrade, TradePlan } from "./types";
@@ -43,6 +44,47 @@ export interface RoundSummary {
   playing: number;
   onFieldPlaying: number;
   onFieldNeeded: number;
+  /** Slot for each squad player after trades (stable between rounds). */
+  assignment: Map<number, Slot>;
+  /** Players traded in / out this round. */
+  tradedIn: number[];
+  tradedOut: number[];
+  /** Squad players whose team has a bye this round. */
+  byePlayerIds: number[];
+}
+
+/**
+ * Whether another trade can be added to a round, and if not, why.
+ * Trades already planned are never removed; this only gates new ones.
+ */
+export function getAddTradeState(summary: RoundSummary): {
+  disabled: boolean;
+  reason: string | null;
+} {
+  // Rows on screen (including ones with no players picked yet).
+  const rows = Math.max(summary.trades.length, summary.tradesUsed);
+
+  if (summary.tradesLeftBefore - rows <= 0) {
+    return { disabled: true, reason: "No trades left in the season pool" };
+  }
+
+  if (rows >= summary.tradeLimit) {
+    if (!summary.boost && summary.boostsLeftBefore > 0) {
+      return {
+        disabled: true,
+        reason: `Round limit (${summary.tradeLimit}) reached: use a boost for one more`,
+      };
+    }
+
+    return {
+      disabled: true,
+      reason: summary.boost || summary.boostsLeftBefore > 0
+        ? `Round limit (${summary.tradeLimit}) reached`
+        : `Round limit (${summary.tradeLimit}) reached and no boosts left`,
+    };
+  }
+
+  return { disabled: false, reason: null };
 }
 
 export function toMatchPlayer(
@@ -78,12 +120,15 @@ export function evaluatePlan({
   playersById,
   projector,
   fixtures,
+  lastRound = projector.lastRound,
 }: {
   team: MyTeam;
   plan: TradePlan | null;
   playersById: Map<number, Player>;
   projector: PriceProjector;
   fixtures: PlannerFixture[];
+  /** Last round to evaluate (the plan's shown rounds). */
+  lastRound?: number;
 }): RoundSummary[] {
   const summaries: RoundSummary[] = [];
   const pins = new Map(team.players.map((p) => [p.id, p.pin]));
@@ -92,29 +137,34 @@ export function evaluatePlan({
   let cash = team.cashInBank;
   let tradesLeft = team.tradesRemaining;
   let boostsLeft = team.boostsRemaining;
+  let previousSlots = new Map<number, string>();
 
   const name = (id: number) => playersById.get(id)?.name ?? `Player ${id}`;
 
-  for (let round = projector.firstRound; round <= projector.lastRound; round++) {
+  for (
+    let round = projector.firstRound;
+    round <= Math.min(lastRound, projector.lastRound);
+    round++
+  ) {
     const planRound = plan?.rounds[round];
     const boost = planRound?.boost ?? false;
-    const planned = (planRound?.trades ?? []).filter(
-      (t) => t.outId !== null || t.inId !== null,
-    );
 
     const warnings: string[] = [];
     const before = new Set(squad);
 
-    const trades: TradeLine[] = planned.map((t) => ({
+    // One line per trade row (rows with no players picked yet included,
+    // so lines stay aligned with the rows on screen).
+    const trades: TradeLine[] = (planRound?.trades ?? []).map((t) => ({
       ...t,
       outPrice: t.outId === null ? null : projector.getPriceBefore(t.outId, round),
       inPrice: t.inId === null ? null : projector.getPriceBefore(t.inId, round),
     }));
+    const filled = trades.filter((t) => t.outId !== null || t.inId !== null);
 
     const outTotal = trades.reduce((sum, t) => sum + (t.outPrice ?? 0), 0);
     const inTotal = trades.reduce((sum, t) => sum + (t.inPrice ?? 0), 0);
     const tradeLimit = getRoundTradeLimit(round, boost, fixtures);
-    const tradesUsed = trades.length;
+    const tradesUsed = filled.length;
 
     const cashBefore = cash;
     const tradesLeftBefore = tradesLeft;
@@ -130,6 +180,10 @@ export function evaluatePlan({
 
     trades.forEach((t, index) => {
       const label = `Trade ${index + 1}`;
+
+      if (t.outId === null && t.inId === null) {
+        return; // empty row, not a trade yet
+      }
 
       if (t.outId === null || t.inId === null) {
         warnings.push(`${label} is missing a player ${t.outId === null ? "out" : "in"}.`);
@@ -187,6 +241,10 @@ export function evaluatePlan({
           projector.getPriceBefore(p.id, round) ?? p.price,
         ),
       ),
+      previousSlots,
+    );
+    previousSlots = new Map(
+      [...match.assignment].map(([id, slot]) => [id, slot.id]),
     );
 
     if (squad.length !== SQUAD_RULES.squadSize) {
@@ -231,6 +289,12 @@ export function evaluatePlan({
       playing: playingPlayers.length,
       onFieldPlaying,
       onFieldNeeded: fieldCheck.needed,
+      assignment: match.assignment,
+      tradedIn: [...ins].filter((id) => squad.includes(id)),
+      tradedOut: [...outs].filter((id) => before.has(id)),
+      byePlayerIds: squadPlayers
+        .filter((p) => byeTeams.includes(p.team))
+        .map((p) => p.id),
     });
   }
 
