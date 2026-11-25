@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import OffseasonNotice from "@/components/layout/OffseasonNotice";
 import PageHeader from "@/components/layout/PageHeader";
 import { formatChange, formatMoney } from "@/lib/format";
 import Header from "@/components/layout/Header";
@@ -19,6 +20,7 @@ import type {
 import {
   CURRENT_COMPLETED_ROUND,
   FINAL_ROUND,
+  isSeasonOver,
 } from "@/data/season";
 
 import type { ProjectionMode } from "@/lib/projector";
@@ -197,7 +199,14 @@ export default function CashCowsPage() {
   const [scoreOverrides, setScoreOverrides] =
   useState<CashCowScoreOverrides>({});
 
+  // No rounds left to project: the page shows an offseason note instead.
+  const seasonOver = isSeasonOver();
+
   const filteredRows = useMemo(() => {
+  if (seasonOver) {
+    return [];
+  }
+
   const normalisedSearch =
     searchQuery.trim().toLowerCase();
 
@@ -253,6 +262,7 @@ export default function CashCowsPage() {
       compareRows(sortMode, a, b),
     );
 }, [
+  seasonOver,
   projectionMode,
   searchQuery,
   sortMode,
@@ -355,6 +365,22 @@ const visibleRows = useMemo(
     ),
   );
 }
+
+  if (seasonOver) {
+    return (
+      <main className="min-h-screen bg-slate-950 text-white">
+        <Header />
+        <section className="mx-auto max-w-7xl px-6 py-12">
+          <PageHeader
+            title="Cash Cows"
+            description="Compare projected cash generation, breakevens and price rises across every SuperCoach player."
+          />
+
+          <OffseasonNotice className="mt-8" />
+        </section>
+      </main>
+    );
+  }
 
   return (
     <main className="min-h-screen bg-slate-950 text-white">

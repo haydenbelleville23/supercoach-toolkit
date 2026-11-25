@@ -11,7 +11,8 @@
     "test:ui": "vitest --ui",
     "download:players": "node scripts/downloadPlayerDetails.mjs",
     "build:players": "node scripts/buildPlayersDataset.mjs && node scripts/build-players-normalised.ts",
-    "download:fixtures": "node scripts/downloadFixtures.mjs"
+    "download:fixtures": "node scripts/downloadFixtures.mjs",
+    "update:weekly": "node scripts/update-weekly.mjs"
   },
   "dependencies": {
     "lucide-react": "^1.25.0",

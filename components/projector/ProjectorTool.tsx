@@ -3,11 +3,16 @@
 import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 
+import OffseasonNotice from "@/components/layout/OffseasonNotice";
 import PlayerHeader from "@/components/projector/PlayerHeader";
 import PlayerSelector from "@/components/projector/PlayerSelector";
 import PlayerStats from "@/components/projector/PlayerStats";
 import ProjectionModeSelector from "@/components/projector/ProjectionModeSelector";
 import SeasonProjectionTable from "@/components/projector/SeasonProjectionTable";
+import {
+  CURRENT_COMPLETED_ROUND,
+  isSeasonOver,
+} from "@/data/season";
 import { buildPlayerRows } from "@/lib/projector/buildPlayerRows";
 import { calculateScaledProjectionRows as calculateProjectionRows } from "@/lib/projector/calculateScaledProjectionRows";
 import { playerRepository } from "@/lib/repository/PlayerRepository";
@@ -50,6 +55,9 @@ function ProjectorTool({
   const selectedPlayer =
     playerRepository.getById(selectedPlayerId) ??
     players[0];
+
+  // No rounds left to project: show final prices and an offseason note.
+  const seasonOver = isSeasonOver();
 
   const [seasonRows, setSeasonRows] = useState<
     SeasonProjectionRow[]
@@ -148,18 +156,29 @@ function ProjectorTool({
         />
       </section>
 
-      <div className="mt-8">
-        <ProjectionModeSelector
-          value={projectionMode}
-          onChange={
-            handleProjectionModeChange
-          }
-        />
-      </div>
+      {seasonOver ? (
+        <OffseasonNotice className="mt-8" showsFinalPrices />
+      ) : (
+        <div className="mt-8">
+          <ProjectionModeSelector
+            value={projectionMode}
+            onChange={
+              handleProjectionModeChange
+            }
+          />
+        </div>
+      )}
 
       <div className="mt-4">
         <SeasonProjectionTable
-          rows={seasonRows}
+          rows={
+            seasonOver
+              ? seasonRows.filter(
+                  (row) =>
+                    row.round <= CURRENT_COMPLETED_ROUND,
+                )
+              : seasonRows
+          }
           startingPrice={selectedPlayer.price}
           onScoreChange={updateSeasonScore}
         />

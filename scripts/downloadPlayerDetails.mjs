@@ -15,6 +15,11 @@ const FAILURE_FILE = path.resolve(
 const REQUEST_DELAY_MS = 250;
 const MAX_RETRIES = 4;
 
+// --refresh re-downloads players that already have a saved file. Without
+// it, existing files are skipped (the original behaviour), which keeps old
+// data after a new round.
+const REFRESH = process.argv.includes("--refresh");
+
 function sleep(milliseconds) {
   return new Promise((resolve) => {
     setTimeout(resolve, milliseconds);
@@ -124,6 +129,11 @@ async function main() {
   const players = await loadPlayers();
 
   console.log(`Found ${players.length} players.`);
+  console.log(
+    REFRESH
+      ? "Mode: --refresh (re-downloading every player)."
+      : "Mode: skip players that are already saved (use --refresh to re-download).",
+  );
 
   await mkdir(OUTPUT_DIRECTORY, {
     recursive: true,
@@ -151,7 +161,7 @@ async function main() {
 
     const progress = `[${index + 1}/${players.length}]`;
 
-    if (await fileExists(outputFile)) {
+    if (!REFRESH && (await fileExists(outputFile))) {
       skipped += 1;
 
       console.log(
