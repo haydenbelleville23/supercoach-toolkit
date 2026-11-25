@@ -1,3 +1,4 @@
+import AccuracyLogTable from "@/components/magicNumber/AccuracyLogTable";
 import { magicNumberHistory } from "@/data/2026/magic-number-history";
 import {
   getMagicNumberDifference,
@@ -284,6 +285,8 @@ export default function MagicNumberPage() {
             </table>
           </div>
         </section>
+
+        <AccuracyLogTable />
 
         <p className="mt-4 text-xs leading-5 text-slate-600">
           This page is intended for internal pricing research and

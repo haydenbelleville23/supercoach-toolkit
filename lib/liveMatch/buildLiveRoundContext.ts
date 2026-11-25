@@ -33,7 +33,12 @@ export function buildLiveRoundContext({
   players: Player[];
   manualScores: LiveScoreOverrides;
   isScheduledGame: (homeTeam: string, awayTeam: string, round: number) => boolean;
-}): { context: ScaledRoundContext; liveScoresUsed: number } {
+}): {
+  context: ScaledRoundContext;
+  liveScoresUsed: number;
+  /** False when the feed's games are not this round's (finals, stale feed). */
+  feedIsThisRound: boolean;
+} {
   const feedIsThisRound =
     feed.fixtures.length > 0 &&
     feed.fixtures.every((fixture) =>
@@ -41,7 +46,7 @@ export function buildLiveRoundContext({
     );
 
   if (!feedIsThisRound) {
-    return { context: baseContext, liveScoresUsed: 0 };
+    return { context: baseContext, liveScoresUsed: 0, feedIsThisRound };
   }
 
   const finishedFixtureIds = new Set(
@@ -102,5 +107,6 @@ export function buildLiveRoundContext({
   return {
     context: applyScoresToContext(baseContext, updates),
     liveScoresUsed: updates.filter((u) => u.score !== null).length,
+    feedIsThisRound,
   };
 }

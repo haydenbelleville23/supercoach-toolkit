@@ -182,6 +182,65 @@ async function main() {
     }
   }
 
+  const playersWithMatchHistory =
+    completePlayers.filter(
+      (player) =>
+        Array.isArray(
+          player.player_match_stats,
+        ) &&
+        player.player_match_stats.length > 0,
+    ).length;
+
+  console.log("");
+  console.log(
+    `Base players:               ${basePlayers.length}`,
+  );
+  console.log(
+    `Detail files found:         ${availableDetailIds.size}`,
+  );
+  console.log(
+    `Complete players:           ${completePlayers.length}`,
+  );
+  console.log(
+    `Players with match history: ${playersWithMatchHistory}`,
+  );
+  console.log(
+    `Missing details:            ${missingDetails.length}`,
+  );
+  console.log(
+    `Invalid details:            ${invalidDetails.length}`,
+  );
+
+  // A partial dataset would silently mix old and new rounds, so stop
+  // without touching the existing output files.
+  if (
+    missingDetails.length > 0 ||
+    invalidDetails.length > 0
+  ) {
+    console.error("");
+    console.error(
+      "Dataset NOT written: some players are missing or invalid.",
+    );
+
+    for (const item of [
+      ...missingDetails,
+      ...invalidDetails,
+    ].slice(0, 20)) {
+      console.error(
+        `  ${item.id}${item.name ? ` ${item.name}` : ""}${
+          item.error ? `: ${item.error}` : ""
+        }`,
+      );
+    }
+
+    console.error(
+      "Run `npm run download:players -- --refresh` and try again.",
+    );
+
+    process.exitCode = 1;
+    return;
+  }
+
   await writeFile(
     OUTPUT_FILE,
     `${JSON.stringify(
@@ -191,15 +250,6 @@ async function main() {
     )}\n`,
     "utf8",
   );
-
-  const playersWithMatchHistory =
-    completePlayers.filter(
-      (player) =>
-        Array.isArray(
-          player.player_match_stats,
-        ) &&
-        player.player_match_stats.length > 0,
-    ).length;
 
   const report = {
     season: SEASON,
@@ -220,34 +270,10 @@ async function main() {
 
   console.log("");
   console.log("Dataset complete.");
-  console.log(
-    `Base players:               ${basePlayers.length}`,
-  );
-  console.log(
-    `Detail files found:         ${availableDetailIds.size}`,
-  );
-  console.log(
-    `Complete players:           ${completePlayers.length}`,
-  );
-  console.log(
-    `Players with match history: ${playersWithMatchHistory}`,
-  );
-  console.log(
-    `Missing details:            ${missingDetails.length}`,
-  );
-  console.log(
-    `Invalid details:            ${invalidDetails.length}`,
-  );
   console.log(`Output: ${OUTPUT_FILE}`);
   console.log(`Report: ${REPORT_FILE}`);
-
-  if (
-    missingDetails.length > 0 ||
-    invalidDetails.length > 0
-  ) {
-    process.exitCode = 1;
-  }
 }
+
 
 main().catch((error) => {
   console.error("");

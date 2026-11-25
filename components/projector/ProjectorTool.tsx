@@ -1,13 +1,20 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
+import LiveIndicator from "@/components/layout/LiveIndicator";
+import OffseasonNotice from "@/components/layout/OffseasonNotice";
 import PlayerHeader from "@/components/projector/PlayerHeader";
 import PlayerSelector from "@/components/projector/PlayerSelector";
 import PlayerStats from "@/components/projector/PlayerStats";
 import ProjectionModeSelector from "@/components/projector/ProjectionModeSelector";
 import SeasonProjectionTable from "@/components/projector/SeasonProjectionTable";
+import {
+  CURRENT_COMPLETED_ROUND,
+  isSeasonOver,
+} from "@/data/season";
+import { useLiveRoundContext } from "@/lib/liveMatch/useLiveRoundContext";
 import { buildPlayerRows } from "@/lib/projector/buildPlayerRows";
 import { calculateScaledProjectionRows as calculateProjectionRows } from "@/lib/projector/calculateScaledProjectionRows";
 import { playerRepository } from "@/lib/repository/PlayerRepository";
@@ -51,6 +58,9 @@ function ProjectorTool({
     playerRepository.getById(selectedPlayerId) ??
     players[0];
 
+  // No rounds left to project: show final prices and an offseason note.
+  const seasonOver = isSeasonOver();
+
   const [seasonRows, setSeasonRows] = useState<
     SeasonProjectionRow[]
   >(() =>
@@ -58,6 +68,20 @@ function ProjectorTool({
       buildPlayerRows(selectedPlayer, "projected"),
       selectedPlayer,
     ),
+  );
+
+  // Next round's k updates from live scores as games finish; recalculate
+  // the displayed prices whenever it changes.
+  const { contexts, isLive } = useLiveRoundContext();
+
+  const displayedRows = useMemo(
+    () =>
+      calculateProjectionRows(
+        seasonRows,
+        selectedPlayer,
+        contexts,
+      ),
+    [seasonRows, selectedPlayer, contexts],
   );
 
   function handlePlayerChange(playerId: number) {
@@ -148,18 +172,33 @@ function ProjectorTool({
         />
       </section>
 
-      <div className="mt-8">
-        <ProjectionModeSelector
-          value={projectionMode}
-          onChange={
-            handleProjectionModeChange
-          }
-        />
-      </div>
+      {seasonOver ? (
+        <OffseasonNotice className="mt-8" showsFinalPrices />
+      ) : (
+        <div className="mt-8">
+          <ProjectionModeSelector
+            value={projectionMode}
+            onChange={
+              handleProjectionModeChange
+            }
+          />
+        </div>
+      )}
 
       <div className="mt-4">
+        {isLive && !seasonOver && (
+          <LiveIndicator className="mb-2" />
+        )}
+
         <SeasonProjectionTable
-          rows={seasonRows}
+          rows={
+            seasonOver
+              ? displayedRows.filter(
+                  (row) =>
+                    row.round <= CURRENT_COMPLETED_ROUND,
+                )
+              : displayedRows
+          }
           startingPrice={selectedPlayer.price}
           onScoreChange={updateSeasonScore}
         />
