@@ -1,26 +1,10 @@
-import rawPlayers from "@/data/2026/players-complete.json";
-import { normaliseSuperCoachPlayer } from "@/lib/supercoach/normalisePlayer";
+// Pre-normalised by scripts/build-players-normalised.ts (about 2MB). Importing
+// the raw 129MB players-complete.json here bundled it into every page.
+import normalisedPlayers from "@/data/2026/players-normalised.json";
 
 import type { Player } from "@/types/player";
-import type { SuperCoachPlayer } from "@/types/supercoach";
 
-const players: Player[] = (
-  rawPlayers as unknown as SuperCoachPlayer[]
-)
-  .map((rawPlayer) => {
-    try {
-      return normaliseSuperCoachPlayer(rawPlayer);
-    } catch (error) {
-      console.warn(
-        `Could not normalise player ${rawPlayer.id}:`,
-        error,
-      );
-
-      return null;
-    }
-  })
-  .filter((player): player is Player => player !== null)
-  .sort((a, b) => a.name.localeCompare(b.name));
+const players: Player[] = normalisedPlayers as unknown as Player[];
 
 export function getPlayers(): Player[] {
   return players;

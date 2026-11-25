@@ -1,10 +1,11 @@
 "use client";
 
 import Link from "next/link";
+import PageHeader from "@/components/layout/PageHeader";
+import { formatChange, formatMoney } from "@/lib/format";
 import Header from "@/components/layout/Header";
 import {
   type UIEvent,
-  useEffect,
   useMemo,
   useState,
 } from "react";
@@ -64,25 +65,13 @@ const futureRounds = Array.from(
     1,
 );
 
-function formatMoney(value: number): string {
-  return `$${value.toLocaleString()}`;
-}
-
-function formatGain(value: number | null): string {
- if (value === null) {
-  return "-";
-}
-
-  const sign = value > 0 ? "+" : "-";
-
-  return `${sign}$${Math.abs(value).toLocaleString()}`;
-}
+const formatGain = formatChange;
 
 function getGainColour(
   value: number | null,
 ): string {
   if (value === null) {
-    return "text-slate-500";
+    return "text-slate-400";
   }
 
   if (value < 0) {
@@ -176,6 +165,34 @@ export default function CashCowsPage() {
 
   const [visibleCount, setVisibleCount] =
     useState(50);
+
+  // Phones: filters collapse behind a button and round columns are hidden
+  // until asked for. Both are always shown from the sm breakpoint up.
+  const [filtersOpen, setFiltersOpen] =
+    useState(false);
+
+  const [showRounds, setShowRounds] =
+    useState(false);
+
+  const roundColumnClass = showRounds
+    ? ""
+    : "hidden sm:table-cell";
+
+  const activeFilterCount = [
+    positionFilter !== "ALL",
+    priceFilter !== "all",
+    clubFilter !== "ALL",
+    searchQuery.trim() !== "",
+  ].filter(Boolean).length;
+
+  function resetFilters() {
+    setSearchQuery("");
+    setPositionFilter("ALL");
+    setPriceFilter("all");
+    setClubFilter("ALL");
+    setProjectionMode("projected");
+    setSortMode("peak-gain");
+  }
 
   const [scoreOverrides, setScoreOverrides] =
   useState<CashCowScoreOverrides>({});
@@ -299,16 +316,24 @@ const visibleRows = useMemo(
   });
 }
 
-useEffect(() => {
-    setVisibleCount(50);
-  }, [
+  // Show the first 50 rows again whenever a filter or sort changes
+  // (adjusted during render rather than in an effect).
+  const filterKey = [
     searchQuery,
     projectionMode,
     positionFilter,
     priceFilter,
     clubFilter,
     sortMode,
-  ]);
+  ].join("|");
+
+  const [visibleCountKey, setVisibleCountKey] =
+    useState(filterKey);
+
+  if (visibleCountKey !== filterKey) {
+    setVisibleCountKey(filterKey);
+    setVisibleCount(50);
+  }
   function handleTableScroll(
   event: UIEvent<HTMLDivElement>,
 ) {
@@ -335,23 +360,40 @@ useEffect(() => {
     <main className="min-h-screen bg-slate-950 text-white">
       <Header />
       <section className="mx-auto max-w-7xl px-6 py-12">
-        <div className="max-w-3xl">
-          <p className="text-sm font-semibold uppercase tracking-widest text-violet-400">
-            2026 season
-          </p>
+        <PageHeader
+          title="Cash Cows"
+          description="Compare projected cash generation, breakevens and price rises across every SuperCoach player."
+        />
 
-          <h1 className="mt-3 text-4xl font-bold tracking-tight">
-            Cash Cows
-          </h1>
+        <button
+          type="button"
+          aria-expanded={filtersOpen}
+          aria-controls="cash-cow-filters"
+          onClick={() => setFiltersOpen((current) => !current)}
+          className="mt-8 flex w-full items-center justify-between rounded-2xl border border-slate-800 bg-slate-900 px-5 py-3.5 text-sm font-semibold text-white sm:hidden"
+        >
+          <span>
+            Filters
+            {activeFilterCount > 0 && (
+              <span className="ml-2 rounded-full bg-violet-500/20 px-2 py-0.5 text-xs text-violet-300">
+                {activeFilterCount} active
+              </span>
+            )}
+          </span>
 
-          <p className="mt-4 text-slate-300">
-            Compare projected cash generation, breakevens and price rises across every Supercoach player.
-          </p>
-        </div>
+          <span aria-hidden="true" className="text-slate-400">
+            {filtersOpen ? "▲" : "▼"}
+          </span>
+        </button>
 
-        <section className="mt-8 grid gap-4 rounded-2xl border border-slate-800 bg-slate-900 p-5 sm:grid-cols-2 lg:grid-cols-5">
+        <section
+          id="cash-cow-filters"
+          className={`${
+            filtersOpen ? "mt-3 grid" : "hidden"
+          } gap-4 rounded-2xl border border-slate-800 bg-slate-900 p-5 sm:mt-8 sm:grid sm:grid-cols-2 lg:grid-cols-5`}
+        >
           <label className="block">
-            <span className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+            <span className="text-xs font-semibold uppercase tracking-wide text-slate-400">
               Projection
             </span>
 
@@ -383,7 +425,7 @@ useEffect(() => {
           </label>
 
           <label className="block">
-          <span className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+          <span className="text-xs font-semibold uppercase tracking-wide text-slate-400">
             Position
           </span>
 
@@ -405,7 +447,7 @@ useEffect(() => {
         </label>
 
         <label className="block">
-          <span className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+          <span className="text-xs font-semibold uppercase tracking-wide text-slate-400">
             Price
           </span>
 
@@ -432,7 +474,7 @@ useEffect(() => {
         </label>
 
         <label className="block">
-          <span className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+          <span className="text-xs font-semibold uppercase tracking-wide text-slate-400">
             Club
           </span>
 
@@ -457,7 +499,7 @@ useEffect(() => {
         </label>
 
           <label className="block">
-            <span className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+            <span className="text-xs font-semibold uppercase tracking-wide text-slate-400">
               Search
             </span>
 
@@ -472,7 +514,7 @@ useEffect(() => {
           </label>
 
           <label className="block">
-            <span className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+            <span className="text-xs font-semibold uppercase tracking-wide text-slate-400">
               Sort
             </span>
 
@@ -551,31 +593,51 @@ useEffect(() => {
           </span>
         </div>
 
-        <p className="text-xs text-slate-500">
-          Showing {visibleRows.length} of {filteredRows.length} players
-        </p>
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <p className="text-xs text-slate-400">
+            Showing {visibleRows.length} of {filteredRows.length} players
+          </p>
+
+          {/* Round-by-round columns are hidden on phones unless asked for. */}
+          <button
+            type="button"
+            aria-pressed={showRounds}
+            onClick={() => setShowRounds((current) => !current)}
+            className="rounded-lg border border-slate-700 px-3 py-1.5 text-xs font-semibold text-slate-300 transition hover:border-slate-500 hover:text-white sm:hidden"
+          >
+            {showRounds
+              ? "Hide round columns"
+              : `Show R${futureRounds[0]}–R${futureRounds[futureRounds.length - 1]} columns`}
+          </button>
+        </div>
 
         <section className="mt-3 overflow-hidden rounded-2xl border border-slate-800 bg-slate-900">
            <div
                 className="max-h-[70vh] overflow-auto"
                 onScroll={handleTableScroll}
               >
-            <table className="w-full min-w-[1500px] text-sm">
+            <table
+              className={`w-full whitespace-nowrap text-sm ${
+                showRounds
+                  ? "min-w-[1500px]"
+                  : "min-w-[980px] sm:min-w-[1500px]"
+              }`}
+            >
               <thead className="sticky top-0 z-20 border-b border-slate-800 bg-slate-950">
-                <tr className="text-left text-xs uppercase tracking-wide text-slate-500">
-                  <th className="sticky left-0 z-40 w-[180px] min-w-[180px] max-w-[180px] bg-slate-950 px-4 py-3">
+                <tr className="text-left text-xs uppercase tracking-wide text-slate-400">
+                  <th className="sticky left-0 z-40 w-[180px] min-w-[180px] max-w-[180px] whitespace-normal bg-slate-950 px-4 py-3">
                     Player
                   </th>
 
-                  <th className="sticky left-[180px] z-40 w-[100px] min-w-[100px] max-w-[100px] border-r border-slate-700 bg-slate-950 px-3 py-3 text-right shadow-[5px_0_8px_rgba(0,0,0,0.18)]">
+                  <th className="z-40 w-[100px] sm:sticky sm:left-[180px] min-w-[100px] max-w-[100px] border-r border-slate-700 bg-slate-950 px-3 py-3 text-right shadow-[5px_0_8px_rgba(0,0,0,0.18)]">
                     Price
                   </th>
 
-                  <th className="px-3 py-3 text-right">
+                  <th className="w-[100px] min-w-[100px] px-3 py-3 text-right">
                     BE
                   </th>
 
-                  <th className="px-3 py-3 text-right">
+                  <th className="w-[100px] min-w-[100px] px-3 py-3 text-right">
                     Proj Avg
                   </th>
 
@@ -583,7 +645,7 @@ useEffect(() => {
                     Topped Out Gain
                   </th>
 
-                  <th className="px-3 py-3 text-right">
+                  <th className="w-[100px] min-w-[100px] px-3 py-3 text-right">
                     Topped Out Rd
                   </th>
 
@@ -601,7 +663,7 @@ useEffect(() => {
                   {futureRounds.map((round) => (
                     <th
                         key={round}
-                        className="min-w-[112px] px-3 py-3 text-right"
+                        className={`min-w-[112px] px-3 py-3 text-right ${roundColumnClass}`}
                     >
                         R{round}
                     </th>
@@ -615,7 +677,7 @@ useEffect(() => {
                     key={row.player.id}
                     className="border-b border-slate-800 last:border-0 hover:bg-slate-800/40"
                   >
-                    <td className="sticky left-0 z-10 bg-slate-900 px-4 py-3">
+                    <td className="sticky left-0 z-10 w-[180px] min-w-[180px] max-w-[180px] whitespace-normal bg-slate-900 px-4 py-3">
                       <Link
                         href={`/projector?player=${row.player.id}`}
                         className="font-semibold text-white hover:text-violet-400"
@@ -624,7 +686,7 @@ useEffect(() => {
                         {row.player.name}
                       </Link>
 
-                      <div className="mt-0.5 text-xs text-slate-500">
+                      <div className="mt-0.5 text-xs text-slate-400">
                         {row.player.team} ·{" "}
                         {row.player.positions.join(
                           "/",
@@ -632,7 +694,7 @@ useEffect(() => {
                       </div>
                     </td>
 
-                    <td className="sticky left-[180px] z-20 w-[100px] min-w-[100px] max-w-[100px] border-r border-slate-700 bg-slate-900 px-3 py-3 text-right tabular-nums shadow-[5px_0_8px_rgba(0,0,0,0.18)] group-hover:bg-slate-800">
+                    <td className="z-20 w-[100px] sm:sticky sm:left-[180px] min-w-[100px] max-w-[100px] border-r border-slate-700 bg-slate-900 px-3 py-3 text-right tabular-nums shadow-[5px_0_8px_rgba(0,0,0,0.18)] group-hover:bg-slate-800">
                       {formatMoney(
                         row.player.price,
                       )}
@@ -698,7 +760,7 @@ useEffect(() => {
         return (
         <td
             key={round}
-            className="px-3 py-3 text-right text-slate-500"
+            className={`px-3 py-3 text-right text-slate-400 ${roundColumnClass}`}
         >
             -
         </td>
@@ -708,7 +770,7 @@ useEffect(() => {
     return (
         <td
         key={round}
-        className="px-3 py-3 text-right"
+        className={`px-3 py-3 text-right ${roundColumnClass}`}
         >
           <div
          className={`font-semibold tabular-nums ${getGainColour(
@@ -721,6 +783,7 @@ useEffect(() => {
         <input
             type="text"
             inputMode="numeric"
+            aria-label={`${row.player.name} round ${round} score`}
             value={
             overriddenScore ??
             projectedRound.score
@@ -749,39 +812,47 @@ useEffect(() => {
 
                 {visibleRows.length === 0 && (
                   <tr>
-                    <div className="flex flex-col items-center gap-3">
-                    <p>
-                      No matching players with enough score history.
-                    </p>
-
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setSearchQuery("");
-                        setPositionFilter("ALL");
-                        setPriceFilter("all");
-                        setClubFilter("ALL");
-                        setProjectionMode("projected");
-                        setSortMode("peak-gain");
-                      }}
-                      className="rounded-lg border border-violet-500/40 bg-violet-500/10 px-3 py-2 text-xs font-semibold text-violet-300 transition hover:bg-violet-500/20"
+                    <td
+                      colSpan={9 + futureRounds.length}
+                      className="px-0 py-10"
                     >
-                      Reset Filters
-                    </button>
-                  </div>
+                      {/* Sticky so the message stays in view on a wide, scrolled table. */}
+                      <div
+                        role="status"
+                        className="sticky left-0 flex w-[calc(100vw-5rem)] max-w-xl flex-col items-start gap-3 whitespace-normal px-4"
+                      >
+                        <p className="font-semibold text-white">
+                          No players match these filters.
+                        </p>
+
+                        <p className="text-sm text-slate-400">
+                          Players need at least two scores
+                          before their price can change, so
+                          some players are not listed.
+                        </p>
+
+                        <button
+                          type="button"
+                          onClick={resetFilters}
+                          className="rounded-lg border border-violet-500/40 bg-violet-500/10 px-3 py-2 text-xs font-semibold text-violet-300 transition hover:bg-violet-500/20"
+                        >
+                          Reset filters
+                        </button>
+                      </div>
+                    </td>
                   </tr>
                 )}
                </tbody>
             </table>
             {visibleRows.length < filteredRows.length && (
-            <div className="border-t border-slate-800 bg-slate-950 px-4 py-3 text-center text-xs text-slate-500">
+            <div className="border-t border-slate-800 bg-slate-950 px-4 py-3 text-center text-xs text-slate-400">
               Scroll to load more players
             </div>
           )}
 
           {filteredRows.length > 50 &&
             visibleRows.length === filteredRows.length && (
-              <div className="border-t border-slate-800 bg-slate-950 px-4 py-3 text-center text-xs text-slate-600">
+              <div className="border-t border-slate-800 bg-slate-950 px-4 py-3 text-center text-xs text-slate-400">
                 All {filteredRows.length} players loaded
               </div>
             )}

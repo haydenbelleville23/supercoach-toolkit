@@ -2,7 +2,7 @@ import { CURRENT_COMPLETED_ROUND } from "@/data/season";
 
 import {
   buildPlayerRows,
-  calculateProjectionRows,
+  calculateScaledProjectionRows,
 } from "@/lib/projector";
 
 import type { ProjectionMode } from "@/lib/projector";
@@ -135,7 +135,7 @@ export function calculateCashCowRow(
     );
 
   const calculatedRows =
-    calculateProjectionRows(
+    calculateScaledProjectionRows(
       rowsWithOverrides,
       player,
     );

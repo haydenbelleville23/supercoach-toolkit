@@ -44,7 +44,7 @@ export default function ProjectionModeSelector({
           Projection scores
         </p>
 
-        <p className="mt-1 text-xs text-slate-500">
+        <p className="mt-1 text-xs text-slate-400">
           Choose how future scores are prefilled.
         </p>
       </div>

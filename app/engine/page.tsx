@@ -7,8 +7,7 @@ import PlayerHeader from "@/components/projector/PlayerHeader";
 import PlayerSelector from "@/components/projector/PlayerSelector";
 import PlayerStats from "@/components/projector/PlayerStats";
 import { getPlayerById, getPlayers } from "@/lib/players";
-import { createPlayerState } from "@/lib/priceEngine/createPlayerState";
-import { projectSeason } from "@/lib/priceEngine/projectSeason";
+import { projectNextRoundPrice } from "@/lib/projector/projectNextRoundPrice";
 
 const players = getPlayers();
 
@@ -38,14 +37,13 @@ const [projectedScore, setProjectedScore] = useState(
   defaultProjectedScore,
 );
 
-  const playerState = createPlayerState(selectedPlayer);
-
-  const engineResult = projectSeason(
-    playerState,
-    [projectedScore],
-  )[0];
+  const engineResult = projectNextRoundPrice(
+    selectedPlayer,
+    projectedScore,
+  );
 
   const previousScores =
+    engineResult?.previousScores ??
     selectedPlayer.recentScores.slice(-2);
 
   const guidePrice =
@@ -60,9 +58,10 @@ const [projectedScore, setProjectedScore] = useState(
       ? engineResult.price - guidePrice
       : null;
 
-  const breakEvenDifference = engineResult
-    ? engineResult.breakEven - guideBreakEven
-    : null;
+  const breakEvenDifference =
+    engineResult?.breakEven != null
+      ? engineResult.breakEven - guideBreakEven
+      : null;
 
   function handlePlayerChange(playerId: number) {
   const player =
@@ -239,7 +238,8 @@ const [projectedScore, setProjectedScore] = useState(
                   },
                   {
                     label: "Break-even",
-                    value: engineResult.breakEven.toString(),
+                    value:
+                      engineResult.breakEven?.toString() ?? "-",
                   },
                   {
                     label: "Projected price",
@@ -306,8 +306,8 @@ const [projectedScore, setProjectedScore] = useState(
                 />
 
                 <CalculationRow
-                  label="Magic Number"
-                  value={engineResult.magicNumber.toString()}
+                  label="Scale factor k"
+                  value={engineResult.k.toFixed(5)}
                 />
 
                 <CalculationRow
@@ -326,15 +326,15 @@ const [projectedScore, setProjectedScore] = useState(
 
               <div className="mt-5 overflow-x-auto rounded-xl bg-slate-950 p-5 font-mono text-sm text-slate-300">
                 <p>
-                  ({selectedPlayer.price.toLocaleString()} × 3 +
+                  0.75 × {selectedPlayer.price.toLocaleString()} +
                   {" "}
-                  {engineResult.threeRoundAverage.toFixed(2)} ×
+                  0.25 × {engineResult.baseMagicNumber} ×
                   {" "}
-                  {engineResult.magicNumber}) ÷ 4
+                  {engineResult.threeRoundAverage.toFixed(2)}
                 </p>
 
                 <p className="mt-3 text-slate-500">
-                  Raw price
+                  Raw price (before k = {engineResult.k.toFixed(5)})
                 </p>
 
                 <p className="mt-1 text-lg font-semibold text-white">
