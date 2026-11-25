@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import DataFreshness from "@/components/layout/DataFreshness";
+import PageHeader from "@/components/layout/PageHeader";
 import { formatChange, formatMoney } from "@/lib/format";
 import Header from "@/components/layout/Header";
 import {
@@ -165,6 +165,34 @@ export default function CashCowsPage() {
 
   const [visibleCount, setVisibleCount] =
     useState(50);
+
+  // Phones: filters collapse behind a button and round columns are hidden
+  // until asked for. Both are always shown from the sm breakpoint up.
+  const [filtersOpen, setFiltersOpen] =
+    useState(false);
+
+  const [showRounds, setShowRounds] =
+    useState(false);
+
+  const roundColumnClass = showRounds
+    ? ""
+    : "hidden sm:table-cell";
+
+  const activeFilterCount = [
+    positionFilter !== "ALL",
+    priceFilter !== "all",
+    clubFilter !== "ALL",
+    searchQuery.trim() !== "",
+  ].filter(Boolean).length;
+
+  function resetFilters() {
+    setSearchQuery("");
+    setPositionFilter("ALL");
+    setPriceFilter("all");
+    setClubFilter("ALL");
+    setProjectionMode("projected");
+    setSortMode("peak-gain");
+  }
 
   const [scoreOverrides, setScoreOverrides] =
   useState<CashCowScoreOverrides>({});
@@ -332,23 +360,38 @@ const visibleRows = useMemo(
     <main className="min-h-screen bg-slate-950 text-white">
       <Header />
       <section className="mx-auto max-w-7xl px-6 py-12">
-        <div className="max-w-3xl">
-          <p className="text-sm font-semibold uppercase tracking-widest text-violet-400">
-            2026 season
-          </p>
+        <PageHeader
+          title="Cash Cows"
+          description="Compare projected cash generation, breakevens and price rises across every SuperCoach player."
+        />
 
-          <h1 className="mt-3 text-4xl font-bold tracking-tight">
-            Cash Cows
-          </h1>
+        <button
+          type="button"
+          aria-expanded={filtersOpen}
+          aria-controls="cash-cow-filters"
+          onClick={() => setFiltersOpen((current) => !current)}
+          className="mt-8 flex w-full items-center justify-between rounded-2xl border border-slate-800 bg-slate-900 px-5 py-3.5 text-sm font-semibold text-white sm:hidden"
+        >
+          <span>
+            Filters
+            {activeFilterCount > 0 && (
+              <span className="ml-2 rounded-full bg-violet-500/20 px-2 py-0.5 text-xs text-violet-300">
+                {activeFilterCount} active
+              </span>
+            )}
+          </span>
 
-          <p className="mt-4 text-slate-300">
-            Compare projected cash generation, breakevens and price rises across every SuperCoach player.
-          </p>
+          <span aria-hidden="true" className="text-slate-400">
+            {filtersOpen ? "▲" : "▼"}
+          </span>
+        </button>
 
-          <DataFreshness />
-        </div>
-
-        <section className="mt-8 grid gap-4 rounded-2xl border border-slate-800 bg-slate-900 p-5 sm:grid-cols-2 lg:grid-cols-5">
+        <section
+          id="cash-cow-filters"
+          className={`${
+            filtersOpen ? "mt-3 grid" : "hidden"
+          } gap-4 rounded-2xl border border-slate-800 bg-slate-900 p-5 sm:mt-8 sm:grid sm:grid-cols-2 lg:grid-cols-5`}
+        >
           <label className="block">
             <span className="text-xs font-semibold uppercase tracking-wide text-slate-400">
               Projection
@@ -550,16 +593,36 @@ const visibleRows = useMemo(
           </span>
         </div>
 
-        <p className="text-xs text-slate-400">
-          Showing {visibleRows.length} of {filteredRows.length} players
-        </p>
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <p className="text-xs text-slate-400">
+            Showing {visibleRows.length} of {filteredRows.length} players
+          </p>
+
+          {/* Round-by-round columns are hidden on phones unless asked for. */}
+          <button
+            type="button"
+            aria-pressed={showRounds}
+            onClick={() => setShowRounds((current) => !current)}
+            className="rounded-lg border border-slate-700 px-3 py-1.5 text-xs font-semibold text-slate-300 transition hover:border-slate-500 hover:text-white sm:hidden"
+          >
+            {showRounds
+              ? "Hide round columns"
+              : `Show R${futureRounds[0]}–R${futureRounds[futureRounds.length - 1]} columns`}
+          </button>
+        </div>
 
         <section className="mt-3 overflow-hidden rounded-2xl border border-slate-800 bg-slate-900">
            <div
                 className="max-h-[70vh] overflow-auto"
                 onScroll={handleTableScroll}
               >
-            <table className="w-full min-w-[1500px] whitespace-nowrap text-sm">
+            <table
+              className={`w-full whitespace-nowrap text-sm ${
+                showRounds
+                  ? "min-w-[1500px]"
+                  : "min-w-[980px] sm:min-w-[1500px]"
+              }`}
+            >
               <thead className="sticky top-0 z-20 border-b border-slate-800 bg-slate-950">
                 <tr className="text-left text-xs uppercase tracking-wide text-slate-400">
                   <th className="sticky left-0 z-40 w-[180px] min-w-[180px] max-w-[180px] whitespace-normal bg-slate-950 px-4 py-3">
@@ -600,7 +663,7 @@ const visibleRows = useMemo(
                   {futureRounds.map((round) => (
                     <th
                         key={round}
-                        className="min-w-[112px] px-3 py-3 text-right"
+                        className={`min-w-[112px] px-3 py-3 text-right ${roundColumnClass}`}
                     >
                         R{round}
                     </th>
@@ -697,7 +760,7 @@ const visibleRows = useMemo(
         return (
         <td
             key={round}
-            className="px-3 py-3 text-right text-slate-400"
+            className={`px-3 py-3 text-right text-slate-400 ${roundColumnClass}`}
         >
             -
         </td>
@@ -707,7 +770,7 @@ const visibleRows = useMemo(
     return (
         <td
         key={round}
-        className="px-3 py-3 text-right"
+        className={`px-3 py-3 text-right ${roundColumnClass}`}
         >
           <div
          className={`font-semibold tabular-nums ${getGainColour(
@@ -749,26 +812,34 @@ const visibleRows = useMemo(
 
                 {visibleRows.length === 0 && (
                   <tr>
-                    <div className="flex flex-col items-center gap-3">
-                    <p>
-                      No matching players with enough score history.
-                    </p>
-
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setSearchQuery("");
-                        setPositionFilter("ALL");
-                        setPriceFilter("all");
-                        setClubFilter("ALL");
-                        setProjectionMode("projected");
-                        setSortMode("peak-gain");
-                      }}
-                      className="rounded-lg border border-violet-500/40 bg-violet-500/10 px-3 py-2 text-xs font-semibold text-violet-300 transition hover:bg-violet-500/20"
+                    <td
+                      colSpan={9 + futureRounds.length}
+                      className="px-0 py-10"
                     >
-                      Reset Filters
-                    </button>
-                  </div>
+                      {/* Sticky so the message stays in view on a wide, scrolled table. */}
+                      <div
+                        role="status"
+                        className="sticky left-0 flex w-[calc(100vw-5rem)] max-w-xl flex-col items-start gap-3 whitespace-normal px-4"
+                      >
+                        <p className="font-semibold text-white">
+                          No players match these filters.
+                        </p>
+
+                        <p className="text-sm text-slate-400">
+                          Players need at least two scores
+                          before their price can change, so
+                          some players are not listed.
+                        </p>
+
+                        <button
+                          type="button"
+                          onClick={resetFilters}
+                          className="rounded-lg border border-violet-500/40 bg-violet-500/10 px-3 py-2 text-xs font-semibold text-violet-300 transition hover:bg-violet-500/20"
+                        >
+                          Reset filters
+                        </button>
+                      </div>
+                    </td>
                   </tr>
                 )}
                </tbody>

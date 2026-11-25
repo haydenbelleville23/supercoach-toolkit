@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 
-import DataFreshness from "@/components/layout/DataFreshness";
 import Header from "@/components/layout/Header";
+import PageHeader from "@/components/layout/PageHeader";
 import ProjectorToolFromUrl from "@/components/projector/ProjectorTool";
 
 function ProjectorToolFallback() {
@@ -21,21 +21,10 @@ export default function ProjectorPage() {
       <Header />
 
       <section className="mx-auto max-w-7xl px-6 py-12">
-        <div className="max-w-3xl">
-          <p className="text-sm font-semibold uppercase tracking-widest text-violet-400">
-            2026 season
-          </p>
-
-          <h1 className="mt-3 text-4xl font-bold tracking-tight">
-            Price Projector
-          </h1>
-
-          <p className="mt-4 text-slate-300">
-            Enter projected scores for the remaining rounds or select from one of the projection options.
-          </p>
-
-          <DataFreshness />
-        </div>
+        <PageHeader
+          title="Price Projector"
+          description="Enter projected scores for the remaining rounds or select from one of the projection options."
+        />
 
         {/* Reads ?player=ID, so it renders on the client below this boundary. */}
         <Suspense fallback={<ProjectorToolFallback />}>

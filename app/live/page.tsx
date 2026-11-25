@@ -1,8 +1,9 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
-import DataFreshness from "@/components/layout/DataFreshness";
 import Header from "@/components/layout/Header";
+import PageHeader from "@/components/layout/PageHeader";
 import {
   type ReactNode,
   useEffect,
@@ -74,6 +75,32 @@ function getChangeColour(
 
 function getTeamLogo(team: string): string {
   return `/teams/${team.toLowerCase()}.png`;
+}
+
+/**
+ * Team logo from public/teams (all 18 clubs). Decorative, since the team
+ * name is always shown beside it; hidden if a file is ever missing.
+ */
+function TeamLogo({
+  team,
+  size,
+}: {
+  team: string;
+  size: number;
+}) {
+  return (
+    <Image
+      src={getTeamLogo(team)}
+      alt=""
+      width={size}
+      height={size}
+      className="object-contain"
+      style={{ width: size, height: size }}
+      onError={(event) => {
+        event.currentTarget.style.display = "none";
+      }}
+    />
+  );
 }
 
 /** The round the live feed is expected to be playing. */
@@ -249,21 +276,10 @@ function LiveLayout({
       <Header />
 
       <section className="mx-auto max-w-7xl px-6 pt-12">
-        <div className="max-w-3xl">
-          <p className="text-sm font-semibold uppercase tracking-widest text-violet-400">
-            2026 season
-          </p>
-
-          <h1 className="mt-3 text-4xl font-bold tracking-tight">
-            Live Scores
-          </h1>
-
-          <p className="mt-4 text-slate-300">
-            Live SuperCoach scores with projected end-of-round prices and breakevens.
-          </p>
-
-          <DataFreshness />
-        </div>
+        <PageHeader
+          title="Live Scores"
+          description="Live SuperCoach scores with projected end-of-round prices and breakevens."
+        />
       </section>
 
       {children}
@@ -752,16 +768,9 @@ export default function LivePage() {
 
                 <div className="mt-3 space-y-1.5">
                   <div className="flex items-center gap-2">
-                    <img
-                      src={getTeamLogo(
-                        fixture.homeTeam,
-                      )}
-                      alt=""
-                      className="h-5 w-5 object-contain"
-                      onError={(event) => {
-                        event.currentTarget.style.display =
-                          "none";
-                      }}
+                    <TeamLogo
+                      team={fixture.homeTeam}
+                      size={20}
                     />
 
                     <span className="font-semibold">
@@ -770,16 +779,9 @@ export default function LivePage() {
                   </div>
 
                   <div className="flex items-center gap-2">
-                    <img
-                      src={getTeamLogo(
-                        fixture.awayTeam,
-                      )}
-                      alt=""
-                      className="h-5 w-5 object-contain"
-                      onError={(event) => {
-                        event.currentTarget.style.display =
-                          "none";
-                      }}
+                    <TeamLogo
+                      team={fixture.awayTeam}
+                      size={20}
                     />
 
                     <span className="font-semibold">
@@ -793,18 +795,11 @@ export default function LivePage() {
         </div>
 
         <section className="mt-5 overflow-hidden rounded-2xl border border-slate-800 bg-gradient-to-r from-slate-900 via-slate-900 to-slate-950">
-          <div className="grid min-h-[210px] grid-cols-[1fr_auto_1fr] items-center gap-5 px-6 py-8 sm:px-10">
+          <div className="grid min-h-[210px] grid-cols-[1fr_auto_1fr] items-center gap-3 px-4 py-8 sm:gap-5 sm:px-10">
             <div className="flex flex-col items-center gap-3 sm:flex-row">
-              <img
-                src={getTeamLogo(
-                  selectedFixture.homeTeam,
-                )}
-                alt={`${selectedFixture.homeTeam} logo`}
-                className="h-20 w-20 object-contain"
-                onError={(event) => {
-                  event.currentTarget.style.display =
-                    "none";
-                }}
+              <TeamLogo
+                team={selectedFixture.homeTeam}
+                size={80}
               />
 
               <div className="text-center sm:text-left">
@@ -818,7 +813,7 @@ export default function LivePage() {
               </div>
             </div>
 
-            <div className="min-w-[220px] text-center">
+            <div className="text-center sm:min-w-[220px]">
               <p className="text-xs font-bold uppercase tracking-[0.2em] text-emerald-400">
                 {getStatusLabel(
                   selectedFixture,
@@ -861,16 +856,9 @@ export default function LivePage() {
             </div>
 
             <div className="flex flex-col items-center gap-3 sm:flex-row-reverse">
-              <img
-                src={getTeamLogo(
-                  selectedFixture.awayTeam,
-                )}
-                alt={`${selectedFixture.awayTeam} logo`}
-                className="h-20 w-20 object-contain"
-                onError={(event) => {
-                  event.currentTarget.style.display =
-                    "none";
-                }}
+              <TeamLogo
+                team={selectedFixture.awayTeam}
+                size={80}
               />
 
               <div className="text-center sm:text-right">
