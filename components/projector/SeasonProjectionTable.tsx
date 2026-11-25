@@ -61,15 +61,14 @@ export default function SeasonProjectionTable({
       </div>
 
       <div className="overflow-x-auto rounded-xl border border-slate-800 bg-slate-900">
-        <table className="w-full min-w-[660px] table-fixed text-xs sm:text-sm">
+        <table className="w-full min-w-[560px] table-fixed whitespace-nowrap text-xs sm:text-sm">
           <colgroup>
-            <col className="w-[14%]" />
+            <col className="w-[16%]" />
             <col className="w-[14%]" />
             <col className="w-[12%]" />
-            <col className="w-[17%]" />
-            <col className="w-[15%]" />
+            <col className="w-[20%]" />
             <col className="w-[18%]" />
-            <col className="w-[10%]" />
+            <col className="w-[20%]" />
           </colgroup>
 
           <thead className="bg-slate-950 text-slate-400">
@@ -97,10 +96,6 @@ export default function SeasonProjectionTable({
               <th className="px-1.5 py-3 sm:px-2 text-right">
                 Δ Season
               </th>
-
-              <th className="px-1.5 py-3 sm:px-2 text-right">
-                MN
-              </th>
             </tr>
           </thead>
 
@@ -109,11 +104,7 @@ export default function SeasonProjectionTable({
               const isFuture =
                 row.round > CURRENT_COMPLETED_ROUND;
 
-              const positiveChange =
-                row.priceChange !== null &&
-                row.priceChange >= 0;
-
-                const seasonPriceChange =
+              const seasonPriceChange =
                 row.price === null
                   ? null
                   : row.price - openingPrice;
@@ -154,6 +145,7 @@ export default function SeasonProjectionTable({
                       <input
                         type="text"
                         inputMode="numeric"
+                        aria-label={`Round ${row.round} score`}
                         value={row.score ?? ""}
                         placeholder="-"
                         onFocus={(event) =>
@@ -225,13 +217,6 @@ export default function SeasonProjectionTable({
                           seasonPriceChange,
                         ).toLocaleString()}`}
                     </td>
-
-                    {/* Magic Number */}
-                  <td className="px-1.5 py-2.5 sm:px-2 text-right tabular-nums text-slate-500">
-                    {row.round === 0
-                      ? "-"
-                      : row.magicNumber}
-                  </td>
                 </tr>
               );
             })}

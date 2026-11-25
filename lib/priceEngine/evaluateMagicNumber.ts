@@ -20,10 +20,6 @@ export function evaluateMagicNumber(
   let totalPriceError = 0;
   let maxPriceError = 0;
   let bestPlayerError = Number.MAX_SAFE_INTEGER;
-  let missingRounds = 0;
-  let missingPrices = 0;
-  let insufficientGames = 0;
-  let missingScores = 0;
 
  for (const player of players) {
 
@@ -43,7 +39,6 @@ export function evaluateMagicNumber(
   );
 
   if (!previousRound || !currentRound) {
-  missingRounds++;
   continue;
     }
 
@@ -51,7 +46,6 @@ export function evaluateMagicNumber(
   previousRound.price === null ||
   currentRound.price === null
 ) {
-  missingPrices++;
   continue;
 }
 
@@ -65,7 +59,6 @@ const scores = getLastThreeScores(
 );
 
 if (scores === null) {
-  missingScores++;
   continue;
 }
 

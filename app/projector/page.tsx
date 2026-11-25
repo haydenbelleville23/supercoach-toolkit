@@ -7,17 +7,12 @@ import PlayerSelector from "@/components/projector/PlayerSelector";
 import PlayerStats from "@/components/projector/PlayerStats";
 import ProjectionModeSelector from "@/components/projector/ProjectionModeSelector";
 import SeasonProjectionTable from "@/components/projector/SeasonProjectionTable";
-import { getProjectedScore } from "@/lib/projector/getProjectedScore";
-import { CURRENT_COMPLETED_ROUND } from "@/data/season";
-import { getTeamFixture } from "@/lib/fixtures";
-import { createSeasonRows } from "@/lib/priceEngine/createSeasonRows";
 import { playerRepository } from "@/lib/repository/PlayerRepository";
 import { buildPlayerRows } from "@/lib/projector/buildPlayerRows";
 import { calculateProjectionRows as calculateClassicProjectionRows } from "@/lib/projector/calculateProjectionRows";
 import { calculateScaledProjectionRows } from "@/lib/projector/calculateScaledProjectionRows";
 
 import type { ProjectionMode } from "@/lib/projector/projectionModes";
-import type { Player } from "@/types/player";
 import type { SeasonProjectionRow } from "@/types/projection";
 
 const players = playerRepository.getAll();
@@ -28,7 +23,7 @@ export default function ProjectorPage({
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
   // Scaled model by default; /projector?model=classic keeps the old
-  // fixed-MN calculation for side-by-side comparison.
+  // calculation for side-by-side comparison.
   const calculateProjectionRows =
     use(searchParams).model === "classic"
       ? calculateClassicProjectionRows
@@ -177,11 +172,9 @@ export default function ProjectorPage({
         </div>
 
         <p className="mt-5 text-xs leading-5 text-slate-500">
-          Magic Numbers are controlled by the
-          season model and cannot be
-          edited. Future values may be estimates until
-          confirmed using actual weekly price
-          movements.
+          Future prices are estimates based on the
+          scores entered above, until confirmed by
+          actual weekly price movements.
         </p>
       </section>
     </main>

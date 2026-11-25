@@ -4,7 +4,6 @@ import Link from "next/link";
 import Header from "@/components/layout/Header";
 import {
   type UIEvent,
-  useEffect,
   useMemo,
   useState,
 } from "react";
@@ -299,16 +298,24 @@ const visibleRows = useMemo(
   });
 }
 
-useEffect(() => {
-    setVisibleCount(50);
-  }, [
+  // Show the first 50 rows again whenever a filter or sort changes
+  // (adjusted during render rather than in an effect).
+  const filterKey = [
     searchQuery,
     projectionMode,
     positionFilter,
     priceFilter,
     clubFilter,
     sortMode,
-  ]);
+  ].join("|");
+
+  const [visibleCountKey, setVisibleCountKey] =
+    useState(filterKey);
+
+  if (visibleCountKey !== filterKey) {
+    setVisibleCountKey(filterKey);
+    setVisibleCount(50);
+  }
   function handleTableScroll(
   event: UIEvent<HTMLDivElement>,
 ) {
@@ -560,22 +567,22 @@ useEffect(() => {
                 className="max-h-[70vh] overflow-auto"
                 onScroll={handleTableScroll}
               >
-            <table className="w-full min-w-[1500px] text-sm">
+            <table className="w-full min-w-[1500px] whitespace-nowrap text-sm">
               <thead className="sticky top-0 z-20 border-b border-slate-800 bg-slate-950">
                 <tr className="text-left text-xs uppercase tracking-wide text-slate-500">
-                  <th className="sticky left-0 z-40 w-[180px] min-w-[180px] max-w-[180px] bg-slate-950 px-4 py-3">
+                  <th className="sticky left-0 z-40 w-[180px] min-w-[180px] max-w-[180px] whitespace-normal bg-slate-950 px-4 py-3">
                     Player
                   </th>
 
-                  <th className="sticky left-[180px] z-40 w-[100px] min-w-[100px] max-w-[100px] border-r border-slate-700 bg-slate-950 px-3 py-3 text-right shadow-[5px_0_8px_rgba(0,0,0,0.18)]">
+                  <th className="z-40 w-[100px] sm:sticky sm:left-[180px] min-w-[100px] max-w-[100px] border-r border-slate-700 bg-slate-950 px-3 py-3 text-right shadow-[5px_0_8px_rgba(0,0,0,0.18)]">
                     Price
                   </th>
 
-                  <th className="px-3 py-3 text-right">
+                  <th className="w-[100px] min-w-[100px] px-3 py-3 text-right">
                     BE
                   </th>
 
-                  <th className="px-3 py-3 text-right">
+                  <th className="w-[100px] min-w-[100px] px-3 py-3 text-right">
                     Proj Avg
                   </th>
 
@@ -583,7 +590,7 @@ useEffect(() => {
                     Topped Out Gain
                   </th>
 
-                  <th className="px-3 py-3 text-right">
+                  <th className="w-[100px] min-w-[100px] px-3 py-3 text-right">
                     Topped Out Rd
                   </th>
 
@@ -615,7 +622,7 @@ useEffect(() => {
                     key={row.player.id}
                     className="border-b border-slate-800 last:border-0 hover:bg-slate-800/40"
                   >
-                    <td className="sticky left-0 z-10 bg-slate-900 px-4 py-3">
+                    <td className="sticky left-0 z-10 w-[180px] min-w-[180px] max-w-[180px] whitespace-normal bg-slate-900 px-4 py-3">
                       <Link
                         href={`/projector?player=${row.player.id}`}
                         className="font-semibold text-white hover:text-violet-400"
@@ -632,7 +639,7 @@ useEffect(() => {
                       </div>
                     </td>
 
-                    <td className="sticky left-[180px] z-20 w-[100px] min-w-[100px] max-w-[100px] border-r border-slate-700 bg-slate-900 px-3 py-3 text-right tabular-nums shadow-[5px_0_8px_rgba(0,0,0,0.18)] group-hover:bg-slate-800">
+                    <td className="z-20 w-[100px] sm:sticky sm:left-[180px] min-w-[100px] max-w-[100px] border-r border-slate-700 bg-slate-900 px-3 py-3 text-right tabular-nums shadow-[5px_0_8px_rgba(0,0,0,0.18)] group-hover:bg-slate-800">
                       {formatMoney(
                         row.player.price,
                       )}
@@ -721,6 +728,7 @@ useEffect(() => {
         <input
             type="text"
             inputMode="numeric"
+            aria-label={`${row.player.name} round ${round} score`}
             value={
             overriddenScore ??
             projectedRound.score
