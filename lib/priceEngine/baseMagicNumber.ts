@@ -12,6 +12,19 @@
  */
 export const BASE_MAGIC_NUMBER_2026 = 5412.15;
 
+/**
+ * Each season's base magic number. Add the new season's value (from
+ * estimateBaseMagicNumber on its first round of price changes) when it
+ * starts; seasons without one have no baseMN to check against.
+ */
+export const BASE_MAGIC_NUMBERS: Record<number, number> = {
+  2026: BASE_MAGIC_NUMBER_2026,
+};
+
+export function getBaseMagicNumber(season: number): number | null {
+  return BASE_MAGIC_NUMBERS[season] ?? null;
+}
+
 export interface BaseMagicNumberSample {
   /** Published price before the round. */
   oldPrice: number;

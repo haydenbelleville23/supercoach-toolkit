@@ -1,0 +1,3528 @@
+{
+  "season": 2026,
+  "round": 9,
+  "generatedAt": "2026-11-25T07:17:03.248Z",
+  "baseMN": 5412.15,
+  "k": 0.977925,
+  "effectiveMN": 5292.67,
+  "anchorTotal": 231706600,
+  "poolSize": 794,
+  "playersCompared": 390,
+  "avgAbsError": 25.9,
+  "maxAbsError": 100,
+  "within100Pct": 1,
+  "estimatedBaseMN": 5411.74,
+  "warnings": [],
+  "players": [
+    {
+      "playerId": 722,
+      "name": "Aaron Naughton",
+      "oldPrice": 312200,
+      "modelPrice": 308400,
+      "publishedPrice": 308300,
+      "error": 100,
+      "threeRoundAverage": 60
+    },
+    {
+      "playerId": 29,
+      "name": "Alex Neal-Bullen",
+      "oldPrice": 359800,
+      "modelPrice": 369700,
+      "publishedPrice": 369800,
+      "error": -100,
+      "threeRoundAverage": 80
+    },
+    {
+      "playerId": 521,
+      "name": "Aliir Aliir",
+      "oldPrice": 439900,
+      "modelPrice": 453600,
+      "publishedPrice": 453700,
+      "error": -100,
+      "threeRoundAverage": 99
+    },
+    {
+      "playerId": 131,
+      "name": "Angus Anderson",
+      "oldPrice": 200900,
+      "modelPrice": 214800,
+      "publishedPrice": 214900,
+      "error": -100,
+      "threeRoundAverage": 51
+    },
+    {
+      "playerId": 687,
+      "name": "Angus Sheldrick",
+      "oldPrice": 374600,
+      "modelPrice": 369100,
+      "publishedPrice": 369200,
+      "error": -100,
+      "threeRoundAverage": 71.33
+    },
+    {
+      "playerId": 611,
+      "name": "Anthony Caminiti",
+      "oldPrice": 227300,
+      "modelPrice": 204600,
+      "publishedPrice": 204700,
+      "error": -100,
+      "threeRoundAverage": 28.67
+    },
+    {
+      "playerId": 198,
+      "name": "Archer May",
+      "oldPrice": 245800,
+      "modelPrice": 249500,
+      "publishedPrice": 249600,
+      "error": -100,
+      "threeRoundAverage": 52.33
+    },
+    {
+      "playerId": 210,
+      "name": "Archie Roberts",
+      "oldPrice": 579600,
+      "modelPrice": 597600,
+      "publishedPrice": 597500,
+      "error": 100,
+      "threeRoundAverage": 130.33
+    },
+    {
+      "playerId": 776,
+      "name": "Bailey J. Williams",
+      "oldPrice": 317700,
+      "modelPrice": 330000,
+      "publishedPrice": 330100,
+      "error": -100,
+      "threeRoundAverage": 73.33
+    },
+    {
+      "playerId": 441,
+      "name": "Bayley Fritsch",
+      "oldPrice": 368300,
+      "modelPrice": 361400,
+      "publishedPrice": 361500,
+      "error": -100,
+      "threeRoundAverage": 69
+    },
+    {
+      "playerId": 407,
+      "name": "Blake Hardwick",
+      "oldPrice": 436600,
+      "modelPrice": 407600,
+      "publishedPrice": 407500,
+      "error": 100,
+      "threeRoundAverage": 66
+    },
+    {
+      "playerId": 757,
+      "name": "Brady Hough",
+      "oldPrice": 291100,
+      "modelPrice": 277500,
+      "publishedPrice": 277400,
+      "error": 100,
+      "threeRoundAverage": 48.33
+    },
+    {
+      "playerId": 225,
+      "name": "Brennan Cox",
+      "oldPrice": 310400,
+      "modelPrice": 318100,
+      "publishedPrice": 318000,
+      "error": 100,
+      "threeRoundAverage": 68.33
+    },
+    {
+      "playerId": 718,
+      "name": "Buku Khamis",
+      "oldPrice": 264500,
+      "modelPrice": 269900,
+      "publishedPrice": 269800,
+      "error": 100,
+      "threeRoundAverage": 57.33
+    },
+    {
+      "playerId": 520,
+      "name": "Cameron Zurhaar",
+      "oldPrice": 373400,
+      "modelPrice": 374400,
+      "publishedPrice": 374500,
+      "error": -100,
+      "threeRoundAverage": 76
+    },
+    {
+      "playerId": 53,
+      "name": "Charlie Cameron",
+      "oldPrice": 385500,
+      "modelPrice": 400900,
+      "publishedPrice": 401000,
+      "error": -100,
+      "threeRoundAverage": 89.33
+    },
+    {
+      "playerId": 546,
+      "name": "Christian Moraes",
+      "oldPrice": 272700,
+      "modelPrice": 294800,
+      "publishedPrice": 294900,
+      "error": -100,
+      "threeRoundAverage": 71.67
+    },
+    {
+      "playerId": 292,
+      "name": "Christian Petracca",
+      "oldPrice": 562400,
+      "modelPrice": 561100,
+      "publishedPrice": 561200,
+      "error": -100,
+      "threeRoundAverage": 112.33
+    },
+    {
+      "playerId": 414,
+      "name": "Connor Macdonald",
+      "oldPrice": 435600,
+      "modelPrice": 435000,
+      "publishedPrice": 435100,
+      "error": -100,
+      "threeRoundAverage": 87.33
+    },
+    {
+      "playerId": 713,
+      "name": "Cooper Hynes",
+      "oldPrice": 202400,
+      "modelPrice": 206700,
+      "publishedPrice": 206600,
+      "error": 100,
+      "threeRoundAverage": 44
+    },
+    {
+      "playerId": 515,
+      "name": "Cooper Trembath",
+      "oldPrice": 309800,
+      "modelPrice": 269600,
+      "publishedPrice": 269500,
+      "error": 100,
+      "threeRoundAverage": 32
+    },
+    {
+      "playerId": 645,
+      "name": "Darcy Wilson",
+      "oldPrice": 368100,
+      "modelPrice": 397000,
+      "publishedPrice": 397100,
+      "error": -100,
+      "threeRoundAverage": 96
+    },
+    {
+      "playerId": 512,
+      "name": "Dylan Stephens",
+      "oldPrice": 378100,
+      "modelPrice": 376600,
+      "publishedPrice": 376500,
+      "error": 100,
+      "threeRoundAverage": 75
+    },
+    {
+      "playerId": 213,
+      "name": "Dyson Sharp",
+      "oldPrice": 162500,
+      "modelPrice": 184500,
+      "publishedPrice": 184400,
+      "error": 100,
+      "threeRoundAverage": 49.33
+    },
+    {
+      "playerId": 779,
+      "name": "Elliot Yeo",
+      "oldPrice": 427000,
+      "modelPrice": 437600,
+      "publishedPrice": 437500,
+      "error": 100,
+      "threeRoundAverage": 94
+    },
+    {
+      "playerId": 744,
+      "name": "Hamish Davis",
+      "oldPrice": 262000,
+      "modelPrice": 264100,
+      "publishedPrice": 264000,
+      "error": 100,
+      "threeRoundAverage": 54.33
+    },
+    {
+      "playerId": 769,
+      "name": "Harley Reid",
+      "oldPrice": 390400,
+      "modelPrice": 411200,
+      "publishedPrice": 411100,
+      "error": 100,
+      "threeRoundAverage": 94.33
+    },
+    {
+      "playerId": 464,
+      "name": "Harrison Petty",
+      "oldPrice": 222500,
+      "modelPrice": 246600,
+      "publishedPrice": 246500,
+      "error": 100,
+      "threeRoundAverage": 63
+    },
+    {
+      "playerId": 469,
+      "name": "Harry Sharp",
+      "oldPrice": 339600,
+      "modelPrice": 347400,
+      "publishedPrice": 347500,
+      "error": -100,
+      "threeRoundAverage": 74.33
+    },
+    {
+      "playerId": 451,
+      "name": "Harvey Langford",
+      "oldPrice": 350900,
+      "modelPrice": 325700,
+      "publishedPrice": 325800,
+      "error": -100,
+      "threeRoundAverage": 51.67
+    },
+    {
+      "playerId": 390,
+      "name": "Harvey Thomas",
+      "oldPrice": 396000,
+      "modelPrice": 393700,
+      "publishedPrice": 393600,
+      "error": 100,
+      "threeRoundAverage": 78
+    },
+    {
+      "playerId": 223,
+      "name": "Heath Chapman",
+      "oldPrice": 387200,
+      "modelPrice": 377900,
+      "publishedPrice": 378000,
+      "error": -100,
+      "threeRoundAverage": 71
+    },
+    {
+      "playerId": 3,
+      "name": "Hugh Bond",
+      "oldPrice": 250200,
+      "modelPrice": 251000,
+      "publishedPrice": 250900,
+      "error": 100,
+      "threeRoundAverage": 51
+    },
+    {
+      "playerId": 8,
+      "name": "Isaac Cumming",
+      "oldPrice": 329600,
+      "modelPrice": 343600,
+      "publishedPrice": 343700,
+      "error": -100,
+      "threeRoundAverage": 77
+    },
+    {
+      "playerId": 163,
+      "name": "Isaac Quaynor",
+      "oldPrice": 374900,
+      "modelPrice": 378600,
+      "publishedPrice": 378700,
+      "error": -100,
+      "threeRoundAverage": 78.33
+    },
+    {
+      "playerId": 34,
+      "name": "Izak Rankine",
+      "oldPrice": 431600,
+      "modelPrice": 463900,
+      "publishedPrice": 463800,
+      "error": 100,
+      "threeRoundAverage": 111.33
+    },
+    {
+      "playerId": 309,
+      "name": "Jack Bowes",
+      "oldPrice": 336100,
+      "modelPrice": 326800,
+      "publishedPrice": 326700,
+      "error": 100,
+      "threeRoundAverage": 60.67
+    },
+    {
+      "playerId": 356,
+      "name": "Jack Buckley",
+      "oldPrice": 311700,
+      "modelPrice": 311500,
+      "publishedPrice": 311600,
+      "error": -100,
+      "threeRoundAverage": 62.67
+    },
+    {
+      "playerId": 132,
+      "name": "Jack Buller",
+      "oldPrice": 244300,
+      "modelPrice": 240900,
+      "publishedPrice": 241000,
+      "error": -100,
+      "threeRoundAverage": 46.67
+    },
+    {
+      "playerId": 594,
+      "name": "Jack Ross",
+      "oldPrice": 499300,
+      "modelPrice": 507300,
+      "publishedPrice": 507400,
+      "error": -100,
+      "threeRoundAverage": 106.67
+    },
+    {
+      "playerId": 638,
+      "name": "Jack Silvagni",
+      "oldPrice": 329300,
+      "modelPrice": 321800,
+      "publishedPrice": 321700,
+      "error": 100,
+      "threeRoundAverage": 60.67
+    },
+    {
+      "playerId": 471,
+      "name": "Jack Steele",
+      "oldPrice": 522800,
+      "modelPrice": 499000,
+      "publishedPrice": 499100,
+      "error": -100,
+      "threeRoundAverage": 87.33
+    },
+    {
+      "playerId": 558,
+      "name": "Jack Watkins",
+      "oldPrice": 152100,
+      "modelPrice": 156500,
+      "publishedPrice": 156600,
+      "error": -100,
+      "threeRoundAverage": 34
+    },
+    {
+      "playerId": 560,
+      "name": "Jack Whitlock",
+      "oldPrice": 255000,
+      "modelPrice": 247500,
+      "publishedPrice": 247400,
+      "error": 100,
+      "threeRoundAverage": 45.67
+    },
+    {
+      "playerId": 186,
+      "name": "Jacob Farrow",
+      "oldPrice": 306100,
+      "modelPrice": 299000,
+      "publishedPrice": 299100,
+      "error": -100,
+      "threeRoundAverage": 56.33
+    },
+    {
+      "playerId": 498,
+      "name": "Jacob Konstanty",
+      "oldPrice": 243000,
+      "modelPrice": 227600,
+      "publishedPrice": 227700,
+      "error": -100,
+      "threeRoundAverage": 37.33
+    },
+    {
+      "playerId": 383,
+      "name": "Jake Riccardi",
+      "oldPrice": 357500,
+      "modelPrice": 335900,
+      "publishedPrice": 335800,
+      "error": 100,
+      "threeRoundAverage": 55.67
+    },
+    {
+      "playerId": 299,
+      "name": "Jamarra Ugle-Hagan",
+      "oldPrice": 214100,
+      "modelPrice": 191400,
+      "publishedPrice": 191500,
+      "error": -100,
+      "threeRoundAverage": 26
+    },
+    {
+      "playerId": 685,
+      "name": "James Rowbottom",
+      "oldPrice": 355800,
+      "modelPrice": 339500,
+      "publishedPrice": 339400,
+      "error": 100,
+      "threeRoundAverage": 59.33
+    },
+    {
+      "playerId": 60,
+      "name": "Jaspa Fletcher",
+      "oldPrice": 400400,
+      "modelPrice": 375300,
+      "publishedPrice": 375200,
+      "error": 100,
+      "threeRoundAverage": 61.67
+    },
+    {
+      "playerId": 206,
+      "name": "Jaxon Prior",
+      "oldPrice": 392200,
+      "modelPrice": 366200,
+      "publishedPrice": 366100,
+      "error": 100,
+      "threeRoundAverage": 59.33
+    },
+    {
+      "playerId": 363,
+      "name": "Joe Fonti",
+      "oldPrice": 373400,
+      "modelPrice": 374400,
+      "publishedPrice": 374500,
+      "error": -100,
+      "threeRoundAverage": 76
+    },
+    {
+      "playerId": 649,
+      "name": "Joel Amartey",
+      "oldPrice": 325000,
+      "modelPrice": 317800,
+      "publishedPrice": 317700,
+      "error": 100,
+      "threeRoundAverage": 60
+    },
+    {
+      "playerId": 708,
+      "name": "Joel Freijah",
+      "oldPrice": 393900,
+      "modelPrice": 412000,
+      "publishedPrice": 411900,
+      "error": 100,
+      "threeRoundAverage": 93
+    },
+    {
+      "playerId": 10,
+      "name": "Jordan Dawson",
+      "oldPrice": 548100,
+      "modelPrice": 548900,
+      "publishedPrice": 548800,
+      "error": 100,
+      "threeRoundAverage": 111
+    },
+    {
+      "playerId": 139,
+      "name": "Jordan De Goey",
+      "oldPrice": 312500,
+      "modelPrice": 365900,
+      "publishedPrice": 366000,
+      "error": -100,
+      "threeRoundAverage": 103.33
+    },
+    {
+      "playerId": 538,
+      "name": "Josh Lai",
+      "oldPrice": 205200,
+      "modelPrice": 238300,
+      "publishedPrice": 238200,
+      "error": 100,
+      "threeRoundAverage": 66.33
+    },
+    {
+      "playerId": 254,
+      "name": "Josh Treacy",
+      "oldPrice": 466000,
+      "modelPrice": 473700,
+      "publishedPrice": 473600,
+      "error": 100,
+      "threeRoundAverage": 99.67
+    },
+    {
+      "playerId": 434,
+      "name": "Josh Weddle",
+      "oldPrice": 344100,
+      "modelPrice": 320700,
+      "publishedPrice": 320800,
+      "error": -100,
+      "threeRoundAverage": 51.67
+    },
+    {
+      "playerId": 42,
+      "name": "Josh Worrell",
+      "oldPrice": 472800,
+      "modelPrice": 456200,
+      "publishedPrice": 456100,
+      "error": 100,
+      "threeRoundAverage": 82.67
+    },
+    {
+      "playerId": 534,
+      "name": "Kane Farrell",
+      "oldPrice": 431500,
+      "modelPrice": 436400,
+      "publishedPrice": 436500,
+      "error": -100,
+      "threeRoundAverage": 90.67
+    },
+    {
+      "playerId": 354,
+      "name": "Kieren Briggs",
+      "oldPrice": 374600,
+      "modelPrice": 373500,
+      "publishedPrice": 373600,
+      "error": -100,
+      "threeRoundAverage": 74.67
+    },
+    {
+      "playerId": 473,
+      "name": "Koltyn Tholstrup",
+      "oldPrice": 342100,
+      "modelPrice": 348400,
+      "publishedPrice": 348300,
+      "error": 100,
+      "threeRoundAverage": 73.67
+    },
+    {
+      "playerId": 352,
+      "name": "Lachie Ash",
+      "oldPrice": 518600,
+      "modelPrice": 512700,
+      "publishedPrice": 512600,
+      "error": 100,
+      "threeRoundAverage": 100
+    },
+    {
+      "playerId": 166,
+      "name": "Lachie Schultz",
+      "oldPrice": 393700,
+      "modelPrice": 395900,
+      "publishedPrice": 396000,
+      "error": -100,
+      "threeRoundAverage": 81
+    },
+    {
+      "playerId": 98,
+      "name": "Lachlan Cowan",
+      "oldPrice": 303100,
+      "modelPrice": 290200,
+      "publishedPrice": 290300,
+      "error": -100,
+      "threeRoundAverage": 51.33
+    },
+    {
+      "playerId": 276,
+      "name": "Lachlan Gulbin",
+      "oldPrice": 170800,
+      "modelPrice": 174200,
+      "publishedPrice": 174300,
+      "error": -100,
+      "threeRoundAverage": 37
+    },
+    {
+      "playerId": 634,
+      "name": "Mattaes Phillipou",
+      "oldPrice": 295900,
+      "modelPrice": 321100,
+      "publishedPrice": 321200,
+      "error": -100,
+      "threeRoundAverage": 78.67
+    },
+    {
+      "playerId": 446,
+      "name": "Matthew Jefferson",
+      "oldPrice": 162100,
+      "modelPrice": 183700,
+      "publishedPrice": 183800,
+      "error": -100,
+      "threeRoundAverage": 49
+    },
+    {
+      "playerId": 234,
+      "name": "Matthew Johnson",
+      "oldPrice": 316200,
+      "modelPrice": 280400,
+      "publishedPrice": 280500,
+      "error": -100,
+      "threeRoundAverage": 36.67
+    },
+    {
+      "playerId": 367,
+      "name": "Max Gruzewski",
+      "oldPrice": 201600,
+      "modelPrice": 201200,
+      "publishedPrice": 201300,
+      "error": -100,
+      "threeRoundAverage": 40.33
+    },
+    {
+      "playerId": 443,
+      "name": "Max Heath",
+      "oldPrice": 223000,
+      "modelPrice": 269900,
+      "publishedPrice": 269800,
+      "error": 100,
+      "threeRoundAverage": 80.33
+    },
+    {
+      "playerId": 524,
+      "name": "Miles Bergman",
+      "oldPrice": 354000,
+      "modelPrice": 340400,
+      "publishedPrice": 340300,
+      "error": 100,
+      "threeRoundAverage": 61
+    },
+    {
+      "playerId": 535,
+      "name": "Mitch Georgiades",
+      "oldPrice": 382800,
+      "modelPrice": 388400,
+      "publishedPrice": 388300,
+      "error": 100,
+      "threeRoundAverage": 81.33
+    },
+    {
+      "playerId": 112,
+      "name": "Mitch McGovern",
+      "oldPrice": 352900,
+      "modelPrice": 342600,
+      "publishedPrice": 342700,
+      "error": -100,
+      "threeRoundAverage": 63.33
+    },
+    {
+      "playerId": 426,
+      "name": "Ned Reeves",
+      "oldPrice": 334000,
+      "modelPrice": 313800,
+      "publishedPrice": 313700,
+      "error": 100,
+      "threeRoundAverage": 52
+    },
+    {
+      "playerId": 117,
+      "name": "Nic Newman",
+      "oldPrice": 436600,
+      "modelPrice": 445000,
+      "publishedPrice": 445100,
+      "error": -100,
+      "threeRoundAverage": 94.33
+    },
+    {
+      "playerId": 499,
+      "name": "Nick Larkey",
+      "oldPrice": 372000,
+      "modelPrice": 353600,
+      "publishedPrice": 353500,
+      "error": 100,
+      "threeRoundAverage": 61
+    },
+    {
+      "playerId": 565,
+      "name": "Noah Balta",
+      "oldPrice": 311600,
+      "modelPrice": 352000,
+      "publishedPrice": 352100,
+      "error": -100,
+      "threeRoundAverage": 93.33
+    },
+    {
+      "playerId": 261,
+      "name": "Oscar Adams",
+      "oldPrice": 195200,
+      "modelPrice": 206200,
+      "publishedPrice": 206300,
+      "error": -100,
+      "threeRoundAverage": 47.67
+    },
+    {
+      "playerId": 169,
+      "name": "Roan Steele",
+      "oldPrice": 264900,
+      "modelPrice": 273700,
+      "publishedPrice": 273600,
+      "error": 100,
+      "threeRoundAverage": 60
+    },
+    {
+      "playerId": 630,
+      "name": "Rowan Marshall",
+      "oldPrice": 455300,
+      "modelPrice": 472400,
+      "publishedPrice": 472500,
+      "error": -100,
+      "threeRoundAverage": 104.67
+    },
+    {
+      "playerId": 764,
+      "name": "Ryan Maric",
+      "oldPrice": 440100,
+      "modelPrice": 415000,
+      "publishedPrice": 414900,
+      "error": 100,
+      "threeRoundAverage": 69.67
+    },
+    {
+      "playerId": 317,
+      "name": "Sam De Koning",
+      "oldPrice": 344100,
+      "modelPrice": 326500,
+      "publishedPrice": 326400,
+      "error": 100,
+      "threeRoundAverage": 56
+    },
+    {
+      "playerId": 57,
+      "name": "Sam Draper",
+      "oldPrice": 382400,
+      "modelPrice": 384600,
+      "publishedPrice": 384500,
+      "error": 100,
+      "threeRoundAverage": 78.67
+    },
+    {
+      "playerId": 181,
+      "name": "Sam Durham",
+      "oldPrice": 374700,
+      "modelPrice": 389100,
+      "publishedPrice": 389000,
+      "error": 100,
+      "threeRoundAverage": 86.33
+    },
+    {
+      "playerId": 124,
+      "name": "Sam Walsh",
+      "oldPrice": 522500,
+      "modelPrice": 509400,
+      "publishedPrice": 509300,
+      "error": 100,
+      "threeRoundAverage": 95.33
+    },
+    {
+      "playerId": 691,
+      "name": "Sam Wicks",
+      "oldPrice": 341200,
+      "modelPrice": 352100,
+      "publishedPrice": 352200,
+      "error": -100,
+      "threeRoundAverage": 77
+    },
+    {
+      "playerId": 571,
+      "name": "Samuel Cumming",
+      "oldPrice": 176500,
+      "modelPrice": 214100,
+      "publishedPrice": 214200,
+      "error": -100,
+      "threeRoundAverage": 64
+    },
+    {
+      "playerId": 330,
+      "name": "Shaun Mannagh",
+      "oldPrice": 334800,
+      "modelPrice": 338600,
+      "publishedPrice": 338700,
+      "error": -100,
+      "threeRoundAverage": 70.33
+    },
+    {
+      "playerId": 167,
+      "name": "Steele Sidebottom",
+      "oldPrice": 340800,
+      "modelPrice": 331600,
+      "publishedPrice": 331500,
+      "error": 100,
+      "threeRoundAverage": 61.67
+    },
+    {
+      "playerId": 211,
+      "name": "Sullivan Robey",
+      "oldPrice": 187600,
+      "modelPrice": 209000,
+      "publishedPrice": 209100,
+      "error": -100,
+      "threeRoundAverage": 54
+    },
+    {
+      "playerId": 310,
+      "name": "Tanner Bruhn",
+      "oldPrice": 390300,
+      "modelPrice": 392100,
+      "publishedPrice": 392200,
+      "error": -100,
+      "threeRoundAverage": 80
+    },
+    {
+      "playerId": 707,
+      "name": "Tim English",
+      "oldPrice": 555200,
+      "modelPrice": 525900,
+      "publishedPrice": 525800,
+      "error": 100,
+      "threeRoundAverage": 89.67
+    },
+    {
+      "playerId": 601,
+      "name": "Tim Taranto",
+      "oldPrice": 541000,
+      "modelPrice": 511900,
+      "publishedPrice": 512000,
+      "error": -100,
+      "threeRoundAverage": 87
+    },
+    {
+      "playerId": 353,
+      "name": "Toby Bedford",
+      "oldPrice": 297400,
+      "modelPrice": 281600,
+      "publishedPrice": 281700,
+      "error": -100,
+      "threeRoundAverage": 48
+    },
+    {
+      "playerId": 395,
+      "name": "Tom Barrass",
+      "oldPrice": 366300,
+      "modelPrice": 334800,
+      "publishedPrice": 334900,
+      "error": -100,
+      "threeRoundAverage": 50
+    },
+    {
+      "playerId": 519,
+      "name": "Tristan Xerri",
+      "oldPrice": 673700,
+      "modelPrice": 686000,
+      "publishedPrice": 685900,
+      "error": 100,
+      "threeRoundAverage": 145
+    },
+    {
+      "playerId": 38,
+      "name": "Zac Taylor",
+      "oldPrice": 255300,
+      "modelPrice": 254700,
+      "publishedPrice": 254800,
+      "error": -100,
+      "threeRoundAverage": 51
+    },
+    {
+      "playerId": 321,
+      "name": "Zach Guthrie",
+      "oldPrice": 403400,
+      "modelPrice": 402200,
+      "publishedPrice": 402100,
+      "error": 100,
+      "threeRoundAverage": 80.33
+    },
+    {
+      "playerId": 490,
+      "name": "Zane Duursma",
+      "oldPrice": 197000,
+      "modelPrice": 213700,
+      "publishedPrice": 213800,
+      "error": -100,
+      "threeRoundAverage": 52.33
+    },
+    {
+      "playerId": 357,
+      "name": "Aaron Cadman",
+      "oldPrice": 386100,
+      "modelPrice": 390800,
+      "publishedPrice": 390800,
+      "error": 0,
+      "threeRoundAverage": 81.33
+    },
+    {
+      "playerId": 94,
+      "name": "Adam Cerra",
+      "oldPrice": 449800,
+      "modelPrice": 434000,
+      "publishedPrice": 434000,
+      "error": 0,
+      "threeRoundAverage": 78.67
+    },
+    {
+      "playerId": 122,
+      "name": "Adam Saad",
+      "oldPrice": 437600,
+      "modelPrice": 420200,
+      "publishedPrice": 420200,
+      "error": 0,
+      "threeRoundAverage": 75
+    },
+    {
+      "playerId": 270,
+      "name": "Alex Davies",
+      "oldPrice": 357400,
+      "modelPrice": 335800,
+      "publishedPrice": 335800,
+      "error": 0,
+      "threeRoundAverage": 55.67
+    },
+    {
+      "playerId": 244,
+      "name": "Alex Pearce",
+      "oldPrice": 292200,
+      "modelPrice": 270800,
+      "publishedPrice": 270800,
+      "error": 0,
+      "threeRoundAverage": 42.67
+    },
+    {
+      "playerId": 221,
+      "name": "Andrew Brayshaw",
+      "oldPrice": 469900,
+      "modelPrice": 466800,
+      "publishedPrice": 466800,
+      "error": 0,
+      "threeRoundAverage": 92.33
+    },
+    {
+      "playerId": 199,
+      "name": "Andrew McGrath",
+      "oldPrice": 423100,
+      "modelPrice": 406000,
+      "publishedPrice": 406000,
+      "error": 0,
+      "threeRoundAverage": 72.33
+    },
+    {
+      "playerId": 180,
+      "name": "Archer Day-Wicks",
+      "oldPrice": 243700,
+      "modelPrice": 244900,
+      "publishedPrice": 244900,
+      "error": 0,
+      "threeRoundAverage": 50
+    },
+    {
+      "playerId": 205,
+      "name": "Archie Perkins",
+      "oldPrice": 266200,
+      "modelPrice": 269800,
+      "publishedPrice": 269800,
+      "error": 0,
+      "threeRoundAverage": 56.33
+    },
+    {
+      "playerId": 715,
+      "name": "Arthur Jones",
+      "oldPrice": 159200,
+      "modelPrice": 207600,
+      "publishedPrice": 207600,
+      "error": 0,
+      "threeRoundAverage": 68.67
+    },
+    {
+      "playerId": 701,
+      "name": "Bailey Dale",
+      "oldPrice": 495800,
+      "modelPrice": 532100,
+      "publishedPrice": 532100,
+      "error": 0,
+      "threeRoundAverage": 127.33
+    },
+    {
+      "playerId": 279,
+      "name": "Bailey Humphrey",
+      "oldPrice": 376500,
+      "modelPrice": 363500,
+      "publishedPrice": 363500,
+      "error": 0,
+      "threeRoundAverage": 66
+    },
+    {
+      "playerId": 452,
+      "name": "Bailey Laurie",
+      "oldPrice": 173900,
+      "modelPrice": 200300,
+      "publishedPrice": 200300,
+      "error": 0,
+      "threeRoundAverage": 55
+    },
+    {
+      "playerId": 342,
+      "name": "Bailey Smith",
+      "oldPrice": 655600,
+      "modelPrice": 627700,
+      "publishedPrice": 627700,
+      "error": 0,
+      "threeRoundAverage": 111
+    },
+    {
+      "playerId": 733,
+      "name": "Bailey Williams",
+      "oldPrice": 443000,
+      "modelPrice": 411800,
+      "publishedPrice": 411800,
+      "error": 0,
+      "threeRoundAverage": 65.67
+    },
+    {
+      "playerId": 154,
+      "name": "Beau McCreery",
+      "oldPrice": 343200,
+      "modelPrice": 345200,
+      "publishedPrice": 345200,
+      "error": 0,
+      "threeRoundAverage": 70.67
+    },
+    {
+      "playerId": 88,
+      "name": "Ben Ainsworth",
+      "oldPrice": 325800,
+      "modelPrice": 342200,
+      "publishedPrice": 342200,
+      "error": 0,
+      "threeRoundAverage": 78
+    },
+    {
+      "playerId": 18,
+      "name": "Ben Keays",
+      "oldPrice": 378000,
+      "modelPrice": 374300,
+      "publishedPrice": 374300,
+      "error": 0,
+      "threeRoundAverage": 73.33
+    },
+    {
+      "playerId": 282,
+      "name": "Ben King",
+      "oldPrice": 317800,
+      "modelPrice": 319500,
+      "publishedPrice": 319500,
+      "error": 0,
+      "threeRoundAverage": 65.33
+    },
+    {
+      "playerId": 286,
+      "name": "Ben Long",
+      "oldPrice": 327500,
+      "modelPrice": 298900,
+      "publishedPrice": 298900,
+      "error": 0,
+      "threeRoundAverage": 44.33
+    },
+    {
+      "playerId": 586,
+      "name": "Ben Miller",
+      "oldPrice": 337800,
+      "modelPrice": 338600,
+      "publishedPrice": 338600,
+      "error": 0,
+      "threeRoundAverage": 68.67
+    },
+    {
+      "playerId": 657,
+      "name": "Billy Cootee",
+      "oldPrice": 113500,
+      "modelPrice": 132600,
+      "publishedPrice": 132600,
+      "error": 0,
+      "threeRoundAverage": 37.33
+    },
+    {
+      "playerId": 142,
+      "name": "Billy Frampton",
+      "oldPrice": 340400,
+      "modelPrice": 326000,
+      "publishedPrice": 326000,
+      "error": 0,
+      "threeRoundAverage": 57.67
+    },
+    {
+      "playerId": 445,
+      "name": "Blake Howes",
+      "oldPrice": 304700,
+      "modelPrice": 325400,
+      "publishedPrice": 325400,
+      "error": 0,
+      "threeRoundAverage": 77
+    },
+    {
+      "playerId": 300,
+      "name": "Bodhi Uwland",
+      "oldPrice": 452700,
+      "modelPrice": 473600,
+      "publishedPrice": 473600,
+      "error": 0,
+      "threeRoundAverage": 107
+    },
+    {
+      "playerId": 314,
+      "name": "Brad Close",
+      "oldPrice": 264700,
+      "modelPrice": 262500,
+      "publishedPrice": 262500,
+      "error": 0,
+      "threeRoundAverage": 51.67
+    },
+    {
+      "playerId": 625,
+      "name": "Bradley Hill",
+      "oldPrice": 447700,
+      "modelPrice": 465500,
+      "publishedPrice": 465500,
+      "error": 0,
+      "threeRoundAverage": 103.67
+    },
+    {
+      "playerId": 6,
+      "name": "Brayden Cook",
+      "oldPrice": 355700,
+      "modelPrice": 372900,
+      "publishedPrice": 372900,
+      "error": 0,
+      "threeRoundAverage": 84.67
+    },
+    {
+      "playerId": 152,
+      "name": "Brayden Maynard",
+      "oldPrice": 433700,
+      "modelPrice": 429200,
+      "publishedPrice": 429200,
+      "error": 0,
+      "threeRoundAverage": 84
+    },
+    {
+      "playerId": 360,
+      "name": "Brent Daniels",
+      "oldPrice": 339100,
+      "modelPrice": 365600,
+      "publishedPrice": 365600,
+      "error": 0,
+      "threeRoundAverage": 88.33
+    },
+    {
+      "playerId": 663,
+      "name": "Brodie Grundy",
+      "oldPrice": 695600,
+      "modelPrice": 676500,
+      "publishedPrice": 676500,
+      "error": 0,
+      "threeRoundAverage": 125.67
+    },
+    {
+      "playerId": 110,
+      "name": "Brodie Kemp",
+      "oldPrice": 294400,
+      "modelPrice": 290900,
+      "publishedPrice": 290900,
+      "error": 0,
+      "threeRoundAverage": 56.67
+    },
+    {
+      "playerId": 80,
+      "name": "Bruce Reville",
+      "oldPrice": 303100,
+      "modelPrice": 297700,
+      "publishedPrice": 297700,
+      "error": 0,
+      "threeRoundAverage": 57
+    },
+    {
+      "playerId": 485,
+      "name": "Caleb Daniel",
+      "oldPrice": 479500,
+      "modelPrice": 472100,
+      "publishedPrice": 472100,
+      "error": 0,
+      "threeRoundAverage": 91
+    },
+    {
+      "playerId": 248,
+      "name": "Caleb Serong",
+      "oldPrice": 476800,
+      "modelPrice": 463100,
+      "publishedPrice": 463100,
+      "error": 0,
+      "threeRoundAverage": 85.67
+    },
+    {
+      "playerId": 478,
+      "name": "Caleb Windsor",
+      "oldPrice": 317600,
+      "modelPrice": 350700,
+      "publishedPrice": 350700,
+      "error": 0,
+      "threeRoundAverage": 89
+    },
+    {
+      "playerId": 679,
+      "name": "Callum Mills",
+      "oldPrice": 481900,
+      "modelPrice": 484900,
+      "publishedPrice": 484900,
+      "error": 0,
+      "threeRoundAverage": 99.33
+    },
+    {
+      "playerId": 644,
+      "name": "Callum Wilkie",
+      "oldPrice": 555100,
+      "modelPrice": 500600,
+      "publishedPrice": 500600,
+      "error": 0,
+      "threeRoundAverage": 70.67
+    },
+    {
+      "playerId": 415,
+      "name": "Cam Mackenzie",
+      "oldPrice": 342700,
+      "modelPrice": 346200,
+      "publishedPrice": 346200,
+      "error": 0,
+      "threeRoundAverage": 71.67
+    },
+    {
+      "playerId": 79,
+      "name": "Cam Rayner",
+      "oldPrice": 371000,
+      "modelPrice": 370900,
+      "publishedPrice": 370900,
+      "error": 0,
+      "threeRoundAverage": 74.67
+    },
+    {
+      "playerId": 575,
+      "name": "Campbell Gray",
+      "oldPrice": 223900,
+      "modelPrice": 234300,
+      "publishedPrice": 234300,
+      "error": 0,
+      "threeRoundAverage": 53
+    },
+    {
+      "playerId": 689,
+      "name": "Chad Warner",
+      "oldPrice": 464900,
+      "modelPrice": 467600,
+      "publishedPrice": 467600,
+      "error": 0,
+      "threeRoundAverage": 95.67
+    },
+    {
+      "playerId": 447,
+      "name": "Changkuoth Jiath",
+      "oldPrice": 289000,
+      "modelPrice": 288300,
+      "publishedPrice": 288300,
+      "error": 0,
+      "threeRoundAverage": 57.67
+    },
+    {
+      "playerId": 482,
+      "name": "Charlie Comben",
+      "oldPrice": 320100,
+      "modelPrice": 315500,
+      "publishedPrice": 315500,
+      "error": 0,
+      "threeRoundAverage": 61
+    },
+    {
+      "playerId": 511,
+      "name": "Charlie Spargo",
+      "oldPrice": 243400,
+      "modelPrice": 246400,
+      "publishedPrice": 246400,
+      "error": 0,
+      "threeRoundAverage": 51.33
+    },
+    {
+      "playerId": 380,
+      "name": "Clayton Oliver",
+      "oldPrice": 555200,
+      "modelPrice": 540400,
+      "publishedPrice": 540400,
+      "error": 0,
+      "threeRoundAverage": 100.67
+    },
+    {
+      "playerId": 502,
+      "name": "Colby McKercher",
+      "oldPrice": 420300,
+      "modelPrice": 415000,
+      "publishedPrice": 415000,
+      "error": 0,
+      "threeRoundAverage": 80.67
+    },
+    {
+      "playerId": 695,
+      "name": "Connor Budarick",
+      "oldPrice": 320700,
+      "modelPrice": 349000,
+      "publishedPrice": 349000,
+      "error": 0,
+      "threeRoundAverage": 86
+    },
+    {
+      "playerId": 372,
+      "name": "Connor Idun",
+      "oldPrice": 428800,
+      "modelPrice": 441500,
+      "publishedPrice": 441500,
+      "error": 0,
+      "threeRoundAverage": 96
+    },
+    {
+      "playerId": 339,
+      "name": "Connor O'Sullivan",
+      "oldPrice": 349000,
+      "modelPrice": 354800,
+      "publishedPrice": 354800,
+      "error": 0,
+      "threeRoundAverage": 74.67
+    },
+    {
+      "playerId": 73,
+      "name": "Conor McKenna",
+      "oldPrice": 121200,
+      "modelPrice": 167800,
+      "publishedPrice": 167800,
+      "error": 0,
+      "threeRoundAverage": 59.67
+    },
+    {
+      "playerId": 423,
+      "name": "Conor Nash",
+      "oldPrice": 406200,
+      "modelPrice": 410000,
+      "publishedPrice": 410000,
+      "error": 0,
+      "threeRoundAverage": 84.67
+    },
+    {
+      "playerId": 746,
+      "name": "Cooper Duff-Tytler",
+      "oldPrice": 208100,
+      "modelPrice": 209500,
+      "publishedPrice": 209500,
+      "error": 0,
+      "threeRoundAverage": 43
+    },
+    {
+      "playerId": 637,
+      "name": "Cooper Sharman",
+      "oldPrice": 367100,
+      "modelPrice": 386600,
+      "publishedPrice": 386600,
+      "error": 0,
+      "threeRoundAverage": 88.67
+    },
+    {
+      "playerId": 532,
+      "name": "Corey Durdin",
+      "oldPrice": 285400,
+      "modelPrice": 309400,
+      "publishedPrice": 309400,
+      "error": 0,
+      "threeRoundAverage": 75.67
+    },
+    {
+      "playerId": 256,
+      "name": "Corey Wagner",
+      "oldPrice": 391700,
+      "modelPrice": 377700,
+      "publishedPrice": 377700,
+      "error": 0,
+      "threeRoundAverage": 68.33
+    },
+    {
+      "playerId": 146,
+      "name": "Dan Houston",
+      "oldPrice": 463700,
+      "modelPrice": 488700,
+      "publishedPrice": 488700,
+      "error": 0,
+      "threeRoundAverage": 112.33
+    },
+    {
+      "playerId": 682,
+      "name": "Dane Rampe",
+      "oldPrice": 333600,
+      "modelPrice": 339100,
+      "publishedPrice": 339100,
+      "error": 0,
+      "threeRoundAverage": 71.33
+    },
+    {
+      "playerId": 156,
+      "name": "Daniel McStay",
+      "oldPrice": 272600,
+      "modelPrice": 270500,
+      "publishedPrice": 270500,
+      "error": 0,
+      "threeRoundAverage": 53.33
+    },
+    {
+      "playerId": 295,
+      "name": "Daniel Rioli",
+      "oldPrice": 358400,
+      "modelPrice": 392100,
+      "publishedPrice": 392100,
+      "error": 0,
+      "threeRoundAverage": 97.67
+    },
+    {
+      "playerId": 556,
+      "name": "Dante Visentini",
+      "oldPrice": 300100,
+      "modelPrice": 292400,
+      "publishedPrice": 292400,
+      "error": 0,
+      "threeRoundAverage": 54.67
+    },
+    {
+      "playerId": 529,
+      "name": "Darcy Byrne-Jones",
+      "oldPrice": 387700,
+      "modelPrice": 377900,
+      "publishedPrice": 377900,
+      "error": 0,
+      "threeRoundAverage": 70.67
+    },
+    {
+      "playerId": 133,
+      "name": "Darcy Cameron",
+      "oldPrice": 436700,
+      "modelPrice": 407600,
+      "publishedPrice": 407600,
+      "error": 0,
+      "threeRoundAverage": 66
+    },
+    {
+      "playerId": 61,
+      "name": "Darcy Fort",
+      "oldPrice": 347400,
+      "modelPrice": 360700,
+      "publishedPrice": 360700,
+      "error": 0,
+      "threeRoundAverage": 80
+    },
+    {
+      "playerId": 158,
+      "name": "Darcy Moore",
+      "oldPrice": 354700,
+      "modelPrice": 297200,
+      "publishedPrice": 297200,
+      "error": 0,
+      "threeRoundAverage": 28
+    },
+    {
+      "playerId": 204,
+      "name": "Darcy Parish",
+      "oldPrice": 443000,
+      "modelPrice": 441800,
+      "publishedPrice": 441800,
+      "error": 0,
+      "threeRoundAverage": 88.33
+    },
+    {
+      "playerId": 84,
+      "name": "Darcy Wilmot",
+      "oldPrice": 436800,
+      "modelPrice": 445200,
+      "publishedPrice": 445200,
+      "error": 0,
+      "threeRoundAverage": 94.33
+    },
+    {
+      "playerId": 86,
+      "name": "Dayne Zorko",
+      "oldPrice": 486900,
+      "modelPrice": 458600,
+      "publishedPrice": 458600,
+      "error": 0,
+      "threeRoundAverage": 76.67
+    },
+    {
+      "playerId": 626,
+      "name": "Dougal Howard",
+      "oldPrice": 271800,
+      "modelPrice": 279200,
+      "publishedPrice": 279200,
+      "error": 0,
+      "threeRoundAverage": 60.33
+    },
+    {
+      "playerId": 419,
+      "name": "Dylan Moore",
+      "oldPrice": 403200,
+      "modelPrice": 368500,
+      "publishedPrice": 368500,
+      "error": 0,
+      "threeRoundAverage": 55
+    },
+    {
+      "playerId": 450,
+      "name": "Ed Langdon",
+      "oldPrice": 401500,
+      "modelPrice": 416200,
+      "publishedPrice": 416200,
+      "error": 0,
+      "threeRoundAverage": 92
+    },
+    {
+      "playerId": 724,
+      "name": "Ed Richards",
+      "oldPrice": 530100,
+      "modelPrice": 530800,
+      "publishedPrice": 530800,
+      "error": 0,
+      "threeRoundAverage": 107.33
+    },
+    {
+      "playerId": 294,
+      "name": "Ethan Read",
+      "oldPrice": 259400,
+      "modelPrice": 231700,
+      "publishedPrice": 231700,
+      "error": 0,
+      "threeRoundAverage": 31.33
+    },
+    {
+      "playerId": 543,
+      "name": "Ewan Mackinlay",
+      "oldPrice": 283700,
+      "modelPrice": 276000,
+      "publishedPrice": 276000,
+      "error": 0,
+      "threeRoundAverage": 51.33
+    },
+    {
+      "playerId": 358,
+      "name": "Finn Callaghan",
+      "oldPrice": 499800,
+      "modelPrice": 488300,
+      "publishedPrice": 488300,
+      "error": 0,
+      "threeRoundAverage": 92
+    },
+    {
+      "playerId": 504,
+      "name": "Finn O'Sullivan",
+      "oldPrice": 385700,
+      "modelPrice": 387900,
+      "publishedPrice": 387900,
+      "error": 0,
+      "threeRoundAverage": 79.33
+    },
+    {
+      "playerId": 102,
+      "name": "Francis Evans",
+      "oldPrice": 318300,
+      "modelPrice": 312800,
+      "publishedPrice": 312800,
+      "error": 0,
+      "threeRoundAverage": 60
+    },
+    {
+      "playerId": 107,
+      "name": "George Hewett",
+      "oldPrice": 546000,
+      "modelPrice": 518700,
+      "publishedPrice": 518700,
+      "error": 0,
+      "threeRoundAverage": 89.33
+    },
+    {
+      "playerId": 517,
+      "name": "George Wardlaw",
+      "oldPrice": 417500,
+      "modelPrice": 420000,
+      "publishedPrice": 420000,
+      "error": 0,
+      "threeRoundAverage": 86
+    },
+    {
+      "playerId": 500,
+      "name": "Griffin Logue",
+      "oldPrice": 299300,
+      "modelPrice": 294100,
+      "publishedPrice": 294100,
+      "error": 0,
+      "threeRoundAverage": 56.33
+    },
+    {
+      "playerId": 44,
+      "name": "Harris Andrews",
+      "oldPrice": 476000,
+      "modelPrice": 438200,
+      "publishedPrice": 438200,
+      "error": 0,
+      "threeRoundAverage": 67.33
+    },
+    {
+      "playerId": 658,
+      "name": "Harry Cunningham",
+      "oldPrice": 319400,
+      "modelPrice": 318500,
+      "publishedPrice": 318500,
+      "error": 0,
+      "threeRoundAverage": 63.67
+    },
+    {
+      "playerId": 100,
+      "name": "Harry Dean",
+      "oldPrice": 228600,
+      "modelPrice": 216600,
+      "publishedPrice": 216600,
+      "error": 0,
+      "threeRoundAverage": 37
+    },
+    {
+      "playerId": 370,
+      "name": "Harry Himmelberg",
+      "oldPrice": 355400,
+      "modelPrice": 340500,
+      "publishedPrice": 340500,
+      "error": 0,
+      "threeRoundAverage": 60.33
+    },
+    {
+      "playerId": 113,
+      "name": "Harry McKay",
+      "oldPrice": 331100,
+      "modelPrice": 341600,
+      "publishedPrice": 341600,
+      "error": 0,
+      "threeRoundAverage": 74.67
+    },
+    {
+      "playerId": 509,
+      "name": "Harry Sheezel",
+      "oldPrice": 592100,
+      "modelPrice": 569700,
+      "publishedPrice": 569700,
+      "error": 0,
+      "threeRoundAverage": 102.33
+    },
+    {
+      "playerId": 709,
+      "name": "Harvey Gallagher",
+      "oldPrice": 155000,
+      "modelPrice": 164000,
+      "publishedPrice": 164000,
+      "error": 0,
+      "threeRoundAverage": 38
+    },
+    {
+      "playerId": 260,
+      "name": "Hayden Young",
+      "oldPrice": 416500,
+      "modelPrice": 426300,
+      "publishedPrice": 426300,
+      "error": 0,
+      "threeRoundAverage": 91.33
+    },
+    {
+      "playerId": 72,
+      "name": "Hugh McCluggage",
+      "oldPrice": 469500,
+      "modelPrice": 474500,
+      "publishedPrice": 474500,
+      "error": 0,
+      "threeRoundAverage": 98.33
+    },
+    {
+      "playerId": 620,
+      "name": "Hugo Garcia",
+      "oldPrice": 431900,
+      "modelPrice": 442900,
+      "publishedPrice": 442900,
+      "error": 0,
+      "threeRoundAverage": 95.33
+    },
+    {
+      "playerId": 667,
+      "name": "Isaac Heeney",
+      "oldPrice": 678100,
+      "modelPrice": 651300,
+      "publishedPrice": 651300,
+      "error": 0,
+      "threeRoundAverage": 116.33
+    },
+    {
+      "playerId": 230,
+      "name": "Isaiah Dudley",
+      "oldPrice": 243400,
+      "modelPrice": 226200,
+      "publishedPrice": 226200,
+      "error": 0,
+      "threeRoundAverage": 36
+    },
+    {
+      "playerId": 612,
+      "name": "Jack Carroll",
+      "oldPrice": 272200,
+      "modelPrice": 290500,
+      "publishedPrice": 290500,
+      "error": 0,
+      "threeRoundAverage": 68.67
+    },
+    {
+      "playerId": 136,
+      "name": "Jack Crisp",
+      "oldPrice": 450500,
+      "modelPrice": 459600,
+      "publishedPrice": 459600,
+      "error": 0,
+      "threeRoundAverage": 97.67
+    },
+    {
+      "playerId": 486,
+      "name": "Jack Darling",
+      "oldPrice": 360100,
+      "modelPrice": 341700,
+      "publishedPrice": 341700,
+      "error": 0,
+      "threeRoundAverage": 58.67
+    },
+    {
+      "playerId": 404,
+      "name": "Jack Ginnivan",
+      "oldPrice": 445300,
+      "modelPrice": 436000,
+      "publishedPrice": 436000,
+      "error": 0,
+      "threeRoundAverage": 82.67
+    },
+    {
+      "playerId": 406,
+      "name": "Jack Gunston",
+      "oldPrice": 416100,
+      "modelPrice": 419400,
+      "publishedPrice": 419400,
+      "error": 0,
+      "threeRoundAverage": 86.33
+    },
+    {
+      "playerId": 629,
+      "name": "Jack Macrae",
+      "oldPrice": 490400,
+      "modelPrice": 451400,
+      "publishedPrice": 451400,
+      "error": 0,
+      "threeRoundAverage": 69.33
+    },
+    {
+      "playerId": 331,
+      "name": "Jack Martin",
+      "oldPrice": 349100,
+      "modelPrice": 339400,
+      "publishedPrice": 339400,
+      "error": 0,
+      "threeRoundAverage": 63
+    },
+    {
+      "playerId": 639,
+      "name": "Jack Sinclair",
+      "oldPrice": 543000,
+      "modelPrice": 532800,
+      "publishedPrice": 532800,
+      "error": 0,
+      "threeRoundAverage": 101.67
+    },
+    {
+      "playerId": 579,
+      "name": "Jacob Hopper",
+      "oldPrice": 371500,
+      "modelPrice": 354500,
+      "publishedPrice": 354500,
+      "error": 0,
+      "threeRoundAverage": 62
+    },
+    {
+      "playerId": 475,
+      "name": "Jacob van Rooyen",
+      "oldPrice": 304500,
+      "modelPrice": 320800,
+      "publishedPrice": 320800,
+      "error": 0,
+      "threeRoundAverage": 73.67
+    },
+    {
+      "playerId": 559,
+      "name": "Jacob Wehr",
+      "oldPrice": 274100,
+      "modelPrice": 265900,
+      "publishedPrice": 265900,
+      "error": 0,
+      "threeRoundAverage": 49
+    },
+    {
+      "playerId": 125,
+      "name": "Jacob Weitering",
+      "oldPrice": 413500,
+      "modelPrice": 405600,
+      "publishedPrice": 405600,
+      "error": 0,
+      "threeRoundAverage": 77.33
+    },
+    {
+      "playerId": 123,
+      "name": "Jagga Smith",
+      "oldPrice": 311500,
+      "modelPrice": 335600,
+      "publishedPrice": 335600,
+      "error": 0,
+      "threeRoundAverage": 81
+    },
+    {
+      "playerId": 424,
+      "name": "Jai Newcombe",
+      "oldPrice": 560300,
+      "modelPrice": 560000,
+      "publishedPrice": 560000,
+      "error": 0,
+      "threeRoundAverage": 112.67
+    },
+    {
+      "playerId": 329,
+      "name": "Jake Kolodjashnij",
+      "oldPrice": 230200,
+      "modelPrice": 236800,
+      "publishedPrice": 236800,
+      "error": 0,
+      "threeRoundAverage": 51.33
+    },
+    {
+      "playerId": 453,
+      "name": "Jake Lever",
+      "oldPrice": 323800,
+      "modelPrice": 336700,
+      "publishedPrice": 336700,
+      "error": 0,
+      "threeRoundAverage": 75
+    },
+    {
+      "playerId": 673,
+      "name": "Jake Lloyd",
+      "oldPrice": 357500,
+      "modelPrice": 365900,
+      "publishedPrice": 365900,
+      "error": 0,
+      "threeRoundAverage": 78.33
+    },
+    {
+      "playerId": 37,
+      "name": "Jake Soligo",
+      "oldPrice": 405700,
+      "modelPrice": 375600,
+      "publishedPrice": 375600,
+      "error": 0,
+      "threeRoundAverage": 59
+    },
+    {
+      "playerId": 387,
+      "name": "Jake Stringer",
+      "oldPrice": 320200,
+      "modelPrice": 325700,
+      "publishedPrice": 325700,
+      "error": 0,
+      "threeRoundAverage": 68.67
+    },
+    {
+      "playerId": 775,
+      "name": "Jake Waterman",
+      "oldPrice": 382100,
+      "modelPrice": 378600,
+      "publishedPrice": 378600,
+      "error": 0,
+      "threeRoundAverage": 74.33
+    },
+    {
+      "playerId": 4,
+      "name": "James Borlase",
+      "oldPrice": 203300,
+      "modelPrice": 229800,
+      "publishedPrice": 229800,
+      "error": 0,
+      "threeRoundAverage": 61
+    },
+    {
+      "playerId": 669,
+      "name": "James Jordon",
+      "oldPrice": 361600,
+      "modelPrice": 359600,
+      "publishedPrice": 359600,
+      "error": 0,
+      "threeRoundAverage": 71.33
+    },
+    {
+      "playerId": 376,
+      "name": "James Leake",
+      "oldPrice": 186700,
+      "modelPrice": 199100,
+      "publishedPrice": 199100,
+      "error": 0,
+      "threeRoundAverage": 47
+    },
+    {
+      "playerId": 31,
+      "name": "James Peatling",
+      "oldPrice": 470300,
+      "modelPrice": 465300,
+      "publishedPrice": 465300,
+      "error": 0,
+      "threeRoundAverage": 91
+    },
+    {
+      "playerId": 430,
+      "name": "James Sicily",
+      "oldPrice": 467400,
+      "modelPrice": 461500,
+      "publishedPrice": 461500,
+      "error": 0,
+      "threeRoundAverage": 89.67
+    },
+    {
+      "playerId": 603,
+      "name": "James Trezise",
+      "oldPrice": 290900,
+      "modelPrice": 309500,
+      "publishedPrice": 309500,
+      "error": 0,
+      "threeRoundAverage": 72.67
+    },
+    {
+      "playerId": 348,
+      "name": "James Worpel",
+      "oldPrice": 381800,
+      "modelPrice": 359900,
+      "publishedPrice": 359900,
+      "error": 0,
+      "threeRoundAverage": 60.33
+    },
+    {
+      "playerId": 141,
+      "name": "Jamie Elliott",
+      "oldPrice": 319800,
+      "modelPrice": 324500,
+      "publishedPrice": 324500,
+      "error": 0,
+      "threeRoundAverage": 68
+    },
+    {
+      "playerId": 410,
+      "name": "Jarman Impey",
+      "oldPrice": 444000,
+      "modelPrice": 453100,
+      "publishedPrice": 453100,
+      "error": 0,
+      "threeRoundAverage": 96.33
+    },
+    {
+      "playerId": 527,
+      "name": "Jase Burgoyne",
+      "oldPrice": 400900,
+      "modelPrice": 400800,
+      "publishedPrice": 400800,
+      "error": 0,
+      "threeRoundAverage": 80.67
+    },
+    {
+      "playerId": 536,
+      "name": "Jason Horne-Francis",
+      "oldPrice": 499200,
+      "modelPrice": 481300,
+      "publishedPrice": 481300,
+      "error": 0,
+      "threeRoundAverage": 87
+    },
+    {
+      "playerId": 375,
+      "name": "Jayden Laverde",
+      "oldPrice": 358000,
+      "modelPrice": 336200,
+      "publishedPrice": 336200,
+      "error": 0,
+      "threeRoundAverage": 55.67
+    },
+    {
+      "playerId": 203,
+      "name": "Jayden Nguyen",
+      "oldPrice": 178600,
+      "modelPrice": 191400,
+      "publishedPrice": 191400,
+      "error": 0,
+      "threeRoundAverage": 45.67
+    },
+    {
+      "playerId": 596,
+      "name": "Jayden Short",
+      "oldPrice": 459000,
+      "modelPrice": 469800,
+      "publishedPrice": 469800,
+      "error": 0,
+      "threeRoundAverage": 100.67
+    },
+    {
+      "playerId": 696,
+      "name": "Jedd Busslinger",
+      "oldPrice": 215000,
+      "modelPrice": 264400,
+      "publishedPrice": 264400,
+      "error": 0,
+      "threeRoundAverage": 80.67
+    },
+    {
+      "playerId": 312,
+      "name": "Jeremy Cameron",
+      "oldPrice": 482500,
+      "modelPrice": 461500,
+      "publishedPrice": 461500,
+      "error": 0,
+      "threeRoundAverage": 81.33
+    },
+    {
+      "playerId": 147,
+      "name": "Jeremy Howe",
+      "oldPrice": 398900,
+      "modelPrice": 424400,
+      "publishedPrice": 424400,
+      "error": 0,
+      "threeRoundAverage": 99.67
+    },
+    {
+      "playerId": 773,
+      "name": "Jobe Shanahan",
+      "oldPrice": 268900,
+      "modelPrice": 251000,
+      "publishedPrice": 251000,
+      "error": 0,
+      "threeRoundAverage": 40.67
+    },
+    {
+      "playerId": 525,
+      "name": "Joe Berry",
+      "oldPrice": 285000,
+      "modelPrice": 298600,
+      "publishedPrice": 298600,
+      "error": 0,
+      "threeRoundAverage": 67.67
+    },
+    {
+      "playerId": 551,
+      "name": "Joe Richards",
+      "oldPrice": 373100,
+      "modelPrice": 354400,
+      "publishedPrice": 354400,
+      "error": 0,
+      "threeRoundAverage": 61
+    },
+    {
+      "playerId": 280,
+      "name": "Joel Jeffrey",
+      "oldPrice": 407400,
+      "modelPrice": 412600,
+      "publishedPrice": 412600,
+      "error": 0,
+      "threeRoundAverage": 86
+    },
+    {
+      "playerId": 290,
+      "name": "John Noble",
+      "oldPrice": 467300,
+      "modelPrice": 501500,
+      "publishedPrice": 501500,
+      "error": 0,
+      "threeRoundAverage": 120
+    },
+    {
+      "playerId": 572,
+      "name": "Jonty Faull",
+      "oldPrice": 156600,
+      "modelPrice": 174000,
+      "publishedPrice": 174000,
+      "error": 0,
+      "threeRoundAverage": 44.67
+    },
+    {
+      "playerId": 224,
+      "name": "Jordan Clark",
+      "oldPrice": 527100,
+      "modelPrice": 490200,
+      "publishedPrice": 490200,
+      "error": 0,
+      "threeRoundAverage": 78.33
+    },
+    {
+      "playerId": 555,
+      "name": "Jordon Sweet",
+      "oldPrice": 524300,
+      "modelPrice": 534100,
+      "publishedPrice": 534100,
+      "error": 0,
+      "threeRoundAverage": 113
+    },
+    {
+      "playerId": 396,
+      "name": "Josh Battle",
+      "oldPrice": 445600,
+      "modelPrice": 472800,
+      "publishedPrice": 472800,
+      "error": 0,
+      "threeRoundAverage": 110.33
+    },
+    {
+      "playerId": 137,
+      "name": "Josh Daicos",
+      "oldPrice": 478000,
+      "modelPrice": 473600,
+      "publishedPrice": 473600,
+      "error": 0,
+      "threeRoundAverage": 93
+    },
+    {
+      "playerId": 58,
+      "name": "Josh Dunkley",
+      "oldPrice": 453400,
+      "modelPrice": 444600,
+      "publishedPrice": 444600,
+      "error": 0,
+      "threeRoundAverage": 84.67
+    },
+    {
+      "playerId": 761,
+      "name": "Josh Lindsay",
+      "oldPrice": 346700,
+      "modelPrice": 378200,
+      "publishedPrice": 378200,
+      "error": 0,
+      "threeRoundAverage": 93.67
+    },
+    {
+      "playerId": 33,
+      "name": "Josh Rachele",
+      "oldPrice": 416200,
+      "modelPrice": 398300,
+      "publishedPrice": 398300,
+      "error": 0,
+      "threeRoundAverage": 70.33
+    },
+    {
+      "playerId": 432,
+      "name": "Josh Ward",
+      "oldPrice": 355000,
+      "modelPrice": 364900,
+      "publishedPrice": 364900,
+      "error": 0,
+      "threeRoundAverage": 79
+    },
+    {
+      "playerId": 238,
+      "name": "Judd McVee",
+      "oldPrice": 299600,
+      "modelPrice": 301800,
+      "publishedPrice": 301800,
+      "error": 0,
+      "threeRoundAverage": 62
+    },
+    {
+      "playerId": 676,
+      "name": "Justin McInerney",
+      "oldPrice": 472100,
+      "modelPrice": 455600,
+      "publishedPrice": 455600,
+      "error": 0,
+      "threeRoundAverage": 82.67
+    },
+    {
+      "playerId": 510,
+      "name": "Jy Simpkin",
+      "oldPrice": 426300,
+      "modelPrice": 403500,
+      "publishedPrice": 403500,
+      "error": 0,
+      "threeRoundAverage": 68.67
+    },
+    {
+      "playerId": 218,
+      "name": "Jye Amiss",
+      "oldPrice": 381700,
+      "modelPrice": 368600,
+      "publishedPrice": 368600,
+      "error": 0,
+      "threeRoundAverage": 67
+    },
+    {
+      "playerId": 439,
+      "name": "Kade Chandler",
+      "oldPrice": 414000,
+      "modelPrice": 411700,
+      "publishedPrice": 411700,
+      "error": 0,
+      "threeRoundAverage": 81.67
+    },
+    {
+      "playerId": 69,
+      "name": "Kai Lohmann",
+      "oldPrice": 292600,
+      "modelPrice": 301900,
+      "publishedPrice": 301900,
+      "error": 0,
+      "threeRoundAverage": 66
+    },
+    {
+      "playerId": 585,
+      "name": "Kane McAuliffe",
+      "oldPrice": 426900,
+      "modelPrice": 421200,
+      "publishedPrice": 421200,
+      "error": 0,
+      "threeRoundAverage": 81.67
+    },
+    {
+      "playerId": 393,
+      "name": "Karl Amon",
+      "oldPrice": 433200,
+      "modelPrice": 470800,
+      "publishedPrice": 470800,
+      "error": 0,
+      "threeRoundAverage": 115.67
+    },
+    {
+      "playerId": 259,
+      "name": "Karl Worner",
+      "oldPrice": 336000,
+      "modelPrice": 352700,
+      "publishedPrice": 352700,
+      "error": 0,
+      "threeRoundAverage": 80.33
+    },
+    {
+      "playerId": 54,
+      "name": "Keidean Coleman",
+      "oldPrice": 380800,
+      "modelPrice": 377700,
+      "publishedPrice": 377700,
+      "error": 0,
+      "threeRoundAverage": 74.33
+    },
+    {
+      "playerId": 196,
+      "name": "Kyle Langford",
+      "oldPrice": 349800,
+      "modelPrice": 353100,
+      "publishedPrice": 353100,
+      "error": 0,
+      "threeRoundAverage": 73
+    },
+    {
+      "playerId": 465,
+      "name": "Kysaiah Pickett",
+      "oldPrice": 555000,
+      "modelPrice": 542500,
+      "publishedPrice": 542500,
+      "error": 0,
+      "threeRoundAverage": 102.33
+    },
+    {
+      "playerId": 537,
+      "name": "Lachie Jones",
+      "oldPrice": 310400,
+      "modelPrice": 315400,
+      "publishedPrice": 315400,
+      "error": 0,
+      "threeRoundAverage": 66.33
+    },
+    {
+      "playerId": 77,
+      "name": "Lachie Neale",
+      "oldPrice": 566200,
+      "modelPrice": 567400,
+      "publishedPrice": 567400,
+      "error": 0,
+      "threeRoundAverage": 115
+    },
+    {
+      "playerId": 303,
+      "name": "Lachie Weller",
+      "oldPrice": 378400,
+      "modelPrice": 386000,
+      "publishedPrice": 386000,
+      "error": 0,
+      "threeRoundAverage": 82
+    },
+    {
+      "playerId": 392,
+      "name": "Lachie Whitfield",
+      "oldPrice": 567700,
+      "modelPrice": 580900,
+      "publishedPrice": 580900,
+      "error": 0,
+      "threeRoundAverage": 124.33
+    },
+    {
+      "playerId": 174,
+      "name": "Lachlan Blakiston",
+      "oldPrice": 228900,
+      "modelPrice": 230500,
+      "publishedPrice": 230500,
+      "error": 0,
+      "threeRoundAverage": 47.33
+    },
+    {
+      "playerId": 694,
+      "name": "Lachlan Bramble",
+      "oldPrice": 314200,
+      "modelPrice": 311200,
+      "publishedPrice": 311200,
+      "error": 0,
+      "threeRoundAverage": 61
+    },
+    {
+      "playerId": 23,
+      "name": "Lachlan McAndrew",
+      "oldPrice": 370500,
+      "modelPrice": 377600,
+      "publishedPrice": 377600,
+      "error": 0,
+      "threeRoundAverage": 80
+    },
+    {
+      "playerId": 721,
+      "name": "Lachlan McNeil",
+      "oldPrice": 259500,
+      "modelPrice": 245900,
+      "publishedPrice": 245900,
+      "error": 0,
+      "threeRoundAverage": 42
+    },
+    {
+      "playerId": 466,
+      "name": "Latrelle Pickett",
+      "oldPrice": 176000,
+      "modelPrice": 178500,
+      "publishedPrice": 178500,
+      "error": 0,
+      "threeRoundAverage": 37.33
+    },
+    {
+      "playerId": 327,
+      "name": "Lawson Humphries",
+      "oldPrice": 401500,
+      "modelPrice": 408700,
+      "publishedPrice": 408700,
+      "error": 0,
+      "threeRoundAverage": 86.33
+    },
+    {
+      "playerId": 285,
+      "name": "Leonardo Lombard",
+      "oldPrice": 225000,
+      "modelPrice": 240900,
+      "publishedPrice": 240900,
+      "error": 0,
+      "threeRoundAverage": 57.33
+    },
+    {
+      "playerId": 47,
+      "name": "Levi Ashcroft",
+      "oldPrice": 383200,
+      "modelPrice": 384700,
+      "publishedPrice": 384700,
+      "error": 0,
+      "threeRoundAverage": 78.33
+    },
+    {
+      "playerId": 678,
+      "name": "Lewis Melican",
+      "oldPrice": 260000,
+      "modelPrice": 263500,
+      "publishedPrice": 263500,
+      "error": 0,
+      "threeRoundAverage": 55
+    },
+    {
+      "playerId": 736,
+      "name": "Liam Baker",
+      "oldPrice": 348900,
+      "modelPrice": 326900,
+      "publishedPrice": 326900,
+      "error": 0,
+      "threeRoundAverage": 53.67
+    },
+    {
+      "playerId": 747,
+      "name": "Liam Duggan",
+      "oldPrice": 361200,
+      "modelPrice": 362800,
+      "publishedPrice": 362800,
+      "error": 0,
+      "threeRoundAverage": 74
+    },
+    {
+      "playerId": 640,
+      "name": "Liam Stocker",
+      "oldPrice": 237400,
+      "modelPrice": 200600,
+      "publishedPrice": 200600,
+      "error": 0,
+      "threeRoundAverage": 20
+    },
+    {
+      "playerId": 71,
+      "name": "Lincoln McCarthy",
+      "oldPrice": 303000,
+      "modelPrice": 288400,
+      "publishedPrice": 288400,
+      "error": 0,
+      "threeRoundAverage": 50
+    },
+    {
+      "playerId": 418,
+      "name": "Lloyd Meek",
+      "oldPrice": 389000,
+      "modelPrice": 374400,
+      "publishedPrice": 374400,
+      "error": 0,
+      "threeRoundAverage": 67.33
+    },
+    {
+      "playerId": 533,
+      "name": "Logan Evans",
+      "oldPrice": 330900,
+      "modelPrice": 360500,
+      "publishedPrice": 360500,
+      "error": 0,
+      "threeRoundAverage": 89
+    },
+    {
+      "playerId": 675,
+      "name": "Logan McDonald",
+      "oldPrice": 250800,
+      "modelPrice": 238600,
+      "publishedPrice": 238600,
+      "error": 0,
+      "threeRoundAverage": 41.33
+    },
+    {
+      "playerId": 75,
+      "name": "Logan Morris",
+      "oldPrice": 381500,
+      "modelPrice": 395400,
+      "publishedPrice": 395400,
+      "error": 0,
+      "threeRoundAverage": 87.33
+    },
+    {
+      "playerId": 487,
+      "name": "Luke Davies-Uniacke",
+      "oldPrice": 559900,
+      "modelPrice": 549100,
+      "publishedPrice": 549100,
+      "error": 0,
+      "threeRoundAverage": 104.67
+    },
+    {
+      "playerId": 233,
+      "name": "Luke Jackson",
+      "oldPrice": 642400,
+      "modelPrice": 661300,
+      "publishedPrice": 661300,
+      "error": 0,
+      "threeRoundAverage": 143.67
+    },
+    {
+      "playerId": 501,
+      "name": "Luke McDonald",
+      "oldPrice": 388700,
+      "modelPrice": 369800,
+      "publishedPrice": 369800,
+      "error": 0,
+      "threeRoundAverage": 64
+    },
+    {
+      "playerId": 505,
+      "name": "Luke Parker",
+      "oldPrice": 543000,
+      "modelPrice": 514300,
+      "publishedPrice": 514300,
+      "error": 0,
+      "threeRoundAverage": 87.67
+    },
+    {
+      "playerId": 32,
+      "name": "Luke Pedlar",
+      "oldPrice": 209200,
+      "modelPrice": 235000,
+      "publishedPrice": 235000,
+      "error": 0,
+      "threeRoundAverage": 61.67
+    },
+    {
+      "playerId": 247,
+      "name": "Luke Ryan",
+      "oldPrice": 507800,
+      "modelPrice": 495900,
+      "publishedPrice": 495900,
+      "error": 0,
+      "threeRoundAverage": 93.33
+    },
+    {
+      "playerId": 602,
+      "name": "Luke Trainor",
+      "oldPrice": 295400,
+      "modelPrice": 291200,
+      "publishedPrice": 291200,
+      "error": 0,
+      "threeRoundAverage": 56.33
+    },
+    {
+      "playerId": 264,
+      "name": "Mac Andrew",
+      "oldPrice": 427200,
+      "modelPrice": 465900,
+      "publishedPrice": 465900,
+      "error": 0,
+      "threeRoundAverage": 115.33
+    },
+    {
+      "playerId": 741,
+      "name": "Malakai Champion",
+      "oldPrice": 133100,
+      "modelPrice": 145700,
+      "publishedPrice": 145700,
+      "error": 0,
+      "threeRoundAverage": 36.33
+    },
+    {
+      "playerId": 684,
+      "name": "Malcolm Rosas",
+      "oldPrice": 325000,
+      "modelPrice": 340700,
+      "publishedPrice": 340700,
+      "error": 0,
+      "threeRoundAverage": 77.33
+    },
+    {
+      "playerId": 120,
+      "name": "Marc Pittonet",
+      "oldPrice": 420200,
+      "modelPrice": 377900,
+      "publishedPrice": 377900,
+      "error": 0,
+      "threeRoundAverage": 52.67
+    },
+    {
+      "playerId": 693,
+      "name": "Marcus Bontempelli",
+      "oldPrice": 584400,
+      "modelPrice": 612100,
+      "publishedPrice": 612100,
+      "error": 0,
+      "threeRoundAverage": 138.67
+    },
+    {
+      "playerId": 646,
+      "name": "Marcus Windhager",
+      "oldPrice": 421100,
+      "modelPrice": 410300,
+      "publishedPrice": 410300,
+      "error": 0,
+      "threeRoundAverage": 76.67
+    },
+    {
+      "playerId": 338,
+      "name": "Mark O'Connor",
+      "oldPrice": 381600,
+      "modelPrice": 363700,
+      "publishedPrice": 363700,
+      "error": 0,
+      "threeRoundAverage": 63.33
+    },
+    {
+      "playerId": 226,
+      "name": "Mason Cox",
+      "oldPrice": 244200,
+      "modelPrice": 256300,
+      "publishedPrice": 256300,
+      "error": 0,
+      "threeRoundAverage": 58.33
+    },
+    {
+      "playerId": 207,
+      "name": "Mason Redman",
+      "oldPrice": 514400,
+      "modelPrice": 476100,
+      "publishedPrice": 476100,
+      "error": 0,
+      "threeRoundAverage": 74.67
+    },
+    {
+      "playerId": 647,
+      "name": "Mason Wood",
+      "oldPrice": 374300,
+      "modelPrice": 378200,
+      "publishedPrice": 378200,
+      "error": 0,
+      "threeRoundAverage": 78.33
+    },
+    {
+      "playerId": 400,
+      "name": "Massimo D'Ambrosio",
+      "oldPrice": 426100,
+      "modelPrice": 414400,
+      "publishedPrice": 414400,
+      "error": 0,
+      "threeRoundAverage": 77
+    },
+    {
+      "playerId": 683,
+      "name": "Matt Roberts",
+      "oldPrice": 427800,
+      "modelPrice": 392300,
+      "publishedPrice": 392300,
+      "error": 0,
+      "threeRoundAverage": 59.33
+    },
+    {
+      "playerId": 93,
+      "name": "Matthew Carroll",
+      "oldPrice": 326800,
+      "modelPrice": 312500,
+      "publishedPrice": 312500,
+      "error": 0,
+      "threeRoundAverage": 55
+    },
+    {
+      "playerId": 717,
+      "name": "Matthew Kennedy",
+      "oldPrice": 458000,
+      "modelPrice": 424100,
+      "publishedPrice": 424100,
+      "error": 0,
+      "threeRoundAverage": 66.67
+    },
+    {
+      "playerId": 442,
+      "name": "Max Gawn",
+      "oldPrice": 630000,
+      "modelPrice": 613400,
+      "publishedPrice": 613400,
+      "error": 0,
+      "threeRoundAverage": 114.33
+    },
+    {
+      "playerId": 621,
+      "name": "Max Hall",
+      "oldPrice": 370900,
+      "modelPrice": 373500,
+      "publishedPrice": 373500,
+      "error": 0,
+      "threeRoundAverage": 76.67
+    },
+    {
+      "playerId": 326,
+      "name": "Max Holmes",
+      "oldPrice": 597600,
+      "modelPrice": 579400,
+      "publishedPrice": 579400,
+      "error": 0,
+      "threeRoundAverage": 106.67
+    },
+    {
+      "playerId": 24,
+      "name": "Max Michalanney",
+      "oldPrice": 329500,
+      "modelPrice": 321100,
+      "publishedPrice": 321100,
+      "error": 0,
+      "threeRoundAverage": 60
+    },
+    {
+      "playerId": 232,
+      "name": "Michael Frederick",
+      "oldPrice": 305200,
+      "modelPrice": 324000,
+      "publishedPrice": 324000,
+      "error": 0,
+      "threeRoundAverage": 75.67
+    },
+    {
+      "playerId": 726,
+      "name": "Michael Sellwood",
+      "oldPrice": 279700,
+      "modelPrice": 293400,
+      "publishedPrice": 293400,
+      "error": 0,
+      "threeRoundAverage": 66.67
+    },
+    {
+      "playerId": 788,
+      "name": "Milan Murdock",
+      "oldPrice": 281600,
+      "modelPrice": 304000,
+      "publishedPrice": 304000,
+      "error": 0,
+      "threeRoundAverage": 73.67
+    },
+    {
+      "playerId": 412,
+      "name": "Mitch Lewis",
+      "oldPrice": 409000,
+      "modelPrice": 393900,
+      "publishedPrice": 393900,
+      "error": 0,
+      "threeRoundAverage": 71
+    },
+    {
+      "playerId": 633,
+      "name": "Mitch Owens",
+      "oldPrice": 356900,
+      "modelPrice": 355700,
+      "publishedPrice": 355700,
+      "error": 0,
+      "threeRoundAverage": 71
+    },
+    {
+      "playerId": 245,
+      "name": "Murphy Reid",
+      "oldPrice": 420600,
+      "modelPrice": 410800,
+      "publishedPrice": 410800,
+      "error": 0,
+      "threeRoundAverage": 77.33
+    },
+    {
+      "playerId": 582,
+      "name": "Mykelti Lefau",
+      "oldPrice": 245500,
+      "modelPrice": 258600,
+      "publishedPrice": 258600,
+      "error": 0,
+      "threeRoundAverage": 59.33
+    },
+    {
+      "playerId": 176,
+      "name": "Nate Caddy",
+      "oldPrice": 288400,
+      "modelPrice": 319100,
+      "publishedPrice": 319100,
+      "error": 0,
+      "threeRoundAverage": 81.33
+    },
+    {
+      "playerId": 567,
+      "name": "Nathan Broad",
+      "oldPrice": 325800,
+      "modelPrice": 313900,
+      "publishedPrice": 313900,
+      "error": 0,
+      "threeRoundAverage": 56.67
+    },
+    {
+      "playerId": 151,
+      "name": "Ned Long",
+      "oldPrice": 361900,
+      "modelPrice": 366000,
+      "publishedPrice": 366000,
+      "error": 0,
+      "threeRoundAverage": 76
+    },
+    {
+      "playerId": 231,
+      "name": "Neil Erasmus",
+      "oldPrice": 314900,
+      "modelPrice": 303300,
+      "publishedPrice": 303300,
+      "error": 0,
+      "threeRoundAverage": 54.67
+    },
+    {
+      "playerId": 652,
+      "name": "Nick Blakey",
+      "oldPrice": 505100,
+      "modelPrice": 501900,
+      "publishedPrice": 501900,
+      "error": 0,
+      "threeRoundAverage": 99.33
+    },
+    {
+      "playerId": 138,
+      "name": "Nick Daicos",
+      "oldPrice": 607800,
+      "modelPrice": 567100,
+      "publishedPrice": 567100,
+      "error": 0,
+      "threeRoundAverage": 91.67
+    },
+    {
+      "playerId": 105,
+      "name": "Nick Haynes",
+      "oldPrice": 410600,
+      "modelPrice": 401700,
+      "publishedPrice": 401700,
+      "error": 0,
+      "threeRoundAverage": 76
+    },
+    {
+      "playerId": 26,
+      "name": "Nick Murray",
+      "oldPrice": 318200,
+      "modelPrice": 309700,
+      "publishedPrice": 309700,
+      "error": 0,
+      "threeRoundAverage": 57.67
+    },
+    {
+      "playerId": 604,
+      "name": "Nick Vlastuin",
+      "oldPrice": 367500,
+      "modelPrice": 372700,
+      "publishedPrice": 372700,
+      "error": 0,
+      "threeRoundAverage": 78
+    },
+    {
+      "playerId": 433,
+      "name": "Nick Watson",
+      "oldPrice": 420000,
+      "modelPrice": 408200,
+      "publishedPrice": 408200,
+      "error": 0,
+      "threeRoundAverage": 75.67
+    },
+    {
+      "playerId": 263,
+      "name": "Noah Anderson",
+      "oldPrice": 486600,
+      "modelPrice": 500200,
+      "publishedPrice": 500200,
+      "error": 0,
+      "threeRoundAverage": 108.33
+    },
+    {
+      "playerId": 336,
+      "name": "Oisin Mullin",
+      "oldPrice": 280400,
+      "modelPrice": 309700,
+      "publishedPrice": 309700,
+      "error": 0,
+      "threeRoundAverage": 78.67
+    },
+    {
+      "playerId": 318,
+      "name": "Oliver Dempsey",
+      "oldPrice": 382800,
+      "modelPrice": 377800,
+      "publishedPrice": 377800,
+      "error": 0,
+      "threeRoundAverage": 73.33
+    },
+    {
+      "playerId": 103,
+      "name": "Oliver Florent",
+      "oldPrice": 420300,
+      "modelPrice": 399600,
+      "publishedPrice": 399600,
+      "error": 0,
+      "threeRoundAverage": 69
+    },
+    {
+      "playerId": 369,
+      "name": "Oliver Hannaford",
+      "oldPrice": 142600,
+      "modelPrice": 131900,
+      "publishedPrice": 131900,
+      "error": 0,
+      "threeRoundAverage": 20.67
+    },
+    {
+      "playerId": 578,
+      "name": "Oliver Hayes-Brown",
+      "oldPrice": 119900,
+      "modelPrice": 149200,
+      "publishedPrice": 149200,
+      "error": 0,
+      "threeRoundAverage": 46.33
+    },
+    {
+      "playerId": 323,
+      "name": "Oliver Henry",
+      "oldPrice": 242500,
+      "modelPrice": 251500,
+      "publishedPrice": 251500,
+      "error": 0,
+      "threeRoundAverage": 55.67
+    },
+    {
+      "playerId": 108,
+      "name": "Oliver Hollands",
+      "oldPrice": 375500,
+      "modelPrice": 364500,
+      "publishedPrice": 364500,
+      "error": 0,
+      "threeRoundAverage": 67.33
+    },
+    {
+      "playerId": 561,
+      "name": "Ollie Wines",
+      "oldPrice": 480200,
+      "modelPrice": 468600,
+      "publishedPrice": 468600,
+      "error": 0,
+      "threeRoundAverage": 88
+    },
+    {
+      "playerId": 170,
+      "name": "Oscar Steene",
+      "oldPrice": 220600,
+      "modelPrice": 222200,
+      "publishedPrice": 222200,
+      "error": 0,
+      "threeRoundAverage": 45.67
+    },
+    {
+      "playerId": 692,
+      "name": "Oskar Baker",
+      "oldPrice": 289800,
+      "modelPrice": 269000,
+      "publishedPrice": 269000,
+      "error": 0,
+      "threeRoundAverage": 42.67
+    },
+    {
+      "playerId": 789,
+      "name": "Paddy Cross",
+      "oldPrice": 99100,
+      "modelPrice": 136600,
+      "publishedPrice": 136600,
+      "error": 0,
+      "threeRoundAverage": 48.33
+    },
+    {
+      "playerId": 99,
+      "name": "Patrick Cripps",
+      "oldPrice": 459000,
+      "modelPrice": 465400,
+      "publishedPrice": 465400,
+      "error": 0,
+      "threeRoundAverage": 97.33
+    },
+    {
+      "playerId": 316,
+      "name": "Patrick Dangerfield",
+      "oldPrice": 359000,
+      "modelPrice": 337400,
+      "publishedPrice": 337400,
+      "error": 0,
+      "threeRoundAverage": 56
+    },
+    {
+      "playerId": 150,
+      "name": "Patrick Lipinski",
+      "oldPrice": 368400,
+      "modelPrice": 367200,
+      "publishedPrice": 367200,
+      "error": 0,
+      "threeRoundAverage": 73.33
+    },
+    {
+      "playerId": 591,
+      "name": "Patrick Retschko",
+      "oldPrice": 181700,
+      "modelPrice": 225900,
+      "publishedPrice": 225900,
+      "error": 0,
+      "threeRoundAverage": 70
+    },
+    {
+      "playerId": 255,
+      "name": "Patrick Voss",
+      "oldPrice": 285400,
+      "modelPrice": 279500,
+      "publishedPrice": 279500,
+      "error": 0,
+      "threeRoundAverage": 53
+    },
+    {
+      "playerId": 484,
+      "name": "Paul Curtis",
+      "oldPrice": 436900,
+      "modelPrice": 424500,
+      "publishedPrice": 424500,
+      "error": 0,
+      "threeRoundAverage": 78.67
+    },
+    {
+      "playerId": 217,
+      "name": "Peter Wright",
+      "oldPrice": 424600,
+      "modelPrice": 436700,
+      "publishedPrice": 436700,
+      "error": 0,
+      "threeRoundAverage": 94.67
+    },
+    {
+      "playerId": 364,
+      "name": "Phoenix Gothard",
+      "oldPrice": 341000,
+      "modelPrice": 319400,
+      "publishedPrice": 319400,
+      "error": 0,
+      "threeRoundAverage": 52.33
+    },
+    {
+      "playerId": 751,
+      "name": "Reuben Ginbey",
+      "oldPrice": 353700,
+      "modelPrice": 351600,
+      "publishedPrice": 351600,
+      "error": 0,
+      "threeRoundAverage": 69.67
+    },
+    {
+      "playerId": 732,
+      "name": "Rhylee West",
+      "oldPrice": 323000,
+      "modelPrice": 321600,
+      "publishedPrice": 321600,
+      "error": 0,
+      "threeRoundAverage": 64
+    },
+    {
+      "playerId": 651,
+      "name": "Riley Bice",
+      "oldPrice": 363800,
+      "modelPrice": 362100,
+      "publishedPrice": 362100,
+      "error": 0,
+      "threeRoundAverage": 72
+    },
+    {
+      "playerId": 39,
+      "name": "Riley Thilthorpe",
+      "oldPrice": 377900,
+      "modelPrice": 350400,
+      "publishedPrice": 350400,
+      "error": 0,
+      "threeRoundAverage": 55.33
+    },
+    {
+      "playerId": 19,
+      "name": "Rory Laird",
+      "oldPrice": 450900,
+      "modelPrice": 442300,
+      "publishedPrice": 442300,
+      "error": 0,
+      "threeRoundAverage": 84.33
+    },
+    {
+      "playerId": 67,
+      "name": "Ryan Lester",
+      "oldPrice": 372600,
+      "modelPrice": 409100,
+      "publishedPrice": 409100,
+      "error": 0,
+      "threeRoundAverage": 102.67
+    },
+    {
+      "playerId": 725,
+      "name": "Ryley Sanders",
+      "oldPrice": 458900,
+      "modelPrice": 476000,
+      "publishedPrice": 476000,
+      "error": 0,
+      "threeRoundAverage": 105.33
+    },
+    {
+      "playerId": 2,
+      "name": "Sam Berry",
+      "oldPrice": 473300,
+      "modelPrice": 487400,
+      "publishedPrice": 487400,
+      "error": 0,
+      "threeRoundAverage": 106
+    },
+    {
+      "playerId": 398,
+      "name": "Sam Butler",
+      "oldPrice": 243600,
+      "modelPrice": 244800,
+      "publishedPrice": 244800,
+      "error": 0,
+      "threeRoundAverage": 50
+    },
+    {
+      "playerId": 268,
+      "name": "Sam Collins",
+      "oldPrice": 367200,
+      "modelPrice": 376900,
+      "publishedPrice": 376900,
+      "error": 0,
+      "threeRoundAverage": 81.33
+    },
+    {
+      "playerId": 619,
+      "name": "Sam Flanders",
+      "oldPrice": 455000,
+      "modelPrice": 453700,
+      "publishedPrice": 453700,
+      "error": 0,
+      "threeRoundAverage": 90.67
+    },
+    {
+      "playerId": 253,
+      "name": "Sam Switkowski",
+      "oldPrice": 328700,
+      "modelPrice": 312100,
+      "publishedPrice": 312100,
+      "error": 0,
+      "threeRoundAverage": 53.67
+    },
+    {
+      "playerId": 160,
+      "name": "Scott Pendlebury",
+      "oldPrice": 476000,
+      "modelPrice": 499100,
+      "publishedPrice": 499100,
+      "error": 0,
+      "threeRoundAverage": 113.33
+    },
+    {
+      "playerId": 569,
+      "name": "Seth Campbell",
+      "oldPrice": 395500,
+      "modelPrice": 412200,
+      "publishedPrice": 412200,
+      "error": 0,
+      "threeRoundAverage": 92.33
+    },
+    {
+      "playerId": 220,
+      "name": "Shai Bolton",
+      "oldPrice": 492800,
+      "modelPrice": 525100,
+      "publishedPrice": 525100,
+      "error": 0,
+      "threeRoundAverage": 123.67
+    },
+    {
+      "playerId": 337,
+      "name": "Shannon Neale",
+      "oldPrice": 420300,
+      "modelPrice": 422500,
+      "publishedPrice": 422500,
+      "error": 0,
+      "threeRoundAverage": 86.33
+    },
+    {
+      "playerId": 576,
+      "name": "Steely Green",
+      "oldPrice": 267800,
+      "modelPrice": 278000,
+      "publishedPrice": 278000,
+      "error": 0,
+      "threeRoundAverage": 61.67
+    },
+    {
+      "playerId": 359,
+      "name": "Stephen Coniglio",
+      "oldPrice": 284300,
+      "modelPrice": 276900,
+      "publishedPrice": 276900,
+      "error": 0,
+      "threeRoundAverage": 51.67
+    },
+    {
+      "playerId": 792,
+      "name": "Thomas Burton",
+      "oldPrice": 99100,
+      "modelPrice": 132700,
+      "publishedPrice": 132700,
+      "error": 0,
+      "threeRoundAverage": 45.33
+    },
+    {
+      "playerId": 760,
+      "name": "Tim Kelly",
+      "oldPrice": 415000,
+      "modelPrice": 419900,
+      "publishedPrice": 419900,
+      "error": 0,
+      "threeRoundAverage": 87.33
+    },
+    {
+      "playerId": 366,
+      "name": "Toby Greene",
+      "oldPrice": 432900,
+      "modelPrice": 444100,
+      "publishedPrice": 444100,
+      "error": 0,
+      "threeRoundAverage": 95.67
+    },
+    {
+      "playerId": 27,
+      "name": "Toby Murray",
+      "oldPrice": 142800,
+      "modelPrice": 186300,
+      "publishedPrice": 186300,
+      "error": 0,
+      "threeRoundAverage": 61.67
+    },
+    {
+      "playerId": 305,
+      "name": "Tom Atkins",
+      "oldPrice": 447300,
+      "modelPrice": 407000,
+      "publishedPrice": 407000,
+      "error": 0,
+      "threeRoundAverage": 59.67
+    },
+    {
+      "playerId": 787,
+      "name": "Tom Blamires",
+      "oldPrice": 294800,
+      "modelPrice": 295600,
+      "publishedPrice": 295600,
+      "error": 0,
+      "threeRoundAverage": 60
+    },
+    {
+      "playerId": 568,
+      "name": "Tom Brown",
+      "oldPrice": 363000,
+      "modelPrice": 369900,
+      "publishedPrice": 369900,
+      "error": 0,
+      "threeRoundAverage": 78.33
+    },
+    {
+      "playerId": 742,
+      "name": "Tom Cole",
+      "oldPrice": 416100,
+      "modelPrice": 372200,
+      "publishedPrice": 372200,
+      "error": 0,
+      "threeRoundAverage": 50.67
+    },
+    {
+      "playerId": 615,
+      "name": "Tom De Koning",
+      "oldPrice": 358300,
+      "modelPrice": 363800,
+      "publishedPrice": 363800,
+      "error": 0,
+      "threeRoundAverage": 76.33
+    },
+    {
+      "playerId": 583,
+      "name": "Tom Lynch",
+      "oldPrice": 290200,
+      "modelPrice": 313400,
+      "publishedPrice": 313400,
+      "error": 0,
+      "threeRoundAverage": 76
+    },
+    {
+      "playerId": 765,
+      "name": "Tom McCarthy",
+      "oldPrice": 458500,
+      "modelPrice": 464600,
+      "publishedPrice": 464600,
+      "error": 0,
+      "threeRoundAverage": 97
+    },
+    {
+      "playerId": 680,
+      "name": "Tom Papley",
+      "oldPrice": 420800,
+      "modelPrice": 417600,
+      "publishedPrice": 417600,
+      "error": 0,
+      "threeRoundAverage": 82.33
+    },
+    {
+      "playerId": 470,
+      "name": "Tom Sparrow",
+      "oldPrice": 425000,
+      "modelPrice": 457300,
+      "publishedPrice": 457300,
+      "error": 0,
+      "threeRoundAverage": 110
+    },
+    {
+      "playerId": 346,
+      "name": "Tom Stewart",
+      "oldPrice": 436800,
+      "modelPrice": 431500,
+      "publishedPrice": 431500,
+      "error": 0,
+      "threeRoundAverage": 84
+    },
+    {
+      "playerId": 287,
+      "name": "Touk Miller",
+      "oldPrice": 487400,
+      "modelPrice": 483200,
+      "publishedPrice": 483200,
+      "error": 0,
+      "threeRoundAverage": 95
+    },
+    {
+      "playerId": 780,
+      "name": "Tylar Young",
+      "oldPrice": 322500,
+      "modelPrice": 337100,
+      "publishedPrice": 337100,
+      "error": 0,
+      "threeRoundAverage": 76
+    },
+    {
+      "playerId": 600,
+      "name": "Tyler Sonsie",
+      "oldPrice": 307300,
+      "modelPrice": 311000,
+      "publishedPrice": 311000,
+      "error": 0,
+      "threeRoundAverage": 64.67
+    },
+    {
+      "playerId": 25,
+      "name": "Wayne Milera",
+      "oldPrice": 494200,
+      "modelPrice": 503200,
+      "publishedPrice": 503200,
+      "error": 0,
+      "threeRoundAverage": 106.33
+    },
+    {
+      "playerId": 293,
+      "name": "Wil Powell",
+      "oldPrice": 435800,
+      "modelPrice": 432500,
+      "publishedPrice": 432500,
+      "error": 0,
+      "threeRoundAverage": 85.33
+    },
+    {
+      "playerId": 48,
+      "name": "Will Ashcroft",
+      "oldPrice": 479600,
+      "modelPrice": 479700,
+      "publishedPrice": 479700,
+      "error": 0,
+      "threeRoundAverage": 96.67
+    },
+    {
+      "playerId": 275,
+      "name": "Will Graham",
+      "oldPrice": 305900,
+      "modelPrice": 288800,
+      "publishedPrice": 288800,
+      "error": 0,
+      "threeRoundAverage": 48.67
+    },
+    {
+      "playerId": 106,
+      "name": "Will Hayward",
+      "oldPrice": 302500,
+      "modelPrice": 324600,
+      "publishedPrice": 324600,
+      "error": 0,
+      "threeRoundAverage": 77.67
+    },
+    {
+      "playerId": 790,
+      "name": "Will Lewis",
+      "oldPrice": 144400,
+      "modelPrice": 180000,
+      "publishedPrice": 180000,
+      "error": 0,
+      "threeRoundAverage": 56
+    },
+    {
+      "playerId": 531,
+      "name": "Willem Drew",
+      "oldPrice": 434900,
+      "modelPrice": 413800,
+      "publishedPrice": 413800,
+      "error": 0,
+      "threeRoundAverage": 71.67
+    },
+    {
+      "playerId": 748,
+      "name": "Willem Duursma",
+      "oldPrice": 401400,
+      "modelPrice": 402900,
+      "publishedPrice": 402900,
+      "error": 0,
+      "threeRoundAverage": 82
+    },
+    {
+      "playerId": 661,
+      "name": "William Edwards",
+      "oldPrice": 119900,
+      "modelPrice": 158500,
+      "publishedPrice": 158500,
+      "error": 0,
+      "threeRoundAverage": 53.33
+    },
+    {
+      "playerId": 182,
+      "name": "Xavier Duursma",
+      "oldPrice": 359100,
+      "modelPrice": 345000,
+      "publishedPrice": 345000,
+      "error": 0,
+      "threeRoundAverage": 61.67
+    },
+    {
+      "playerId": 49,
+      "name": "Zac Bailey",
+      "oldPrice": 502300,
+      "modelPrice": 509500,
+      "publishedPrice": 509500,
+      "error": 0,
+      "threeRoundAverage": 106.67
+    },
+    {
+      "playerId": 126,
+      "name": "Zac Williams",
+      "oldPrice": 420600,
+      "modelPrice": 399800,
+      "publishedPrice": 399800,
+      "error": 0,
+      "threeRoundAverage": 69
+    },
+    {
+      "playerId": 202,
+      "name": "Zach Merrett",
+      "oldPrice": 596100,
+      "modelPrice": 572600,
+      "publishedPrice": 572600,
+      "error": 0,
+      "threeRoundAverage": 102.33
+    },
+    {
+      "playerId": 208,
+      "name": "Zach Reid",
+      "oldPrice": 334400,
+      "modelPrice": 313600,
+      "publishedPrice": 313600,
+      "error": 0,
+      "threeRoundAverage": 51.67
+    },
+    {
+      "playerId": 528,
+      "name": "Zak Butters",
+      "oldPrice": 655900,
+      "modelPrice": 639400,
+      "publishedPrice": 639400,
+      "error": 0,
+      "threeRoundAverage": 119.67
+    },
+    {
+      "playerId": 192,
+      "name": "Zak Johnson",
+      "oldPrice": 270400,
+      "modelPrice": 263200,
+      "publishedPrice": 263200,
+      "error": 0,
+      "threeRoundAverage": 49
+    }
+  ]
+}
