@@ -3,6 +3,7 @@
 import Link from "next/link";
 import LiveIndicator from "@/components/layout/LiveIndicator";
 import { useLiveRoundContext } from "@/lib/liveMatch/useLiveRoundContext";
+import { useMyTeam } from "@/lib/planner/useMyTeam";
 import PageHeader from "@/components/layout/PageHeader";
 import { formatChange, formatMoney } from "@/lib/format";
 import Header from "@/components/layout/Header";
@@ -202,6 +203,14 @@ export default function CashCowsPage() {
   // Next round's k updates from live scores as games finish.
   const { contexts, isLive } = useLiveRoundContext();
 
+  // "My team" toggle: show only the players in the saved squad.
+  const myTeam = useMyTeam();
+  const [myTeamOnly, setMyTeamOnly] = useState(false);
+  const myTeamIds = useMemo(
+    () => new Set((myTeam?.players ?? []).map((p) => p.id)),
+    [myTeam],
+  );
+
   const filteredRows = useMemo(() => {
   const normalisedSearch =
     searchQuery.trim().toLowerCase();
@@ -252,13 +261,16 @@ export default function CashCowsPage() {
         matchesSearch &&
         matchesPosition &&
         matchesClub &&
-        matchesPrice
+        matchesPrice &&
+        (!myTeamOnly || myTeamIds.has(row.player.id))
       );
     })
     .sort((a, b) =>
       compareRows(sortMode, a, b),
     );
 }, [
+  myTeamOnly,
+  myTeamIds,
   contexts,
   projectionMode,
   searchQuery,
@@ -332,6 +344,7 @@ const visibleRows = useMemo(
     priceFilter,
     clubFilter,
     sortMode,
+    myTeamOnly,
   ].join("|");
 
   const [visibleCountKey, setVisibleCountKey] =
@@ -607,6 +620,21 @@ const visibleRows = useMemo(
             </p>
 
             {isLive && <LiveIndicator />}
+
+            <button
+              type="button"
+              aria-pressed={myTeamOnly}
+              disabled={myTeamIds.size === 0}
+              title={myTeamIds.size === 0 ? "Save a team on My Team first" : undefined}
+              onClick={() => setMyTeamOnly((current) => !current)}
+              className={`rounded-lg border px-3 py-1.5 text-xs font-semibold transition disabled:opacity-40 ${
+                myTeamOnly
+                  ? "border-violet-500 bg-violet-500/20 text-violet-100"
+                  : "border-slate-700 text-slate-300 hover:border-slate-500 hover:text-white"
+              }`}
+            >
+              My team{myTeamIds.size > 0 ? ` (${myTeamIds.size})` : ""}
+            </button>
           </div>
 
           {/* Round-by-round columns are hidden on phones unless asked for. */}
