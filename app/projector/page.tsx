@@ -42,7 +42,7 @@ export default function ProjectorPage() {
           <ProjectorToolFromUrl />
         </Suspense>
 
-        <p className="mt-5 text-xs leading-5 text-slate-500">
+        <p className="mt-5 text-xs leading-5 text-slate-400">
           Future prices are estimates based on the
           scores entered above, until confirmed by
           actual weekly price movements.

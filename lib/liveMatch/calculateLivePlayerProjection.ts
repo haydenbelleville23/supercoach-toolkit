@@ -1,3 +1,4 @@
+import type { ScaledRoundContext } from "@/lib/priceEngine/estimateScaledRoundContexts";
 import { projectNextRoundPrice } from "@/lib/projector/projectNextRoundPrice";
 
 import type { Player } from "@/types/player";
@@ -11,6 +12,7 @@ import type { LivePlayerProjection } from "./types";
 export function calculateLivePlayerProjection(
   player: Player,
   liveScore: number,
+  context?: ScaledRoundContext,
 ): LivePlayerProjection | null {
   if (
     !Number.isFinite(player.price) ||
@@ -27,6 +29,7 @@ export function calculateLivePlayerProjection(
   const projection = projectNextRoundPrice(
     player,
     safeLiveScore,
+    context,
   );
 
   if (!projection) {

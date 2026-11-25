@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import DataFreshness from "@/components/layout/DataFreshness";
+import { formatChange, formatMoney } from "@/lib/format";
 import Header from "@/components/layout/Header";
 import {
   type UIEvent,
@@ -64,25 +65,13 @@ const futureRounds = Array.from(
     1,
 );
 
-function formatMoney(value: number): string {
-  return `$${value.toLocaleString()}`;
-}
-
-function formatGain(value: number | null): string {
- if (value === null) {
-  return "-";
-}
-
-  const sign = value > 0 ? "+" : "-";
-
-  return `${sign}$${Math.abs(value).toLocaleString()}`;
-}
+const formatGain = formatChange;
 
 function getGainColour(
   value: number | null,
 ): string {
   if (value === null) {
-    return "text-slate-500";
+    return "text-slate-400";
   }
 
   if (value < 0) {
@@ -353,7 +342,7 @@ const visibleRows = useMemo(
           </h1>
 
           <p className="mt-4 text-slate-300">
-            Compare projected cash generation, breakevens and price rises across every Supercoach player.
+            Compare projected cash generation, breakevens and price rises across every SuperCoach player.
           </p>
 
           <DataFreshness />
@@ -361,7 +350,7 @@ const visibleRows = useMemo(
 
         <section className="mt-8 grid gap-4 rounded-2xl border border-slate-800 bg-slate-900 p-5 sm:grid-cols-2 lg:grid-cols-5">
           <label className="block">
-            <span className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+            <span className="text-xs font-semibold uppercase tracking-wide text-slate-400">
               Projection
             </span>
 
@@ -393,7 +382,7 @@ const visibleRows = useMemo(
           </label>
 
           <label className="block">
-          <span className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+          <span className="text-xs font-semibold uppercase tracking-wide text-slate-400">
             Position
           </span>
 
@@ -415,7 +404,7 @@ const visibleRows = useMemo(
         </label>
 
         <label className="block">
-          <span className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+          <span className="text-xs font-semibold uppercase tracking-wide text-slate-400">
             Price
           </span>
 
@@ -442,7 +431,7 @@ const visibleRows = useMemo(
         </label>
 
         <label className="block">
-          <span className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+          <span className="text-xs font-semibold uppercase tracking-wide text-slate-400">
             Club
           </span>
 
@@ -467,7 +456,7 @@ const visibleRows = useMemo(
         </label>
 
           <label className="block">
-            <span className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+            <span className="text-xs font-semibold uppercase tracking-wide text-slate-400">
               Search
             </span>
 
@@ -482,7 +471,7 @@ const visibleRows = useMemo(
           </label>
 
           <label className="block">
-            <span className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+            <span className="text-xs font-semibold uppercase tracking-wide text-slate-400">
               Sort
             </span>
 
@@ -561,7 +550,7 @@ const visibleRows = useMemo(
           </span>
         </div>
 
-        <p className="text-xs text-slate-500">
+        <p className="text-xs text-slate-400">
           Showing {visibleRows.length} of {filteredRows.length} players
         </p>
 
@@ -572,7 +561,7 @@ const visibleRows = useMemo(
               >
             <table className="w-full min-w-[1500px] whitespace-nowrap text-sm">
               <thead className="sticky top-0 z-20 border-b border-slate-800 bg-slate-950">
-                <tr className="text-left text-xs uppercase tracking-wide text-slate-500">
+                <tr className="text-left text-xs uppercase tracking-wide text-slate-400">
                   <th className="sticky left-0 z-40 w-[180px] min-w-[180px] max-w-[180px] whitespace-normal bg-slate-950 px-4 py-3">
                     Player
                   </th>
@@ -634,7 +623,7 @@ const visibleRows = useMemo(
                         {row.player.name}
                       </Link>
 
-                      <div className="mt-0.5 text-xs text-slate-500">
+                      <div className="mt-0.5 text-xs text-slate-400">
                         {row.player.team} ·{" "}
                         {row.player.positions.join(
                           "/",
@@ -708,7 +697,7 @@ const visibleRows = useMemo(
         return (
         <td
             key={round}
-            className="px-3 py-3 text-right text-slate-500"
+            className="px-3 py-3 text-right text-slate-400"
         >
             -
         </td>
@@ -785,14 +774,14 @@ const visibleRows = useMemo(
                </tbody>
             </table>
             {visibleRows.length < filteredRows.length && (
-            <div className="border-t border-slate-800 bg-slate-950 px-4 py-3 text-center text-xs text-slate-500">
+            <div className="border-t border-slate-800 bg-slate-950 px-4 py-3 text-center text-xs text-slate-400">
               Scroll to load more players
             </div>
           )}
 
           {filteredRows.length > 50 &&
             visibleRows.length === filteredRows.length && (
-              <div className="border-t border-slate-800 bg-slate-950 px-4 py-3 text-center text-xs text-slate-600">
+              <div className="border-t border-slate-800 bg-slate-950 px-4 py-3 text-center text-xs text-slate-400">
                 All {filteredRows.length} players loaded
               </div>
             )}

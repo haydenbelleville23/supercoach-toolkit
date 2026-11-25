@@ -1,3 +1,5 @@
+import { formatMoney } from "@/lib/format";
+
 type PlayerStatsProps = {
   price: number;
   breakeven: number;
@@ -19,7 +21,7 @@ export default function PlayerStats({
 }: PlayerStatsProps) {
   return (
     <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
-      <Stat label="Price" value={`$${price.toLocaleString()}`} />
+      <Stat label="Price" value={formatMoney(price)} />
       <Stat label="Breakeven" value={breakeven.toString()} />
       <Stat label="Average" value={average.toFixed(1)} />
       <Stat label="Games" value={games.toString()} />
@@ -39,7 +41,7 @@ function Stat({
 }) {
   return (
     <div className="rounded-xl border border-slate-800 bg-slate-950/60 px-4 py-3">
-      <p className="text-xs font-medium uppercase tracking-wide text-slate-500">
+      <p className="text-xs font-medium uppercase tracking-wide text-slate-400">
         {label}
       </p>
 

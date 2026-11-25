@@ -2,16 +2,23 @@
 
 import Link from "next/link";
 import DataFreshness from "@/components/layout/DataFreshness";
+import Header from "@/components/layout/Header";
 import {
+  type ReactNode,
   useEffect,
   useMemo,
   useState,
 } from "react";
 
+import { CURRENT_COMPLETED_ROUND } from "@/data/season";
 import { getFixtures } from "@/lib/fixtures";
+import { formatChange, formatMoney } from "@/lib/format";
 import {
+  buildLiveRoundContext,
   calculateLiveMatch,
+  getFixtureState,
 } from "@/lib/liveMatch";
+import { getScaledRoundContexts } from "@/lib/projector/getScaledRoundContexts";
 import { playerRepository } from "@/lib/repository/PlayerRepository";
 
 import type {
@@ -50,21 +57,6 @@ type DisplayRow = {
   effectiveScore: number;
 };
 
-function formatMoney(value: number): string {
-  return `$${value.toLocaleString()}`;
-}
-
-function formatChange(value: number): string {
-  if (value === 0) {
-    return "-";
-  }
-
-  const sign = value > 0 ? "+" : "−";
-
-  return `${sign}${Math.abs(
-    value,
-  ).toLocaleString()}`;
-}
 
 function getChangeColour(
   value: number,
@@ -77,41 +69,67 @@ function getChangeColour(
     return "text-red-400";
   }
 
-  return "text-slate-500";
+  return "text-slate-400";
 }
 
 function getTeamLogo(team: string): string {
   return `/teams/${team.toLowerCase()}.png`;
 }
 
+/** The round the live feed is expected to be playing. */
+const LIVE_ROUND = CURRENT_COMPLETED_ROUND + 1;
+
+function isScheduledGame(
+  homeTeam: string,
+  awayTeam: string,
+  round: number,
+): boolean {
+  return scheduledFixtures.some(
+    (scheduled) =>
+      scheduled.round === round &&
+      scheduled.homeTeam === homeTeam &&
+      scheduled.awayTeam === awayTeam,
+  );
+}
+
 function getScheduleFixture(
   fixture: DfsLiveFixture,
 ) {
-  return scheduledFixtures.find(
+  const matches = scheduledFixtures.filter(
     (scheduled) =>
       scheduled.homeTeam ===
         fixture.homeTeam &&
       scheduled.awayTeam ===
         fixture.awayTeam,
   );
+
+  // Prefer this round's game over the same pairing earlier in the season.
+  return (
+    matches.find(
+      (scheduled) =>
+        scheduled.round === LIVE_ROUND,
+    ) ?? matches[matches.length - 1]
+  );
 }
 
 function getFixtureTimeLabel(
   fixture: DfsLiveFixture,
 ): string {
+  const state = getFixtureState(fixture);
+
+  if (state === "live") {
+    return "LIVE";
+  }
+
+  if (state === "finished") {
+    return "FINAL";
+  }
+
   const scheduled =
     getScheduleFixture(fixture);
 
   if (!scheduled?.kickoff) {
-    if (fixture.status === "LIVE") {
-      return "LIVE";
-    }
-
-    if (fixture.status === "CONCLUDED") {
-      return "FINAL";
-    }
-
-    return "Scheduled";
+    return "Upcoming";
   }
 
   const kickoff = new Date(
@@ -139,11 +157,13 @@ function getFixtureTimeLabel(
 function getStatusLabel(
   fixture: DfsLiveFixture,
 ): string {
-  if (fixture.status === "CONCLUDED") {
+  const state = getFixtureState(fixture);
+
+  if (state === "finished") {
     return "FULL TIME";
   }
 
-  if (fixture.status === "LIVE") {
+  if (state === "live") {
     if (fixture.timeRemaining) {
       return fixture.timeRemaining;
     }
@@ -157,7 +177,10 @@ function getStatusLabel(
 function getMarginLabel(
   fixture: DfsLiveFixture,
 ): string {
+  const state = getFixtureState(fixture);
+
   if (
+    state === "upcoming" ||
     fixture.homeScore === null ||
     fixture.awayScore === null
   ) {
@@ -179,7 +202,7 @@ function getMarginLabel(
       ? fixture.homeTeam
       : fixture.awayTeam;
 
-  if (fixture.status === "CONCLUDED") {
+  if (state === "finished") {
     return `${winningTeam} won by ${margin}`;
   }
 
@@ -202,15 +225,97 @@ function getFixtureVenue(
 function getFixtureStatusClasses(
   fixture: DfsLiveFixture,
 ): string {
-  if (fixture.status === "LIVE") {
+  const state = getFixtureState(fixture);
+
+  if (state === "live") {
     return "border-emerald-500/60 bg-emerald-500/10";
   }
 
-  if (fixture.status === "CONCLUDED") {
+  if (state === "finished") {
     return "border-slate-700 bg-slate-900";
   }
 
   return "border-slate-800 bg-slate-900";
+}
+
+/** Shared header and title, so loading and error states keep the layout. */
+function LiveLayout({
+  children,
+}: {
+  children: ReactNode;
+}) {
+  return (
+    <main className="min-h-screen bg-slate-950 text-white">
+      <Header />
+
+      <section className="mx-auto max-w-7xl px-6 pt-12">
+        <div className="max-w-3xl">
+          <p className="text-sm font-semibold uppercase tracking-widest text-violet-400">
+            2026 season
+          </p>
+
+          <h1 className="mt-3 text-4xl font-bold tracking-tight">
+            Live Scores
+          </h1>
+
+          <p className="mt-4 text-slate-300">
+            Live SuperCoach scores with projected end-of-round prices and breakevens.
+          </p>
+
+          <DataFreshness />
+        </div>
+      </section>
+
+      {children}
+    </main>
+  );
+}
+
+function LiveLoadingState() {
+  return (
+    <section
+      aria-busy="true"
+      className="mx-auto max-w-7xl px-6 py-8"
+    >
+      <span className="sr-only">Loading live scores</span>
+
+      <div className="flex gap-3 overflow-hidden pb-3">
+        {[0, 1, 2, 3].map((index) => (
+          <div
+            key={index}
+            className="h-[104px] min-w-[170px] animate-pulse rounded-xl border border-slate-800 bg-slate-900"
+          />
+        ))}
+      </div>
+
+      <div className="mt-5 h-[210px] animate-pulse rounded-2xl border border-slate-800 bg-slate-900" />
+
+      <div className="mt-6 h-64 animate-pulse rounded-2xl border border-slate-800 bg-slate-900" />
+    </section>
+  );
+}
+
+function LiveMessage({
+  children,
+  tone = "neutral",
+}: {
+  children: ReactNode;
+  tone?: "neutral" | "error";
+}) {
+  return (
+    <section className="mx-auto max-w-7xl px-6 py-8">
+      <div
+        role={tone === "error" ? "alert" : "status"}
+        className={`rounded-2xl border px-6 py-8 text-center ${
+          tone === "error"
+            ? "border-red-500/40 bg-red-500/10 text-red-300"
+            : "border-slate-800 bg-slate-900 text-slate-300"
+        }`}
+      >
+        {children}
+      </div>
+    </section>
+  );
 }
 
 export default function LivePage() {
@@ -278,15 +383,15 @@ export default function LivePage() {
             const liveFixture =
               feed.fixtures.find(
                 (fixture) =>
-                  fixture.status ===
-                  "LIVE",
+                  getFixtureState(fixture) ===
+                  "live",
               );
 
             const concludedFixture =
               feed.fixtures.find(
                 (fixture) =>
-                  fixture.status ===
-                  "CONCLUDED",
+                  getFixtureState(fixture) ===
+                  "finished",
               );
 
             return (
@@ -406,6 +511,26 @@ export default function LivePage() {
       manualScores,
     ]);
 
+  // The round's k, updated with scores from finished games (and any
+  // entered scores) across the whole feed, not just the selected game.
+  const liveContext = useMemo(() => {
+    const baseContext =
+      getScaledRoundContexts().get(LIVE_ROUND);
+
+    if (!baseContext || !feedState.data) {
+      return baseContext;
+    }
+
+    return buildLiveRoundContext({
+      baseContext,
+      round: LIVE_ROUND,
+      feed: feedState.data,
+      players,
+      manualScores,
+      isScheduledGame,
+    }).context;
+  }, [feedState.data, manualScores]);
+
   const projections = useMemo(
     () =>
       calculateLiveMatch(
@@ -413,10 +538,12 @@ export default function LivePage() {
           (entry) => entry.player,
         ),
         effectiveScores,
+        liveContext,
       ),
     [
       matchedPlayers,
       effectiveScores,
+      liveContext,
     ],
   );
 
@@ -545,9 +672,9 @@ export default function LivePage() {
 
   if (feedState.loading) {
     return (
-      <main className="min-h-screen bg-slate-950 p-8 text-white">
-        Loading live scores...
-      </main>
+      <LiveLayout>
+        <LiveLoadingState />
+      </LiveLayout>
     );
   }
 
@@ -556,20 +683,25 @@ export default function LivePage() {
     !feedState.data
   ) {
     return (
-      <main className="min-h-screen bg-slate-950 p-8 text-white">
-        <p className="text-red-400">
+      <LiveLayout>
+        <LiveMessage tone="error">
           {feedState.error ??
-            "Live scores are unavailable."}
-        </p>
-      </main>
+            "Live scores are unavailable."}{" "}
+          They refresh every 30 seconds.
+        </LiveMessage>
+      </LiveLayout>
     );
   }
 
   if (!selectedFixture) {
     return (
-      <main className="min-h-screen bg-slate-950 p-8 text-white">
-        No fixture is available.
-      </main>
+      <LiveLayout>
+        <LiveMessage>
+          No games are in the live feed right
+          now. Check back when the next round
+          starts.
+        </LiveMessage>
+      </LiveLayout>
     );
   }
 
@@ -580,30 +712,7 @@ export default function LivePage() {
     getFixtureVenue(selectedFixture);
 
   return (
-    <main className="min-h-screen bg-slate-950 text-white">
-      <header className="border-b border-slate-800">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5">
-          <div>
-            <p className="text-xl font-bold">
-              SuperCoach Toolkit
-            </p>
-
-            <p className="text-sm text-slate-400">
-              Live Price Tracker
-            </p>
-
-            <DataFreshness className="mt-1" />
-          </div>
-
-          <Link
-            href="/"
-            className="text-sm text-emerald-400 hover:text-emerald-300"
-          >
-            ← Dashboard
-          </Link>
-        </div>
-      </header>
-
+    <LiveLayout>
       <section className="mx-auto max-w-7xl px-6 py-8">
         <div className="flex gap-3 overflow-x-auto pb-3">
           {fixtures.map((fixture) => {
@@ -635,8 +744,8 @@ export default function LivePage() {
                     )}
                   </p>
 
-                  {fixture.status ===
-                    "LIVE" && (
+                  {getFixtureState(fixture) ===
+                    "live" && (
                     <span className="h-2 w-2 rounded-full bg-emerald-400" />
                   )}
                 </div>
@@ -703,7 +812,7 @@ export default function LivePage() {
                   {selectedFixture.homeTeam}
                 </p>
 
-                <p className="mt-1 text-sm text-slate-500">
+                <p className="mt-1 text-sm text-slate-400">
                   Home
                 </p>
               </div>
@@ -722,7 +831,7 @@ export default function LivePage() {
                     0}
                 </span>
 
-                <span className="text-sm font-bold text-slate-500">
+                <span className="text-sm font-bold text-slate-400">
                   VS
                 </span>
 
@@ -744,7 +853,7 @@ export default function LivePage() {
                 </p>
               )}
 
-              <p className="mt-2 text-xs text-slate-600">
+              <p className="mt-2 text-xs text-slate-400">
                 Updated{" "}
                 {feedState.data
                   .updatedAt ?? "recently"}
@@ -769,7 +878,7 @@ export default function LivePage() {
                   {selectedFixture.awayTeam}
                 </p>
 
-                <p className="mt-1 text-sm text-slate-500">
+                <p className="mt-1 text-sm text-slate-400">
                   Away
                 </p>
               </div>
@@ -819,7 +928,7 @@ export default function LivePage() {
           <div className="max-h-[65vh] overflow-auto">
             <table className="w-full min-w-[980px] text-sm">
               <thead className="sticky top-0 z-20 border-b border-slate-800 bg-slate-950">
-                <tr className="text-left text-xs uppercase tracking-wide text-slate-500">
+                <tr className="text-left text-xs uppercase tracking-wide text-slate-400">
                   <th className="sticky left-0 z-30 bg-slate-950 px-4 py-3">
                     Player
                   </th>
@@ -874,7 +983,7 @@ export default function LivePage() {
                           {player.name}
                         </Link>
 
-                        <div className="mt-0.5 text-xs text-slate-500">
+                        <div className="mt-0.5 text-xs text-slate-400">
                           #{livePlayer.jumperNumber}
                           {" · "}
                           {player.positions.join(
@@ -961,7 +1070,7 @@ export default function LivePage() {
                   <tr>
                     <td
                       colSpan={8}
-                      className="px-4 py-12 text-center text-slate-500"
+                      className="px-4 py-12 text-center text-slate-400"
                     >
                       No matched players were
                       found for this team.
@@ -974,7 +1083,7 @@ export default function LivePage() {
         </section>
 
         <section className="mt-5 rounded-xl border border-slate-800 bg-slate-900 p-4">
-          <p className="text-xs leading-5 text-slate-500">
+          <p className="text-xs leading-5 text-slate-400">
             Live SuperCoach scores refresh
             automatically every 30 seconds.
             Editing a score creates a temporary
@@ -985,6 +1094,6 @@ export default function LivePage() {
           </p>
         </section>
       </section>
-    </main>
+    </LiveLayout>
   );
 }

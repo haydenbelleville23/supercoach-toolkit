@@ -6,7 +6,6 @@ import {
 } from "lucide-react";
 
 import {
-  useEffect,
   useMemo,
   useState,
 } from "react";
@@ -38,11 +37,18 @@ export default function PlayerSelector({
   const [isOpen, setIsOpen] =
     useState(false);
 
-  useEffect(() => {
+  // When the list closes or the selected player changes, show the selected
+  // player's name again (adjusted during render rather than in an effect).
+  const syncKey = `${selectedPlayer?.id}|${isOpen}`;
+  const [lastSyncKey, setLastSyncKey] = useState(syncKey);
+
+  if (syncKey !== lastSyncKey) {
+    setLastSyncKey(syncKey);
+
     if (!isOpen) {
       setQuery(selectedPlayer?.name ?? "");
     }
-  }, [selectedPlayer, isOpen]);
+  }
 
   const filteredPlayers = useMemo(() => {
   const cleanedQuery = query.trim().toLowerCase();
@@ -87,7 +93,7 @@ export default function PlayerSelector({
 
       <div className="relative mt-2">
       <Search
-        className="pointer-events-none absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-500"
+        className="pointer-events-none absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400"
       />
       <input
         id="player-search"
@@ -133,7 +139,7 @@ export default function PlayerSelector({
       {isOpen && (
         <div className="absolute z-30 mt-2 max-h-72 w-full overflow-y-auto rounded-lg border border-slate-700 bg-slate-950 shadow-xl">
           {filteredPlayers.length === 0 ? (
-            <p className="px-4 py-3 text-sm text-slate-500">
+            <p className="px-4 py-3 text-sm text-slate-400">
               No players found.
             </p>
           ) : (
@@ -168,7 +174,7 @@ export default function PlayerSelector({
                     {player.name}
                   </span>
 
-                  <span className="block text-xs text-slate-500">
+                  <span className="block text-xs text-slate-400">
                     {player.teamName}
                     {" • "}
                     {player.positions.join(" / ")}

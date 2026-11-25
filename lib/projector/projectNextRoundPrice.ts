@@ -3,6 +3,7 @@ import {
   calculateScaledBreakEven,
   calculateScaledPlayerPrice,
 } from "@/lib/priceEngine/calculateScaledPlayerPrice";
+import type { ScaledRoundContext } from "@/lib/priceEngine/estimateScaledRoundContexts";
 import { getScaledRoundContexts } from "@/lib/projector/getScaledRoundContexts";
 import type { Player } from "@/types/player";
 
@@ -34,10 +35,12 @@ export interface NextRoundPriceProjection {
 export function projectNextRoundPrice(
   player: Player,
   score: number,
+  /** Round estimate to use instead of the default (e.g. updated with live scores). */
+  contextOverride?: ScaledRoundContext,
 ): NextRoundPriceProjection | null {
   const round = CURRENT_COMPLETED_ROUND + 1;
   const contexts = getScaledRoundContexts();
-  const context = contexts.get(round);
+  const context = contextOverride ?? contexts.get(round);
 
   const previousScores = player.history
     .filter((h) => h.round <= CURRENT_COMPLETED_ROUND && h.games > 0)

@@ -3,6 +3,7 @@
 import { useState } from "react";
 
 import { CURRENT_COMPLETED_ROUND } from "@/data/season";
+import { formatChange, formatMoney } from "@/lib/format";
 import type { SeasonProjectionRow } from "@/types/projection";
 
 type SeasonProjectionTableProps = {
@@ -10,14 +11,6 @@ type SeasonProjectionTableProps = {
   startingPrice: number;
   onScoreChange: (round: number, score: number | null) => void;
 };
-
-function formatMoney(value: number | null): string {
-  if (value === null) {
-    return "-";
-  }
-
-  return value.toLocaleString();
-}
 
 export default function SeasonProjectionTable({
   rows,
@@ -116,7 +109,7 @@ export default function SeasonProjectionTable({
                   className={`border-t border-slate-800 transition-colors ${
                     isFuture
                       ? "bg-slate-900 hover:bg-slate-800"
-                      : "bg-slate-950/40 text-slate-500"
+                      : "bg-slate-950/40 text-slate-400"
                   }`}
                 >
                   <td
@@ -135,11 +128,11 @@ export default function SeasonProjectionTable({
                     </div>
 
                    {row.opponent && row.homeAway ? (
-                      <div className="mt-0.5 whitespace-nowrap text-xs text-slate-500">
+                      <div className="mt-0.5 whitespace-nowrap text-xs text-slate-400">
                         vs {row.opponent} ({row.homeAway})
                       </div>
                     ) : (
-                      <div className="mt-0.5 text-xs font-medium text-slate-500">
+                      <div className="mt-0.5 text-xs font-medium text-slate-400">
                         BYE
                       </div>
                     )}
@@ -181,7 +174,7 @@ export default function SeasonProjectionTable({
 
                     {/* Price */}
                     <td className="px-1.5 py-2.5 sm:px-2 text-right font-semibold tabular-nums">
-                      {row.price === null ? "-" : `$${formatMoney(row.price)}`}
+                      {row.price === null ? "-" : formatMoney(row.price)}
                     </td>
 
                   <td className="px-1.5 py-2.5 sm:px-2 text-right tabular-nums text-slate-400">
@@ -194,34 +187,26 @@ export default function SeasonProjectionTable({
                     <td
                      className={`px-1.5 py-2.5 sm:px-2 text-right tabular-nums ${
                       row.priceChange === null || row.priceChange === 0
-                        ? "text-slate-500"
+                        ? "text-slate-400"
                         : row.priceChange > 0
                           ? "text-emerald-400"
                           : "text-red-400"
                     }`}
                   >
-                    {row.priceChange === null || row.priceChange === 0
-                      ? "-"
-                      : `${row.priceChange > 0 ? "+" : "−"}$${Math.abs(
-                          row.priceChange,
-                        ).toLocaleString()}`}
+                    {formatChange(row.priceChange)}
                     </td>
 
                     {/* Season price change */}
                     <td
                       className={`px-1.5 py-2.5 sm:px-2 text-right tabular-nums ${
                         seasonPriceChange === null || seasonPriceChange === 0
-                          ? "text-slate-500"
+                          ? "text-slate-400"
                           : seasonPriceChange > 0
                             ? "text-emerald-400"
                             : "text-red-400"
                       }`}
                     >
-                    {seasonPriceChange === null || seasonPriceChange === 0
-                      ? "-"
-                      : `${seasonPriceChange > 0 ? "+" : "−"}$${Math.abs(
-                          seasonPriceChange,
-                        ).toLocaleString()}`}
+                    {formatChange(seasonPriceChange)}
                     </td>
                 </tr>
               );

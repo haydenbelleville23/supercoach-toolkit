@@ -16,17 +16,17 @@ export default function Footer() {
 
           <div>
             <p className="text-lg font-bold text-white">Fantasy King</p>
-            <p className="mt-1 max-w-md text-slate-500">
+            <p className="mt-1 max-w-md text-slate-400">
               Independent AFL Fantasy tools designed to help you make better
               decisions throughout the season.
             </p>
           </div>
         </Link>
 
-        <div className="text-left text-slate-500 md:text-right">
+        <div className="text-left text-slate-400 md:text-right">
           <p>© {new Date().getFullYear()} Fantasy King</p>
           <p className="mt-1">
-            Not affiliated with the AFL or the official AFL Fantasy or AFL Supercoach competitions.
+            Not affiliated with the AFL or the official AFL Fantasy or AFL SuperCoach competitions.
           </p>
         </div>
       </div>
