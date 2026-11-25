@@ -32,25 +32,6 @@ export type SuperCoachPlayerStats = {
   avg3: number;
   avg5: number;
 
-  be1: number;
-  be2: number;
-  be3: number;
-
-  ppts: number;
-  ppts1: number;
-  ppts2: number;
-  ppts3: number;
-
-  pp1: number;
-  pp2: number;
-  pp3: number;
-
-  ppc1: number;
-  ppc2: number;
-  ppc3: number;
-
-  own: number;
-
   opp?: SuperCoachOpponent | null;
   opp1?: SuperCoachOpponent | null;
   opp2?: SuperCoachOpponent | null;

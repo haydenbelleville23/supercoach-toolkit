@@ -33,15 +33,9 @@ export function placeholderToPlayer(placeholder: RookiePlaceholder): Player {
     recentScores: [],
     history: [],
     breakeven: 0,
-    projectedBreakEvens: [],
-    projectedScore: 0,
-    projectedScores: [],
-    projectedPrices: [],
-    projectedPriceChanges: [],
-    ownership: 0,
+    ownership: null,
     active: true,
     availability: null,
-    upcomingFixtures: [],
   };
 }
 

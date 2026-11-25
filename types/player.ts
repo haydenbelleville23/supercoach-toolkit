@@ -28,24 +28,15 @@ export type Player = {
   recentScores: number[];
   history: PlayerHistoryRow[];
 
+  /** Our scaled engine's breakeven for the next round (0 if none). */
   breakeven: number;
 
-  projectedBreakEvens: number[];
-
-  projectedScore: number;
-  projectedScores: number[];
-
-  projectedPrices: number[];
-  projectedPriceChanges: number[];
-
-  ownership: number;
+  /**
+   * Percentage of teams that own the player. No public source is wired in
+   * yet, so this is null for every player and the UI hides it.
+   */
+  ownership: number | null;
 
   active: boolean;
   availability: string | null;
-
-  upcomingFixtures: {
-    round: number;
-    opponent: string;
-    homeAway: "H" | "A";
-  }[];
 };

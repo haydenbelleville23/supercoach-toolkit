@@ -1,23 +1,31 @@
-import type { Player } from "@/types/player";
+import { projectScore } from "@/lib/planner/projectScore";
 import type { ProjectionMode } from "@/lib/projector/projectionModes";
+import type { Player } from "@/types/player";
 
+/**
+ * The suggested score for a future round. "projected" (and "custom" with no
+ * score typed) uses the Trade Planner's projection (projectScore): the
+ * season average from completed rounds.
+ */
 export function getProjectedScore({
   player,
-  projectionIndex,
+  round,
+  completedRound,
   mode,
   existingScore,
 }: {
   player: Player;
-  projectionIndex: number;
+  round: number;
+  completedRound: number;
   mode: ProjectionMode;
   existingScore?: number | null;
 }): number {
+  const projected = () =>
+    Math.round(projectScore(player, round, completedRound) ?? player.average);
+
   switch (mode) {
     case "projected":
-      return (
-        player.projectedScores[projectionIndex] ??
-        Math.round(player.average)
-      );
+      return projected();
 
     case "season-average":
       return Math.round(player.average);
@@ -29,10 +37,6 @@ export function getProjectedScore({
       return Math.round(player.average5);
 
     case "custom":
-      return (
-        existingScore ??
-        player.projectedScores[projectionIndex] ??
-        Math.round(player.average)
-      );
+      return existingScore ?? projected();
   }
 }
