@@ -6,6 +6,7 @@ import {
 } from "@/lib/projector";
 
 import type { ProjectionMode } from "@/lib/projector";
+import type { ScaledRoundContext } from "@/lib/priceEngine/estimateScaledRoundContexts";
 import type { Player } from "@/types/player";
 import type { SeasonProjectionRow } from "@/types/projection";
 
@@ -114,6 +115,8 @@ export function calculateCashCowRow(
   player: Player,
   mode: ProjectionMode,
   scoreOverrides: CashCowScoreOverrides = {},
+  /** Round estimates, e.g. with live scores applied (useLiveRoundContext). */
+  contexts?: Map<number, ScaledRoundContext>,
 ): CashCowRow | null {
   if (
     player.recentScores.length < 2 ||
@@ -138,6 +141,7 @@ export function calculateCashCowRow(
     calculateScaledProjectionRows(
       rowsWithOverrides,
       player,
+      contexts,
     );
 
   const projectedRounds =
@@ -226,6 +230,7 @@ export function calculateCashCowRows(
   players: Player[],
   mode: ProjectionMode,
   scoreOverrides: CashCowScoreOverrides = {},
+  contexts?: Map<number, ScaledRoundContext>,
 ): CashCowRow[] {
   return players
     .map((player) =>
@@ -233,6 +238,7 @@ export function calculateCashCowRows(
         player,
         mode,
         scoreOverrides,
+        contexts,
       ),
     )
     .filter(

@@ -1,7 +1,9 @@
 "use client";
 
 import Link from "next/link";
+import LiveIndicator from "@/components/layout/LiveIndicator";
 import OffseasonNotice from "@/components/layout/OffseasonNotice";
+import { useLiveRoundContext } from "@/lib/liveMatch/useLiveRoundContext";
 import PageHeader from "@/components/layout/PageHeader";
 import { formatChange, formatMoney } from "@/lib/format";
 import Header from "@/components/layout/Header";
@@ -202,6 +204,9 @@ export default function CashCowsPage() {
   // No rounds left to project: the page shows an offseason note instead.
   const seasonOver = isSeasonOver();
 
+  // Next round's k updates from live scores as games finish.
+  const { contexts, isLive } = useLiveRoundContext();
+
   const filteredRows = useMemo(() => {
   if (seasonOver) {
     return [];
@@ -214,6 +219,7 @@ export default function CashCowsPage() {
     players,
     projectionMode,
     scoreOverrides,
+    contexts,
   )
     .filter((row) => {
       const matchesSearch =
@@ -263,6 +269,7 @@ export default function CashCowsPage() {
     );
 }, [
   seasonOver,
+  contexts,
   projectionMode,
   searchQuery,
   sortMode,
@@ -620,9 +627,13 @@ const visibleRows = useMemo(
         </div>
 
         <div className="flex flex-wrap items-center justify-between gap-2">
-          <p className="text-xs text-slate-400">
-            Showing {visibleRows.length} of {filteredRows.length} players
-          </p>
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
+            <p className="text-xs text-slate-400">
+              Showing {visibleRows.length} of {filteredRows.length} players
+            </p>
+
+            {isLive && <LiveIndicator />}
+          </div>
 
           {/* Round-by-round columns are hidden on phones unless asked for. */}
           <button
