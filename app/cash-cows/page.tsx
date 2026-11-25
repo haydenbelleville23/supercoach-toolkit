@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import DataFreshness from "@/components/layout/DataFreshness";
 import Header from "@/components/layout/Header";
 import {
   type UIEvent,
@@ -354,6 +355,8 @@ const visibleRows = useMemo(
           <p className="mt-4 text-slate-300">
             Compare projected cash generation, breakevens and price rises across every Supercoach player.
           </p>
+
+          <DataFreshness />
         </div>
 
         <section className="mt-8 grid gap-4 rounded-2xl border border-slate-800 bg-slate-900 p-5 sm:grid-cols-2 lg:grid-cols-5">

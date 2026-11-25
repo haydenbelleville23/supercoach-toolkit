@@ -65,15 +65,16 @@ export default function SeasonProjectionTable({
           <colgroup>
             <col className="w-[16%]" />
             <col className="w-[14%]" />
-            <col className="w-[12%]" />
             <col className="w-[20%]" />
+            <col className="w-[12%]" />
             <col className="w-[18%]" />
             <col className="w-[20%]" />
           </colgroup>
 
           <thead className="bg-slate-950 text-slate-400">
             <tr>
-              <th className="px-1.5 py-3 sm:px-2 text-center">
+              {/* Rd stays pinned while the table scrolls on phones. */}
+              <th className="sticky left-0 z-10 bg-slate-950 px-1.5 py-3 sm:px-2 text-center shadow-[4px_0_6px_rgba(0,0,0,0.2)]">
                 Rd
               </th>
 
@@ -82,11 +83,11 @@ export default function SeasonProjectionTable({
               </th>
 
               <th className="px-1.5 py-3 sm:px-2 text-right">
-                BE
+                Price
               </th>
 
               <th className="px-1.5 py-3 sm:px-2 text-right">
-                Price
+                BE
               </th>
 
               <th className="px-1.5 py-3 sm:px-2 text-right">
@@ -118,7 +119,11 @@ export default function SeasonProjectionTable({
                       : "bg-slate-950/40 text-slate-500"
                   }`}
                 >
-                  <td className="px-2 py-2 text-center">
+                  <td
+                    className={`sticky left-0 z-10 px-2 py-2 text-center shadow-[4px_0_6px_rgba(0,0,0,0.2)] ${
+                      isFuture ? "bg-slate-900" : "bg-slate-950"
+                    }`}
+                  >
                     <div
                       className={
                         isFuture
@@ -174,15 +179,16 @@ export default function SeasonProjectionTable({
                     )}
                   </td>
 
+                    {/* Price */}
+                    <td className="px-1.5 py-2.5 sm:px-2 text-right font-semibold tabular-nums">
+                      {row.price === null ? "-" : `$${formatMoney(row.price)}`}
+                    </td>
+
                   <td className="px-1.5 py-2.5 sm:px-2 text-right tabular-nums text-slate-400">
                     {row.breakEven === null
                       ? "-"
                       : Math.ceil(row.breakEven)}
                   </td>
-                    {/* Price */}
-                    <td className="px-1.5 py-2.5 sm:px-2 text-right font-semibold tabular-nums">
-                      {row.price === null ? "-" : `$${formatMoney(row.price)}`}
-                    </td>
 
                     {/* Round price change */}
                     <td

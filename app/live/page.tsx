@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import DataFreshness from "@/components/layout/DataFreshness";
 import {
   useEffect,
   useMemo,
@@ -590,6 +591,8 @@ export default function LivePage() {
             <p className="text-sm text-slate-400">
               Live Price Tracker
             </p>
+
+            <DataFreshness className="mt-1" />
           </div>
 
           <Link
