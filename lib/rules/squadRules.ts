@@ -31,6 +31,12 @@ export const TRADE_RULES = {
   maxBoostsPerRound: 1,
 };
 
+/**
+ * In a bye round only a team's best this-many scores count, so the
+ * planner warns when fewer squad players than this have a game.
+ */
+export const BEST_SCORES_IN_BYE_ROUND = 18;
+
 /** Placeholder rookie ("Rookie (TBC)") for players not yet known. */
 export const ROOKIE_PLACEHOLDER = {
   /** Bought and sold at this fixed price; no score projection. */

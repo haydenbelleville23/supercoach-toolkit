@@ -5,7 +5,8 @@ import { useMemo } from "react";
 
 import { evaluatePlan } from "@/lib/planner/evaluatePlan";
 import { addPlaceholder, isPlaceholderId } from "@/lib/planner/placeholders";
-import { createPlan } from "@/lib/planner/teamFile";
+import { createPlan, duplicatePlan } from "@/lib/planner/teamFile";
+import { countPriceOverrides, resetPriceOverrides, withoutPriceOverrides } from "@/lib/planner/tradePrices";
 import { MAX_PLANS, type MyTeam, type PlanRound, type TradePlan } from "@/lib/planner/types";
 import { saveMyTeam, useMyTeam } from "@/lib/planner/useMyTeam";
 
@@ -77,6 +78,7 @@ function Planner({ team }: { team: MyTeam }) {
   );
 
   const roundCount = planRoundCount(activePlan);
+  const priceOverrideCount = activePlan ? countPriceOverrides(activePlan) : 0;
   const lastShown = FIRST_ROUND + roundCount - 1;
 
   const rounds = useMemo(
@@ -119,12 +121,7 @@ function Planner({ team }: { team: MyTeam }) {
     }
 
     const plan: TradePlan = base
-      ? {
-          ...structuredClone(base),
-          ...createPlan(`${base.name} (copy)`),
-          rounds: structuredClone(base.rounds),
-          scoreOverrides: structuredClone(base.scoreOverrides),
-        }
+      ? duplicatePlan(base, `${base.name} (copy)`)
       : createPlan(`Plan ${team.plans.length + 1}`);
 
     save({ ...team, plans: [...team.plans, plan], activePlanId: plan.id });
@@ -223,6 +220,18 @@ function Planner({ team }: { team: MyTeam }) {
             </button>
             <button
               type="button"
+              className={button}
+              disabled={priceOverrideCount === 0}
+              onClick={() => {
+                if (window.confirm(`Reset all ${priceOverrideCount} typed trade prices in "${activePlan.name}"?`)) {
+                  updatePlan(resetPriceOverrides);
+                }
+              }}
+            >
+              Reset price overrides{priceOverrideCount > 0 ? ` (${priceOverrideCount})` : ""}
+            </button>
+            <button
+              type="button"
               className={`${button} text-red-300`}
               onClick={() => {
                 if (window.confirm(`Delete "${activePlan.name}"?`)) {
@@ -277,9 +286,6 @@ function Planner({ team }: { team: MyTeam }) {
                   listId={PLAYER_LIST_ID}
                   collapsed={(activePlan.collapsedRounds ?? []).includes(summary.round)}
                   fieldOpen={(activePlan.openFields ?? []).includes(summary.round)}
-                  getProjection={(playerId) =>
-                    projector.getPath(playerId).find((r) => r.round === summary.round)
-                  }
                   onChange={(next) => setRound(summary.round, next)}
                   onToggleCollapsed={() =>
                     updatePlan((plan) => ({
@@ -304,8 +310,9 @@ function Planner({ team }: { team: MyTeam }) {
                           ...plan.rounds,
                           [summary.round]: {
                             ...current,
+                            // A new player in: the row's price overrides go.
                             trades: current.trades.map((t, i) =>
-                              i === tradeIndex ? { ...t, inId: created.id } : t,
+                              i === tradeIndex ? withoutPriceOverrides({ ...t, inId: created.id }) : t,
                             ),
                           },
                         },
@@ -320,7 +327,6 @@ function Planner({ team }: { team: MyTeam }) {
                       ),
                     })
                   }
-                  onOverride={(playerId, score) => setOverride(playerId, summary.round, score)}
                 />
               ))}
 

@@ -1,12 +1,16 @@
 "use client";
 
-import { useState } from "react";
+import { useId, useState } from "react";
 
 import { formatMoney } from "@/lib/format";
 import { getAddTradeState, type RoundSummary } from "@/lib/planner/evaluatePlan";
 import { buildFieldLayout } from "@/lib/planner/fieldLayout";
 import { isPlaceholderId } from "@/lib/planner/placeholders";
-import type { RoundProjection } from "@/lib/planner/pricePaths";
+import {
+  parsePriceInput,
+  setTradePriceOverride,
+  updateTrade,
+} from "@/lib/planner/tradePrices";
 import type { PlanRound, RookiePlaceholder } from "@/lib/planner/types";
 import type { Position } from "@/lib/rules/squadRules";
 
@@ -27,14 +31,11 @@ export interface RoundCardProps {
   listId: string;
   collapsed: boolean;
   fieldOpen: boolean;
-  /** This round's projection for a player (score, override, bye). */
-  getProjection: (playerId: number) => RoundProjection | undefined;
   onChange: (next: PlanRound) => void;
   onToggleCollapsed: () => void;
   onToggleField: () => void;
   onNewRookie: (tradeIndex: number, position: Position) => void;
   onPlaceholderTeam: (placeholderId: number, team: string | null) => void;
-  onOverride: (playerId: number, score: number | null) => void;
 }
 
 export default function RoundCard(props: RoundCardProps) {
@@ -103,12 +104,10 @@ function RoundBody({
   placeholders,
   listId,
   fieldOpen,
-  getProjection,
   onChange,
   onToggleField,
   onNewRookie,
   onPlaceholderTeam,
-  onOverride,
   addState,
   overLimit,
 }: RoundCardProps & {
@@ -120,10 +119,19 @@ function RoundBody({
     .filter((p): p is Player => !!p)
     .sort((a, b) => a.name.localeCompare(b.name));
 
+  // Changing a player drops that row's price overrides (updateTrade).
   const setTrade = (index: number, change: Partial<PlanRound["trades"][number]>) =>
     onChange({
       ...planRound,
-      trades: planRound.trades.map((t, i) => (i === index ? { ...t, ...change } : t)),
+      trades: planRound.trades.map((t, i) => (i === index ? updateTrade(t, change) : t)),
+    });
+
+  const setPrice = (index: number, side: "out" | "in", price: number | null) =>
+    onChange({
+      ...planRound,
+      trades: planRound.trades.map((t, i) =>
+        i === index ? setTradePriceOverride(t, side, price) : t,
+      ),
     });
 
   return (
@@ -163,13 +171,14 @@ function RoundBody({
                 </select>
 
                 {trade.outId !== null && line?.outPrice != null && (
-                  <PriceTap
-                    tone="out"
+                  <TradePrice
+                    side="out"
+                    label={`Round ${summary.round} trade ${index + 1}: price out`}
                     price={line.outPrice}
-                    playerId={trade.outId}
-                    round={summary.round}
-                    projection={getProjection(trade.outId)}
-                    onOverride={onOverride}
+                    defaultPrice={line.outDefault}
+                    overridden={trade.outPriceOverride !== undefined}
+                    placeholder={isPlaceholderId(trade.outId)}
+                    onSet={(price) => setPrice(index, "out", price)}
                   />
                 )}
               </div>
@@ -205,13 +214,14 @@ function RoundBody({
                 )}
 
                 {trade.inId !== null && line?.inPrice != null && (
-                  <PriceTap
-                    tone="in"
+                  <TradePrice
+                    side="in"
+                    label={`Round ${summary.round} trade ${index + 1}: price in`}
                     price={line.inPrice}
-                    playerId={trade.inId}
-                    round={summary.round}
-                    projection={getProjection(trade.inId)}
-                    onOverride={onOverride}
+                    defaultPrice={line.inDefault}
+                    overridden={trade.inPriceOverride !== undefined}
+                    placeholder={isPlaceholderId(trade.inId)}
+                    onSet={(price) => setPrice(index, "in", price)}
                   />
                 )}
               </div>
@@ -305,70 +315,145 @@ function RoundBody({
 }
 
 /**
- * A trade row's price. Tap it to set that player's score for this round;
- * the override feeds the price engine (later rounds update).
+ * A trade row's price for this trade only. Tap it to type an override
+ * (e.g. 350000, 350,000, $350k); Done applies it, Reset returns to the
+ * default. Overrides change this trade's cash, never the engine's prices.
  */
-function PriceTap({
-  tone,
+function TradePrice({
+  side,
+  label,
   price,
-  playerId,
-  round,
-  projection,
-  onOverride,
+  defaultPrice,
+  overridden,
+  placeholder,
+  onSet,
 }: {
-  tone: "in" | "out";
+  side: "in" | "out";
+  label: string;
   price: number;
-  playerId: number;
-  round: number;
-  projection: RoundProjection | undefined;
-  onOverride: (playerId: number, score: number | null) => void;
+  defaultPrice: number | null;
+  overridden: boolean;
+  placeholder: boolean;
+  onSet: (price: number | null) => void;
 }) {
   const [editing, setEditing] = useState(false);
-  const canEdit = !isPlaceholderId(playerId) && projection && !projection.onBye;
-  const colour = tone === "out" ? "text-red-300" : "text-emerald-300";
+  const [text, setText] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const errorId = useId();
+
+  const colour = overridden
+    ? "text-amber-300"
+    : side === "out"
+      ? "text-red-300"
+      : "text-emerald-300";
+
+  const defaultLabel =
+    defaultPrice === null ? "no default price" : `Default ${formatMoney(defaultPrice)}`;
+
+  function open() {
+    setText(String(price));
+    setError(null);
+    setEditing(true);
+  }
+
+  function apply() {
+    const result = parsePriceInput(text);
+
+    if (!result.ok) {
+      setError(result.error);
+      return;
+    }
+
+    // Typing the default back is the same as no override.
+    onSet(result.price === defaultPrice ? null : result.price);
+    setEditing(false);
+  }
 
   return (
-    <div className="mt-1 flex flex-wrap items-center gap-2 text-xs">
-      <button
-        type="button"
-        disabled={!canEdit}
-        onClick={() => setEditing((v) => !v)}
-        title={canEdit ? "Tap to set this player's score for the round" : undefined}
-        className={`tabular-nums ${colour} ${canEdit ? "underline decoration-dotted underline-offset-2" : ""}`}
-      >
-        {tone === "out" ? "Out" : "In"} {formatMoney(price)}
-      </button>
+    <div className="mt-1 text-xs">
+      <div className="flex flex-wrap items-center gap-2">
+        <button
+          type="button"
+          onClick={() => (editing ? setEditing(false) : open())}
+          aria-expanded={editing}
+          aria-label={`${label}: ${formatMoney(price)}${overridden ? ` (typed; ${defaultLabel})` : ""}. Tap to change.`}
+          title={overridden ? `Typed price. ${defaultLabel}.` : "Tap to type a price for this trade"}
+          className={`inline-flex min-h-8 items-center gap-1 rounded tabular-nums underline decoration-dotted underline-offset-2 ${colour}`}
+        >
+          {side === "out" ? "Out" : "In"} {formatMoney(price)}
+          {overridden && (
+            <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-amber-300" />
+          )}
+        </button>
 
-      {isPlaceholderId(playerId) && (
-        <span className="rounded bg-violet-500/30 px-1 font-bold text-violet-100">TBC</span>
-      )}
+        {placeholder && (
+          <span className="rounded bg-violet-500/30 px-1 font-bold text-violet-100">TBC</span>
+        )}
 
-      {editing && canEdit && (
-        <label className="flex items-center gap-1 text-slate-300">
-          R{round} score
-          <input
-            type="text"
-            inputMode="numeric"
-            autoFocus
-            aria-label={`Round ${round} score`}
-            value={
-              projection.overridden
-                ? String(projection.score)
-                : projection.score === null
-                  ? ""
-                  : String(Math.round(projection.score))
-            }
-            onChange={(e) => {
-              const clean = e.target.value.replace(/[^0-9]/g, "");
-              onOverride(playerId, clean === "" ? null : Number(clean));
-            }}
-            className={`w-14 rounded border px-1.5 py-0.5 text-right tabular-nums ${
-              projection.overridden
-                ? "border-violet-500 bg-violet-500/15 text-violet-200"
-                : "border-slate-700 bg-slate-950"
-            }`}
-          />
-        </label>
+        {overridden && !editing && (
+          <span className="text-slate-400">{defaultLabel}</span>
+        )}
+      </div>
+
+      {editing && (
+        <div className="mt-1.5 rounded-lg border border-slate-700 bg-slate-900 p-2">
+          <div className="flex flex-wrap items-center gap-2">
+            <input
+              type="text"
+              inputMode="numeric"
+              autoFocus
+              aria-label={label}
+              aria-invalid={error !== null}
+              aria-describedby={error ? errorId : undefined}
+              value={text}
+              onFocus={(e) => e.currentTarget.select()}
+              onChange={(e) => {
+                setText(e.target.value);
+                setError(null);
+              }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  apply();
+                }
+                if (e.key === "Escape") {
+                  setEditing(false);
+                }
+              }}
+              className="h-10 w-28 rounded-md border border-slate-600 bg-slate-950 px-2 text-right text-sm tabular-nums text-white outline-none focus:border-violet-500"
+            />
+
+            <button
+              type="button"
+              onClick={apply}
+              className="h-10 rounded-md bg-violet-500 px-3 text-xs font-semibold text-white"
+            >
+              Done
+            </button>
+
+            <button
+              type="button"
+              disabled={!overridden}
+              onClick={() => {
+                onSet(null);
+                setEditing(false);
+              }}
+              className="h-10 rounded-md border border-slate-600 px-3 text-xs font-semibold text-slate-200 disabled:opacity-40"
+            >
+              Reset
+            </button>
+          </div>
+
+          <p className="mt-1 text-slate-400">
+            {defaultLabel}. This trade only.
+          </p>
+
+          {error && (
+            <p id={errorId} role="alert" className="mt-1 text-red-300">
+              {error}
+            </p>
+          )}
+        </div>
       )}
     </div>
   );

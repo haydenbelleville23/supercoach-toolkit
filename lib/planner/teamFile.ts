@@ -1,5 +1,7 @@
 import { TRADE_RULES } from "@/lib/rules/squadRules";
 
+import { sanitiseTrade } from "./tradePrices";
+
 import {
   MAX_PLANS,
   type MyTeam,
@@ -28,6 +30,16 @@ export function createPlan(name: string): TradePlan {
     name,
     rounds: {},
     scoreOverrides: {},
+  };
+}
+
+/** A copy of a plan under a new id and name, overrides included. */
+export function duplicatePlan(base: TradePlan, name: string): TradePlan {
+  return {
+    ...structuredClone(base),
+    ...createPlan(name),
+    rounds: structuredClone(base.rounds),
+    scoreOverrides: structuredClone(base.scoreOverrides),
   };
 }
 
@@ -85,7 +97,25 @@ export function parseTeamFile(value: unknown): MyTeam | string {
         ? ((p as { pin: MyTeam["players"][number]["pin"] }).pin)
         : null,
     })),
-    plans: plans as TradePlan[],
+    // Trades are cleaned on the way in: plans saved before price overrides
+    // existed load with none, and only valid overrides are kept.
+    plans: (plans as TradePlan[]).map((plan) => ({
+      ...plan,
+      rounds: Object.fromEntries(
+        Object.entries(plan.rounds).map(([round, planRound]) => {
+          const raw = (isRecord(planRound) ? planRound : {}) as Record<string, unknown>;
+
+          return [
+            round,
+            {
+              ...raw,
+              boost: raw.boost === true,
+              trades: Array.isArray(raw.trades) ? raw.trades.map(sanitiseTrade) : [],
+            },
+          ];
+        }),
+      ),
+    })),
     activePlanId:
       typeof value.activePlanId === "string" ? value.activePlanId : null,
     placeholders: Array.isArray(value.placeholders)
