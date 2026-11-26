@@ -29,13 +29,9 @@ export default function EnginePage() {
   const selectedPlayer =
     getPlayerById(selectedPlayerId) ?? players[0];
 
- const defaultProjectedScore =
-  selectedPlayer.projectedScores[0] ??
-  Math.round(selectedPlayer.average);
-
-const [projectedScore, setProjectedScore] = useState(
-  defaultProjectedScore,
-);
+  const [projectedScore, setProjectedScore] = useState(
+    Math.round(selectedPlayer.average),
+  );
 
   const engineResult = projectNextRoundPrice(
     selectedPlayer,
@@ -46,34 +42,12 @@ const [projectedScore, setProjectedScore] = useState(
     engineResult?.previousScores ??
     selectedPlayer.recentScores.slice(-2);
 
-  const guidePrice =
-    selectedPlayer.projectedPrices[0] ?? null;
-
-  const guideBreakEven =
-    selectedPlayer.projectedBreakEvens[0] ??
-    selectedPlayer.breakeven;
-
-  const priceDifference =
-    engineResult && guidePrice !== null
-      ? engineResult.price - guidePrice
-      : null;
-
-  const breakEvenDifference =
-    engineResult?.breakEven != null
-      ? engineResult.breakEven - guideBreakEven
-      : null;
-
   function handlePlayerChange(playerId: number) {
-  const player =
-    getPlayerById(playerId) ?? players[0];
+    const player = getPlayerById(playerId) ?? players[0];
 
-  setSelectedPlayerId(player.id);
-
-  setProjectedScore(
-    player.projectedScores[0] ??
-      Math.round(player.average),
-  );
-}
+    setSelectedPlayerId(player.id);
+    setProjectedScore(Math.round(player.average));
+  }
 
   return (
     <main className="min-h-screen bg-slate-950 text-white">
@@ -199,32 +173,7 @@ const [projectedScore, setProjectedScore] = useState(
           </section>
         ) : (
           <>
-            <div className="mt-8 grid gap-6 md:grid-cols-2">
-              <ComparisonCard
-                title="API guide"
-                values={[
-                  {
-                    label: "Current price",
-                    value: formatMoney(selectedPlayer.price),
-                  },
-                  {
-                    label: "Projected score",
-                    value: projectedScore.toString(),
-                  },
-                  {
-                    label: "Break-even",
-                    value: guideBreakEven.toString(),
-                  },
-                  {
-                    label: "Projected price",
-                    value:
-                      guidePrice === null
-                        ? "-"
-                        : formatMoney(guidePrice),
-                  },
-                ]}
-              />
-
+            <div className="mt-8 grid gap-6">
               <ComparisonCard
                 title="Engine result"
                 values={[
@@ -248,36 +197,6 @@ const [projectedScore, setProjectedScore] = useState(
                 ]}
               />
             </div>
-
-            <section className="mt-6 rounded-2xl border border-slate-800 bg-slate-900 p-6">
-              <h2 className="text-xl font-semibold">
-                Difference
-              </h2>
-
-              <div className="mt-5 grid gap-4 sm:grid-cols-2">
-                <DifferenceStat
-                  label="Projected price difference"
-                  value={
-                    priceDifference === null
-                      ? "-"
-                      : formatDifference(priceDifference)
-                  }
-                  difference={priceDifference}
-                />
-
-                <DifferenceStat
-                  label="Break-even difference"
-                  value={
-                    breakEvenDifference === null
-                      ? "-"
-                      : breakEvenDifference > 0
-                        ? `+${breakEvenDifference}`
-                        : breakEvenDifference.toString()
-                  }
-                  difference={breakEvenDifference}
-                />
-              </div>
-            </section>
 
             <section className="mt-6 rounded-2xl border border-slate-800 bg-slate-900 p-6">
               <h2 className="text-xl font-semibold">
@@ -390,36 +309,6 @@ function ComparisonCard({
         ))}
       </div>
     </section>
-  );
-}
-
-function DifferenceStat({
-  label,
-  value,
-  difference,
-}: {
-  label: string;
-  value: string;
-  difference: number | null;
-}) {
-  return (
-    <div className="rounded-xl bg-slate-950 p-4">
-      <p className="text-xs uppercase tracking-wide text-slate-500">
-        {label}
-      </p>
-
-      <p
-        className={`mt-2 text-2xl font-bold tabular-nums ${
-          difference === null || difference === 0
-            ? "text-slate-200"
-            : Math.abs(difference) <= 100
-              ? "text-emerald-400"
-              : "text-amber-400"
-        }`}
-      >
-        {value}
-      </p>
-    </div>
   );
 }
 

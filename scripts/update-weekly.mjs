@@ -9,20 +9,31 @@
  *   2. Rebuild players-complete.json and players-normalised.json
  *   3. Re-download fixtures
  *
- * Before running, capture a fresh data/players-cf.json by hand (it needs
- * your SuperCoach session and is never downloaded by these scripts).
+ * Public data only. The player list is the set of players already saved
+ * in data/2026/player-details/: there is no public source for discovering
+ * NEW players yet (for example mid-season draftees), so ids are never
+ * guessed or enumerated, and the update stops if that folder is empty.
+ *
+ * After rebuilding, every player's current price is checked against their
+ * latest published price in the downloaded history; any mismatch fails the
+ * update (non-zero exit) so stale prices are never reported as a success.
+ *
  * Nothing is committed or deployed: review the changes, then commit.
  */
 
 import { spawnSync } from "node:child_process";
-import { existsSync, readFileSync, statSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
 import process from "node:process";
+
+import { readKnownPlayerIds } from "./buildPlayersDataset.mjs";
 
 const SEASON = 2026;
 const DRY_RUN = process.argv.includes("--dry-run");
 
-const PLAYERS_CF_FILE = path.resolve("data/players-cf.json");
+const PLAYER_DETAILS_DIRECTORY = path.resolve(
+  `data/${SEASON}/player-details`,
+);
 const NORMALISED_FILE = path.resolve(
   `data/${SEASON}/players-normalised.json`,
 );
@@ -147,35 +158,105 @@ function printChanges(before, after) {
   console.log("Nothing has been committed. Review with `git status`, then commit.");
 }
 
-function checkPlayersCf() {
-  if (!existsSync(PLAYERS_CF_FILE)) {
+/**
+ * The player list comes from the detail files already saved. Stops with an
+ * explanation if there are none, rather than guessing ids.
+ */
+async function checkKnownPlayers() {
+  const ids = await readKnownPlayerIds(PLAYER_DETAILS_DIRECTORY);
+
+  if (ids.length === 0) {
     console.error(
-      "data/players-cf.json is missing. Capture it by hand first " +
-        "(see docs/api-research.md).",
+      `Stopped: no player files in ${PLAYER_DETAILS_DIRECTORY}.
+` +
+        "The player list is seeded from that folder, and there is no " +
+        "public source for discovering players yet, so this update will " +
+        "not guess or enumerate player ids.",
     );
     process.exit(1);
   }
 
-  const ageDays =
-    (Date.now() - statSync(PLAYERS_CF_FILE).mtimeMs) / (24 * 60 * 60 * 1000);
-
+  console.log(`Known players: ${ids.length} (from data/${SEASON}/player-details/).`);
   console.log(
-    `data/players-cf.json last updated ${ageDays.toFixed(1)} days ago.`,
+    "New players: there is no public source for discovering new players " +
+      "yet. Only the known players above are refreshed; anyone added to " +
+      "SuperCoach since (for example a mid-season draftee) will be missing.",
   );
 
-  if (ageDays > 7) {
-    console.warn(
-      "Warning: players-cf.json is over a week old. New players and " +
-        "current prices come from it, so capture a fresh copy first.",
-    );
-  }
+  return ids;
 }
 
-function main() {
+/**
+ * Fails (non-zero exit) if any player's latest published price in their
+ * downloaded history is newer than, or different from, the current price
+ * in the built dataset.
+ */
+function checkPricesCurrent(ids) {
+  const players = readJson(NORMALISED_FILE) ?? [];
+  const byId = new Map(players.map((player) => [player.id, player]));
+  const stale = [];
+
+  for (const id of ids) {
+    const detail = readJson(path.join(PLAYER_DETAILS_DIRECTORY, `${id}.json`));
+    const priced = (detail?.player_stats ?? []).filter((row) => row.price != null);
+
+    if (priced.length === 0) {
+      continue;
+    }
+
+    const latest = priced.reduce((a, b) => (b.round > a.round ? b : a));
+    const player = byId.get(id);
+    const builtRounds = (player?.history ?? [])
+      .filter((row) => row.price != null)
+      .map((row) => row.round);
+    const builtRound = builtRounds.length === 0 ? null : Math.max(...builtRounds);
+
+    if (
+      !player ||
+      builtRound === null ||
+      latest.round > builtRound ||
+      player.price !== Number(latest.price)
+    ) {
+      stale.push({
+        id,
+        name: player?.name ?? `${detail.first_name} ${detail.last_name}`,
+        historyRound: latest.round,
+        historyPrice: Number(latest.price),
+        builtRound,
+        builtPrice: player?.price ?? null,
+      });
+    }
+  }
+
+  if (stale.length > 0) {
+    console.error("");
+    console.error(
+      `FAILED: ${stale.length} players have a newer or different price in ` +
+        "their history than in the built dataset. The data is stale.",
+    );
+
+    for (const item of stale.slice(0, 20)) {
+      console.error(
+        `  ${item.name} (${item.id}): history R${item.historyRound} ` +
+          `${money(item.historyPrice)}, dataset ` +
+          (item.builtPrice === null
+            ? "missing"
+            : `R${item.builtRound} ${money(item.builtPrice)}`),
+      );
+    }
+
+    console.error("Rebuild with `npm run build:players` and run this again.");
+    process.exit(1);
+  }
+
+  console.log(`Prices check: all ${ids.length} current prices match their latest history price.`);
+}
+
+async function main() {
   console.log(`SuperCoach ${SEASON} weekly update${DRY_RUN ? " (dry run)" : ""}`);
   console.log("----------------------------------");
 
-  checkPlayersCf();
+  const ids = await checkKnownPlayers();
 
   const before = snapshot();
 
@@ -187,6 +268,8 @@ function main() {
     );
     console.log("");
     printSnapshot("Current data", before);
+    console.log("");
+    checkPricesCurrent(ids);
     return;
   }
 
@@ -209,6 +292,9 @@ function main() {
   }
 
   printChanges(before, snapshot());
+
+  console.log("");
+  checkPricesCurrent(ids);
 }
 
-main();
+await main();

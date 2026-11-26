@@ -63,9 +63,6 @@ export function buildPlayerRows(
       };
     }
     
-        const projectionIndex =
-          row.round - CURRENT_COMPLETED_ROUND - 1;
-    
         const existingScore = existingRows?.find(
           (existingRow) =>
             existingRow.round === row.round,
@@ -73,7 +70,8 @@ export function buildPlayerRows(
     
         const suggestedScore = getProjectedScore({
           player,
-          projectionIndex,
+          round: row.round,
+          completedRound: CURRENT_COMPLETED_ROUND,
           mode,
           existingScore,
         });

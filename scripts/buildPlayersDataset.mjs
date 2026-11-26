@@ -1,3 +1,15 @@
+/**
+ * Builds data/2026/players-complete.json from the public per-player detail
+ * files in data/2026/player-details/ (one file per player id, downloaded by
+ * scripts/downloadPlayerDetails.mjs).
+ *
+ * The player list is the set of ids already in that folder. Each player's
+ * round-by-round records (the detail file's player_stats) are stored as
+ * player_stat_history, which the normaliser reads. Subscriber-only
+ * SuperCoach fields are stripped defensively, although the public
+ * endpoint does not return them.
+ */
+
 import {
   mkdir,
   readFile,
@@ -8,10 +20,6 @@ import path from "node:path";
 import process from "node:process";
 
 const SEASON = 2026;
-
-const BASE_PLAYERS_FILE = path.resolve(
-  "data/players-cf.json",
-);
 
 const PLAYER_DETAILS_DIRECTORY = path.resolve(
   `data/${SEASON}/player-details`,
@@ -25,6 +33,17 @@ const REPORT_FILE = path.resolve(
   `data/${SEASON}/players-complete-report.json`,
 );
 
+/** Subscriber-only fields that must never be stored. */
+const SUBSCRIBER_FIELDS = [
+  "be1", "be2", "be3",
+  "pp1", "pp2", "pp3",
+  "ppc1", "ppc2", "ppc3", "ppcs",
+  "ppts", "ppts1", "ppts2", "ppts3",
+  "pmin", "pmax", "prange",
+  "bp1", "bp2", "bp3",
+  "pavg3", "own", "ccow",
+];
+
 async function readJson(filePath) {
   const contents = await readFile(filePath, "utf8");
 
@@ -37,53 +56,44 @@ async function readJson(filePath) {
   }
 }
 
-function mergePlayer(basePlayer, detailPlayer) {
-  if (!detailPlayer) {
-    return basePlayer;
+function stripSubscriberFields(record) {
+  const clean = { ...record };
+
+  for (const field of SUBSCRIBER_FIELDS) {
+    delete clean[field];
   }
 
+  return clean;
+}
+
+/** Ids of the players already downloaded (e.g. 123.json -> 123). */
+export async function readKnownPlayerIds(directory = PLAYER_DETAILS_DIRECTORY) {
+  let fileNames;
+
+  try {
+    fileNames = await readdir(directory);
+  } catch {
+    return [];
+  }
+
+  return fileNames
+    .filter((fileName) => /^\d+\.json$/.test(fileName))
+    .map((fileName) => Number(fileName.replace(".json", "")))
+    .filter((id) => Number.isInteger(id) && id > 0)
+    .sort((a, b) => a - b);
+}
+
+function toCompletePlayer(detail) {
+  const { player_stats: statHistory, ...rest } = stripSubscriberFields(detail);
+
   return {
-    ...basePlayer,
-    ...detailPlayer,
-
-    team:
-      basePlayer.team ??
-      detailPlayer.team,
-
-    positions:
-      basePlayer.positions ??
-      detailPlayer.positions ??
-      [],
-
-    // players-cf contains the current aggregate/projection record.
-    // The detail endpoint contains multiple historical round records.
-    player_stats:
-        basePlayer.player_stats ??
-        detailPlayer.player_stats ??
-        [],
-
-    player_stat_history:
-        detailPlayer.player_stats ?? [],
-
-    player_match_stats:
-      detailPlayer.player_match_stats ??
-      basePlayer.player_match_stats ??
-      [],
-
-    trades:
-      detailPlayer.trades ??
-      basePlayer.trades ??
-      [],
-
-    notes:
-      detailPlayer.notes ??
-      basePlayer.notes ??
-      [],
-
-    odds:
-      detailPlayer.odds ??
-      basePlayer.odds ??
-      [],
+    ...rest,
+    positions: rest.positions ?? [],
+    player_stat_history: (statHistory ?? []).map(stripSubscriberFields),
+    player_match_stats: rest.player_match_stats ?? [],
+    trades: rest.trades ?? [],
+    notes: rest.notes ?? [],
+    odds: rest.odds ?? [],
   };
 }
 
@@ -91,146 +101,55 @@ async function main() {
   console.log("Building complete SuperCoach player dataset");
   console.log("-------------------------------------------");
 
-  const basePlayers = await readJson(
-    BASE_PLAYERS_FILE,
-  );
+  const ids = await readKnownPlayerIds();
 
-  if (!Array.isArray(basePlayers)) {
+  if (ids.length === 0) {
     throw new Error(
-      "data/players-cf.json must contain a top-level array.",
+      `No player detail files in ${PLAYER_DETAILS_DIRECTORY}. ` +
+        "The player list is seeded from that folder, and there is no " +
+        "public source for discovering players yet.",
     );
   }
 
-  await mkdir(
-    path.dirname(OUTPUT_FILE),
-    { recursive: true },
-  );
-
-  let detailFileNames = [];
-
-  try {
-    detailFileNames = await readdir(
-      PLAYER_DETAILS_DIRECTORY,
-    );
-  } catch {
-    throw new Error(
-      `Could not find ${PLAYER_DETAILS_DIRECTORY}. ` +
-        "Run npm run download:players first.",
-    );
-  }
-
-  const availableDetailIds = new Set(
-    detailFileNames
-      .filter((fileName) =>
-        fileName.endsWith(".json"),
-      )
-      .map((fileName) =>
-        Number(fileName.replace(".json", "")),
-      )
-      .filter(Number.isFinite),
-  );
+  await mkdir(path.dirname(OUTPUT_FILE), { recursive: true });
 
   const completePlayers = [];
-  const missingDetails = [];
   const invalidDetails = [];
 
-  for (const basePlayer of basePlayers) {
-    if (
-      !basePlayer ||
-      !Number.isInteger(basePlayer.id)
-    ) {
-      continue;
-    }
-
-    if (!availableDetailIds.has(basePlayer.id)) {
-      missingDetails.push({
-        id: basePlayer.id,
-        name: [
-          basePlayer.first_name,
-          basePlayer.last_name,
-        ]
-          .filter(Boolean)
-          .join(" "),
-      });
-
-      completePlayers.push(basePlayer);
-      continue;
-    }
-
-    const detailFile = path.join(
-      PLAYER_DETAILS_DIRECTORY,
-      `${basePlayer.id}.json`,
-    );
+  for (const id of ids) {
+    const detailFile = path.join(PLAYER_DETAILS_DIRECTORY, `${id}.json`);
 
     try {
-      const detailPlayer =
-        await readJson(detailFile);
+      const detail = await readJson(detailFile);
 
-      completePlayers.push(
-        mergePlayer(
-          basePlayer,
-          detailPlayer,
-        ),
-      );
+      if (!detail || detail.id !== id) {
+        throw new Error("The file does not hold this player's record.");
+      }
+
+      completePlayers.push(toCompletePlayer(detail));
     } catch (error) {
-      invalidDetails.push({
-        id: basePlayer.id,
-        error: error.message,
-      });
-
-      completePlayers.push(basePlayer);
+      invalidDetails.push({ id, error: error.message });
     }
   }
 
-  const playersWithMatchHistory =
-    completePlayers.filter(
-      (player) =>
-        Array.isArray(
-          player.player_match_stats,
-        ) &&
-        player.player_match_stats.length > 0,
-    ).length;
+  const playersWithMatchHistory = completePlayers.filter(
+    (player) => player.player_match_stats.length > 0,
+  ).length;
 
   console.log("");
-  console.log(
-    `Base players:               ${basePlayers.length}`,
-  );
-  console.log(
-    `Detail files found:         ${availableDetailIds.size}`,
-  );
-  console.log(
-    `Complete players:           ${completePlayers.length}`,
-  );
-  console.log(
-    `Players with match history: ${playersWithMatchHistory}`,
-  );
-  console.log(
-    `Missing details:            ${missingDetails.length}`,
-  );
-  console.log(
-    `Invalid details:            ${invalidDetails.length}`,
-  );
+  console.log(`Detail files found:         ${ids.length}`);
+  console.log(`Complete players:           ${completePlayers.length}`);
+  console.log(`Players with match history: ${playersWithMatchHistory}`);
+  console.log(`Invalid details:            ${invalidDetails.length}`);
 
-  // A partial dataset would silently mix old and new rounds, so stop
-  // without touching the existing output files.
-  if (
-    missingDetails.length > 0 ||
-    invalidDetails.length > 0
-  ) {
+  // A partial dataset would silently drop players, so stop without
+  // touching the existing output files.
+  if (invalidDetails.length > 0) {
     console.error("");
-    console.error(
-      "Dataset NOT written: some players are missing or invalid.",
-    );
+    console.error("Dataset NOT written: some player files are invalid.");
 
-    for (const item of [
-      ...missingDetails,
-      ...invalidDetails,
-    ].slice(0, 20)) {
-      console.error(
-        `  ${item.id}${item.name ? ` ${item.name}` : ""}${
-          item.error ? `: ${item.error}` : ""
-        }`,
-      );
+    for (const item of invalidDetails.slice(0, 20)) {
+      console.error(`  ${item.id}: ${item.error}`);
     }
 
     console.error(
@@ -243,22 +162,16 @@ async function main() {
 
   await writeFile(
     OUTPUT_FILE,
-    `${JSON.stringify(
-      completePlayers,
-      null,
-      2,
-    )}\n`,
+    `${JSON.stringify(completePlayers, null, 2)}\n`,
     "utf8",
   );
 
   const report = {
     season: SEASON,
     generatedAt: new Date().toISOString(),
-    basePlayers: basePlayers.length,
+    detailFilesFound: ids.length,
     completePlayers: completePlayers.length,
-    detailFilesFound: availableDetailIds.size,
     playersWithMatchHistory,
-    missingDetails,
     invalidDetails,
   };
 
@@ -274,11 +187,13 @@ async function main() {
   console.log(`Report: ${REPORT_FILE}`);
 }
 
+// Only build when run directly (update-weekly imports readKnownPlayerIds).
+if (process.argv[1] && path.resolve(process.argv[1]) === path.resolve(import.meta.filename)) {
+  main().catch((error) => {
+    console.error("");
+    console.error("Dataset build failed:");
+    console.error(error);
 
-main().catch((error) => {
-  console.error("");
-  console.error("Dataset build failed:");
-  console.error(error);
-
-  process.exitCode = 1;
-});
+    process.exitCode = 1;
+  });
+}

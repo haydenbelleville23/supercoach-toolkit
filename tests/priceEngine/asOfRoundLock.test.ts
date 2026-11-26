@@ -64,9 +64,8 @@ describe("DEBUG_AS_OF_ROUND=10", () => {
         scoresToRound10.map((h) => h.score),
       );
 
-      // SuperCoach's later projections are not carried over.
-      expect(player.projectedScores).toEqual([]);
-      expect(player.projectedPrices).toEqual([]);
+      // No ownership data is carried (no public source yet).
+      expect(player.ownership).toBeNull();
     }
   });
 

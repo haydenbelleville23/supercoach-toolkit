@@ -16,52 +16,6 @@ export type SuperCoachOpponent = {
   name?: string;
 };
 
-export type SuperCoachPlayerStats = {
-  player_id: number;
-  round: number;
-
-  points: number;
-  price: number;
-  total_points: number;
-  total_games: number;
-
-  price_change: number;
-  total_price_change: number;
-
-  avg: number;
-  avg3: number;
-  avg5: number;
-
-  be1: number;
-  be2: number;
-  be3: number;
-
-  ppts: number;
-  ppts1: number;
-  ppts2: number;
-  ppts3: number;
-
-  pp1: number;
-  pp2: number;
-  pp3: number;
-
-  ppc1: number;
-  ppc2: number;
-  ppc3: number;
-
-  own: number;
-
-  opp?: SuperCoachOpponent | null;
-  opp1?: SuperCoachOpponent | null;
-  opp2?: SuperCoachOpponent | null;
-  opp3?: SuperCoachOpponent | null;
-
-  opph?: number | null;
-  opp1h?: number | null;
-  opp2h?: number | null;
-  opp3h?: number | null;
-};
-
 export type SuperCoachPlayerMatchStat = {
   player_id: number;
   fixture_id: number;
@@ -100,7 +54,7 @@ export type SuperCoachPlayer = {
   team: SuperCoachTeam;
   positions: SuperCoachPosition[];
 
-  player_stats: SuperCoachPlayerStats[];
   player_match_stats?: SuperCoachPlayerMatchStat[];
+  /** The public detail endpoint's player_stats: one record per round. */
   player_stat_history?: SuperCoachPlayerStatHistory[];
 };

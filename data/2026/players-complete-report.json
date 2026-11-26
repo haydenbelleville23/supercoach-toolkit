@@ -1,10 +1,8 @@
 {
   "season": 2026,
-  "generatedAt": "2026-11-25T07:29:50.520Z",
-  "basePlayers": 812,
-  "completePlayers": 812,
+  "generatedAt": "2026-11-26T02:35:20.319Z",
   "detailFilesFound": 812,
+  "completePlayers": 812,
   "playersWithMatchHistory": 668,
-  "missingDetails": [],
   "invalidDetails": []
 }

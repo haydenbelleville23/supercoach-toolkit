@@ -53,3 +53,10 @@ Desktop.ini
 
 # DEBUG_AS_OF_ROUND trimmed data (generated)
 /.debug-data/
+
+# Captured SuperCoach subscriber data: never commit
+data/players-cf.json
+
+# Local script output and Claude Code settings
+/scripts/output/
+/.claude/
