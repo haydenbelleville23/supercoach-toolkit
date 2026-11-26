@@ -4,6 +4,7 @@ import { useId, useState } from "react";
 
 import { formatMoney } from "@/lib/format";
 import { getAddTradeState, type RoundSummary } from "@/lib/planner/evaluatePlan";
+import { BEST_SCORES_IN_BYE_ROUND } from "@/lib/rules/squadRules";
 import { buildFieldLayout } from "@/lib/planner/fieldLayout";
 import { isPlaceholderId } from "@/lib/planner/placeholders";
 import {
@@ -280,6 +281,8 @@ function RoundBody({
         {summary.byeTeams.length > 0 ? `On bye: ${summary.byeTeams.join(", ")}. ` : "No byes. "}
         Squad on bye: {summary.onBye} · Playing: {summary.playing} (on field{" "}
         {summary.onFieldPlaying}/{summary.onFieldNeeded})
+        {summary.byeTeams.length > 0 &&
+          ` · best ${BEST_SCORES_IN_BYE_ROUND} scores count this round`}
       </p>
 
       {summary.warnings.length > 0 && (

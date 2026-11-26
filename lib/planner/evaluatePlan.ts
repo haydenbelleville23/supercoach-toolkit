@@ -1,4 +1,5 @@
 import {
+  BEST_SCORES_IN_BYE_ROUND,
   getByeTeams,
   getEligiblePositions,
   getRoundTradeLimit,
@@ -310,7 +311,9 @@ export function evaluatePlan({
       ...match.problems.filter((problem) => !problem.startsWith("The squad has")),
     );
 
-    // Bye view.
+    // Bye view. "Playing" = a squad player (field or bench) whose team has
+    // a game this round, after this round's trades; a placeholder with no
+    // team always plays.
     const byeTeams = getByeTeams(round, fixtures);
     const playingPlayers = squadPlayers.filter((p) => !byeTeams.includes(p.team));
     const onFieldPlaying = squadPlayers.filter(
@@ -318,7 +321,20 @@ export function evaluatePlan({
     ).length;
     const fieldCheck = checkOnFieldPlaying(playingPlayers.map((p) => toMatchPlayer(p)));
 
-    warnings.push(...fieldCheck.problems.map((p) => `Byes: ${p}`));
+    if (byeTeams.length > 0) {
+      // Bye round: only the best BEST_SCORES_IN_BYE_ROUND scores count, so
+      // warn only when fewer squad players than that have a game. No
+      // position, on-field or bench warnings here.
+      if (playingPlayers.length < BEST_SCORES_IN_BYE_ROUND) {
+        warnings.push(
+          `Only ${playingPlayers.length} of your players are playing in Round ${round} (${BEST_SCORES_IN_BYE_ROUND} needed in bye rounds)`,
+        );
+      }
+    } else {
+      // Non-bye rounds unchanged: whether the players with a game can fill
+      // the on-field spots (only fails when the squad itself can't).
+      warnings.push(...fieldCheck.problems.map((p) => `Byes: ${p}`));
+    }
 
     summaries.push({
       round,
