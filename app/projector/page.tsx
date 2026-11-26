@@ -8,7 +8,7 @@ function ProjectorToolFallback() {
   return (
     <section
       aria-busy="true"
-      className="mt-10 h-72 animate-pulse rounded-2xl border border-slate-800 bg-slate-900"
+      className="mt-3 h-72 animate-pulse rounded-2xl border border-slate-800 bg-slate-900"
     >
       <span className="sr-only">Loading player</span>
     </section>
@@ -20,8 +20,9 @@ export default function ProjectorPage() {
     <main className="min-h-screen bg-slate-950 text-white">
       <Header />
 
-      <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6">
+      <section className="mx-auto max-w-7xl px-4 pb-12 pt-4 sm:px-6">
         <PageHeader
+          compact
           title="Price Projector"
           description="Enter projected scores for the remaining rounds or select from one of the projection options."
         />
