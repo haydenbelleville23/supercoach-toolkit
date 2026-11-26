@@ -1,8 +1,9 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 import Header from "@/components/layout/Header";
+import DataTable, { type DataTableColumn } from "@/components/ui/DataTable";
+import PlayerCell from "@/components/ui/PlayerCell";
 import PageHeader from "@/components/layout/PageHeader";
 import {
   type ReactNode,
@@ -686,6 +687,98 @@ export default function LivePage() {
     });
   }
 
+  type LiveRow = (typeof visibleRows)[number];
+
+  // Fixed order (highest live score first), so no sortable headers.
+  const columns: DataTableColumn<LiveRow>[] = [
+    {
+      id: "player",
+      header: "Player",
+      width: { base: 124, sm: 160 },
+      cell: ({ player, livePlayer }) => (
+        <PlayerCell
+          name={player.name}
+          team={player.team}
+          // The tab already shows the team; the jumper number helps match
+          // players on the broadcast.
+          badge={`#${livePlayer.jumperNumber}`}
+          positions={player.positions}
+          href={`/projector?player=${player.id}`}
+        />
+      ),
+    },
+    {
+      id: "liveScore",
+      header: "Live SC",
+      width: 64,
+      align: "right",
+      cell: ({ player, effectiveScore }) => (
+        <input
+          type="text"
+          inputMode="numeric"
+          value={manualScores[player.id] ?? effectiveScore}
+          onChange={(event) =>
+            updateLiveScore(player.id, event.target.value)
+          }
+          onFocus={(event) => event.currentTarget.select()}
+          aria-label={`${player.name} projected final score`}
+          className={`w-12 rounded border px-1 py-0.5 text-center font-bold tabular-nums outline-none focus-visible:ring-2 focus-visible:ring-brand-green ${
+            manualScores[player.id] !== undefined
+              ? "border-emerald-500 bg-emerald-500/10 text-emerald-300"
+              : "border-slate-700 bg-slate-950 text-white"
+          }`}
+        />
+      ),
+    },
+    {
+      id: "timeOnGround",
+      header: "TOG",
+      width: 52,
+      align: "right",
+      cell: ({ livePlayer }) => `${livePlayer.timeOnGroundPercentage}%`,
+      cellClassName: () => "text-slate-300",
+    },
+    {
+      id: "breakeven",
+      header: "BE",
+      width: 52,
+      align: "right",
+      cell: ({ projection }) => projection.currentBreakEven,
+    },
+    {
+      id: "price",
+      header: "Price",
+      width: 84,
+      align: "right",
+      cell: ({ projection }) => formatMoney(projection.currentPrice),
+    },
+    {
+      id: "projectedPrice",
+      header: "Proj Price",
+      width: 84,
+      align: "right",
+      cell: ({ projection }) => formatMoney(projection.projectedPrice),
+      cellClassName: () => "font-semibold",
+    },
+    {
+      id: "change",
+      header: "Δ Round",
+      width: 72,
+      align: "right",
+      cell: ({ projection }) => formatChange(projection.projectedPriceChange),
+      cellClassName: ({ projection }) =>
+        `font-semibold ${getChangeColour(projection.projectedPriceChange)}`,
+    },
+    {
+      id: "nextBreakeven",
+      header: "Next BE",
+      width: 60,
+      align: "right",
+      cell: ({ projection }) => projection.nextBreakEven ?? "-",
+      cellClassName: () => "font-semibold",
+    },
+  ];
+
   function handleFixtureChange(
     fixtureId: number,
   ) {
@@ -931,163 +1024,14 @@ export default function LivePage() {
           </div>
         </section>
 
-        <section className="mt-4 overflow-hidden rounded-2xl border border-slate-800 bg-slate-900">
-          <div className="max-h-[65vh] overflow-auto">
-            <table className="w-full min-w-[980px] text-sm">
-              <thead className="sticky top-0 z-20 border-b border-slate-800 bg-slate-950">
-                <tr className="text-left text-xs uppercase tracking-wide text-slate-400">
-                  <th className="sticky left-0 z-30 bg-slate-950 px-4 py-3">
-                    Player
-                  </th>
-
-                  <th className="px-3 py-3 text-right">
-                    Live SC
-                  </th>
-
-                  <th className="px-3 py-3 text-right">
-                    TOG
-                  </th>
-
-                  <th className="px-3 py-3 text-right">
-                    BE
-                  </th>
-
-                  <th className="px-3 py-3 text-right">
-                    Current Price
-                  </th>
-
-                  <th className="px-3 py-3 text-right">
-                    Projected Price
-                  </th>
-
-                  <th className="px-3 py-3 text-right">
-                    Δ Round
-                  </th>
-
-                  <th className="px-3 py-3 text-right">
-                    Next BE
-                  </th>
-                </tr>
-              </thead>
-
-              <tbody>
-                {visibleRows.map(
-                  ({
-                    player,
-                    livePlayer,
-                    projection,
-                    effectiveScore,
-                  }) => (
-                    <tr
-                      key={player.id}
-                      className="border-b border-slate-800 last:border-0 hover:bg-slate-800/40"
-                    >
-                      <td className="sticky left-0 z-10 bg-slate-900 px-4 py-3">
-                        <Link
-                          href={`/projector?player=${player.id}`}
-                          className="font-semibold hover:text-emerald-400"
-                        >
-                          {player.name}
-                        </Link>
-
-                        <div className="mt-0.5 text-xs text-slate-400">
-                          #{livePlayer.jumperNumber}
-                          {" · "}
-                          {player.positions.join(
-                            "/",
-                          )}
-                        </div>
-                      </td>
-
-                      <td className="px-3 py-3 text-right">
-                        <input
-                          type="text"
-                          inputMode="numeric"
-                          value={
-                            manualScores[
-                              player.id
-                            ] ??
-                            effectiveScore
-                          }
-                          onChange={(event) =>
-                            updateLiveScore(
-                              player.id,
-                              event.target
-                                .value,
-                            )
-                          }
-                          onFocus={(event) =>
-                            event.currentTarget.select()
-                          }
-                          aria-label={`${player.name} projected final score`}
-                          className={`w-14 rounded border px-2 py-1.5 text-center font-bold tabular-nums outline-none ${
-                            manualScores[
-                              player.id
-                            ] !== undefined
-                              ? "border-emerald-500 bg-emerald-500/10 text-emerald-300"
-                              : "border-slate-700 bg-slate-950 text-white"
-                          }`}
-                        />
-                      </td>
-
-                      <td className="px-3 py-3 text-right tabular-nums text-slate-300">
-                        {
-                          livePlayer.timeOnGroundPercentage
-                        }
-                        %
-                      </td>
-
-                      <td className="px-3 py-3 text-right tabular-nums">
-                        {
-                          projection.currentBreakEven
-                        }
-                      </td>
-
-                      <td className="px-3 py-3 text-right tabular-nums">
-                        {formatMoney(
-                          projection.currentPrice,
-                        )}
-                      </td>
-
-                      <td className="px-3 py-3 text-right font-semibold tabular-nums">
-                        {formatMoney(
-                          projection.projectedPrice,
-                        )}
-                      </td>
-
-                      <td
-                        className={`px-3 py-3 text-right font-semibold tabular-nums ${getChangeColour(
-                          projection.projectedPriceChange,
-                        )}`}
-                      >
-                        {formatChange(
-                          projection.projectedPriceChange,
-                        )}
-                      </td>
-
-                      <td className="px-3 py-3 text-right font-semibold tabular-nums">
-                        {projection.nextBreakEven ??
-                          "-"}
-                      </td>
-                    </tr>
-                  ),
-                )}
-
-                {visibleRows.length === 0 && (
-                  <tr>
-                    <td
-                      colSpan={8}
-                      className="px-4 py-12 text-center text-slate-400"
-                    >
-                      No matched players were
-                      found for this team.
-                    </td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
-          </div>
-        </section>
+        <DataTable
+          className="mt-4"
+          caption={`Live scores for ${activeTeam ?? "the selected team"}`}
+          rows={visibleRows}
+          columns={columns}
+          rowKey={({ player }) => player.id}
+          empty="No matched players were found for this team."
+        />
 
         <section className="mt-5 rounded-xl border border-slate-800 bg-slate-900 p-4">
           <p className="text-xs leading-5 text-slate-400">

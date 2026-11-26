@@ -6,6 +6,8 @@ type PlayerCellProps = {
   name: string;
   team: string;
   positions: readonly string[];
+  /** Text for the small badge. Defaults to the team (e.g. "#12" instead). */
+  badge?: string;
   /** Links the name (e.g. to the Projector). */
   href?: string;
 };
@@ -16,7 +18,7 @@ type PlayerCellProps = {
  * Positions are in the tooltip, with the full name and team: shown inline
  * they truncated most full names at the 160px column width.
  */
-export default function PlayerCell({ name, team, positions, href }: PlayerCellProps) {
+export default function PlayerCell({ name, team, positions, badge = team, href }: PlayerCellProps) {
   const label = (
     <>
       <span className="sm:hidden">{shortPlayerName(name)}</span>
@@ -50,7 +52,7 @@ export default function PlayerCell({ name, team, positions, href }: PlayerCellPr
         aria-hidden="true"
         className="shrink-0 rounded bg-slate-800 px-1 text-[10px] font-bold leading-4 text-slate-300"
       >
-        {team}
+        {badge}
       </span>
 
     </span>
