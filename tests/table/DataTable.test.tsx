@@ -117,6 +117,32 @@ describe("DataTable", () => {
     expect(firstCell.className).toContain("bg-[var(--dt-highlight-bg)]");
   });
 
+  it("mutes rows and tightens cells on phones when asked", () => {
+    render(
+      <DataTable
+        rows={rows}
+        columns={columns}
+        rowKey={(r) => r.id}
+        caption="Test"
+        mutedRow={(r) => r.id === 3}
+        highlightRow={(r) => r.id === 1}
+        compact
+      />,
+    );
+
+    const muted = screen.getAllByRole("row").filter((row) => row.hasAttribute("data-muted"));
+    expect(muted).toHaveLength(1);
+    expect(within(muted[0]).getAllByRole("cell")[0]).toHaveTextContent("Tim English");
+    expect(within(muted[0]).getAllByRole("cell")[0].className).toContain("bg-[var(--dt-muted-bg)]");
+
+    // Highlighting wins over muting.
+    const highlighted = screen.getAllByRole("row").find((row) => row.hasAttribute("data-highlighted"))!;
+    expect(highlighted).not.toHaveAttribute("data-muted");
+
+    expect(screen.getByRole("table").className).toContain("text-xs sm:text-sm");
+    expect(screen.getAllByRole("columnheader")[0].className).toContain("px-1 sm:px-2");
+  });
+
   it("shows the empty state", () => {
     render(
       <DataTable

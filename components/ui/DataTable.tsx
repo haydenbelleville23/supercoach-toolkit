@@ -64,6 +64,10 @@ export type DataTableProps<Row> = {
   fitToViewport?: boolean;
 
   highlightRow?: (row: Row) => boolean;
+  /** Quieter rows (e.g. completed rounds): darker background, grey text. */
+  mutedRow?: (row: Row) => boolean;
+  /** Tighter cells and smaller text on phones (normal from sm up). */
+  compact?: boolean;
   /** Called when the box is scrolled near its end (load more rows). */
   onNearEnd?: () => void;
   /** Pixels from the end that count as "near". Default 300. */
@@ -201,6 +205,8 @@ export default function DataTable<Row>({
   stickyFirstColumn = true,
   fitToViewport = true,
   highlightRow,
+  mutedRow,
+  compact = false,
   onNearEnd,
   nearEndThreshold = 300,
   caption,
@@ -337,7 +343,7 @@ export default function DataTable<Row>({
       >
         <table
           style={tableStyle}
-          className="w-[max(100%,var(--dt-w))] table-fixed border-separate border-spacing-0 text-sm sm:w-[max(100%,var(--dt-w-sm))] md:w-[max(100%,var(--dt-w-md))]"
+          className={`w-[max(100%,var(--dt-w))] table-fixed border-separate border-spacing-0 sm:w-[max(100%,var(--dt-w-sm))] md:w-[max(100%,var(--dt-w-md))] ${compact ? "text-xs sm:text-sm" : "text-sm"}`}
         >
           <caption className="sr-only">{caption}</caption>
 
@@ -376,7 +382,10 @@ export default function DataTable<Row>({
                     aria-sort={ariaSort}
                     style={layout.style}
                     className={[
-                      "border-b border-slate-700 bg-[var(--dt-head-bg)] px-2 py-2.5 align-bottom text-xs font-semibold uppercase leading-tight tracking-wide text-slate-400",
+                      "border-b border-slate-700 bg-[var(--dt-head-bg)] py-2.5 align-bottom text-xs font-semibold uppercase leading-tight tracking-wide text-slate-400",
+                      compact ? "px-1 sm:px-2" : "px-2",
+                      // Room for overlay scrollbars on the right edge.
+                      index === columns.length - 1 ? "pr-3" : "",
                       ALIGN[align],
                       stickyHeader ? "sticky top-0" : "",
                       // Pinned header cells sit above both the header row
@@ -421,14 +430,17 @@ export default function DataTable<Row>({
             ) : (
               displayRows.map((row) => {
                 const highlighted = highlightRow?.(row) ?? false;
+                const muted = !highlighted && (mutedRow?.(row) ?? false);
                 const expanded = renderExpanded?.(row) ?? null;
-                const background = highlighted
+                const background = muted
+                  ? "bg-[var(--dt-muted-bg)] text-slate-400"
+                  : highlighted
                   ? "bg-[var(--dt-highlight-bg)] group-hover/row:bg-[var(--dt-highlight-hover-bg)]"
                   : "bg-[var(--dt-row-bg)] group-hover/row:bg-[var(--dt-row-hover-bg)]";
 
                 return (
                   <Fragment key={rowKey(row)}>
-                    <tr className="group/row" data-highlighted={highlighted || undefined}>
+                    <tr className="group/row" data-highlighted={highlighted || undefined} data-muted={muted || undefined}>
                       {columns.map((column, index) => {
                         const layout = layouts[index];
                         const pinned = layout.pinnedBase || layout.pinnedSm;
@@ -438,7 +450,9 @@ export default function DataTable<Row>({
                             key={column.id}
                             style={layout.style}
                             className={[
-                              "whitespace-nowrap border-b border-slate-800 px-2 py-2.5 leading-5",
+                              "whitespace-nowrap border-b border-slate-800 py-2.5 leading-5",
+                              compact ? "px-1 sm:px-2" : "px-2",
+                              index === columns.length - 1 ? "pr-3" : "",
                               ALIGN[column.align ?? "left"],
                               background,
                               pinned ? "z-10" : "",

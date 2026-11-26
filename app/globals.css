@@ -24,6 +24,7 @@
   --dt-head-bg: #020617; /* slate-950 */
   --dt-highlight-bg: color-mix(in srgb, var(--brand-green) 9%, #0f172a);
   --dt-highlight-hover-bg: color-mix(in srgb, var(--brand-green) 14%, #0f172a);
+  --dt-muted-bg: #0a1120; /* completed rounds, between slate-950 and slate-900 */
 }
 
 @media (min-width: 48rem) {

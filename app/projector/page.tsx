@@ -20,7 +20,7 @@ export default function ProjectorPage() {
     <main className="min-h-screen bg-slate-950 text-white">
       <Header />
 
-      <section className="mx-auto max-w-7xl px-6 py-12">
+      <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6">
         <PageHeader
           title="Price Projector"
           description="Enter projected scores for the remaining rounds or select from one of the projection options."
