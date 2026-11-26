@@ -95,7 +95,7 @@ export default function Home() {
               {SITE_NAME}
             </h1>
             <p className="mt-3 max-w-2xl text-lg leading-7 text-slate-300">
-              Price projections, cash cows and trade planning for AFL fantasy.
+              Price projections, cash cows and trade planning for AFL SuperCoach.
             </p>
           </div>
         </div>

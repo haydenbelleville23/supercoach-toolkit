@@ -20,7 +20,7 @@ export default function Footer() {
           <div>
             <p className="text-lg font-bold text-white">{SITE_NAME}</p>
             <p className="mt-1 max-w-md text-slate-400">
-              Independent AFL fantasy tools: price projections, cash cows and
+              Independent AFL SuperCoach tools: price projections, cash cows and
               trade planning.
             </p>
           </div>
@@ -32,7 +32,7 @@ export default function Footer() {
             Prices and scores from SuperCoach&apos;s public site. Live scores from DFS Australia.
           </p>
           <p className="mt-1">
-            Not affiliated with the AFL or the official AFL Fantasy or AFL SuperCoach competitions.
+            Not affiliated with the AFL or the official AFL SuperCoach competition.
           </p>
           <p className="mt-3">
             <Link href="/which-ruck" className="text-brand-green hover:text-white">

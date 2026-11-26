@@ -7,7 +7,7 @@
 export const SITE_NAME = "Footynomics";
 
 export const SITE_DESCRIPTION =
-  "Price projections, cash cows and trade planning for AFL fantasy.";
+  "Price projections, cash cows and trade planning for AFL SuperCoach.";
 
 const DEFAULT_SITE_URL = "https://supercoach-toolkit.vercel.app";
 

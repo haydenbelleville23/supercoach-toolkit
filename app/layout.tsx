@@ -26,7 +26,7 @@ export const metadata: Metadata = {
   metadataBase: SITE_URL,
 
   title: {
-    default: `${SITE_NAME}: AFL fantasy prices, cash cows and trades`,
+    default: `${SITE_NAME}: AFL SuperCoach prices, cash cows and trades`,
     template: `%s | ${SITE_NAME}`,
   },
 

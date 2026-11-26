@@ -1,6 +1,6 @@
 # Footynomics
 
-Price projections, cash cows and trade planning for AFL fantasy. Not affiliated with the AFL or the official AFL Fantasy or AFL SuperCoach competitions.
+Price projections, cash cows and trade planning for AFL SuperCoach. Not affiliated with the AFL or the official AFL SuperCoach competition.
 
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
