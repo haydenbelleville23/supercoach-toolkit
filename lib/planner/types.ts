@@ -22,6 +22,13 @@ export interface RookiePlaceholder {
 export interface PlannedTrade {
   outId: number | null;
   inId: number | null;
+  /**
+   * Typed prices for this trade only (lib/planner/tradePrices.ts). They
+   * change this trade's cash, never the engine's prices elsewhere. Absent
+   * in plans saved before they existed. Dropped when a player changes.
+   */
+  outPriceOverride?: number;
+  inPriceOverride?: number;
 }
 
 export interface PlanRound {

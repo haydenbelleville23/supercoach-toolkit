@@ -2,6 +2,7 @@ import {
   getByeTeams,
   getEligiblePositions,
   getRoundTradeLimit,
+  ROOKIE_PLACEHOLDER,
   SQUAD_RULES,
 } from "@/lib/rules/squadRules";
 import type { Player } from "@/types/player";
@@ -12,12 +13,21 @@ import {
   type MatchPlayer,
   type Slot,
 } from "./positionMatching";
+import { isPlaceholderId } from "./placeholders";
 import type { PlannerFixture, PriceProjector } from "./pricePaths";
 import type { MyTeam, PlannedTrade, TradePlan } from "./types";
 
 export interface TradeLine extends PlannedTrade {
+  /** Price used for the trade: the override if typed, else the default. */
   outPrice: number | null;
   inPrice: number | null;
+  /**
+   * Price without an override: the engine's price before the round for
+   * real players; for a placeholder, $99,100 in and his squad price
+   * (what he was bought at) out.
+   */
+  outDefault: number | null;
+  inDefault: number | null;
 }
 
 export interface RoundSummary {
@@ -139,6 +149,14 @@ export function evaluatePlan({
   let boostsLeft = team.boostsRemaining;
   let previousSlots = new Map<number, string>();
 
+  // Placeholders have no engine price: each is valued at the price he was
+  // bought at (typed, or $99,100) until he is traded out.
+  const placeholderPrices = new Map<number, number>(
+    team.players
+      .filter((p) => isPlaceholderId(p.id))
+      .map((p) => [p.id, ROOKIE_PLACEHOLDER.price]),
+  );
+
   const name = (id: number) => playersById.get(id)?.name ?? `Player ${id}`;
 
   for (
@@ -154,11 +172,29 @@ export function evaluatePlan({
 
     // One line per trade row (rows with no players picked yet included,
     // so lines stay aligned with the rows on screen).
-    const trades: TradeLine[] = (planRound?.trades ?? []).map((t) => ({
-      ...t,
-      outPrice: t.outId === null ? null : projector.getPriceBefore(t.outId, round),
-      inPrice: t.inId === null ? null : projector.getPriceBefore(t.inId, round),
-    }));
+    // Overrides apply to this trade only; they never change the engine.
+    const trades: TradeLine[] = (planRound?.trades ?? []).map((t) => {
+      const outDefault =
+        t.outId === null
+          ? null
+          : isPlaceholderId(t.outId)
+            ? placeholderPrices.get(t.outId) ?? ROOKIE_PLACEHOLDER.price
+            : projector.getPriceBefore(t.outId, round);
+      const inDefault =
+        t.inId === null
+          ? null
+          : isPlaceholderId(t.inId)
+            ? ROOKIE_PLACEHOLDER.price
+            : projector.getPriceBefore(t.inId, round);
+
+      return {
+        ...t,
+        outDefault,
+        inDefault,
+        outPrice: t.outId === null ? null : t.outPriceOverride ?? outDefault,
+        inPrice: t.inId === null ? null : t.inPriceOverride ?? inDefault,
+      };
+    });
     const filled = trades.filter((t) => t.outId !== null || t.inId !== null);
 
     const outTotal = trades.reduce((sum, t) => sum + (t.outPrice ?? 0), 0);
@@ -214,6 +250,26 @@ export function evaluatePlan({
 
     squad = [...squad.filter((id) => !outs.has(id)), ...[...ins].filter((id) => !before.has(id) || outs.has(id))];
     squad = [...new Set(squad)];
+
+    // Price each traded-in player was bought at this round.
+    const boughtAt = new Map<number, number>();
+    for (const t of trades) {
+      if (t.inId !== null && t.inPrice !== null && squad.includes(t.inId)) {
+        boughtAt.set(t.inId, t.inPrice);
+      }
+    }
+
+    // Placeholders carry the price they were bought at until traded out.
+    for (const id of outs) {
+      if (isPlaceholderId(id) && !squad.includes(id)) {
+        placeholderPrices.delete(id);
+      }
+    }
+    for (const [id, price] of boughtAt) {
+      if (isPlaceholderId(id)) {
+        placeholderPrices.set(id, price);
+      }
+    }
 
     if (tradesUsed > tradeLimit) {
       warnings.push(`${tradesUsed} trades planned; this round allows ${tradeLimit}.`);
@@ -279,8 +335,16 @@ export function evaluatePlan({
       boostsLeftBefore,
       boostsLeftAfter: boostsLeft,
       squad,
+      // Players bought this round count at the price paid; after that,
+      // real players are valued by the engine and placeholders at the
+      // price they were bought at.
       squadValue: squad.reduce(
-        (sum, id) => sum + (projector.getPriceBefore(id, round) ?? 0),
+        (sum, id) =>
+          sum +
+          (boughtAt.get(id) ??
+            (isPlaceholderId(id)
+              ? placeholderPrices.get(id) ?? ROOKIE_PLACEHOLDER.price
+              : projector.getPriceBefore(id, round) ?? 0)),
         0,
       ),
       warnings,
