@@ -70,6 +70,7 @@ export function normaliseSuperCoachPlayer(
 
     ownership: null,
     previousGames: Number(rawPlayer.previous_games ?? 0),
+    previousAverage: Number(rawPlayer.previous_average ?? 0),
     active: Boolean(rawPlayer.active),
 
     availability:

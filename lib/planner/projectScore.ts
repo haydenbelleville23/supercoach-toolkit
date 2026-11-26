@@ -15,13 +15,12 @@ export const PRE_DEBUT_ROOKIE_SCORE = 50;
  *
  * - The player's season average from completed rounds (Round 0 to
  *   `completedRound`).
- * - A debutant yet to play (no games last season or this season):
- *   PRE_DEBUT_ROOKIE_SCORE, so his price moves once he has played three
- *   projected games.
- * - Anyone else with no games this season (for example injured all year):
- *   null, which the planner treats as not playing (price unchanged).
+ * - No games yet this season (preseason, injured, or not yet picked):
+ *   last season's average, or PRE_DEBUT_ROOKIE_SCORE for a debutant (no
+ *   games last season). So every real player is projected to play.
  *
- * Rookie (TBC) placeholders keep their fixed price and get no projection.
+ * Rookie (TBC) placeholders keep their fixed price and get no projection
+ * (null).
  */
 export function projectScore(
   player: Player,
@@ -35,9 +34,12 @@ export function projectScore(
     .map((row) => row.score as number);
 
   if (scores.length === 0) {
-    return !isPlaceholderId(player.id) && player.previousGames === 0
-      ? PRE_DEBUT_ROOKIE_SCORE
-      : null;
+    if (isPlaceholderId(player.id)) {
+      return null;
+    }
+    return player.previousGames > 0 && player.previousAverage > 0
+      ? player.previousAverage
+      : PRE_DEBUT_ROOKIE_SCORE;
   }
 
   return scores.reduce((total, score) => total + score, 0) / scores.length;

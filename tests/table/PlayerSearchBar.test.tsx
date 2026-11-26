@@ -24,6 +24,7 @@ const player = (id: number, name: string, team: string, positions: string[]): Pl
   breakeven: 80,
   ownership: null,
   previousGames: 20,
+  previousAverage: 90,
   active: true,
   availability: null,
 });

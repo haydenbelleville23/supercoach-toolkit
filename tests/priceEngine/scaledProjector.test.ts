@@ -7,6 +7,7 @@ import { BASE_MAGIC_NUMBER_2026 } from "@/lib/priceEngine/baseMagicNumber";
 import {
   calculateScaledBreakEven,
   calculateScaledPlayerPrice,
+  MIN_PLAYER_PRICE,
 } from "@/lib/priceEngine/calculateScaledPlayerPrice";
 import {
   estimateScaledRoundContexts,
@@ -147,9 +148,14 @@ describe("scaled breakevens", () => {
         score: breakEven - 1,
       }).price;
 
-      // Price holds at the breakeven and falls one point below it.
+      // Price holds at the breakeven and falls one point below it
+      // (unless he's at the price floor, where it can't fall).
       expect(atBreakEven).toBeGreaterThanOrEqual(oldPrice);
-      expect(belowBreakEven).toBeLessThan(oldPrice);
+      if (oldPrice > MIN_PLAYER_PRICE) {
+        expect(belowBreakEven).toBeLessThan(oldPrice);
+      } else {
+        expect(belowBreakEven).toBe(MIN_PLAYER_PRICE);
+      }
       // One point moves price by about $440, plus $100 rounding.
       expect(atBreakEven - oldPrice).toBeLessThan(600);
 
@@ -209,5 +215,43 @@ describe("future round estimate", () => {
 
     expect(prices[0]).toBeLessThan(prices[1]);
     expect(prices[1]).toBeLessThan(prices[2]);
+  });
+});
+
+describe("price floor", () => {
+  it("never takes a price below $99,100", () => {
+    const context = contextFor(19).get(19) as ScaledRoundContext;
+    const player = players.find(
+      (p) => playerRound(p, 19).previousScores.length >= 5,
+    ) as Player;
+
+    const result = calculateScaledPlayerPrice({
+      context,
+      playerId: player.id,
+      oldPrice: 105_000,
+      previousScores: [0, 0],
+      score: 0,
+    });
+
+    expect(MIN_PLAYER_PRICE).toBe(99_100);
+    expect(result.price).toBe(MIN_PLAYER_PRICE);
+    expect(result.priceChange).toBe(MIN_PLAYER_PRICE - 105_000);
+  });
+
+  it("gives a player at the floor a real breakeven, not -200", () => {
+    const context = contextFor(19).get(19) as ScaledRoundContext;
+    const player = players.find(
+      (p) => playerRound(p, 19).previousScores.length >= 5,
+    ) as Player;
+
+    const breakEven = calculateScaledBreakEven({
+      context,
+      playerId: player.id,
+      oldPrice: MIN_PLAYER_PRICE,
+      previousScores: [20, 20],
+    }) as number;
+
+    expect(breakEven).toBeGreaterThan(-200);
+    expect(breakEven).toBeLessThan(60);
   });
 });

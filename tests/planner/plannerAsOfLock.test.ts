@@ -43,12 +43,12 @@ describe("Trade Planner under DEBUG_AS_OF_ROUND=10", () => {
       );
 
       // Projected scores use Rounds 0-10 only.
-      // (Debutants yet to play get the fixed pre-debut score.)
+      // (No games yet: last season's average, or 50 for a debutant.)
       const expected =
         realToRound10.length === 0
           ? player.previousGames === 0
             ? PRE_DEBUT_ROOKIE_SCORE
-            : null
+            : player.previousAverage
           : realToRound10.reduce((t, h) => t + (h.score as number), 0) /
             realToRound10.length;
       expect(projectScore(player, 15, CURRENT_COMPLETED_ROUND)).toBe(expected);

@@ -49,6 +49,9 @@ export type SuperCoachPlayer = {
   /** Games in the previous season (public). */
   previous_games?: number | null;
 
+  /** Average in the previous season (public). */
+  previous_average?: number | null;
+
   active: boolean;
 
   injury_suspension_status: string | null;

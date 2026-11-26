@@ -43,6 +43,12 @@ export type Player = {
    */
   previousGames: number;
 
+  /**
+   * Average in the previous season (public per-player record), 0 if he
+   * didn't play. projectScore uses it before he plays this season.
+   */
+  previousAverage: number;
+
   active: boolean;
   availability: string | null;
 };

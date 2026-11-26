@@ -5,7 +5,9 @@ import type { Player } from "@/types/player";
 /**
  * The suggested score for a future round. "projected" (and "custom" with no
  * score typed) uses the Trade Planner's projection (projectScore): the
- * season average from completed rounds.
+ * season average from completed rounds, else last season's average (50 for
+ * a debutant). The average modes use the same until he has played this
+ * season, so no one is shown as 0.
  */
 export function getProjectedScore({
   player,
@@ -22,6 +24,10 @@ export function getProjectedScore({
 }): number {
   const projected = () =>
     Math.round(projectScore(player, round, completedRound) ?? player.average);
+
+  if (player.games === 0 && mode !== "custom") {
+    return projected();
+  }
 
   switch (mode) {
     case "projected":
