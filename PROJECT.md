@@ -1,4 +1,4 @@
-# SuperCoach Toolkit
+# Footynomics
 
 ## Vision
 

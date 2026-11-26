@@ -55,7 +55,7 @@ export default function EnginePage() {
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-5">
           <div>
             <p className="text-xl font-bold">
-              SuperCoach Toolkit
+              Footynomics
             </p>
 
             <p className="text-sm text-slate-400">

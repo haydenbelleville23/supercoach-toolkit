@@ -5,23 +5,19 @@ import Header from "@/components/layout/Header";
 import RuckQuiz from "@/components/quiz/RuckQuiz";
 import { ruckCardSrc, ruckQuiz } from "@/lib/quiz/ruckQuiz";
 import { findOutcome } from "@/lib/quiz/scoreQuiz";
+import { absoluteUrl, BRAND, SITE_NAME } from "@/lib/site";
 
-// Same as metadataBase in app/layout.tsx. Link previews need absolute URLs.
-const SITE_URL = "https://sc-toolkit.vercel.app";
+// Link previews need absolute URLs: absoluteUrl uses NEXT_PUBLIC_SITE_URL.
 const PAGE_PATH = "/which-ruck";
 
 const DEFAULT_TITLE = "Which ruck are you?";
-const DEFAULT_DESCRIPTION = `${ruckQuiz.questions.length} quick questions to find the AFL ruck who matches your style. A Fantasy King quiz.`;
+const DEFAULT_DESCRIPTION = `${ruckQuiz.questions.length} quick questions to find the AFL ruck who matches your style. A ${SITE_NAME} quiz.`;
 
 type SearchParams = Promise<Record<string, string | string[] | undefined>>;
 
 type PageProps = {
   searchParams: SearchParams;
 };
-
-function absoluteUrl(path: string): string {
-  return new URL(path, SITE_URL).toString();
-}
 
 export async function generateMetadata({
   searchParams,
@@ -31,10 +27,9 @@ export async function generateMetadata({
   if (!outcome) {
     const images = [
       {
-        url: absoluteUrl("/images/branding/fantasy-king-logo-full.png"),
-        width: 1200,
-        height: 630,
-        alt: "Fantasy King",
+        url: absoluteUrl(BRAND.socialShare),
+        ...BRAND.socialShareSize,
+        alt: `${DEFAULT_TITLE} | ${SITE_NAME}`,
       },
     ];
 
@@ -44,15 +39,15 @@ export async function generateMetadata({
       alternates: { canonical: PAGE_PATH },
       openGraph: {
         type: "website",
-        siteName: "Fantasy King",
+        siteName: SITE_NAME,
         url: absoluteUrl(PAGE_PATH),
-        title: `${DEFAULT_TITLE} | Fantasy King`,
+        title: `${DEFAULT_TITLE} | ${SITE_NAME}`,
         description: DEFAULT_DESCRIPTION,
         images,
       },
       twitter: {
         card: "summary_large_image",
-        title: `${DEFAULT_TITLE} | Fantasy King`,
+        title: `${DEFAULT_TITLE} | ${SITE_NAME}`,
         description: DEFAULT_DESCRIPTION,
         images: images.map((image) => image.url),
       },
@@ -77,15 +72,15 @@ export async function generateMetadata({
     alternates: { canonical: PAGE_PATH },
     openGraph: {
       type: "website",
-      siteName: "Fantasy King",
+      siteName: SITE_NAME,
       url: resultUrl,
-      title: `${title} | Fantasy King`,
+      title: `${title} | ${SITE_NAME}`,
       description,
       images: [image],
     },
     twitter: {
       card: "summary_large_image",
-      title: `${title} | Fantasy King`,
+      title: `${title} | ${SITE_NAME}`,
       description,
       images: [image.url],
     },

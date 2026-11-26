@@ -42,7 +42,7 @@ export default function MobileMenu({ links }: MobileMenuProps) {
         <nav
           id="mobile-menu"
           aria-label="Main"
-          className="absolute inset-x-0 top-full border-b border-slate-800 bg-slate-950 px-6 py-2 shadow-xl shadow-black/40"
+          className="absolute inset-x-0 top-full border-b border-slate-800 bg-brand-navy px-6 py-2 shadow-xl shadow-black/40"
         >
           {links.map((link) => (
             <Link

@@ -43,7 +43,7 @@ const isNumber = (value: unknown): value is number =>
  */
 export function parseTeamFile(value: unknown): MyTeam | string {
   if (!isRecord(value) || value.version !== 1) {
-    return "This isn't a Fantasy King team file (version 1).";
+    return "This isn't a Footynomics team file (version 1).";
   }
 
   const players = value.players;
