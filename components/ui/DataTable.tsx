@@ -80,6 +80,11 @@ export type DataTableProps<Row> = {
   renderExpanded?: (row: Row) => ReactNode | null;
   /** Shown inside the scroll box, under the table (e.g. "Scroll to load more"). */
   footer?: ReactNode;
+  /**
+   * A totals row under the rows, by column id (columns left out are
+   * blank). Not sorted with the rows; sticky columns stay sticky.
+   */
+  totals?: Partial<Record<string, ReactNode>>;
 
   className?: string;
 };
@@ -213,6 +218,7 @@ export default function DataTable<Row>({
   empty = "No rows to show.",
   renderExpanded,
   footer,
+  totals,
   className = "",
 }: DataTableProps<Row>) {
   const [internalSort, setInternalSort] = useState<SortState | null>(defaultSort);
@@ -486,6 +492,35 @@ export default function DataTable<Row>({
               })
             )}
           </tbody>
+
+          {totals && displayRows.length > 0 && (
+            <tfoot>
+              <tr>
+                {columns.map((column, index) => {
+                  const layout = layouts[index];
+                  const pinned = layout.pinnedBase || layout.pinnedSm;
+
+                  return (
+                    <td
+                      key={column.id}
+                      style={layout.style}
+                      className={[
+                        "whitespace-nowrap border-t-2 border-slate-700 bg-[var(--dt-head-bg)] py-2.5 font-semibold leading-5 text-white",
+                        compact ? "px-1 sm:px-2" : "px-2",
+                        index === columns.length - 1 ? "pr-3" : "",
+                        ALIGN[column.align ?? "left"],
+                        pinned ? "z-10" : "",
+                        pinClasses(layout),
+                        column.hideBelow ? HIDE_CELL[column.hideBelow] : "",
+                      ].join(" ")}
+                    >
+                      {totals[column.id] ?? ""}
+                    </td>
+                  );
+                })}
+              </tr>
+            </tfoot>
+          )}
         </table>
 
         {footer && (

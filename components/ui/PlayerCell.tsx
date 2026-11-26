@@ -7,8 +7,8 @@ type PlayerCellProps = {
   name: string;
   team: string;
   positions: readonly string[];
-  /** Text for the small badge. Defaults to the team (e.g. "#12" instead). */
-  badge?: string;
+  /** Text for the small badge. Defaults to the team (e.g. "#12" instead); null for none. */
+  badge?: string | null;
   /** Links the name (e.g. to the Projector). */
   href?: string;
   /** After the team badge (e.g. an availability badge). */
@@ -51,12 +51,14 @@ export default function PlayerCell({ name, team, positions, badge = team, href, 
         </span>
       )}
 
-      <span
-        aria-hidden="true"
-        className="shrink-0 rounded bg-slate-800 px-1 text-[10px] font-bold leading-4 text-slate-300"
-      >
-        {badge}
-      </span>
+      {badge !== null && (
+        <span
+          aria-hidden="true"
+          className="shrink-0 rounded bg-slate-800 px-1 text-[10px] font-bold leading-4 text-slate-300"
+        >
+          {badge}
+        </span>
+      )}
 
       {trailing}
 

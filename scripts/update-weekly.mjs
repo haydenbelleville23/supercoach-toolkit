@@ -56,6 +56,12 @@ const STEPS = [
     label: "Download fixtures",
     args: ["scripts/downloadFixtures.mjs"],
   },
+  {
+    // Needs the player build and the fixtures, so it runs last. Adds new
+    // completed rounds only; earlier rounds are never rewritten here.
+    label: "Build games (results archive)",
+    args: ["scripts/build-games.ts"],
+  },
 ];
 
 // seasonStatus.ts only has type imports, so Node can load it directly.
