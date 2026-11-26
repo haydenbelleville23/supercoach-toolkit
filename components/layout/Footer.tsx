@@ -28,6 +28,11 @@ export default function Footer() {
           <p className="mt-1">
             Not affiliated with the AFL or the official AFL Fantasy or AFL SuperCoach competitions.
           </p>
+          <p className="mt-3">
+            <Link href="/which-ruck" className="text-violet-400 hover:text-violet-300">
+              Which ruck are you?
+            </Link>
+          </p>
         </div>
       </div>
     </footer>

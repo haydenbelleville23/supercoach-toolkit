@@ -1,0 +1,376 @@
+{
+  "meta": {
+    "title": "Which AFL Ruck Are You?",
+    "version": "1.0.0",
+    "totalQuestions": 7,
+    "tierPriorityOrder": [
+      1,
+      2,
+      3,
+      4
+    ]
+  },
+  "outcomes": [
+    {
+      "id": "gawn",
+      "name": "Max Gawn",
+      "archetype": "The GOAT",
+      "tier": 1,
+      "club": "Melbourne",
+      "description": "Undisputed ruck royalty and a generational skip. You clunk defensive intercept marks in the hole, gut-run from arc to arc until your lungs burn, and put an entire club on your shoulders while keeping everyone laughing."
+    },
+    {
+      "id": "jackson",
+      "name": "Luke Jackson",
+      "archetype": "The Unicorn",
+      "tier": 1,
+      "club": "Fremantle",
+      "description": "A 199cm midfielder trapped in a ruckman's body. You gather your own taps at ground level, snap goals out of congestion like a crumber, and break every traditional big-man rule in the book."
+    },
+    {
+      "id": "grundy",
+      "name": "Brodie Grundy",
+      "archetype": "The Fourth Midfielder",
+      "tier": 1,
+      "club": "Sydney Swans",
+      "description": "The blueprint for the modern clearance beast. You treat every stoppage like a personal turf war, racking up contested possessions, tackles, and follow-up handballs as an extra on-baller."
+    },
+    {
+      "id": "english",
+      "name": "Tim English",
+      "archetype": "The Smooth Operator",
+      "tier": 2,
+      "club": "Western Bulldogs",
+      "description": "Silk over brute force. You hate wrestling in phone-booth stoppages, preferring to drift into space, take uncontested marks on the wing, and hit lace-out targets by foot like a 208cm rover."
+    },
+    {
+      "id": "xerri",
+      "name": "Tristan Xerri",
+      "archetype": "The Relentless Bruiser",
+      "tier": 2,
+      "club": "North Melbourne",
+      "description": "Pure stoppage violence and second-effort mania. You never lose a physical wrestle, bury opponents in bone-rattling tackles after the tap, and thrive in the nastiest trench warfare."
+    },
+    {
+      "id": "cameron",
+      "name": "Darcy Cameron",
+      "archetype": "The Swiss-Army Knife",
+      "tier": 2,
+      "club": "Collingwood",
+      "description": "The ultimate utility tall who refuses to lose a one-on-one. Whether floating back to pluck a contested pack mark or sneaking forward to snag a clutch set-shot, you fix whatever is broken."
+    },
+    {
+      "id": "williams",
+      "name": "Bailey J. Williams",
+      "archetype": "The Athletic Hustler",
+      "tier": 3,
+      "club": "West Coast Eagles",
+      "description": "Undersized by ruck standards, oversized in vertical leap. You launch yourself early at every centre bounce, out-hustle heavier opponents around the ground, and make up for every centimetre with pure mongrel."
+    },
+    {
+      "id": "pittonet",
+      "name": "Marc Pittonet",
+      "archetype": "The Pure Tap Specialist",
+      "tier": 3,
+      "club": "Carlton",
+      "description": "A zero-nonsense traditionalist built for the centre square. You don't care about uncontested marks on the flank\u2014you just want to body-check your opponent and silver-service hitouts to advantage down your mids' throats."
+    },
+    {
+      "id": "darcy",
+      "name": "Sean Darcy",
+      "archetype": "Shrek",
+      "tier": 3,
+      "club": "Fremantle",
+      "description": "An absolute swamp-dwelling unit who clears out the square by sheer mass. Once you plant your frame under the drop of the ball, nobody in the league is shifting you off your line."
+    },
+    {
+      "id": "meek",
+      "name": "Lloyd Meek",
+      "archetype": "The Blue-Collar Enforcer",
+      "tier": 3,
+      "club": "Hawthorn",
+      "description": "Bided your time in the twos and emerged as a full-contact battering ram. You love burying opponents into the turf at stoppages and bringing relentless, blue-collar physicality to every contest."
+    },
+    {
+      "id": "cox",
+      "name": "Mason Cox",
+      "archetype": "The American Pie",
+      "tier": 3,
+      "club": "Fremantle",
+      "description": "211cm of pure theatre, tinted prescription sunnies, and unshakeable self-belief. According to Sam McClure, you're a top-three ruckman in the competition\u2014and when the big stage calls, you can still tear a final apart."
+    },
+    {
+      "id": "heathen",
+      "name": "The Ruck Heathen",
+      "archetype": "Backup Midfielder",
+      "tier": 4,
+      "club": "Anywhere (Pinch-Hitting)",
+      "description": "You're a blight on the game. A 190cm midfielder forced into the circle to give the real ruck a breather\u2014you don't even jump, you just try to grab it out of mid-air, concede a free kick for blocking, and sprint straight back to the wing."
+    }
+  ],
+  "questions": [
+    {
+      "id": "q1",
+      "number": 1,
+      "prompt": "How do you approach a 50/50 confrontation?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Plant my feet and go straight through them.",
+          "weights": {
+            "meek": 2,
+            "darcy": 2,
+            "xerri": 1
+          }
+        },
+        {
+          "id": "B",
+          "text": "Use agility and reach to slip past before they even make contact.",
+          "weights": {
+            "williams": 2,
+            "english": 1,
+            "jackson": 1
+          }
+        },
+        {
+          "id": "C",
+          "text": "Take control of the whole situation and delegate the aftermath.",
+          "weights": {
+            "cameron": 2,
+            "gawn": 1
+          }
+        },
+        {
+          "id": "D",
+          "text": "Do something completely unexpected just to throw them off.",
+          "weights": {
+            "cox": 2,
+            "heathen": 2
+          }
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "number": 2,
+      "prompt": "What is your role on a group project?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Carrying the entire team from start to finish without complaining.",
+          "weights": {
+            "gawn": 2,
+            "cameron": 1
+          }
+        },
+        {
+          "id": "B",
+          "text": "Doing the heavy lifting in the background while everyone else gets the credit.",
+          "weights": {
+            "pittonet": 2,
+            "meek": 2,
+            "darcy": 1
+          }
+        },
+        {
+          "id": "C",
+          "text": "Jumping between three different tasks because I get bored doing just one.",
+          "weights": {
+            "jackson": 2,
+            "williams": 2,
+            "grundy": 1
+          }
+        },
+        {
+          "id": "D",
+          "text": "Showing up at the very end, dropping one massive contribution, and soaking up the applause.",
+          "weights": {
+            "cox": 2,
+            "english": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "q3",
+      "number": 3,
+      "prompt": "Pick your ideal weekend activity:",
+      "options": [
+        {
+          "id": "A",
+          "text": "Something outdoorsy, active, and slightly unconventional.",
+          "weights": {
+            "williams": 2,
+            "english": 2,
+            "jackson": 1
+          }
+        },
+        {
+          "id": "B",
+          "text": "A quiet coffee, a good podcast, and a long walk.",
+          "weights": {
+            "grundy": 2,
+            "cameron": 1
+          }
+        },
+        {
+          "id": "C",
+          "text": "Heavy gym session followed by a massive feed.",
+          "weights": {
+            "darcy": 2,
+            "pittonet": 2,
+            "xerri": 2
+          }
+        },
+        {
+          "id": "D",
+          "text": "Being the center of attention at a lively social event.",
+          "weights": {
+            "cox": 2,
+            "heathen": 2
+          }
+        }
+      ]
+    },
+    {
+      "id": "q4",
+      "number": 4,
+      "prompt": "Something goes wrong at work. What's your instinct?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Step up immediately and steady the ship.",
+          "weights": {
+            "gawn": 2,
+            "cameron": 2
+          }
+        },
+        {
+          "id": "B",
+          "text": "Work twice as hard and brute-force my way through the problem.",
+          "weights": {
+            "xerri": 2,
+            "meek": 2,
+            "williams": 1
+          }
+        },
+        {
+          "id": "C",
+          "text": "Outsmart the issue with a creative workaround.",
+          "weights": {
+            "grundy": 2,
+            "english": 1,
+            "pittonet": 1
+          }
+        },
+        {
+          "id": "D",
+          "text": "Pretend I wasn't supposed to be covering that area anyway and walk off.",
+          "weights": {
+            "heathen": 3,
+            "cox": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "q5",
+      "number": 5,
+      "prompt": "What's your signature aesthetic?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Classic, rugged, and instantly recognizable.",
+          "weights": {
+            "gawn": 2,
+            "darcy": 2
+          }
+        },
+        {
+          "id": "B",
+          "text": "Clean, sharp, and built for speed.",
+          "weights": {
+            "williams": 2,
+            "english": 1
+          }
+        },
+        {
+          "id": "C",
+          "text": "Utilitarian\u2014purely functional, zero flash.",
+          "weights": {
+            "pittonet": 2,
+            "meek": 2,
+            "cameron": 1
+          }
+        },
+        {
+          "id": "D",
+          "text": "Bold accessories that make a statement before I even say a word.",
+          "weights": {
+            "cox": 2,
+            "jackson": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "q6",
+      "number": 6,
+      "prompt": "How do you feel about strict rules and traditions?",
+      "options": [
+        {
+          "id": "A",
+          "text": "They exist for a reason\u2014master the fundamentals first.",
+          "weights": {
+            "pittonet": 2,
+            "darcy": 2,
+            "xerri": 1
+          }
+        },
+        {
+          "id": "B",
+          "text": "Good guidelines, though I prefer adapting them to suit my own style.",
+          "weights": {
+            "grundy": 2,
+            "english": 1
+          }
+        },
+        {
+          "id": "C",
+          "text": "Rules are meant to be bent if you're athletic enough to pull it off.",
+          "weights": {
+            "jackson": 2,
+            "williams": 1,
+            "xerri": 1
+          }
+        },
+        {
+          "id": "D",
+          "text": "I don't even know the rules, I'm just here for five minutes.",
+          "weights": {
+            "heathen": 3,
+            "cox": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "q7",
+      "number": 7,
+      "prompt": "More rucks, ..?",
+      "options": [
+        {
+          "id": "A",
+          "text": "The worst, all rucks are stupid and can't kick",
+          "forceOutcomeId": "heathen",
+          "weights": {}
+        },
+        {
+          "id": "B",
+          "text": "More fucks",
+          "weights": {}
+        }
+      ]
+    }
+  ]
+}
