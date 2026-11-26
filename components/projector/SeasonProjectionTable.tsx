@@ -73,7 +73,7 @@ export default function SeasonProjectionTable({
   );
 
   const hasBlankRounds = futureRows.some(
-    (row) => row.score === null,
+    (row) => row.played && row.score === null,
   );
 
   const isFuture = (row: SeasonProjectionRow) =>
@@ -123,6 +123,10 @@ export default function SeasonProjectionTable({
       cell: (row) => {
         if (!isFuture(row)) {
           return row.score ?? "-";
+        }
+
+        if (!row.played) {
+          return <span className="text-slate-500">-</span>;
         }
 
         const showQuickScores = quickScoreRound === row.round;
