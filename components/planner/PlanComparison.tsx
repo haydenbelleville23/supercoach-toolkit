@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 
+import DataTable, { type DataTableColumn } from "@/components/ui/DataTable";
 import { formatMoney } from "@/lib/format";
 import { evaluatePlan } from "@/lib/planner/evaluatePlan";
 import type { MyTeam, TradePlan } from "@/lib/planner/types";
@@ -62,7 +63,50 @@ export default function PlanComparison({ team }: { team: MyTeam }) {
     </select>
   );
 
-  const cell = "px-2 py-1.5 text-right tabular-nums";
+  type Row = { a: (typeof roundsA)[number]; b: (typeof roundsB)[number] | undefined };
+
+  const rows: Row[] = roundsA.map((a, index) => ({ a, b: roundsB[index] }));
+
+  const warnings = (count: number | undefined) =>
+    count ? "text-amber-300" : "text-slate-400";
+
+  const pair = (
+    id: string,
+    label: string,
+    value: (round: Row["a"]) => string | number,
+    className?: (round: Row["a"] | undefined) => string,
+  ): DataTableColumn<Row>[] => [
+    {
+      id: `${id}A`,
+      header: `${label} A`,
+      width: 84,
+      align: "right",
+      cell: (row) => value(row.a),
+      cellClassName: className ? (row) => className(row.a) : undefined,
+    },
+    {
+      id: `${id}B`,
+      header: `${label} B`,
+      width: 84,
+      align: "right",
+      cell: (row) => (row.b ? value(row.b) : "-"),
+      cellClassName: className ? (row) => className(row.b) : undefined,
+    },
+  ];
+
+  const columns: DataTableColumn<Row>[] = [
+    {
+      id: "round",
+      header: "Round",
+      width: 56,
+      cell: (row) => `R${row.a.round}`,
+      cellClassName: () => "font-semibold",
+    },
+    ...pair("squadValue", "Squad value", (round) => formatMoney(round.squadValue)),
+    ...pair("cash", "Cash", (round) => formatMoney(round.cashAfter)),
+    ...pair("tradesLeft", "Trades left", (round) => round.tradesLeftAfter),
+    ...pair("warnings", "Warnings", (round) => round.warnings.length, (round) => warnings(round?.warnings.length)),
+  ];
 
   return (
     <section className="rounded-2xl border border-slate-800 bg-slate-900">
@@ -73,46 +117,14 @@ export default function PlanComparison({ team }: { team: MyTeam }) {
         {select(planB?.id ?? "", setBId, "Second plan to compare")}
       </div>
 
-      <div className="overflow-x-auto">
-        <table className="w-max min-w-full whitespace-nowrap text-xs">
-          <thead className="bg-slate-950 text-slate-400">
-            <tr>
-              <th className="px-3 py-2 text-left">Round</th>
-              <th className={cell}>Squad value A</th>
-              <th className={cell}>Squad value B</th>
-              <th className={cell}>Cash A</th>
-              <th className={cell}>Cash B</th>
-              <th className={cell}>Trades left A</th>
-              <th className={cell}>Trades left B</th>
-              <th className={cell}>Warnings A</th>
-              <th className={cell}>Warnings B</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {roundsA.map((a, index) => {
-              const b = roundsB[index];
-
-              return (
-                <tr key={a.round} className="border-t border-slate-800">
-                  <td className="px-3 py-1.5 font-semibold">R{a.round}</td>
-                  <td className={cell}>{formatMoney(a.squadValue)}</td>
-                  <td className={cell}>{b ? formatMoney(b.squadValue) : "-"}</td>
-                  <td className={cell}>{formatMoney(a.cashAfter)}</td>
-                  <td className={cell}>{b ? formatMoney(b.cashAfter) : "-"}</td>
-                  <td className={cell}>{a.tradesLeftAfter}</td>
-                  <td className={cell}>{b?.tradesLeftAfter ?? "-"}</td>
-                  <td className={`${cell} ${a.warnings.length ? "text-amber-300" : "text-slate-400"}`}>
-                    {a.warnings.length}
-                  </td>
-                  <td className={`${cell} ${b?.warnings.length ? "text-amber-300" : "text-slate-400"}`}>
-                    {b?.warnings.length ?? "-"}
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
+      <div className="px-2 pb-2 sm:px-3 sm:pb-3">
+        <DataTable
+          caption="Plan comparison by round"
+          rows={rows}
+          columns={columns}
+          rowKey={(row) => row.a.round}
+          empty="No rounds to compare."
+        />
       </div>
     </section>
   );

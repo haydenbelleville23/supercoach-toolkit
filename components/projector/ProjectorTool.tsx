@@ -4,10 +4,9 @@ import { useSearchParams } from "next/navigation";
 import { useMemo, useState } from "react";
 
 import LiveIndicator from "@/components/layout/LiveIndicator";
-import PlayerHeader from "@/components/projector/PlayerHeader";
-import PlayerSelector from "@/components/projector/PlayerSelector";
-import PlayerStats from "@/components/projector/PlayerStats";
-import ProjectionModeSelector from "@/components/projector/ProjectionModeSelector";
+import PlayerSearchBar from "@/components/projector/PlayerSearchBar";
+import PlayerStatChips from "@/components/projector/PlayerStatChips";
+import ProjectionModeControl from "@/components/projector/ProjectionModeControl";
 import SeasonProjectionTable from "@/components/projector/SeasonProjectionTable";
 import { useLiveRoundContext } from "@/lib/liveMatch/useLiveRoundContext";
 import { buildPlayerRows } from "@/lib/projector/buildPlayerRows";
@@ -136,44 +135,25 @@ function ProjectorTool({
 
   return (
     <>
-      <section className="mt-10 rounded-2xl border border-slate-800 bg-slate-900 p-6">
-        <PlayerHeader
-          name={selectedPlayer.name}
-          team={selectedPlayer.team}
-          teamName={selectedPlayer.teamName}
-          positions={selectedPlayer.positions}
-          availability={
-            selectedPlayer.availability
-          }
-        />
-
-        <PlayerSelector
+      {/* One bar: player search and projection mode. */}
+      <div className="mt-3 flex items-center gap-2">
+        <PlayerSearchBar
           players={players}
-          selectedPlayerId={selectedPlayerId}
+          selectedPlayer={selectedPlayer}
           onChange={handlePlayerChange}
         />
 
-        <PlayerStats
-          price={selectedPlayer.price}
-          breakeven={selectedPlayer.breakeven}
-          games={selectedPlayer.games}
-          average={selectedPlayer.average}
-          average3={selectedPlayer.average3}
-          average5={selectedPlayer.average5}
-          ownership={selectedPlayer.ownership}
-        />
-      </section>
-
-      <div className="mt-8">
-        <ProjectionModeSelector
+        <ProjectionModeControl
           value={projectionMode}
-          onChange={
-            handleProjectionModeChange
-          }
+          onChange={handleProjectionModeChange}
         />
       </div>
 
-      <div className="mt-4">
+      <div className="mt-2">
+        <PlayerStatChips player={selectedPlayer} />
+      </div>
+
+      <div className="mt-3">
         {isLive && (
           <LiveIndicator className="mb-2" />
         )}

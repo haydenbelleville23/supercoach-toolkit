@@ -1,7 +1,8 @@
 "use client";
 
-import { Fragment, useState } from "react";
+import { useState } from "react";
 
+import DataTable, { type DataTableColumn } from "@/components/ui/DataTable";
 import { CURRENT_COMPLETED_ROUND } from "@/data/season";
 import { formatChange, formatMoney } from "@/lib/format";
 import type { SeasonProjectionRow } from "@/types/projection";
@@ -13,6 +14,14 @@ type SeasonProjectionTableProps = {
   startingPrice: number;
   onScoreChange: (round: number, score: number | null) => void;
 };
+
+function changeColour(value: number | null): string {
+  return value === null || value === 0
+    ? "text-slate-400"
+    : value > 0
+      ? "text-emerald-400"
+      : "text-red-400";
+}
 
 export default function SeasonProjectionTable({
   rows,
@@ -67,256 +76,200 @@ export default function SeasonProjectionTable({
     (row) => row.score === null,
   );
 
+  const isFuture = (row: SeasonProjectionRow) =>
+    row.round > CURRENT_COMPLETED_ROUND;
+
+  const seasonChange = (row: SeasonProjectionRow) =>
+    row.price === null ? null : row.price - openingPrice;
+
+  // Phone widths fit a 375px screen with no sideways scroll; the sm widths
+  // are the planned ones.
+  const columns: DataTableColumn<SeasonProjectionRow>[] = [
+    {
+      id: "round",
+      header: "Rd",
+      width: { base: 50, sm: 64 },
+      align: "center",
+      cell: (row) => (
+        <>
+          <div
+            className={
+              isFuture(row)
+                ? "font-semibold text-emerald-400"
+                : "font-semibold"
+            }
+          >
+            R{row.round}
+          </div>
+
+          {row.opponent && row.homeAway ? (
+            <div className="mt-0.5 text-[11px] text-slate-400 sm:text-xs">
+              <span className="hidden sm:inline">vs </span>
+              {row.opponent} ({row.homeAway})
+            </div>
+          ) : (
+            <div className="mt-0.5 text-[11px] font-medium text-slate-400 sm:text-xs">
+              BYE
+            </div>
+          )}
+        </>
+      ),
+    },
+    {
+      id: "score",
+      header: "Score",
+      width: { base: 52, sm: 64 },
+      align: "right",
+      cell: (row) => {
+        if (!isFuture(row)) {
+          return row.score ?? "-";
+        }
+
+        const showQuickScores = quickScoreRound === row.round;
+
+        return (
+          <input
+            type="text"
+            inputMode="numeric"
+            aria-label={`Round ${row.round} score`}
+            value={row.score ?? ""}
+            placeholder="-"
+            id={`round-${row.round}-score`}
+            aria-describedby={
+              showQuickScores
+                ? `round-${row.round}-quick-scores`
+                : undefined
+            }
+            onFocus={(event) => {
+              event.currentTarget.select();
+              setQuickScoreRound(row.round);
+            }}
+            onBlur={(event) =>
+              closeQuickScoresUnlessMovingTo(
+                event.relatedTarget,
+                row.round,
+              )
+            }
+            onChange={(event) => {
+              const cleanedValue =
+                event.target.value.replace(/[^0-9]/g, "");
+
+              onScoreChange(
+                row.round,
+                cleanedValue === "" ? null : Number(cleanedValue),
+              );
+            }}
+            className="w-11 rounded-md border border-slate-700 bg-slate-950 px-1 py-1 text-right font-semibold tabular-nums text-white outline-none transition focus:border-violet-500 focus:ring-1 focus:ring-violet-500 sm:w-12 sm:px-1.5"
+          />
+        );
+      },
+    },
+    {
+      id: "price",
+      header: "Price",
+      width: { base: 72, sm: 88 },
+      align: "right",
+      cell: (row) => (row.price === null ? "-" : formatMoney(row.price)),
+      cellClassName: () => "font-semibold",
+    },
+    {
+      id: "breakeven",
+      header: "BE",
+      width: { base: 38, sm: 52 },
+      align: "right",
+      cell: (row) =>
+        row.breakEven === null ? "-" : Math.ceil(row.breakEven),
+      cellClassName: () => "text-slate-400",
+    },
+    {
+      id: "roundChange",
+      header: "Δ Rd",
+      width: { base: 60, sm: 76 },
+      align: "right",
+      cell: (row) => formatChange(row.priceChange),
+      cellClassName: (row) => changeColour(row.priceChange),
+    },
+    {
+      id: "seasonChange",
+      header: "Δ Season",
+      width: { base: 64, sm: 84 },
+      align: "right",
+      cell: (row) => formatChange(seasonChange(row)),
+      cellClassName: (row) => changeColour(seasonChange(row)),
+    },
+  ];
+
   return (
     <section>
-      <div className="mb-4 flex flex-col items-start gap-2 sm:flex-row sm:items-center sm:justify-between">
-        <h2 className="text-lg font-semibold">
-          Season Projection
+      <div className="mb-2 flex items-center justify-between gap-3">
+        <h2 className="text-sm font-semibold text-slate-200">
+          Season projection
         </h2>
 
         {firstVisibleRound > 0 && (
           <button
             type="button"
+            aria-pressed={showEarlierRounds}
             onClick={() =>
               setShowEarlierRounds((current) => !current)
             }
-            className="text-left text-sm font-semibold text-violet-400 transition hover:text-violet-300 sm:text-right"
+            className="rounded-md px-1.5 py-1 text-xs font-semibold text-violet-400 transition hover:text-violet-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-500"
           >
             {showEarlierRounds
               ? "Hide earlier rounds"
-              : `Show earlier rounds (R0–R${
-                  firstVisibleRound - 1
-                })`}
+              : `Show R0–R${firstVisibleRound - 1}`}
           </button>
         )}
       </div>
 
-      <div className="overflow-x-auto rounded-xl border border-slate-800 bg-slate-900">
-        <table className="w-full min-w-[560px] table-fixed whitespace-nowrap text-xs sm:text-sm">
-          <colgroup>
-            <col className="w-[16%]" />
-            <col className="w-[14%]" />
-            <col className="w-[20%]" />
-            <col className="w-[12%]" />
-            <col className="w-[18%]" />
-            <col className="w-[20%]" />
-          </colgroup>
+      <DataTable
+        caption="Season projection by round"
+        rows={visibleRows}
+        columns={columns}
+        rowKey={(row) => row.round}
+        compact
+        mutedRow={(row) => !isFuture(row)}
+        renderExpanded={(row) =>
+          isFuture(row) && quickScoreRound === row.round ? (
+            <div
+              id={`round-${row.round}-quick-scores`}
+              role="group"
+              aria-label={`Quick scores for round ${row.round}`}
+              data-quick-scores={row.round}
+              onBlur={(event) =>
+                closeQuickScoresUnlessMovingTo(
+                  event.relatedTarget,
+                  row.round,
+                )
+              }
+              className="flex w-max items-center gap-2"
+            >
+              <span className="text-xs text-slate-400">
+                Quick:
+              </span>
 
-          <thead className="bg-slate-950 text-slate-400">
-            <tr>
-              {/* Rd stays pinned while the table scrolls on phones. */}
-              <th className="sticky left-0 z-10 bg-slate-950 px-1.5 py-3 sm:px-2 text-center shadow-[4px_0_6px_rgba(0,0,0,0.2)]">
-                Rd
-              </th>
-
-              <th className="px-1.5 py-3 sm:px-2 text-right">
-                Score
-              </th>
-
-              <th className="px-1.5 py-3 sm:px-2 text-right">
-                Price
-              </th>
-
-              <th className="px-1.5 py-3 sm:px-2 text-right">
-                BE
-              </th>
-
-              <th className="px-1.5 py-3 sm:px-2 text-right">
-                Δ Rd
-              </th>
-
-              <th className="px-1.5 py-3 sm:px-2 text-right">
-                Δ Season
-              </th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {visibleRows.map((row) => {
-              const isFuture =
-                row.round > CURRENT_COMPLETED_ROUND;
-
-              const seasonPriceChange =
-                row.price === null
-                  ? null
-                  : row.price - openingPrice;
-
-              const showQuickScores =
-                isFuture && quickScoreRound === row.round;
-
-              return (
-                <Fragment key={row.round}>
-                <tr
-                  className={`border-t border-slate-800 transition-colors ${
-                    isFuture
-                      ? "bg-slate-900 hover:bg-slate-800"
-                      : "bg-slate-950/40 text-slate-400"
+              {QUICK_SCORES.map((score) => (
+                <button
+                  key={score}
+                  type="button"
+                  aria-label={`Set round ${row.round} score to ${score}`}
+                  aria-pressed={row.score === score}
+                  // Keep focus in the score box when tapped.
+                  onMouseDown={(event) => event.preventDefault()}
+                  onClick={() => onScoreChange(row.round, score)}
+                  className={`min-w-11 rounded-md border px-2.5 py-1.5 text-xs font-semibold tabular-nums transition focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 ${
+                    row.score === score
+                      ? "border-violet-500 bg-violet-500/20 text-violet-200"
+                      : "border-slate-700 bg-slate-950 text-slate-200 hover:border-slate-500"
                   }`}
                 >
-                  <td
-                    className={`sticky left-0 z-10 px-2 py-2 text-center shadow-[4px_0_6px_rgba(0,0,0,0.2)] ${
-                      isFuture ? "bg-slate-900" : "bg-slate-950"
-                    }`}
-                  >
-                    <div
-                      className={
-                        isFuture
-                          ? "font-semibold text-emerald-400"
-                          : "font-semibold"
-                      }
-                    >
-                      R{row.round}
-                    </div>
-
-                   {row.opponent && row.homeAway ? (
-                      <div className="mt-0.5 whitespace-nowrap text-xs text-slate-400">
-                        vs {row.opponent} ({row.homeAway})
-                      </div>
-                    ) : (
-                      <div className="mt-0.5 text-xs font-medium text-slate-400">
-                        BYE
-                      </div>
-                    )}
-                  </td>
-
-                  <td className="px-1.5 py-2.5 sm:px-2 text-right">
-                    {isFuture ? (
-                      <input
-                        type="text"
-                        inputMode="numeric"
-                        aria-label={`Round ${row.round} score`}
-                        value={row.score ?? ""}
-                        placeholder="-"
-                        id={`round-${row.round}-score`}
-                        aria-describedby={
-                          showQuickScores
-                            ? `round-${row.round}-quick-scores`
-                            : undefined
-                        }
-                        onFocus={(event) => {
-                          event.currentTarget.select();
-                          setQuickScoreRound(row.round);
-                        }}
-                        onBlur={(event) =>
-                          closeQuickScoresUnlessMovingTo(
-                            event.relatedTarget,
-                            row.round,
-                          )
-                        }
-                        onChange={(event) => {
-                          const cleanedValue =
-                            event.target.value.replace(
-                              /[^0-9]/g,
-                              "",
-                            );
-
-                          onScoreChange(
-                            row.round,
-                            cleanedValue === ""
-                              ? null
-                              : Number(cleanedValue),
-                          );
-                        }}
-                        className="w-14 rounded-md border border-slate-700 bg-slate-950 px-1.5 py-1 text-right font-semibold tabular-nums outline-none transition focus:border-violet-500 focus:ring-1 focus:ring-violet-500 sm:w-16 sm:px-2"
-                      />
-                    ) : (
-                      <span className="tabular-nums">
-                        {row.score ?? "-"}
-                      </span>
-                    )}
-                  </td>
-
-                    {/* Price */}
-                    <td className="px-1.5 py-2.5 sm:px-2 text-right font-semibold tabular-nums">
-                      {row.price === null ? "-" : formatMoney(row.price)}
-                    </td>
-
-                  <td className="px-1.5 py-2.5 sm:px-2 text-right tabular-nums text-slate-400">
-                    {row.breakEven === null
-                      ? "-"
-                      : Math.ceil(row.breakEven)}
-                  </td>
-
-                    {/* Round price change */}
-                    <td
-                     className={`px-1.5 py-2.5 sm:px-2 text-right tabular-nums ${
-                      row.priceChange === null || row.priceChange === 0
-                        ? "text-slate-400"
-                        : row.priceChange > 0
-                          ? "text-emerald-400"
-                          : "text-red-400"
-                    }`}
-                  >
-                    {formatChange(row.priceChange)}
-                    </td>
-
-                    {/* Season price change */}
-                    <td
-                      className={`px-1.5 py-2.5 sm:px-2 text-right tabular-nums ${
-                        seasonPriceChange === null || seasonPriceChange === 0
-                          ? "text-slate-400"
-                          : seasonPriceChange > 0
-                            ? "text-emerald-400"
-                            : "text-red-400"
-                      }`}
-                    >
-                    {formatChange(seasonPriceChange)}
-                    </td>
-                </tr>
-
-                {showQuickScores && (
-                  <tr className="bg-slate-900">
-                    <td colSpan={6} className="px-2 pb-2.5">
-                      {/* Sticky so the buttons stay in view on a scrolled phone table. */}
-                      <div
-                        id={`round-${row.round}-quick-scores`}
-                        role="group"
-                        aria-label={`Quick scores for round ${row.round}`}
-                        data-quick-scores={row.round}
-                        onBlur={(event) =>
-                          closeQuickScoresUnlessMovingTo(
-                            event.relatedTarget,
-                            row.round,
-                          )
-                        }
-                        className="sticky left-0 flex w-max items-center gap-2"
-                      >
-                        <span className="text-xs text-slate-400">
-                          Quick:
-                        </span>
-
-                        {QUICK_SCORES.map((score) => (
-                          <button
-                            key={score}
-                            type="button"
-                            aria-label={`Set round ${row.round} score to ${score}`}
-                            aria-pressed={row.score === score}
-                            // Keep focus in the score box when tapped.
-                            onMouseDown={(event) =>
-                              event.preventDefault()
-                            }
-                            onClick={() =>
-                              onScoreChange(row.round, score)
-                            }
-                            className={`min-w-11 rounded-md border px-2.5 py-1.5 text-xs font-semibold tabular-nums transition focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 ${
-                              row.score === score
-                                ? "border-violet-500 bg-violet-500/20 text-violet-200"
-                                : "border-slate-700 bg-slate-950 text-slate-200 hover:border-slate-500"
-                            }`}
-                          >
-                            {score}
-                          </button>
-                        ))}
-                      </div>
-                    </td>
-                  </tr>
-                )}
-                </Fragment>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
+                  {score}
+                </button>
+              ))}
+            </div>
+          ) : null
+        }
+      />
 
       {(hasPriceLockedRounds || hasBlankRounds) && (
         <ul className="mt-3 space-y-1 text-xs leading-5 text-slate-400">
