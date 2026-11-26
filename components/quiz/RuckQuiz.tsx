@@ -6,6 +6,7 @@ import RuckCard from "@/components/quiz/RuckCard";
 import { ruckQuiz } from "@/lib/quiz/ruckQuiz";
 import { findOutcome, scoreQuiz } from "@/lib/quiz/scoreQuiz";
 import type { QuizAnswers, QuizOutcome } from "@/lib/quiz/types";
+import { absoluteUrl, SITE_NAME } from "@/lib/site";
 
 const PAGE_PATH = "/which-ruck";
 
@@ -83,7 +84,7 @@ export default function RuckQuiz({
       : "Which ruck are you?";
 
   useEffect(() => {
-    document.title = `${resultTitle} | Fantasy King`;
+    document.title = `${resultTitle} | ${SITE_NAME}`;
   }, [resultTitle]);
 
   // An invalid ?r= falls back to the start screen; tidy the address too.
@@ -127,7 +128,7 @@ export default function RuckQuiz({
   }
 
   async function share(winner: QuizOutcome, runnerUp: QuizOutcome | null) {
-    const url = `${window.location.origin}${resultPath(winner, runnerUp)}`;
+    const url = absoluteUrl(resultPath(winner, runnerUp));
     const text = `I'm ${winner.name}, ${winner.archetype}. Which ruck are you?`;
 
     setFallbackLink(null);

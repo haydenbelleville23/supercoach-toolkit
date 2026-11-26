@@ -3,6 +3,14 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+
+  /* Footynomics brand colours, sampled from the logos in public/brand/. */
+  --brand-green: #50f040; /* "nomics" wordmark and arrow */
+  --brand-green-soft: #3fbf33;
+  --brand-orange: #c05020; /* the football */
+  --brand-navy: #1c242f; /* logo background */
+  --brand-navy-deep: #151b24;
+  --brand-grey: #8a97a8; /* tagline */
 }
 
 @theme inline {
@@ -10,6 +18,14 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+
+  /* Tailwind utilities: bg-brand-navy, text-brand-green, etc. */
+  --color-brand-green: var(--brand-green);
+  --color-brand-green-soft: var(--brand-green-soft);
+  --color-brand-orange: var(--brand-orange);
+  --color-brand-navy: var(--brand-navy);
+  --color-brand-navy-deep: var(--brand-navy-deep);
+  --color-brand-grey: var(--brand-grey);
 }
 
 @media (prefers-color-scheme: dark) {

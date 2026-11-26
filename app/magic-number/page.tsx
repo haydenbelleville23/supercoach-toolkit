@@ -290,7 +290,7 @@ export default function MagicNumberPage() {
 
         <p className="mt-4 text-xs leading-5 text-slate-600">
           This page is intended for internal pricing research and
-          is not linked from the public Fantasy King navigation.
+          is not linked from the public Footynomics navigation.
         </p>
       </div>
     </main>

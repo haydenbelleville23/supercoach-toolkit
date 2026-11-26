@@ -6,7 +6,7 @@ import { parseTeamFile } from "./teamFile";
 import type { MyTeam } from "./types";
 
 /** The saved team lives in the browser only (no account or database). */
-const STORAGE_KEY = "fantasy-king.my-team.v1";
+const STORAGE_KEY = "footynomics.my-team.v1";
 
 const listeners = new Set<() => void>();
 
@@ -90,7 +90,7 @@ export function exportMyTeam(team: MyTeam): void {
   const link = document.createElement("a");
 
   link.href = url;
-  link.download = `fantasy-king-team-round-${team.asOfRound}.json`;
+  link.download = `footynomics-team-round-${team.asOfRound}.json`;
   link.click();
 
   URL.revokeObjectURL(url);

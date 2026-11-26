@@ -2,6 +2,13 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 
 import DebugBanner from "@/components/layout/DebugBanner";
+import {
+  absoluteUrl,
+  BRAND,
+  SITE_DESCRIPTION,
+  SITE_NAME,
+  SITE_URL,
+} from "@/lib/site";
 
 import "./globals.css";
 
@@ -16,72 +23,54 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://sc-toolkit.vercel.app"),
+  metadataBase: SITE_URL,
 
   title: {
-    default: "Fantasy King",
-    template: "%s | Fantasy King",
+    default: `${SITE_NAME}: AFL fantasy prices, cash cows and trades`,
+    template: `%s | ${SITE_NAME}`,
   },
 
-  description:
-    "Fantasy AFL tools including price projections, cash cows, live scores and trade planning.",
+  description: SITE_DESCRIPTION,
 
-  applicationName: "Fantasy King",
+  applicationName: SITE_NAME,
 
+  // The web manifest comes from app/manifest.ts (linked automatically).
   icons: {
     icon: [
-      {
-        url: "/favicon.ico",
-      },
-      {
-        url: "/favicon-32x32.png",
-        sizes: "32x32",
-        type: "image/png",
-      },
-      {
-        url: "/favicon-48x48.png",
-        sizes: "48x48",
-        type: "image/png",
-      },
+      { url: "/brand/favicon.ico", sizes: "any" },
+      { url: "/brand/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+      { url: "/brand/favicon-32x32.png", sizes: "32x32", type: "image/png" },
     ],
     apple: [
-      {
-        url: "/apple-touch-icon-180x180.png",
-        sizes: "180x180",
-        type: "image/png",
-      },
+      { url: "/brand/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
     ],
   },
-
-  manifest: "/site.webmanifest",
 
   openGraph: {
     type: "website",
-    siteName: "Fantasy King",
-    title: "Fantasy King",
-    description:
-      "Fantasy AFL tools including price projections, cash cows, live scores and trade planning.",
+    siteName: SITE_NAME,
+    title: SITE_NAME,
+    description: SITE_DESCRIPTION,
+    url: absoluteUrl("/"),
     images: [
       {
-        url: "/images/branding/fantasy-king-logo-full.png",
-        width: 1200,
-        height: 630,
-        alt: "Fantasy King",
+        url: absoluteUrl(BRAND.socialShare),
+        ...BRAND.socialShareSize,
+        alt: `${SITE_NAME}: project prices, plan trades`,
       },
     ],
   },
 
   twitter: {
     card: "summary_large_image",
-    title: "Fantasy King",
-    description:
-      "Fantasy AFL tools including price projections, cash cows, live scores and trade planning.",
-    images: ["/images/branding/fantasy-king-logo-full.png"],
+    title: SITE_NAME,
+    description: SITE_DESCRIPTION,
+    images: [absoluteUrl(BRAND.socialShare)],
   },
 
   appleWebApp: {
     capable: true,
-    title: "Fantasy King",
+    title: SITE_NAME,
     statusBarStyle: "black-translucent",
   },
 };

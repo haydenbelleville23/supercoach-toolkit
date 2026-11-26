@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import MobileMenu from "@/components/layout/MobileMenu";
+import { BRAND, SITE_NAME } from "@/lib/site";
 
 const NAV_LINKS = [
   { href: "/", label: "Home" },
@@ -14,33 +15,41 @@ const NAV_LINKS = [
 
 export default function Header() {
   return (
-  <header className="sticky top-0 z-50 border-b border-slate-800 bg-slate-950/80 backdrop-blur">
-    <div className="relative mx-auto flex h-24 max-w-7xl items-center justify-between px-6">
-      <Link href="/" className="flex items-center">
-        <Image
-          src="/images/branding/fantasy-king-logo-full.png"
-          alt="Fantasy King"
-          width={220}
-          height={73}
-          priority
-          className="h-16 w-auto transition duration-200 hover:opacity-90 md:h-18"
-        />
-      </Link>
+    // The logo is on the same navy as the header, so its edges disappear.
+    <header className="sticky top-0 z-50 border-b border-slate-800 bg-brand-navy">
+      <div className="relative mx-auto flex h-14 max-w-7xl items-center justify-between px-4 sm:px-6 md:h-16">
+        <Link
+          href="/"
+          aria-label={`${SITE_NAME} home`}
+          className="flex items-center rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-green"
+        >
+          <Image
+            src={BRAND.logoWideDark}
+            alt={SITE_NAME}
+            width={BRAND.logoWideDarkSize.width}
+            height={BRAND.logoWideDarkSize.height}
+            sizes="(min-width: 768px) 218px, 200px"
+            priority
+            // The logo has wide built-in margins: object-cover crops the
+            // empty top and bottom so the wordmark is legible in a slim bar.
+            className="h-11 w-[200px] object-cover object-[50%_41%] motion-safe:transition hover:opacity-90 md:h-12 md:w-[218px]"
+          />
+        </Link>
 
-      <nav className="hidden items-center gap-6 text-sm text-slate-300 md:flex">
-        {NAV_LINKS.map((link) => (
-          <Link
-            key={link.href}
-            className="transition hover:text-white"
-            href={link.href}
-          >
-            {link.label}
-          </Link>
-        ))}
-      </nav>
+        <nav className="hidden items-center gap-6 text-sm text-slate-300 md:flex">
+          {NAV_LINKS.map((link) => (
+            <Link
+              key={link.href}
+              className="transition hover:text-white"
+              href={link.href}
+            >
+              {link.label}
+            </Link>
+          ))}
+        </nav>
 
-      <MobileMenu links={NAV_LINKS} />
-    </div>
-  </header>
-);
+        <MobileMenu links={NAV_LINKS} />
+      </div>
+    </header>
+  );
 }
