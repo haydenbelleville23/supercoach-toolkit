@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import LiveIndicator from "@/components/layout/LiveIndicator";
 import { useLiveRoundContext } from "@/lib/liveMatch/useLiveRoundContext";
 import { useMyTeam } from "@/lib/planner/useMyTeam";
@@ -8,10 +7,17 @@ import PageHeader from "@/components/layout/PageHeader";
 import { formatChange, formatMoney } from "@/lib/format";
 import Header from "@/components/layout/Header";
 import {
-  type UIEvent,
   useMemo,
   useState,
 } from "react";
+
+import DataTable, { type DataTableColumn } from "@/components/ui/DataTable";
+import PlayerCell from "@/components/ui/PlayerCell";
+import {
+  sortRows,
+  type SortState,
+  type SortValue,
+} from "@/lib/table/sortRows";
 
 import {
   calculateCashCowRows,
@@ -100,52 +106,54 @@ type CashCowRow = ReturnType<
   typeof calculateCashCowRows
 >[number];
 
-function compareRows(
-  sortMode: SortMode,
-  a: CashCowRow,
-  b: CashCowRow,
-): number {
-  switch (sortMode) {
-    case "peak-gain":
-      return b.toppedOutGain - a.toppedOutGain;
+/** What each sortable column sorts by (missing values sort last). */
+const SORT_VALUES: Record<string, (row: CashCowRow) => SortValue> = {
+  player: (row) => row.player.name,
+  price: (row) => row.player.price,
+  breakeven: (row) => row.player.breakeven,
+  projectedAverage: (row) => row.projectedAverage,
+  toppedOutGain: (row) => row.toppedOutGain,
+  toppedOutRound: (row) => row.toppedOutRound,
+  rise1: (row) => row.rise1,
+  rise3: (row) => row.rise3,
+  rise5: (row) => row.rise5,
+};
 
-    case "rise-1":
-      return (
-        (b.rise1 ?? Number.NEGATIVE_INFINITY) -
-        (a.rise1 ?? Number.NEGATIVE_INFINITY)
-      );
+/** The sort dropdown's modes, each a column and direction. */
+const SORT_MODES: Record<SortMode, SortState> = {
+  "peak-gain": { columnId: "toppedOutGain", direction: "desc" },
+  "rise-1": { columnId: "rise1", direction: "desc" },
+  "rise-3": { columnId: "rise3", direction: "desc" },
+  "rise-5": { columnId: "rise5", direction: "desc" },
+  "price-high": { columnId: "price", direction: "desc" },
+  "price-low": { columnId: "price", direction: "asc" },
+  "breakeven-low": { columnId: "breakeven", direction: "asc" },
+  "breakeven-high": { columnId: "breakeven", direction: "desc" },
+};
 
-    case "rise-3":
-      return (
-        (b.rise3 ?? Number.NEGATIVE_INFINITY) -
-        (a.rise3 ?? Number.NEGATIVE_INFINITY)
-      );
+const DEFAULT_SORT = SORT_MODES["peak-gain"];
 
-    case "rise-5":
-      return (
-        (b.rise5 ?? Number.NEGATIVE_INFINITY) -
-        (a.rise5 ?? Number.NEGATIVE_INFINITY)
-      );
+/** The dropdown mode for a sort, or null if only a header click gives it. */
+function sortModeFor(sort: SortState): SortMode | null {
+  const match = Object.entries(SORT_MODES).find(
+    ([, mode]) =>
+      mode.columnId === sort.columnId && mode.direction === sort.direction,
+  );
 
-    case "price-high":
-      return b.player.price - a.player.price;
-
-    case "price-low":
-      return a.player.price - b.player.price;
-
-    case "breakeven-low":
-      return (
-        a.player.breakeven -
-        b.player.breakeven
-      );
-
-    case "breakeven-high":
-      return (
-        b.player.breakeven -
-        a.player.breakeven
-      );
-  }
+  return match ? (match[0] as SortMode) : null;
 }
+
+const COLUMN_NAMES: Record<string, string> = {
+  player: "Player",
+  projectedAverage: "Proj Avg",
+  toppedOutRound: "Topped Out Rd",
+  toppedOutGain: "Topped Out Gain",
+  rise1: "+1 Round",
+  rise3: "+3 Rounds",
+  rise5: "+5 Rounds",
+  price: "Price",
+  breakeven: "Breakeven",
+};
 
 export default function CashCowsPage() {
   const [projectionMode, setProjectionMode] =
@@ -154,8 +162,10 @@ export default function CashCowsPage() {
   const [searchQuery, setSearchQuery] =
     useState("");
 
-  const [sortMode, setSortMode] =
-    useState<SortMode>("peak-gain");
+  // Shared by the sort dropdown and the sortable column headers.
+  const [sort, setSort] =
+    useState<SortState>(DEFAULT_SORT);
+  const sortMode = sortModeFor(sort);
 
   const [positionFilter, setPositionFilter] =
   useState<PositionFilter>("ALL");
@@ -177,10 +187,6 @@ export default function CashCowsPage() {
   const [showRounds, setShowRounds] =
     useState(false);
 
-  const roundColumnClass = showRounds
-    ? ""
-    : "hidden sm:table-cell";
-
   const activeFilterCount = [
     positionFilter !== "ALL",
     priceFilter !== "all",
@@ -194,7 +200,7 @@ export default function CashCowsPage() {
     setPriceFilter("all");
     setClubFilter("ALL");
     setProjectionMode("projected");
-    setSortMode("peak-gain");
+    setSort(DEFAULT_SORT);
   }
 
   const [scoreOverrides, setScoreOverrides] =
@@ -215,7 +221,7 @@ export default function CashCowsPage() {
   const normalisedSearch =
     searchQuery.trim().toLowerCase();
 
-  return calculateCashCowRows(
+  const rows = calculateCashCowRows(
     players,
     projectionMode,
     scoreOverrides,
@@ -264,17 +270,18 @@ export default function CashCowsPage() {
         matchesPrice &&
         (!myTeamOnly || myTeamIds.has(row.player.id))
       );
-    })
-    .sort((a, b) =>
-      compareRows(sortMode, a, b),
-    );
+    });
+
+  // The whole list is sorted here, before paging, so the table only
+  // shows the sort (manualSorting).
+  return sortRows(rows, SORT_VALUES[sort.columnId], sort.direction);
 }, [
   myTeamOnly,
   myTeamIds,
   contexts,
   projectionMode,
   searchQuery,
-  sortMode,
+  sort,
   scoreOverrides,
   positionFilter,
   priceFilter,
@@ -343,7 +350,8 @@ const visibleRows = useMemo(
     positionFilter,
     priceFilter,
     clubFilter,
-    sortMode,
+    sort.columnId,
+    sort.direction,
     myTeamOnly,
   ].join("|");
 
@@ -354,27 +362,143 @@ const visibleRows = useMemo(
     setVisibleCountKey(filterKey);
     setVisibleCount(50);
   }
-  function handleTableScroll(
-  event: UIEvent<HTMLDivElement>,
-) {
-  const container = event.currentTarget;
-
-  const distanceFromBottom =
-    container.scrollHeight -
-    container.scrollTop -
-    container.clientHeight;
-
-  if (distanceFromBottom > 300) {
-    return;
+  function loadMoreRows() {
+    setVisibleCount((current) =>
+      Math.min(current + 50, filteredRows.length),
+    );
   }
 
-  setVisibleCount((current) =>
-    Math.min(
-      current + 50,
-      filteredRows.length,
+  const gainColumn = (
+    id: string,
+    header: string,
+    value: (row: CashCowRow) => number | null,
+  ): DataTableColumn<CashCowRow> => ({
+    id,
+    header,
+    width: 72,
+    align: "right",
+    sortValue: SORT_VALUES[id],
+    cell: (row) => formatGain(value(row)),
+    cellClassName: (row) => `font-semibold ${getGainColour(value(row))}`,
+  });
+
+  const columns: DataTableColumn<CashCowRow>[] = [
+    {
+      id: "player",
+      header: "Player",
+      width: { base: 124, sm: 160 },
+      sortValue: SORT_VALUES.player,
+      firstSortDirection: "asc",
+      cell: (row) => (
+        <PlayerCell
+          name={row.player.name}
+          team={row.player.team}
+          positions={row.player.positions}
+          href={`/projector?player=${row.player.id}`}
+        />
+      ),
+    },
+    {
+      id: "price",
+      header: "Price",
+      width: 84,
+      align: "right",
+      // Pinned next to the player from the sm breakpoint up.
+      pinFrom: "sm",
+      sortValue: SORT_VALUES.price,
+      cell: (row) => formatMoney(row.player.price),
+    },
+    {
+      id: "breakeven",
+      header: "BE",
+      width: 52,
+      align: "right",
+      sortValue: SORT_VALUES.breakeven,
+      firstSortDirection: "asc",
+      cell: (row) => row.player.breakeven,
+      cellClassName: () => "text-slate-300",
+    },
+    {
+      id: "projectedAverage",
+      header: "Proj Avg",
+      width: 64,
+      align: "right",
+      sortValue: SORT_VALUES.projectedAverage,
+      cell: (row) => row.projectedAverage,
+      cellClassName: () => "text-slate-300",
+    },
+    {
+      ...gainColumn("toppedOutGain", "Topped Out Gain", (row) => row.toppedOutGain),
+      width: 84,
+    },
+    {
+      id: "toppedOutRound",
+      header: "Topped Out Rd",
+      width: 56,
+      align: "right",
+      sortValue: SORT_VALUES.toppedOutRound,
+      firstSortDirection: "asc",
+      cell: (row) =>
+        row.toppedOutRound === null ? "-" : `R${row.toppedOutRound}`,
+      cellClassName: () => "text-slate-300",
+    },
+    gainColumn("rise1", "+1R", (row) => row.rise1),
+    gainColumn("rise3", "+3R", (row) => row.rise3),
+    gainColumn("rise5", "+5R", (row) => row.rise5),
+    ...futureRounds.map(
+      (round): DataTableColumn<CashCowRow> => ({
+        id: `round-${round}`,
+        header: `R${round}`,
+        width: 76,
+        align: "right",
+        // Hidden on phones until "Show round columns" is pressed.
+        hideBelow: showRounds ? undefined : "sm",
+        cell: (row) => {
+          const projectedRound = row.projectedRounds.find(
+            (item) => item.round === round,
+          );
+
+          if (!projectedRound) {
+            return <span className="text-slate-400">-</span>;
+          }
+
+          const overriddenScore = scoreOverrides[row.player.id]?.[round];
+
+          return (
+            <>
+              <div
+                className={`text-xs font-semibold ${getGainColour(
+                  projectedRound.price - row.player.price,
+                )}`}
+              >
+                {formatMoney(projectedRound.price)}
+              </div>
+
+              <input
+                type="text"
+                inputMode="numeric"
+                aria-label={`${row.player.name} round ${round} score`}
+                value={overriddenScore ?? projectedRound.score}
+                onChange={(event) =>
+                  updateProjectedScore(
+                    row.player.id,
+                    round,
+                    event.target.value,
+                  )
+                }
+                onFocus={(event) => event.currentTarget.select()}
+                className={`mt-0.5 w-10 rounded border px-1.5 py-0.5 text-right text-xs tabular-nums outline-none focus-visible:ring-2 focus-visible:ring-brand-green ${
+                  overriddenScore !== undefined
+                    ? "border-emerald-500 bg-emerald-500/10 text-emerald-300"
+                    : "border-slate-700 bg-slate-950 text-slate-400"
+                }`}
+              />
+            </>
+          );
+        },
+      }),
     ),
-  );
-}
+  ];
 
   return (
     <main className="min-h-screen bg-slate-950 text-white">
@@ -539,12 +663,11 @@ const visibleRows = useMemo(
             </span>
 
             <select
-              value={sortMode}
-              onChange={(event) =>
-                setSortMode(
-                  event.target.value as SortMode,
-                )
-              }
+              value={sortMode ?? "column"}
+              onChange={(event) => {
+                const mode = event.target.value as SortMode | "column";
+                if (mode !== "column") setSort(SORT_MODES[mode]);
+              }}
               className="mt-2 w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-sm outline-none focus:border-emerald-500"
             >
               <option value="peak-gain">
@@ -578,6 +701,14 @@ const visibleRows = useMemo(
               <option value="breakeven-high">
                 Breakeven: High to Low
               </option>
+
+              {/* Shown when a column header sort has no matching mode. */}
+              {sortMode === null && (
+                <option value="column" disabled>
+                  {COLUMN_NAMES[sort.columnId] ?? "Column"}:{" "}
+                  {sort.direction === "asc" ? "Low to High" : "High to Low"}
+                </option>
+              )}
             </select>
           </label>
         </section>
@@ -635,6 +766,16 @@ const visibleRows = useMemo(
             >
               My team{myTeamIds.size > 0 ? ` (${myTeamIds.size})` : ""}
             </button>
+
+            {myTeamIds.size > 0 && (
+              <span className="flex items-center gap-1.5 text-xs text-slate-400">
+                <span
+                  aria-hidden="true"
+                  className="inline-block h-3.5 w-3.5 rounded-sm border-l-[3px] border-brand-green bg-[var(--dt-highlight-bg)]"
+                />
+                Your players
+              </span>
+            )}
           </div>
 
           {/* Round-by-round columns are hidden on phones unless asked for. */}
@@ -650,253 +791,46 @@ const visibleRows = useMemo(
           </button>
         </div>
 
-        <section className="mt-3 overflow-hidden rounded-2xl border border-slate-800 bg-slate-900">
-           <div
-                className="max-h-[70vh] overflow-auto"
-                onScroll={handleTableScroll}
+        <DataTable
+          className="mt-3"
+          caption="Cash cows: projected price rises by player"
+          rows={visibleRows}
+          columns={columns}
+          rowKey={(row) => row.player.id}
+          sort={sort}
+          onSortChange={setSort}
+          manualSorting
+          highlightRow={(row) => myTeamIds.has(row.player.id)}
+          onNearEnd={loadMoreRows}
+          empty={
+            <div role="status" className="flex max-w-xl flex-col items-start gap-3">
+              <p className="font-semibold text-white">
+                No players match these filters.
+              </p>
+
+              <p className="text-sm text-slate-400">
+                Players need at least two scores
+                before their price can change, so
+                some players are not listed.
+              </p>
+
+              <button
+                type="button"
+                onClick={resetFilters}
+                className="rounded-lg border border-violet-500/40 bg-violet-500/10 px-3 py-2 text-xs font-semibold text-violet-300 transition hover:bg-violet-500/20"
               >
-            <table
-              className={`w-full whitespace-nowrap text-sm ${
-                showRounds
-                  ? "min-w-[1500px]"
-                  : "min-w-[980px] sm:min-w-[1500px]"
-              }`}
-            >
-              <thead className="sticky top-0 z-20 border-b border-slate-800 bg-slate-950">
-                <tr className="text-left text-xs uppercase tracking-wide text-slate-400">
-                  <th className="sticky left-0 z-40 w-[180px] min-w-[180px] max-w-[180px] whitespace-normal bg-slate-950 px-4 py-3">
-                    Player
-                  </th>
-
-                  <th className="z-40 w-[100px] sm:sticky sm:left-[180px] min-w-[100px] max-w-[100px] border-r border-slate-700 bg-slate-950 px-3 py-3 text-right shadow-[5px_0_8px_rgba(0,0,0,0.18)]">
-                    Price
-                  </th>
-
-                  <th className="w-[100px] min-w-[100px] px-3 py-3 text-right">
-                    BE
-                  </th>
-
-                  <th className="w-[100px] min-w-[100px] px-3 py-3 text-right">
-                    Proj Avg
-                  </th>
-
-                  <th className="w-[100px] min-w-[100px] px-3 py-3 text-right">
-                    Topped Out Gain
-                  </th>
-
-                  <th className="w-[100px] min-w-[100px] px-3 py-3 text-right">
-                    Topped Out Rd
-                  </th>
-
-                  <th className="w-[100px] min-w-[100px] px-3 py-3 text-right">
-                    +1R
-                  </th>
-
-                  <th className="w-[100px] min-w-[100px] px-3 py-3 text-right">
-                    +3R
-                  </th>
-
-                  <th className="w-[100px] min-w-[100px] px-3 py-3 text-right">
-                    +5R
-                  </th>
-                  {futureRounds.map((round) => (
-                    <th
-                        key={round}
-                        className={`min-w-[112px] px-3 py-3 text-right ${roundColumnClass}`}
-                    >
-                        R{round}
-                    </th>
-                    ))}
-                </tr>
-              </thead>
-
-              <tbody>
-                {visibleRows.map((row) => (
-                  <tr
-                    key={row.player.id}
-                    className="border-b border-slate-800 last:border-0 hover:bg-slate-800/40"
-                  >
-                    <td className="sticky left-0 z-10 w-[180px] min-w-[180px] max-w-[180px] whitespace-normal bg-slate-900 px-4 py-3">
-                      <Link
-                        href={`/projector?player=${row.player.id}`}
-                        className="font-semibold text-white hover:text-violet-400"
-                        title={row.player.name}
-                      >
-                        {row.player.name}
-                      </Link>
-
-                      <div className="mt-0.5 text-xs text-slate-400">
-                        {row.player.team} ·{" "}
-                        {row.player.positions.join(
-                          "/",
-                        )}
-                      </div>
-                    </td>
-
-                    <td className="z-20 w-[100px] sm:sticky sm:left-[180px] min-w-[100px] max-w-[100px] border-r border-slate-700 bg-slate-900 px-3 py-3 text-right tabular-nums shadow-[5px_0_8px_rgba(0,0,0,0.18)] group-hover:bg-slate-800">
-                      {formatMoney(
-                        row.player.price,
-                      )}
-                    </td>
-
-                    <td className="px-3 py-3 text-right tabular-nums text-slate-300">
-                      {row.player.breakeven}
-                    </td>
-
-                    <td className="px-3 py-3 text-right tabular-nums text-slate-300">
-                      {row.projectedAverage}
-                    </td>
-
-                    <td
-                      className={`px-3 py-3 text-right font-semibold tabular-nums ${getGainColour(
-                        row.toppedOutGain,
-                      )}`}
-                    >
-                      {formatGain(row.toppedOutGain)}
-                    </td>
-
-                    <td className="px-3 py-3 text-right tabular-nums text-slate-300">
-                      {row.toppedOutRound === null
-                        ? "-"
-                        : `R${row.toppedOutRound}`}
-                    </td>
-
-                    <td
-                      className={`px-3 py-3 text-right font-semibold tabular-nums ${getGainColour(
-                        row.rise1,
-                      )}`}
-                    >
-                      {formatGain(row.rise1)}
-                    </td>
-
-                    <td
-                      className={`px-3 py-3 text-right font-semibold tabular-nums ${getGainColour(
-                        row.rise3,
-                      )}`}
-                    >
-                      {formatGain(row.rise3)}
-                    </td>
-
-                    <td
-                      className={`px-3 py-3 text-right font-semibold tabular-nums ${getGainColour(
-                        row.rise5,
-                      )}`}
-                    >
-                      {formatGain(row.rise5)}
-                    </td>
-                    {futureRounds.map((round) => {
-  const projectedRound =
-    row.projectedRounds.find(
-      (item) => item.round === round,
-    );
-
-  const overriddenScore =
-    scoreOverrides[row.player.id]?.[
-      round
-    ];
-
-    if (!projectedRound) {
-        return (
-        <td
-            key={round}
-            className={`px-3 py-3 text-right text-slate-400 ${roundColumnClass}`}
-        >
-            -
-        </td>
-        );
-    }
-
-    return (
-        <td
-        key={round}
-        className={`px-3 py-3 text-right ${roundColumnClass}`}
-        >
-          <div
-         className={`font-semibold tabular-nums ${getGainColour(
-            projectedRound.price - row.player.price,
-          )}`}
-        >
-          {formatMoney(projectedRound.price)}
-        </div>
-
-        <input
-            type="text"
-            inputMode="numeric"
-            aria-label={`${row.player.name} round ${round} score`}
-            value={
-            overriddenScore ??
-            projectedRound.score
-            }
-            onChange={(event) =>
-            updateProjectedScore(
-                row.player.id,
-                round,
-                event.target.value,
-            )
-            }
-            onFocus={(event) =>
-            event.currentTarget.select()
-            }
-            className={`mt-1 w-10 rounded border px-2 py-1 text-right text-xs tabular-nums outline-none ${
-            overriddenScore !== undefined
-                ? "border-emerald-500 bg-emerald-500/10 text-emerald-300"
-                : "border-slate-700 bg-slate-950 text-slate-400"
-            }`}
-                    />
-                    </td>
-                );
-                })}
-                  </tr>
-                ))}
-
-                {visibleRows.length === 0 && (
-                  <tr>
-                    <td
-                      colSpan={9 + futureRounds.length}
-                      className="px-0 py-10"
-                    >
-                      {/* Sticky so the message stays in view on a wide, scrolled table. */}
-                      <div
-                        role="status"
-                        className="sticky left-0 flex w-[calc(100vw-5rem)] max-w-xl flex-col items-start gap-3 whitespace-normal px-4"
-                      >
-                        <p className="font-semibold text-white">
-                          No players match these filters.
-                        </p>
-
-                        <p className="text-sm text-slate-400">
-                          Players need at least two scores
-                          before their price can change, so
-                          some players are not listed.
-                        </p>
-
-                        <button
-                          type="button"
-                          onClick={resetFilters}
-                          className="rounded-lg border border-violet-500/40 bg-violet-500/10 px-3 py-2 text-xs font-semibold text-violet-300 transition hover:bg-violet-500/20"
-                        >
-                          Reset filters
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                )}
-               </tbody>
-            </table>
-            {visibleRows.length < filteredRows.length && (
-            <div className="border-t border-slate-800 bg-slate-950 px-4 py-3 text-center text-xs text-slate-400">
-              Scroll to load more players
+                Reset filters
+              </button>
             </div>
-          )}
-
-          {filteredRows.length > 50 &&
-            visibleRows.length === filteredRows.length && (
-              <div className="border-t border-slate-800 bg-slate-950 px-4 py-3 text-center text-xs text-slate-400">
-                All {filteredRows.length} players loaded
-              </div>
-            )}
-          </div>
-        </section>
+          }
+          footer={
+            visibleRows.length < filteredRows.length
+              ? "Scroll to load more players"
+              : filteredRows.length > 50
+                ? `All ${filteredRows.length} players loaded`
+                : null
+          }
+        />
       </section>
     </main>
   );
