@@ -16,14 +16,12 @@
  * starting-price prior, no time on ground. Writes CSVs to scripts/output/.
  */
 
-import { existsSync, readdirSync, readFileSync } from "node:fs";
-import { mkdir, writeFile } from "node:fs/promises";
+import { existsSync } from "node:fs";
 import * as nodeModule from "node:module";
 import path from "node:path";
 import process from "node:process";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
-import type { Player } from "@/types/player";
 
 const ROOT = process.cwd();
 
@@ -66,132 +64,21 @@ registerHooks({
   },
 });
 
-const { trimPlayersToRound } = await import("../lib/asOf/trimToRound");
-const { estimateScaledRoundContexts } = await import(
-  "../lib/priceEngine/estimateScaledRoundContexts"
-);
-const { BASE_MAGIC_NUMBER_2026 } = await import("../lib/priceEngine/baseMagicNumber");
-const { createPriceProjector } = await import("../lib/planner/pricePaths");
-
-type RawFixtureFile = Parameters<typeof trimPlayersToRound>[1];
-
-// ---------------------------------------------------------------------------
-// Settings
-// ---------------------------------------------------------------------------
-
-const ORIGINS = Array.from({ length: 13 }, (_, i) => 5 + i); // 5..17
-const IN_SAMPLE = new Set(ORIGINS.filter((o) => o <= 11)); // 5..11
-const OUT_SAMPLE = new Set(ORIGINS.filter((o) => o >= 12)); // 12..17
-const HORIZONS = [1, 2, 3];
-const FINAL_ROUND = 24;
-const ROOKIE_MAX_GAMES = 5;
-const BOOTSTRAP_SAMPLES = 1000;
-const OUTPUT_DIR = path.resolve("scripts/output");
-
-// ---------------------------------------------------------------------------
-// Data (local files only)
-// ---------------------------------------------------------------------------
-
-const allPlayers = JSON.parse(
-  readFileSync(path.resolve("data/2026/players-normalised.json"), "utf8"),
-) as Player[];
-const fixtureFile = JSON.parse(
-  readFileSync(path.resolve("data/2026/fixtures-raw.json"), "utf8"),
-) as RawFixtureFile;
-
-const actualById = new Map(allPlayers.map((p) => [p.id, p]));
-
-// Opponent for a team in a round, from the published schedule (known in
-// advance, so not leakage).
-const opponentOf = new Map<string, string>();
-const teamPlays = new Set<string>();
-for (const round of fixtureFile.rounds) {
-  for (const game of round.response) {
-    const home = (game.team1 as { abbrev: string }).abbrev;
-    const away = (game.team2 as { abbrev: string }).abbrev;
-    opponentOf.set(`${round.round}:${home}`, away);
-    opponentOf.set(`${round.round}:${away}`, home);
-    teamPlays.add(`${round.round}:${home}`);
-    teamPlays.add(`${round.round}:${away}`);
-  }
-}
-const plannerFixtures = fixtureFile.rounds.flatMap((round) =>
-  round.response.map((game) => ({
-    round: round.round,
-    homeTeam: (game.team1 as { abbrev: string }).abbrev,
-    awayTeam: (game.team2 as { abbrev: string }).abbrev,
-  })),
-);
-
-// 2026 debutants: no 2025 games (previous_games is read only to define the
-// sample) and at least one 2026 game. Also feed_id coverage for section 7.
-const detailsDir = path.resolve("data/2026/player-details");
-const debutants = new Set<number>();
-let detailFiles = 0;
-let withFeedId = 0;
-let with2025Totals = 0;
-for (const file of readdirSync(detailsDir)) {
-  const detail = JSON.parse(readFileSync(path.join(detailsDir, file), "utf8")) as {
-    id: number;
-    feed_id?: string | null;
-    previous_games?: number;
-  };
-  detailFiles += 1;
-  if (detail.feed_id) withFeedId += 1;
-  if ((detail.previous_games ?? 0) > 0 && detail.feed_id) with2025Totals += 1;
-  const played2026 = actualById.get(detail.id)?.history.some((h) => h.games > 0) ?? false;
-  if ((detail.previous_games ?? 0) === 0 && played2026) {
-    debutants.add(detail.id);
-  }
-}
-
-// ---------------------------------------------------------------------------
-// Small statistics helpers
-// ---------------------------------------------------------------------------
-
-const sum = (xs: number[]) => xs.reduce((a, b) => a + b, 0);
-const mean = (xs: number[]) => (xs.length ? sum(xs) / xs.length : NaN);
-function median(xs: number[]): number {
-  if (!xs.length) return NaN;
-  const s = [...xs].sort((a, b) => a - b);
-  const m = Math.floor(s.length / 2);
-  return s.length % 2 ? s[m] : (s[m - 1] + s[m]) / 2;
-}
-const quantile = (xs: number[], q: number) => {
-  const s = [...xs].sort((a, b) => a - b);
-  if (!s.length) return NaN;
-  const i = (s.length - 1) * q;
-  const lo = Math.floor(i);
-  return s[lo] + (s[Math.min(lo + 1, s.length - 1)] - s[lo]) * (i - lo);
-};
-/** Spread of the player's scores around his own median. */
-const sdAroundMedian = (xs: number[]) => {
-  const m = median(xs);
-  return Math.sqrt(mean(xs.map((x) => (x - m) ** 2)));
-};
-const winsorise = (xs: number[]) => {
-  const m = median(xs);
-  const sd = sdAroundMedian(xs);
-  return xs.map((x) => Math.min(m + 1.5 * sd, Math.max(m - 1.5 * sd, x)));
-};
-/** Exponentially weighted average; the latest score has age 0. */
-const ewma = (xs: number[], halfLife: number) => {
-  let w = 0;
-  let total = 0;
-  xs.forEach((x, i) => {
-    const weight = 0.5 ** ((xs.length - 1 - i) / halfLife);
-    w += weight;
-    total += weight * x;
-  });
-  return total / w;
-};
-/** Any of the last 3 scores more than 1.5 SD from the player's own median. */
-const hadOutlier = (xs: number[]) => {
-  if (xs.length < 3) return false;
-  const m = median(xs);
-  const sd = sdAroundMedian(xs);
-  return sd > 0 && xs.slice(-3).some((x) => Math.abs(x - m) > 1.5 * sd);
-};
+const C = await import("./backtest/common");
+const {
+  ORIGINS, HORIZONS, FINAL_ROUND, ROOKIE_MAX_GAMES,
+  allPlayers, actualById, opponentOf, teamPlays, debutants, detailFiles, withFeedId, with2025Totals,
+  mean, median, quantile, winsorise, ewma,
+  buildOrigin, playedRound, scoreObs, priceObs, flat,
+  segmentOf, band, gamesBand,
+  inSample, outSample, horizon, both, seg, mae, bias, spread, pairedBootstrap,
+  fmt, money, signedMoney, verdict, csv, writeCsvs,
+} = C;
+type OriginContext = ReturnType<typeof C.buildOrigin>;
+type PlayerState = NonNullable<ReturnType<OriginContext["states"]["get"]>>;
+type Obs = ReturnType<typeof C.scoreObs>[number];
+type Projections = Parameters<typeof C.scoreObs>[1];
+type Filter = ReturnType<typeof C.both>;
 
 // ---------------------------------------------------------------------------
 // Methods
@@ -253,183 +140,6 @@ function trustProjection(scores: number[], typical: number, band: number, step: 
 const TRUST_BANDS = [0.15, 0.25, 0.35, 0.5];
 const TRUST_STEPS = [0.2, 0.35, 0.5];
 const PRE_DEBUT = [50, 55, 60];
-
-// ---------------------------------------------------------------------------
-// Per-origin context
-// ---------------------------------------------------------------------------
-
-type PlayerState = {
-  id: number;
-  team: string;
-  position: string;
-  price: number;
-  scores: number[];
-  rounds: number[];
-  opponents: (string | null)[];
-  rookie: boolean;
-  outlier: boolean;
-  /** Played his team's most recent completed game up to O. */
-  inLineup: boolean;
-};
-
-type OriginContext = {
-  origin: number;
-  trimmed: Player[];
-  states: Map<number, PlayerState>;
-  contexts: ReturnType<typeof estimateScaledRoundContexts>;
-  typicalRookie: number;
-};
-
-function buildOrigin(origin: number): OriginContext {
-  const trimmed = trimPlayersToRound(allPlayers, fixtureFile, origin);
-  const states = new Map<number, PlayerState>();
-
-  for (const p of trimmed) {
-    const played = p.history.filter((h) => h.games > 0 && h.score !== null);
-    const scores = played.map((h) => h.score as number);
-
-    // His team's last game up to O, and whether he played it.
-    let lastTeamRound = -1;
-    for (let r = origin; r >= 0; r--) {
-      if (teamPlays.has(`${r}:${p.team}`)) {
-        lastTeamRound = r;
-        break;
-      }
-    }
-    const inLineup = played.some((h) => h.round === lastTeamRound);
-
-    states.set(p.id, {
-      id: p.id,
-      team: p.team,
-      position: p.positions[0] ?? "UNK",
-      price: p.price,
-      scores,
-      rounds: played.map((h) => h.round),
-      opponents: played.map((h) => h.opponent),
-      rookie: debutants.has(p.id) && scores.length <= ROOKIE_MAX_GAMES,
-      outlier: hadOutlier(scores),
-      inLineup,
-    });
-  }
-
-  // Typical rookie level: every debutant's first-5-game scores up to O.
-  const rookieScores = [...states.values()]
-    .filter((s) => debutants.has(s.id))
-    .flatMap((s) => s.scores.slice(0, ROOKIE_MAX_GAMES));
-  const typicalRookie = rookieScores.length >= 10 ? mean(rookieScores) : 50;
-
-  const contexts = estimateScaledRoundContexts({
-    players: trimmed,
-    firstRound: origin + 1,
-    lastRound: Math.min(origin + 3, FINAL_ROUND),
-    baseMagicNumber: BASE_MAGIC_NUMBER_2026,
-    teamHasGame: (team, round) => teamPlays.has(`${round}:${team}`),
-  });
-
-  return { origin, trimmed, states, contexts, typicalRookie };
-}
-
-// ---------------------------------------------------------------------------
-// Ground truth and observations
-// ---------------------------------------------------------------------------
-
-type Obs = {
-  origin: number;
-  h: number;
-  pid: number;
-  err: number; // projected minus actual
-};
-
-const actualRow = (pid: number, round: number) =>
-  actualById.get(pid)?.history.find((h) => h.round === round);
-
-const playedRound = (pid: number, round: number) => {
-  const row = actualRow(pid, round);
-  return !!row && row.games > 0 && row.score !== null;
-};
-
-/**
- * Price at O+h is scored when the player played every round from O+1 to
- * O+h in which his team had a game (so the price path's "he plays"
- * assumption held) and played O+h itself.
- */
-function priceEligible(state: PlayerState, origin: number, target: number) {
-  for (let r = origin + 1; r <= target; r++) {
-    if (teamPlays.has(`${r}:${state.team}`) && !playedRound(state.id, r)) return false;
-  }
-  return playedRound(state.id, target);
-}
-
-/** Projected score per player per target round (null = not projected). */
-type Projections = Map<number, Map<number, number | null>>;
-
-function scoreObs(ctx: OriginContext, projections: Projections): Obs[] {
-  const out: Obs[] = [];
-  for (const [pid, byRound] of projections) {
-    for (const h of HORIZONS) {
-      const target = ctx.origin + h;
-      if (target > FINAL_ROUND) continue;
-      const projected = byRound.get(target);
-      if (projected === null || projected === undefined) continue;
-      if (!playedRound(pid, target)) continue;
-      out.push({ origin: ctx.origin, h, pid, err: projected - (actualRow(pid, target)!.score as number) });
-    }
-  }
-  return out;
-}
-
-function priceObs(ctx: OriginContext, projections: Projections, only?: Set<number>): Obs[] {
-  const overrides: Record<number, Record<number, number>> = {};
-  for (const [pid, byRound] of projections) {
-    for (const [round, score] of byRound) {
-      if (score !== null) {
-        (overrides[pid] ??= {})[round] = score;
-      }
-    }
-  }
-
-  const projector = createPriceProjector({
-    players: ctx.trimmed,
-    contexts: ctx.contexts,
-    fixtures: plannerFixtures,
-    completedRound: ctx.origin,
-    lastRound: Math.min(ctx.origin + 3, FINAL_ROUND),
-    scoreOverrides: overrides,
-  });
-
-  const out: Obs[] = [];
-  for (const state of ctx.states.values()) {
-    if (only && !only.has(state.id)) continue;
-    if (!projections.has(state.id)) continue;
-    const path_ = projector.getPath(state.id);
-    for (const h of HORIZONS) {
-      const target = ctx.origin + h;
-      if (target > FINAL_ROUND || !priceEligible(state, ctx.origin, target)) continue;
-      const projected = path_.find((r) => r.round === target)?.priceAfter;
-      const actual = actualRow(state.id, target)?.price;
-      if (projected === undefined || actual == null) continue;
-      out.push({ origin: ctx.origin, h, pid: state.id, err: projected - actual });
-    }
-  }
-  return out;
-}
-
-/** The same projection for every target round (no matchup). */
-function flat(ctx: OriginContext, value: (s: PlayerState) => number | null, filter: (s: PlayerState) => boolean): Projections {
-  const out: Projections = new Map();
-  for (const state of ctx.states.values()) {
-    if (!filter(state)) continue;
-    const v = value(state);
-    const byRound = new Map<number, number | null>();
-    for (const h of HORIZONS) {
-      const target = ctx.origin + h;
-      if (target > FINAL_ROUND) continue;
-      byRound.set(target, teamPlays.has(`${target}:${state.team}`) ? v : null);
-    }
-    out.set(state.id, byRound);
-  }
-  return out;
-}
 
 // ---------------------------------------------------------------------------
 // Matchups
@@ -498,14 +208,10 @@ const veteran = (s: PlayerState) => !s.rookie && s.scores.length >= 1;
 const rookieAfterDebut = (s: PlayerState) => s.rookie && s.scores.length >= 1;
 const rookiePreDebut = (s: PlayerState) => s.rookie && s.scores.length === 0;
 
-const segmentOf = new Map<string, { band: string; games: string; position: string; outlier: boolean; price: number; rookie: boolean; gamesN: number }>();
 const projectedToPlay = { projected: 0, didNotPlay: 0 };
 const pairCounts: { origin: number; targets: number; withPriorMeeting: number; pairs: number }[] = [];
 const contexts: OriginContext[] = [];
 
-const band = (price: number) =>
-  price < 300_000 ? "<300k" : price < 500_000 ? "300-500k" : price < 700_000 ? "500-700k" : ">700k";
-const gamesBand = (g: number) => (g <= 5 ? "1-5" : g <= 10 ? "6-10" : "11+");
 
 console.log("Building origins 5-17 (as-of data, k contexts)...");
 
@@ -562,78 +268,6 @@ for (const origin of ORIGINS) {
   process.stdout.write(`  origin ${origin} done\n`);
 }
 
-// ---------------------------------------------------------------------------
-// Metrics
-// ---------------------------------------------------------------------------
-
-type Filter = (o: Obs) => boolean;
-const inSample: Filter = (o) => IN_SAMPLE.has(o.origin);
-const outSample: Filter = (o) => OUT_SAMPLE.has(o.origin);
-const horizon = (h: number): Filter => (o) => o.h === h;
-const both = (...fs: Filter[]): Filter => (o) => fs.every((f) => f(o));
-const seg = (pick: (s: NonNullable<ReturnType<typeof segmentOf.get>>) => boolean): Filter => (o) => {
-  const s = segmentOf.get(`${o.origin}:${o.pid}`);
-  return !!s && pick(s);
-};
-
-const mae = (obs: Obs[], f: Filter = () => true) => {
-  const xs = obs.filter(f).map((o) => Math.abs(o.err));
-  return { value: mean(xs), n: xs.length };
-};
-const bias = (obs: Obs[], f: Filter = () => true) => mean(obs.filter(f).map((o) => o.err));
-
-/** Per-origin MAE spread (min, max) on a filter. */
-const spread = (obs: Obs[], f: Filter) => {
-  const per = [...new Set(obs.filter(f).map((o) => o.origin))].map((origin) =>
-    mae(obs, both(f, (o) => o.origin === origin)).value,
-  );
-  return { min: Math.min(...per), max: Math.max(...per) };
-};
-
-/**
- * Paired bootstrap over players: difference in mean absolute error
- * (method minus baseline) on the observations both have. Negative = method
- * better. Returns the point estimate and a 95% interval.
- */
-function pairedBootstrap(method: Obs[], baseline: Obs[], f: Filter) {
-  const key = (o: Obs) => `${o.origin}:${o.h}:${o.pid}`;
-  const base = new Map(baseline.filter(f).map((o) => [key(o), Math.abs(o.err)]));
-  const perPlayer = new Map<number, { d: number; n: number }>();
-  for (const o of method.filter(f)) {
-    const b = base.get(key(o));
-    if (b === undefined) continue;
-    const p = perPlayer.get(o.pid) ?? { d: 0, n: 0 };
-    p.d += Math.abs(o.err) - b;
-    p.n += 1;
-    perPlayer.set(o.pid, p);
-  }
-  const players = [...perPlayer.values()];
-  if (players.length < 5) return { diff: NaN, lo: NaN, hi: NaN, players: players.length };
-  const point = sum(players.map((p) => p.d)) / sum(players.map((p) => p.n));
-  let seed = 12345;
-  const rand = () => ((seed = (seed * 1103515245 + 12345) % 2 ** 31) / 2 ** 31);
-  const draws: number[] = [];
-  for (let b = 0; b < BOOTSTRAP_SAMPLES; b++) {
-    let d = 0;
-    let n = 0;
-    for (let i = 0; i < players.length; i++) {
-      const p = players[Math.floor(rand() * players.length)];
-      d += p.d;
-      n += p.n;
-    }
-    draws.push(d / n);
-  }
-  return { diff: point, lo: quantile(draws, 0.025), hi: quantile(draws, 0.975), players: players.length };
-}
-
-const fmt = (x: number, digits = 1) => (Number.isFinite(x) ? x.toFixed(digits) : "-");
-const money = (x: number) => (Number.isFinite(x) ? `$${Math.round(x).toLocaleString("en-AU")}` : "-");
-const signedMoney = (x: number) => (Number.isFinite(x) ? `${x < 0 ? "−" : "+"}$${Math.abs(Math.round(x)).toLocaleString("en-AU")}` : "-");
-const verdict = (b: { lo: number; hi: number }) =>
-  !Number.isFinite(b.lo) ? "too few players" : b.hi < 0 ? "better (beyond noise)" : b.lo > 0 ? "worse (beyond noise)" : "within noise";
-
-const csvRows: Record<string, Record<string, string | number>[]> = {};
-const csv = (name: string, row: Record<string, string | number>) => (csvRows[name] ??= []).push(row);
 
 // ---------------------------------------------------------------------------
 // 1. Mid-range and premiums (non-rookies with games)
@@ -978,14 +612,6 @@ console.log(`2026 (player, opponent) pairs with a game: ${pairsSeason.size}. Pla
 // CSV output
 // ---------------------------------------------------------------------------
 
-await mkdir(OUTPUT_DIR, { recursive: true });
-for (const [name, rows] of Object.entries(csvRows)) {
-  const headers = Object.keys(rows[0]);
-  const escape = (v: string | number) => (/[",\n]/.test(String(v)) ? `"${String(v).replace(/"/g, '""')}"` : String(v));
-  await writeFile(
-    path.join(OUTPUT_DIR, `backtest-projections-${name}.csv`),
-    [headers.join(","), ...rows.map((r) => headers.map((h) => escape(r[h] ?? "")).join(","))].join("\n"),
-  );
-}
-console.log(`\nCSVs written to scripts/output/backtest-projections-*.csv (${Object.keys(csvRows).length} files).`);
+const csvCount = await writeCsvs("backtest-projections");
+console.log(`\nCSVs written to scripts/output/backtest-projections-*.csv (${csvCount} files).`);
 console.log(`Rookie methods tested: ${rookieMethods.length}; general methods: ${GENERAL_METHODS.length}; matchup variants: ${matchupResults.size - 1}.`);
