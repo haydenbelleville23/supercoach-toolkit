@@ -37,6 +37,18 @@ export type Player = {
    */
   ownership: number | null;
 
+  /**
+   * Games played in the previous season (public per-player record).
+   * 0 for a debutant, which projectScore uses for the pre-debut 50 rule.
+   */
+  previousGames: number;
+
+  /**
+   * Average in the previous season (public per-player record), 0 if he
+   * didn't play. projectScore uses it before he plays this season.
+   */
+  previousAverage: number;
+
   active: boolean;
   availability: string | null;
 };

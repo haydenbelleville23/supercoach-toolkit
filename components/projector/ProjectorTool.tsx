@@ -121,6 +121,7 @@ function ProjectorTool({
         row.round === round
           ? {
               ...row,
+              played: row.opponent !== null,
               score,
             }
           : row,

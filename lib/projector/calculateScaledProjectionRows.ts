@@ -42,11 +42,12 @@ export function calculateScaledProjectionRows(
 
     const context = contexts.get(row.round);
 
+    // Bye, a round left blank, or no estimate: the price holds.
     if (!row.played || row.score === null || !context) {
       return {
         ...row,
         breakEven: null,
-        price: null,
+        price,
         priceChange: null,
         threeRoundAverage: null,
       };

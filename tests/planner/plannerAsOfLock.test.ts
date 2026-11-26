@@ -10,7 +10,7 @@ vi.hoisted(() => {
 import { CURRENT_COMPLETED_ROUND, FINAL_ROUND } from "@/data/season";
 import { getFixtures } from "@/lib/fixtures";
 import { createPriceProjector } from "@/lib/planner/pricePaths";
-import { projectScore } from "@/lib/planner/projectScore";
+import { PRE_DEBUT_ROOKIE_SCORE, projectScore } from "@/lib/planner/projectScore";
 import { getScaledRoundContexts } from "@/lib/projector/getScaledRoundContexts";
 import { playerRepository } from "@/lib/repository/PlayerRepository";
 
@@ -43,9 +43,12 @@ describe("Trade Planner under DEBUG_AS_OF_ROUND=10", () => {
       );
 
       // Projected scores use Rounds 0-10 only.
+      // (No games yet: last season's average, or 50 for a debutant.)
       const expected =
         realToRound10.length === 0
-          ? null
+          ? player.previousGames === 0
+            ? PRE_DEBUT_ROOKIE_SCORE
+            : player.previousAverage
           : realToRound10.reduce((t, h) => t + (h.score as number), 0) /
             realToRound10.length;
       expect(projectScore(player, 15, CURRENT_COMPLETED_ROUND)).toBe(expected);

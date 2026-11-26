@@ -34,6 +34,8 @@ export function placeholderToPlayer(placeholder: RookiePlaceholder): Player {
     history: [],
     breakeven: 0,
     ownership: null,
+    previousGames: 0,
+    previousAverage: 0,
     active: true,
     availability: null,
   };

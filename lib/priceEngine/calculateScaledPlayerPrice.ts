@@ -1,6 +1,9 @@
 import { roundPriceToNearest100 } from "./calculateScaledRoundPrices";
 import type { ScaledRoundContext } from "./estimateScaledRoundContexts";
 
+/** No price falls below this, whatever the formula gives. */
+export const MIN_PLAYER_PRICE = 99_100;
+
 export interface ScaledPlayerPriceInput {
   context: ScaledRoundContext;
   playerId: number;
@@ -28,14 +31,18 @@ export interface ScaledPlayerPriceResult {
  * contribution for this player; it is swapped out for the scenario so k
  * reflects exactly the score being entered. A player who does not play, or
  * who has fewer than three scores including this one, keeps their price.
+ * Prices never fall below MIN_PLAYER_PRICE.
  */
-export function calculateScaledPlayerPrice({
-  context,
-  playerId,
-  oldPrice,
-  previousScores,
-  score,
-}: ScaledPlayerPriceInput): ScaledPlayerPriceResult {
+export function calculateScaledPlayerPrice(
+  input: ScaledPlayerPriceInput,
+): ScaledPlayerPriceResult {
+  return scaledPrice(input, MIN_PLAYER_PRICE);
+}
+
+function scaledPrice(
+  { context, playerId, oldPrice, previousScores, score }: ScaledPlayerPriceInput,
+  floor: number,
+): ScaledPlayerPriceResult {
   let poolShare = context.poolShare;
   let poolRawSum = context.poolRawSum;
 
@@ -69,7 +76,9 @@ export function calculateScaledPlayerPrice({
   }
 
   const k = poolRawSum === 0 ? 1 : poolShare / poolRawSum;
-  const price = eligible ? roundPriceToNearest100(k * raw) : oldPrice;
+  const price = eligible
+    ? Math.max(floor, roundPriceToNearest100(k * raw))
+    : oldPrice;
 
   return {
     price,
@@ -87,6 +96,8 @@ const MAX_SCORE = 600;
  * Breakeven under the scaled model: the lowest whole score at which the
  * player's price does not fall (after $100 rounding). Uses the same
  * calculateScaledPlayerPrice, so price(BE) >= oldPrice > price(BE - 1).
+ * The $99,100 floor is ignored here, so a player at the floor still gets
+ * the score the formula needs to hold his price (not -200).
  *
  * Returns null if the player's price cannot change this round (fewer than
  * two previous scores).
@@ -99,7 +110,7 @@ export function calculateScaledBreakEven(
   }
 
   const holds = (score: number) =>
-    calculateScaledPlayerPrice({ ...input, score }).price >= input.oldPrice;
+    scaledPrice({ ...input, score }, -Infinity).price >= input.oldPrice;
 
   if (holds(MIN_SCORE)) {
     return MIN_SCORE;

@@ -62,7 +62,19 @@ export function buildPlayerRows(
           historicalRow.homeAway,
       };
     }
-    
+
+    // Bye: no game, so no score and the price holds.
+    if (!teamFixture) {
+      return {
+        ...row,
+        played: false,
+        isActual: false,
+        score: null,
+        opponent: null,
+        homeAway: null,
+      };
+    }
+
         const existingScore = existingRows?.find(
           (existingRow) =>
             existingRow.round === row.round,
