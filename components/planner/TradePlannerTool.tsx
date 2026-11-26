@@ -13,7 +13,6 @@ import { saveMyTeam, useMyTeam } from "@/lib/planner/useMyTeam";
 import type { Player } from "@/types/player";
 
 import PlanComparison from "./PlanComparison";
-import { PlayerOptions } from "./PlayerPicker";
 import PriceGrid from "./PriceGrid";
 import RoundCard from "./RoundCard";
 import {
@@ -23,11 +22,9 @@ import {
   PLANNER_MAX_ROUNDS,
   planRoundCount,
   plannerFixtures,
-  playerLabel,
   teamPlayersById,
 } from "./plannerData";
 
-const PLAYER_LIST_ID = "planner-all-players";
 const EMPTY_ROUND: PlanRound = { trades: [], boost: false };
 const FIRST_ROUND = PLANNER_FIRST_ROUND;
 const MAX_ROUNDS = PLANNER_MAX_ROUNDS;
@@ -66,10 +63,6 @@ function Planner({ team }: { team: MyTeam }) {
   const view = team.plannerView ?? "plan";
 
   const playersById = useMemo(() => teamPlayersById(team), [team]);
-  const playersByLabel = useMemo(
-    () => new Map([...playersById.values()].map((p) => [playerLabel(p), p])),
-    [playersById],
-  );
   const pickerPlayers = useMemo(() => [...playersById.values()], [playersById]);
 
   const projector = useMemo(
@@ -168,8 +161,6 @@ function Planner({ team }: { team: MyTeam }) {
 
   return (
     <div className="mt-8 space-y-5">
-      <PlayerOptions id={PLAYER_LIST_ID} players={pickerPlayers} />
-
       {team.asOfRound !== PLANNER_COMPLETED_ROUND && (
         <p role="status" className="rounded-2xl border border-amber-500/40 bg-amber-500/10 p-3 text-sm text-amber-100">
           Your team was saved as of Round {team.asOfRound}; plans start from Round {FIRST_ROUND}.
@@ -281,9 +272,9 @@ function Planner({ team }: { team: MyTeam }) {
                   planRound={activePlan.rounds[summary.round] ?? EMPTY_ROUND}
                   squadBefore={index === 0 ? team.players.map((p) => p.id) : rounds[index - 1].squad}
                   playersById={playersById}
-                  playersByLabel={playersByLabel}
+                  allPlayers={pickerPlayers}
+                  priceAt={(playerId, round) => projector.getPriceBefore(playerId, round)}
                   placeholders={team.placeholders ?? []}
-                  listId={PLAYER_LIST_ID}
                   collapsed={(activePlan.collapsedRounds ?? []).includes(summary.round)}
                   fieldOpen={(activePlan.openFields ?? []).includes(summary.round)}
                   onChange={(next) => setRound(summary.round, next)}

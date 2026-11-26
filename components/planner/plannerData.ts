@@ -5,7 +5,6 @@ import {
 } from "@/data/season";
 import { getFixtures } from "@/lib/fixtures";
 import {
-  isPlaceholderId,
   placeholderToPlayer,
   withPlaceholders,
 } from "@/lib/planner/placeholders";
@@ -36,13 +35,7 @@ export function teamPlayersById(team: MyTeam | null): Map<number, Player> {
   return withPlaceholders(plannerPlayersById, team);
 }
 
-export function playerLabel(player: Player): string {
-  return isPlaceholderId(player.id)
-    ? player.name
-    : `${player.name} (${player.team}, ${player.positions.join("/")})`;
-}
-
-/** Picker entries that create a new "Rookie (TBC)" placeholder. */
+/** Trade-in options that create a new "Rookie (TBC)" placeholder. */
 export const ROOKIE_OPTIONS: { label: string; position: Position }[] = POSITIONS.map(
   (position) => ({ label: `+ New Rookie (TBC) ${position}`, position }),
 );
