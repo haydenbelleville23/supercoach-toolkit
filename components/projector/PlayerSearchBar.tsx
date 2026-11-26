@@ -18,7 +18,9 @@ type PlayerSearchBarProps = {
  * Compact player search (44px). While closed it shows the selected
  * player's short name (full name from sm up) and team badge; focusing it
  * opens the search with the same matching as the old selector (name, team,
- * team name, positions; Enter picks the first match, Escape closes).
+ * team name, positions). Up/Down move through the matches, Enter picks the
+ * highlighted one (or the first), Escape closes. The options are not in
+ * the Tab order, so Tab moves straight on to the next control.
  */
 export default function PlayerSearchBar({
   players,
@@ -27,6 +29,8 @@ export default function PlayerSearchBar({
 }: PlayerSearchBarProps) {
   const [query, setQuery] = useState("");
   const [isOpen, setIsOpen] = useState(false);
+  // Index of the keyboard-highlighted match, or -1 for none.
+  const [activeIndex, setActiveIndex] = useState(-1);
 
   const filteredPlayers = useMemo(() => {
     const cleanedQuery = query.trim().toLowerCase();
@@ -47,11 +51,27 @@ export default function PlayerSearchBar({
     onChange(player.id);
     setQuery("");
     setIsOpen(false);
+    setActiveIndex(-1);
   }
 
   function close() {
     setIsOpen(false);
     setQuery("");
+    setActiveIndex(-1);
+  }
+
+  function moveActive(step: number) {
+    if (filteredPlayers.length === 0) return;
+
+    const next =
+      activeIndex === -1
+        ? step > 0 ? 0 : filteredPlayers.length - 1
+        : (activeIndex + step + filteredPlayers.length) % filteredPlayers.length;
+
+    setActiveIndex(next);
+    document
+      .getElementById(`player-option-${filteredPlayers[next].id}`)
+      ?.scrollIntoView?.({ block: "nearest" });
   }
 
   return (
@@ -67,6 +87,12 @@ export default function PlayerSearchBar({
         role="combobox"
         aria-expanded={isOpen}
         aria-controls="player-search-results"
+        aria-autocomplete="list"
+        aria-activedescendant={
+          isOpen && activeIndex >= 0 && filteredPlayers[activeIndex]
+            ? `player-option-${filteredPlayers[activeIndex].id}`
+            : undefined
+        }
         aria-label={`Search player (selected: ${selectedPlayer.name}, ${selectedPlayer.team})`}
         value={query}
         placeholder={isOpen ? "Search player..." : ""}
@@ -78,6 +104,7 @@ export default function PlayerSearchBar({
         onChange={(event) => {
           setQuery(event.target.value);
           setIsOpen(true);
+          setActiveIndex(-1);
         }}
         onBlur={() => window.setTimeout(close, 150)}
         onKeyDown={(event) => {
@@ -86,9 +113,15 @@ export default function PlayerSearchBar({
             event.currentTarget.blur();
           }
 
+          if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+            event.preventDefault();
+            setIsOpen(true);
+            moveActive(event.key === "ArrowDown" ? 1 : -1);
+          }
+
           if (event.key === "Enter" && filteredPlayers.length > 0) {
             event.preventDefault();
-            selectPlayer(filteredPlayers[0]);
+            selectPlayer(filteredPlayers[activeIndex >= 0 ? activeIndex : 0] ?? filteredPlayers[0]);
           }
         }}
         className="h-11 w-full rounded-lg border border-slate-700 bg-slate-950 pl-9 pr-3 text-sm text-white outline-none transition focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20"
@@ -120,18 +153,22 @@ export default function PlayerSearchBar({
           {filteredPlayers.length === 0 ? (
             <p className="px-4 py-3 text-sm text-slate-400">No players found.</p>
           ) : (
-            filteredPlayers.map((player) => (
+            filteredPlayers.map((player, index) => (
               <button
                 key={player.id}
+                id={`player-option-${player.id}`}
                 type="button"
                 role="option"
-                aria-selected={player.id === selectedPlayer.id}
+                tabIndex={-1}
+                aria-selected={index === activeIndex}
                 onMouseDown={(event) => event.preventDefault()}
                 onClick={() => selectPlayer(player)}
                 className={`flex w-full items-center gap-3 border-b border-slate-800 px-3 py-2.5 text-left transition last:border-b-0 ${
-                  player.id === selectedPlayer.id
-                    ? "bg-violet-500/10"
-                    : "hover:bg-slate-900"
+                  index === activeIndex
+                    ? "bg-violet-500/25 ring-1 ring-inset ring-violet-500"
+                    : player.id === selectedPlayer.id
+                      ? "bg-violet-500/10"
+                      : "hover:bg-slate-900"
                 }`}
               >
                 <Image
