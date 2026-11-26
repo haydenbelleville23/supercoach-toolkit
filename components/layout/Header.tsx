@@ -16,8 +16,9 @@ const NAV_LINKS = [
 export default function Header() {
   return (
     // The logo is on the same navy as the header, so its edges disappear.
-    <header className="sticky top-0 z-50 border-b border-slate-800 bg-brand-navy">
-      <div className="relative mx-auto flex h-14 max-w-7xl items-center justify-between px-4 sm:px-6 md:h-16">
+    // Its height (border included) is --site-header-h in globals.css.
+    <header className="sticky top-0 z-50 h-[var(--site-header-h)] border-b border-slate-800 bg-brand-navy">
+      <div className="relative mx-auto flex h-full max-w-7xl items-center justify-between px-4 sm:px-6">
         <Link
           href="/"
           aria-label={`${SITE_NAME} home`}
