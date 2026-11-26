@@ -2,9 +2,10 @@ import { mkdir, readFile, writeFile, access } from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
 
+import { readKnownPlayerIds } from "./buildPlayersDataset.mjs";
+
 const SEASON = 2026;
 
-const INPUT_FILE = path.resolve("data/players-cf.json");
 const OUTPUT_DIRECTORY = path.resolve(
   `data/${SEASON}/player-details`,
 );
@@ -95,31 +96,36 @@ async function downloadPlayer(player, attempt = 1) {
   }
 }
 
+/**
+ * The players to download: the ids already saved in player-details/.
+ * There is no public source for discovering NEW players yet, so ids are
+ * never guessed or enumerated.
+ */
 async function loadPlayers() {
-  const rawJson = await readFile(INPUT_FILE, "utf8");
+  const ids = await readKnownPlayerIds(OUTPUT_DIRECTORY);
 
-  let players;
-
-  try {
-    players = JSON.parse(rawJson);
-  } catch (error) {
+  if (ids.length === 0) {
     throw new Error(
-      `Could not parse ${INPUT_FILE} as JSON: ${error.message}`,
+      `No player files in ${OUTPUT_DIRECTORY}. The player list is seeded ` +
+        "from that folder, and there is no public source for discovering " +
+        "players yet.",
     );
   }
 
-  if (!Array.isArray(players)) {
-    throw new Error(
-      "data/players-cf.json must contain a top-level array.",
-    );
+  const players = [];
+
+  for (const id of ids) {
+    try {
+      const saved = JSON.parse(
+        await readFile(path.join(OUTPUT_DIRECTORY, `${id}.json`), "utf8"),
+      );
+      players.push({ id, first_name: saved.first_name, last_name: saved.last_name });
+    } catch {
+      players.push({ id });
+    }
   }
 
-  return players.filter(
-    (player) =>
-      player &&
-      Number.isInteger(player.id) &&
-      player.id > 0,
-  );
+  return players;
 }
 
 async function main() {

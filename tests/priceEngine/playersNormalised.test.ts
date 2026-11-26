@@ -52,6 +52,14 @@ describe("players-normalised.json", () => {
     }
   });
 
+  it("is built from a players-complete.json with no subscriber fields", () => {
+    const text = readFileSync(path.resolve("data/2026/players-complete.json"), "utf8");
+
+    for (const field of REMOVED_FIELDS) {
+      expect(text, field).not.toContain(`"${field}"`);
+    }
+  }, 60_000);
+
   it("has no ownership data (no public source yet)", () => {
     expect(getPlayers().every((player) => player.ownership === null)).toBe(true);
   });

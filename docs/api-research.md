@@ -1,142 +1,41 @@
-# SuperCoach Data Investigation
+# SuperCoach data: history and current sources
 
-## Goal
+This page records how the project's data sources changed. It is not a
+guide to accessing any subscriber-only data.
 
-Determine whether AFL SuperCoach player data can be accessed directly and reliably.
+## Current sources (public only)
 
-## Required Fields
+| Data | Source | Used by |
+|---|---|---|
+| Player identity, team, positions, availability | Public per-player SuperCoach endpoint (`/players/{id}`) | `scripts/downloadPlayerDetails.mjs` |
+| Round-by-round prices, price changes, scores, games | The same per-player endpoint | `scripts/buildPlayersDataset.mjs` |
+| Fixtures and results | Public SuperCoach fixture endpoint (`/real_fixture`) | `scripts/downloadFixtures.mjs` |
+| Live scores | DFS Australia live feed | `app/api/live-scores/route.ts` |
 
-- Player ID
-- Player name
-- Team
-- Position
-- Current price
-- Break-even
-- Season average
-- Round scores
-- Price history
-- Availability or injury status
+Derived by this project, not taken from SuperCoach:
 
-## Preferred Source
+- Current price, games and averages: rebuilt from each player's public
+  history (`lib/supercoach/publicPlayerState.ts`).
+- Breakevens and projected prices: our scaled price engine.
+- Projected scores: the season average (`lib/planner/projectScore.ts`).
 
-The official SuperCoach website.
+Not available yet:
 
-## Questions
+- **Ownership.** No source is wired in; the field is null and hidden in the
+  UI.
+- **New players.** There is no public list of players. The player list is
+  the set of ids already saved in `data/2026/player-details/`; ids are
+  never guessed or enumerated.
 
-- Does the website use a JSON API?
-- Is authentication required?
-- Which endpoints provide player data?
-- Are break-evens included?
-- Are historical scores included?
-- How often does the data update?
-- Can the data be used reliably for a public website?
+## History
 
-## Findings
+Early in development (July 2026) the project tried a SuperCoach player-list
+endpoint that is tied to a subscription. Its data included subscriber-only
+fields: SuperCoach's own breakevens, projected scores, projected prices
+and price changes, and ownership. A one-off copy was used to build the
+first datasets.
 
-To be completed.
-### Players CF endpoint
-
-A `players-cf` request returned player data successfully when the plain
-`players` endpoint returned a blank response when opened directly.
-
-This may indicate:
-
-- a cached or proxied endpoint,
-- additional browser/session requirements,
-- or a Cloudflare-specific delivery path.
-## Confirmed Players-CF Endpoint
-
-Endpoint:
-
-`/2026/api/afl/classic/v1/players-cf`
-
-Observed parameters:
-
-- embed
-- round
-- xredir
-- subid
-- subkey
-
-Do not record real subid or subkey values in the repository.
-
-## Confirmed Player Fields
-
-### Identity
-
-- id
-- first_name
-- last_name
-- team
-- positions
-- active
-- injury_suspension_status
-- played_status
-
-### Current Performance
-
-- points
-- total_points
-- games
-- total_games
-- avg
-- avg3
-- avg5
-- std
-
-### Price Data
-
-- price
-- price_change
-- total_price_change
-- be1
-- be2
-- be3
-- pp1
-- pp2
-- pp3
-- ppc1
-- ppc2
-- ppc3
-- ppcs
-
-### Projections
-
-- ppts
-- ppts1
-- ppts2
-- ppts3
-- pmin
-- pmax
-- prange
-
-### Ownership
-
-- own
-- own_raw
-- owned
-- ownc
-- ownc3
-- capt
-- vice
-
-### Fixture Data
-
-- opp
-- opp1
-- opp2
-- opp3
-- ven
-- ven1
-- ven2
-- ven3
-- opposition rankings
-
-## Key Finding
-
-The endpoint contains nearly all data required for the Price Projector,
-Cash Cow Finder, Break-even Tracker, Player Profiles and Fixture Analysis.
-
-Access appears linked to subscription parameters. Legal permission,
-terms of use and technical access constraints must be investigated before
-using it in a public application.
+That was replaced in November 2026. The subscriber data and the captured
+file were removed from the working tree and the build. Nothing in the
+project reads, downloads or needs subscriber data, and it must not be
+added back. Older commits still contain the removed files.
