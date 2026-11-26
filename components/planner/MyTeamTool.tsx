@@ -3,7 +3,10 @@
 import Link from "next/link";
 import { useMemo, useState } from "react";
 
+import PlayerSelect from "@/components/ui/PlayerSelect";
+import TeamChip from "@/components/ui/TeamChip";
 import { formatMoney } from "@/lib/format";
+import { createAddPlayerReason } from "@/lib/planner/addPlayerReason";
 import { toMatchPlayer } from "@/lib/planner/evaluatePlan";
 import {
   checkSquadPositions,
@@ -52,7 +55,6 @@ function parsePin(value: string): SquadEntry["pin"] {
 
 export default function MyTeamTool() {
   const team = useMyTeam();
-  const [query, setQuery] = useState("");
   const [rookiePosition, setRookiePosition] = useState<Position>("MID");
   const [rookieTeam, setRookieTeam] = useState("");
 
@@ -83,22 +85,13 @@ export default function MyTeamTool() {
     [squadPlayers],
   );
 
-  const results = useMemo(() => {
-    const text = query.trim().toLowerCase();
-
-    if (text.length < 2) {
-      return [];
-    }
-
-    return plannerPlayers
-      .filter(
-        (p) =>
-          p.name.toLowerCase().includes(text) ||
-          p.team.toLowerCase() === text ||
-          p.teamName.toLowerCase().includes(text),
-      )
-      .slice(0, 20);
-  }, [query]);
+  // Why a search row can't be added ("In squad", "Squad full", "No DEF slot").
+  const addReason = useMemo(() => {
+    const reason = createAddPlayerReason(
+      squadPlayers.map(({ entry, player }) => toMatchPlayer(player, entry.pin)),
+    );
+    return (player: Player) => reason(toMatchPlayer(player));
+  }, [squadPlayers]);
 
   if (!team) {
     return (
@@ -120,7 +113,6 @@ export default function MyTeamTool() {
     );
   }
 
-  const inSquad = new Set(team.players.map((p) => p.id));
   const squadValue = squadPlayers.reduce((t, r) => t + r.player.price, 0);
   const full = team.players.length >= SQUAD_RULES.squadSize;
 
@@ -216,42 +208,28 @@ export default function MyTeamTool() {
       </section>
 
       <section className="rounded-2xl border border-slate-800 bg-slate-900 p-5">
-        <label className="block text-xs font-semibold uppercase tracking-wide text-slate-400">
+        <h2
+          id="add-players-label"
+          className="text-xs font-semibold uppercase tracking-wide text-slate-400"
+        >
           Add players
-          <input
-            type="search"
-            className="mt-1 w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-sm outline-none focus:border-violet-500"
+        </h2>
+
+        <div className="mt-1 flex">
+          <PlayerSelect
+            idPrefix="add-player"
+            label="Add players"
             placeholder="Search by name or team (e.g. COL)"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
+            players={plannerPlayers}
+            value={null}
+            disabledReasons={addReason}
+            priceFor={(player) => player.price}
+            keepOpenAfterSelect
+            onSelect={(player) =>
+              update({ players: [...team.players, { id: player.id, pin: null }] })
+            }
           />
-        </label>
-
-        {results.length > 0 && (
-          <ul className="mt-3 divide-y divide-slate-800">
-            {results.map((player) => (
-              <li key={player.id} className="flex items-center justify-between gap-3 py-2">
-                <div className="min-w-0">
-                  <p className="truncate font-semibold">{player.name}</p>
-                  <p className="text-xs text-slate-400">
-                    {player.team} · {player.positions.join("/")} · {formatMoney(player.price)}
-                  </p>
-                </div>
-
-                <button
-                  type="button"
-                  disabled={inSquad.has(player.id) || full}
-                  onClick={() =>
-                    update({ players: [...team.players, { id: player.id, pin: null }] })
-                  }
-                  className="shrink-0 rounded-lg border border-violet-500/50 px-3 py-1.5 text-xs font-semibold text-violet-200 disabled:opacity-40"
-                >
-                  {inSquad.has(player.id) ? "In squad" : full ? "Squad full" : "Add"}
-                </button>
-              </li>
-            ))}
-          </ul>
-        )}
+        </div>
 
         <div className="mt-4 flex flex-wrap items-end gap-2 border-t border-slate-800 pt-4">
           <p className="w-full text-xs text-slate-400">
@@ -406,7 +384,11 @@ function SquadRow({
 
   return (
     <li className="flex flex-wrap items-center gap-x-3 gap-y-1 py-2">
-      <div className="min-w-0 flex-1">
+      {/* The name keeps at least 12rem; the controls wrap below it on phones. */}
+      <div className="flex min-w-[12rem] flex-1 items-center gap-2.5">
+        <TeamChip team={player.team} />
+
+        <div className="min-w-0 flex-1">
         <p className="truncate font-semibold">
           {player.name}
           {isPlaceholderId(player.id) && (
@@ -418,6 +400,7 @@ function SquadRow({
         <p className="text-xs text-slate-400">
           {player.team || "No team"} · {player.positions.join("/")} · {formatMoney(player.price)}
         </p>
+        </div>
       </div>
 
       <select

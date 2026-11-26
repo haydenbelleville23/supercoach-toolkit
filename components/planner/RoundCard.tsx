@@ -1,7 +1,8 @@
 "use client";
 
-import { useId, useState } from "react";
+import { useId, useMemo, useState } from "react";
 
+import PlayerSelect, { type PinnedOption } from "@/components/ui/PlayerSelect";
 import { formatMoney } from "@/lib/format";
 import { getAddTradeState, type RoundSummary } from "@/lib/planner/evaluatePlan";
 import { buildFieldLayout } from "@/lib/planner/fieldLayout";
@@ -11,14 +12,14 @@ import {
   setTradePriceOverride,
   updateTrade,
 } from "@/lib/planner/tradePrices";
+import { tradeInExclusions, tradeOutCandidates } from "@/lib/planner/tradeOptions";
 import type { PlanRound, RookiePlaceholder } from "@/lib/planner/types";
-import type { Position } from "@/lib/rules/squadRules";
+import { ROOKIE_PLACEHOLDER, type Position } from "@/lib/rules/squadRules";
 
 import type { Player } from "@/types/player";
 
 import FieldDiagram from "./FieldDiagram";
-import PlayerPicker from "./PlayerPicker";
-import { plannerTeams } from "./plannerData";
+import { plannerTeams, ROOKIE_OPTIONS } from "./plannerData";
 
 export interface RoundCardProps {
   summary: RoundSummary;
@@ -26,9 +27,11 @@ export interface RoundCardProps {
   /** Squad going into this round (before its trades). */
   squadBefore: number[];
   playersById: Map<number, Player>;
-  playersByLabel: Map<string, Player>;
+  /** Everyone who can be traded in (real players and this team's placeholders). */
+  allPlayers: Player[];
+  /** A player's price going into a round (the price he's traded at). */
+  priceAt: (playerId: number, round: number) => number | null;
   placeholders: RookiePlaceholder[];
-  listId: string;
   collapsed: boolean;
   fieldOpen: boolean;
   onChange: (next: PlanRound) => void;
@@ -100,9 +103,9 @@ function RoundBody({
   planRound,
   squadBefore,
   playersById,
-  playersByLabel,
+  allPlayers,
+  priceAt,
   placeholders,
-  listId,
   fieldOpen,
   onChange,
   onToggleField,
@@ -114,10 +117,18 @@ function RoundBody({
   addState: ReturnType<typeof getAddTradeState>;
   overLimit: boolean;
 }) {
-  const squadOptions = squadBefore
-    .map((id) => playersById.get(id))
-    .filter((p): p is Player => !!p)
-    .sort((a, b) => a.name.localeCompare(b.name));
+  const round = summary.round;
+  const priceFor = (player: Player) => priceAt(player.id, round);
+
+  // Squad going into the round, alphabetical (placeholders included).
+  const squadPlayers = useMemo(
+    () =>
+      squadBefore
+        .map((id) => playersById.get(id))
+        .filter((p): p is Player => !!p)
+        .sort((a, b) => a.name.localeCompare(b.name)),
+    [squadBefore, playersById],
+  );
 
   // Changing a player drops that row's price overrides (updateTrade).
   const setTrade = (index: number, change: Partial<PlanRound["trades"][number]>) =>
@@ -141,6 +152,16 @@ function RoundBody({
         {planRound.trades.map((trade, index) => {
           const line = summary.trades[index];
           const inPlaceholder = placeholders.find((p) => p.id === trade.inId);
+          const outIds = new Set(tradeOutCandidates(squadBefore, planRound.trades, index));
+          const outPlayer = trade.outId === null ? null : playersById.get(trade.outId) ?? null;
+          const inPlayer = trade.inId === null ? null : playersById.get(trade.inId) ?? null;
+          const rookieOptions: PinnedOption[] = ROOKIE_OPTIONS.map((option) => ({
+            key: option.position,
+            label: `New Rookie (TBC) ${option.position}`,
+            detail: `Placeholder • ${option.position}`,
+            price: ROOKIE_PLACEHOLDER.price,
+            onSelect: () => onNewRookie(index, option.position),
+          }));
 
           return (
             <div
@@ -148,27 +169,21 @@ function RoundBody({
               className="grid grid-cols-1 gap-2 rounded-xl border border-slate-800 bg-slate-950/50 p-2.5 sm:grid-cols-[1fr_1fr_auto] sm:items-start"
             >
               <div>
-                <select
-                  aria-label={`Round ${summary.round} trade ${index + 1}: player out`}
-                  value={trade.outId ?? ""}
-                  onChange={(e) =>
-                    setTrade(index, { outId: e.target.value ? Number(e.target.value) : null })
-                  }
-                  className="w-full rounded-lg border border-slate-700 bg-slate-950 px-2.5 py-2 text-sm"
-                >
-                  <option value="">Player out…</option>
-                  {trade.outId !== null && !squadBefore.includes(trade.outId) && (
-                    <option value={trade.outId}>
-                      {playersById.get(trade.outId)?.name ?? trade.outId} (not in squad)
-                    </option>
-                  )}
-                  {squadOptions.map((p) => (
-                    <option key={p.id} value={p.id}>
-                      {p.name}
-                      {isPlaceholderId(p.id) ? "" : ` (${p.positions.join("/")})`}
-                    </option>
-                  ))}
-                </select>
+                <div className="flex">
+                  <PlayerSelect
+                    label={`Round ${round} trade ${index + 1}: player out`}
+                    placeholder="Player out…"
+                    players={squadPlayers.filter((p) => outIds.has(p.id))}
+                    value={outPlayer}
+                    priceFor={priceFor}
+                    onSelect={(player) => setTrade(index, { outId: player.id })}
+                    onClear={() => setTrade(index, { outId: null })}
+                  />
+                </div>
+
+                {trade.outId !== null && !squadBefore.includes(trade.outId) && (
+                  <p className="mt-1 text-xs text-amber-300">Not in the squad at this round.</p>
+                )}
 
                 {trade.outId !== null && line?.outPrice != null && (
                   <TradePrice
@@ -184,15 +199,19 @@ function RoundBody({
               </div>
 
               <div>
-                <PlayerPicker
-                  key={`${summary.round}-${index}-${trade.inId ?? "none"}`}
-                  listId={listId}
-                  label={`Round ${summary.round} trade ${index + 1}: player in`}
-                  players={playersByLabel}
-                  selected={trade.inId === null ? null : playersById.get(trade.inId) ?? null}
-                  onSelect={(inId) => setTrade(index, { inId })}
-                  onNewRookie={(position) => onNewRookie(index, position)}
-                />
+                <div className="flex">
+                  <PlayerSelect
+                    label={`Round ${round} trade ${index + 1}: player in`}
+                    placeholder="Player in…"
+                    players={allPlayers}
+                    excludeIds={tradeInExclusions(squadBefore, planRound.trades, index)}
+                    value={inPlayer}
+                    priceFor={priceFor}
+                    pinnedOptions={rookieOptions}
+                    onSelect={(player) => setTrade(index, { inId: player.id })}
+                    onClear={() => setTrade(index, { inId: null })}
+                  />
+                </div>
 
                 {inPlaceholder && (
                   <label className="mt-1 flex items-center gap-1.5 text-xs text-violet-200">
@@ -306,7 +325,10 @@ function RoundBody({
 
         {fieldOpen && (
           <div className="mt-2 rounded-xl border border-slate-800 bg-slate-950/50 p-3">
-            <FieldDiagram layout={buildFieldLayout(summary, playersById)} />
+            <FieldDiagram
+              layout={buildFieldLayout(summary, playersById)}
+              priceFor={(playerId) => priceAt(playerId, round)}
+            />
           </div>
         )}
       </div>
