@@ -26,6 +26,9 @@ export default function Footer() {
         <div className="text-left text-slate-400 md:text-right">
           <p>© {new Date().getFullYear()} Fantasy King</p>
           <p className="mt-1">
+            Prices and scores from SuperCoach&apos;s public site. Live scores from DFS Australia.
+          </p>
+          <p className="mt-1">
             Not affiliated with the AFL or the official AFL Fantasy or AFL SuperCoach competitions.
           </p>
           <p className="mt-3">

@@ -7,7 +7,8 @@ type PlayerStatsProps = {
   average: number;
   average3: number;
   average5: number;
-  ownership: number;
+  /** Null until a public ownership source is wired in; hidden when null. */
+  ownership: number | null;
 };
 
 export default function PlayerStats({
@@ -27,7 +28,9 @@ export default function PlayerStats({
       <Stat label="Games" value={games.toString()} />
       <Stat label="3 Round Avg" value={average3.toFixed(1)} />
       <Stat label="5 Round Avg" value={average5.toFixed(1)} />
-      <Stat label="Ownership" value={`${ownership.toFixed(1)}%`} />
+      {ownership !== null && (
+        <Stat label="Ownership" value={`${ownership.toFixed(1)}%`} />
+      )}
     </div>
   );
 }
