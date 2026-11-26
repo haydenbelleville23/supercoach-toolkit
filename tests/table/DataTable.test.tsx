@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 import "@testing-library/jest-dom/vitest";
 
-import { cleanup, fireEvent, render, screen, within } from "@testing-library/react";
+import { act, cleanup, fireEvent, render, screen, within } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import DataTable, { type DataTableColumn } from "@/components/ui/DataTable";
@@ -128,9 +128,9 @@ describe("DataTable", () => {
       />,
     );
 
-    const cell = screen.getByText("No players match.");
-    expect(cell.tagName).toBe("TD");
+    const cell = screen.getByText("No players match.").closest("td");
     expect(cell).toHaveAttribute("colspan", "3");
+    expect(screen.getByText("No players match.").className).toContain("sticky");
   });
 
   it("makes the header row and first column sticky, and can turn both off", () => {
@@ -214,6 +214,63 @@ describe("DataTable", () => {
     expect(onNearEnd).toHaveBeenCalledTimes(1);
   });
 
+  it("shows a screen-bottom scrollbar only while the box's own is off screen, synced both ways", () => {
+    let onVisibility: (entries: { isIntersecting: boolean }[]) => void = () => {};
+
+    vi.stubGlobal(
+      "IntersectionObserver",
+      class {
+        constructor(callback: typeof onVisibility) {
+          onVisibility = callback;
+        }
+        observe() {}
+        disconnect() {}
+      },
+    );
+    vi.stubGlobal(
+      "ResizeObserver",
+      class {
+        observe() {}
+        disconnect() {}
+      },
+    );
+
+    // A table wider than its box.
+    const scrollWidth = Object.getOwnPropertyDescriptor(HTMLElement.prototype, "scrollWidth");
+    const clientWidth = Object.getOwnPropertyDescriptor(HTMLElement.prototype, "clientWidth");
+    Object.defineProperty(HTMLElement.prototype, "scrollWidth", { configurable: true, get: () => 1000 });
+    Object.defineProperty(HTMLElement.prototype, "clientWidth", { configurable: true, get: () => 300 });
+
+    try {
+      render(<DataTable rows={rows} columns={columns} rowKey={(r) => r.id} caption="Test" />);
+
+      const box = screen.getByTestId("data-table-box");
+      const proxy = screen.getByTestId("data-table-scrollbar");
+
+      // The box's bottom edge is on screen: no extra scrollbar.
+      act(() => onVisibility([{ isIntersecting: true }]));
+      expect(proxy.className).toMatch(/(^| )hidden( |$)/);
+
+      // Below the fold: the sticky scrollbar appears.
+      act(() => onVisibility([{ isIntersecting: false }]));
+      expect(proxy.className).not.toMatch(/(^| )hidden( |$)/);
+      expect(proxy.className).toContain("sticky bottom-0");
+      expect(proxy.firstElementChild).toHaveStyle({ width: "1000px" });
+
+      box.scrollLeft = 120;
+      fireEvent.scroll(box);
+      expect(proxy.scrollLeft).toBe(120);
+
+      proxy.scrollLeft = 300;
+      fireEvent.scroll(proxy);
+      expect(box.scrollLeft).toBe(300);
+    } finally {
+      if (scrollWidth) Object.defineProperty(HTMLElement.prototype, "scrollWidth", scrollWidth);
+      if (clientWidth) Object.defineProperty(HTMLElement.prototype, "clientWidth", clientWidth);
+      vi.unstubAllGlobals();
+    }
+  });
+
   it("renders an expanded row under a row", () => {
     render(
       <DataTable
@@ -231,7 +288,7 @@ describe("DataTable", () => {
 });
 
 describe("PlayerCell", () => {
-  it("shows the short and full names, team and positions, labelled with the full name", () => {
+  it("shows the short and full names and team; positions in the tooltip", () => {
     render(
       <PlayerCell
         name="Jordan De Goey"
@@ -242,11 +299,11 @@ describe("PlayerCell", () => {
     );
 
     const link = screen.getByRole("link", { name: "Jordan De Goey" });
-    expect(link).toHaveAttribute("title", "Jordan De Goey");
+    expect(link).toHaveAttribute("title", "Jordan De Goey · COL · MID/FWD");
     expect(link).toHaveAttribute("href", "/projector?player=1");
     expect(within(link).getByText("J. De Goey").className).toContain("sm:hidden");
     expect(within(link).getByText("Jordan De Goey").className).toContain("hidden sm:inline");
     expect(screen.getByText("COL")).toBeInTheDocument();
-    expect(screen.getByText("MID/FWD")).toBeInTheDocument();
+    expect(screen.queryByText("MID/FWD")).toBeNull();
   });
 });

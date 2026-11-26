@@ -5,6 +5,8 @@ import {
   Fragment,
   type ReactNode,
   type UIEvent,
+  useEffect,
+  useRef,
   useState,
 } from "react";
 
@@ -72,6 +74,8 @@ export type DataTableProps<Row> = {
   empty?: ReactNode;
   /** Content shown in a full-width row under a row, or null. */
   renderExpanded?: (row: Row) => ReactNode | null;
+  /** Shown inside the scroll box, under the table (e.g. "Scroll to load more"). */
+  footer?: ReactNode;
 
   className?: string;
 };
@@ -202,6 +206,7 @@ export default function DataTable<Row>({
   caption,
   empty = "No rows to show.",
   renderExpanded,
+  footer,
   className = "",
 }: DataTableProps<Row>) {
   const [internalSort, setInternalSort] = useState<SortState | null>(defaultSort);
@@ -235,14 +240,76 @@ export default function DataTable<Row>({
     onSortChange?.(next);
   }
 
+  // A slim scrollbar stuck to the bottom of the screen, shown while the
+  // table is on screen but its own horizontal scrollbar (at the bottom of
+  // the box) is below the fold. Kept in sync with the box both ways.
+  const boxRef = useRef<HTMLDivElement>(null);
+  const proxyRef = useRef<HTMLDivElement>(null);
+  const bottomRef = useRef<HTMLDivElement>(null);
+  const [scrollWidth, setScrollWidth] = useState(0);
+  const [overflowsX, setOverflowsX] = useState(false);
+  const [bottomOnScreen, setBottomOnScreen] = useState(true);
+
+  useEffect(() => {
+    const box = boxRef.current;
+    const bottom = bottomRef.current;
+
+    if (!box || !bottom || typeof ResizeObserver === "undefined" || typeof IntersectionObserver === "undefined") {
+      return;
+    }
+
+    const measure = () => {
+      setScrollWidth(box.scrollWidth);
+      setOverflowsX(box.scrollWidth > box.clientWidth + 1);
+    };
+
+    const resize = new ResizeObserver(measure);
+    resize.observe(box);
+    if (box.firstElementChild) resize.observe(box.firstElementChild);
+
+    const visibility = new IntersectionObserver(([entry]) =>
+      setBottomOnScreen(entry.isIntersecting),
+    );
+    visibility.observe(bottom);
+
+    measure();
+
+    return () => {
+      resize.disconnect();
+      visibility.disconnect();
+    };
+  }, []);
+
+  const showProxy = overflowsX && !bottomOnScreen;
+
+  useEffect(() => {
+    if (showProxy && proxyRef.current && boxRef.current) {
+      proxyRef.current.scrollLeft = boxRef.current.scrollLeft;
+    }
+  }, [showProxy]);
+
   function handleScroll(event: UIEvent<HTMLDivElement>) {
+    const box = event.currentTarget;
+
+    if (proxyRef.current && proxyRef.current.scrollLeft !== box.scrollLeft) {
+      proxyRef.current.scrollLeft = box.scrollLeft;
+    }
+
     if (!onNearEnd) return;
 
-    const box = event.currentTarget;
     const remaining = box.scrollHeight - box.scrollTop - box.clientHeight;
 
     if (remaining <= nearEndThreshold) {
       onNearEnd();
+    }
+  }
+
+  function handleProxyScroll(event: UIEvent<HTMLDivElement>) {
+    const box = boxRef.current;
+    const left = event.currentTarget.scrollLeft;
+
+    if (box && box.scrollLeft !== left) {
+      box.scrollLeft = left;
     }
   }
 
@@ -258,149 +325,175 @@ export default function DataTable<Row>({
   } as CSSProperties;
 
   return (
-    <div
-      data-testid="data-table-box"
-      onScroll={handleScroll}
-      style={boxStyle}
-      // scroll-padding keeps a focused cell clear of the pinned columns
-      // and the sticky header row when tabbing.
-      className={`${fitToViewport ? "dt-viewport overflow-auto" : "overflow-x-auto"} scroll-pt-11 scroll-pl-[var(--dt-pin)] sm:scroll-pl-[var(--dt-pin-sm)] rounded-xl border border-slate-800 bg-[var(--dt-row-bg)] ${className}`}
-    >
-      <table
-        style={tableStyle}
-        className="w-[max(100%,var(--dt-w))] table-fixed border-separate border-spacing-0 text-sm sm:w-[max(100%,var(--dt-w-sm))] md:w-[max(100%,var(--dt-w-md))]"
+    <div className={className}>
+      <div
+        ref={boxRef}
+        data-testid="data-table-box"
+        onScroll={handleScroll}
+        style={boxStyle}
+        // scroll-padding keeps a focused cell clear of the pinned columns
+        // and the sticky header row when tabbing.
+        className={`${fitToViewport ? "dt-viewport overflow-auto" : "overflow-x-auto"} scroll-pt-11 scroll-pl-[var(--dt-pin)] sm:scroll-pl-[var(--dt-pin-sm)] rounded-xl border border-slate-800 bg-[var(--dt-row-bg)]`}
       >
-        <caption className="sr-only">{caption}</caption>
+        <table
+          style={tableStyle}
+          className="w-[max(100%,var(--dt-w))] table-fixed border-separate border-spacing-0 text-sm sm:w-[max(100%,var(--dt-w-sm))] md:w-[max(100%,var(--dt-w-md))]"
+        >
+          <caption className="sr-only">{caption}</caption>
 
-        <colgroup>
-          {columns.map((column) => {
-            const { base, sm } = widths(column.width);
-            return (
-              <col
-                key={column.id}
-                style={{ "--dt-col": `${base}px`, "--dt-col-sm": `${sm}px` } as CSSProperties}
-                className={`w-[var(--dt-col)] sm:w-[var(--dt-col-sm)] ${column.hideBelow ? HIDE_COL[column.hideBelow] : ""}`}
-              />
-            );
-          })}
-        </colgroup>
-
-        <thead>
-          <tr>
-            {columns.map((column, index) => {
-              const layout = layouts[index];
-              const pinned = layout.pinnedBase || layout.pinnedSm;
-              const align = column.align ?? "left";
-              const active = sort?.columnId === column.id;
-              const ariaSort = column.sortValue
-                ? active
-                  ? sort!.direction === "asc"
-                    ? "ascending"
-                    : "descending"
-                  : "none"
-                : undefined;
-
+          <colgroup>
+            {columns.map((column) => {
+              const { base, sm } = widths(column.width);
               return (
-                <th
+                <col
                   key={column.id}
-                  scope="col"
-                  aria-sort={ariaSort}
-                  style={layout.style}
-                  className={[
-                    "border-b border-slate-700 bg-[var(--dt-head-bg)] px-2 py-2.5 align-bottom text-xs font-semibold uppercase leading-tight tracking-wide text-slate-400",
-                    ALIGN[align],
-                    stickyHeader ? "sticky top-0" : "",
-                    // Pinned header cells sit above both the header row
-                    // and the pinned body cells (the crossing corner).
-                    stickyHeader ? (pinned ? "z-30" : "z-20") : pinned ? "z-10" : "",
-                    pinClasses(layout),
-                    column.hideBelow ? HIDE_CELL[column.hideBelow] : "",
-                  ].join(" ")}
-                >
-                  {column.sortValue ? (
-                    <button
-                      type="button"
-                      onClick={() => changeSort(column)}
-                      className={`inline-flex w-full items-end gap-1 rounded uppercase focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-green ${
-                        align === "right" ? "justify-end text-right" : align === "center" ? "justify-center" : "text-left"
-                      } ${active ? "text-white" : "hover:text-slate-200"}`}
-                    >
-                      <span>{column.header}</span>
-                      <span aria-hidden="true" className={`shrink-0 text-[10px] ${active ? "text-brand-green" : "text-slate-600"}`}>
-                        {active ? (sort!.direction === "asc" ? "▲" : "▼") : "↕"}
-                      </span>
-                    </button>
-                  ) : (
-                    column.header
-                  )}
-                </th>
+                  style={{ "--dt-col": `${base}px`, "--dt-col-sm": `${sm}px` } as CSSProperties}
+                  className={`w-[var(--dt-col)] sm:w-[var(--dt-col-sm)] ${column.hideBelow ? HIDE_COL[column.hideBelow] : ""}`}
+                />
               );
             })}
-          </tr>
-        </thead>
+          </colgroup>
 
-        <tbody>
-          {displayRows.length === 0 ? (
+          <thead>
             <tr>
-              <td colSpan={columns.length} className="px-4 py-8 text-center text-slate-400">
-                {empty}
-              </td>
+              {columns.map((column, index) => {
+                const layout = layouts[index];
+                const pinned = layout.pinnedBase || layout.pinnedSm;
+                const align = column.align ?? "left";
+                const active = sort?.columnId === column.id;
+                const ariaSort = column.sortValue
+                  ? active
+                    ? sort!.direction === "asc"
+                      ? "ascending"
+                      : "descending"
+                    : "none"
+                  : undefined;
+
+                return (
+                  <th
+                    key={column.id}
+                    scope="col"
+                    aria-sort={ariaSort}
+                    style={layout.style}
+                    className={[
+                      "border-b border-slate-700 bg-[var(--dt-head-bg)] px-2 py-2.5 align-bottom text-xs font-semibold uppercase leading-tight tracking-wide text-slate-400",
+                      ALIGN[align],
+                      stickyHeader ? "sticky top-0" : "",
+                      // Pinned header cells sit above both the header row
+                      // and the pinned body cells (the crossing corner).
+                      stickyHeader ? (pinned ? "z-30" : "z-20") : pinned ? "z-10" : "",
+                      pinClasses(layout),
+                      column.hideBelow ? HIDE_CELL[column.hideBelow] : "",
+                    ].join(" ")}
+                  >
+                    {column.sortValue ? (
+                      <button
+                        type="button"
+                        onClick={() => changeSort(column)}
+                        className={`inline-flex w-full items-end gap-1 rounded uppercase focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-green ${
+                          align === "right" ? "justify-end text-right" : align === "center" ? "justify-center" : "text-left"
+                        } ${active ? "text-white" : "hover:text-slate-200"}`}
+                      >
+                        <span>{column.header}</span>
+                        <span aria-hidden="true" className={`shrink-0 text-[10px] ${active ? "text-brand-green" : "text-slate-600"}`}>
+                          {active ? (sort!.direction === "asc" ? "▲" : "▼") : "↕"}
+                        </span>
+                      </button>
+                    ) : (
+                      column.header
+                    )}
+                  </th>
+                );
+              })}
             </tr>
-          ) : (
-            displayRows.map((row) => {
-              const highlighted = highlightRow?.(row) ?? false;
-              const expanded = renderExpanded?.(row) ?? null;
-              const background = highlighted
-                ? "bg-[var(--dt-highlight-bg)] group-hover/row:bg-[var(--dt-highlight-hover-bg)]"
-                : "bg-[var(--dt-row-bg)] group-hover/row:bg-[var(--dt-row-hover-bg)]";
+          </thead>
 
-              return (
-                <Fragment key={rowKey(row)}>
-                  <tr className="group/row" data-highlighted={highlighted || undefined}>
-                    {columns.map((column, index) => {
-                      const layout = layouts[index];
-                      const pinned = layout.pinnedBase || layout.pinnedSm;
+          <tbody>
+            {displayRows.length === 0 ? (
+              <tr>
+                <td colSpan={columns.length} className="p-0 text-slate-400">
+                  {/* Sticky, so the message stays in view on a wide, scrolled table. */}
+                  <div className="sticky left-0 w-[min(100%,calc(100vw-2rem))] whitespace-normal px-4 py-8">
+                    {empty}
+                  </div>
+                </td>
+              </tr>
+            ) : (
+              displayRows.map((row) => {
+                const highlighted = highlightRow?.(row) ?? false;
+                const expanded = renderExpanded?.(row) ?? null;
+                const background = highlighted
+                  ? "bg-[var(--dt-highlight-bg)] group-hover/row:bg-[var(--dt-highlight-hover-bg)]"
+                  : "bg-[var(--dt-row-bg)] group-hover/row:bg-[var(--dt-row-hover-bg)]";
 
-                      return (
-                        <td
-                          key={column.id}
-                          style={layout.style}
-                          className={[
-                            "whitespace-nowrap border-b border-slate-800 px-2 py-2.5 leading-5",
-                            ALIGN[column.align ?? "left"],
-                            background,
-                            pinned ? "z-10" : "",
-                            pinClasses(layout),
-                            // Highlighted rows: a brand-green bar on the left edge.
-                            index === 0 && highlighted
-                              ? `${pinned ? "" : "relative"} before:absolute before:inset-y-0 before:left-0 before:w-[3px] before:bg-brand-green`
-                              : "",
-                            column.hideBelow ? HIDE_CELL[column.hideBelow] : "",
-                            column.cellClassName?.(row) ?? "",
-                          ].join(" ")}
-                        >
-                          {column.cell(row)}
-                        </td>
-                      );
-                    })}
-                  </tr>
+                return (
+                  <Fragment key={rowKey(row)}>
+                    <tr className="group/row" data-highlighted={highlighted || undefined}>
+                      {columns.map((column, index) => {
+                        const layout = layouts[index];
+                        const pinned = layout.pinnedBase || layout.pinnedSm;
 
-                  {expanded !== null && (
-                    <tr>
-                      <td colSpan={columns.length} className="border-b border-slate-800 bg-[var(--dt-head-bg)] p-0">
-                        {/* Stays in view while the table scrolls sideways. */}
-                        <div className="sticky left-0 w-[min(100%,calc(100vw-2rem))] px-3 py-3">
-                          {expanded}
-                        </div>
-                      </td>
+                        return (
+                          <td
+                            key={column.id}
+                            style={layout.style}
+                            className={[
+                              "whitespace-nowrap border-b border-slate-800 px-2 py-2.5 leading-5",
+                              ALIGN[column.align ?? "left"],
+                              background,
+                              pinned ? "z-10" : "",
+                              pinClasses(layout),
+                              // Highlighted rows: a brand-green bar on the left edge.
+                              index === 0 && highlighted
+                                ? `${pinned ? "" : "relative"} before:absolute before:inset-y-0 before:left-0 before:w-[3px] before:bg-brand-green`
+                                : "",
+                              column.hideBelow ? HIDE_CELL[column.hideBelow] : "",
+                              column.cellClassName?.(row) ?? "",
+                            ].join(" ")}
+                          >
+                            {column.cell(row)}
+                          </td>
+                        );
+                      })}
                     </tr>
-                  )}
-                </Fragment>
-              );
-            })
-          )}
-        </tbody>
-      </table>
+
+                    {expanded !== null && (
+                      <tr>
+                        <td colSpan={columns.length} className="border-b border-slate-800 bg-[var(--dt-head-bg)] p-0">
+                          {/* Stays in view while the table scrolls sideways. */}
+                          <div className="sticky left-0 w-[min(100%,calc(100vw-2rem))] px-3 py-3">
+                            {expanded}
+                          </div>
+                        </td>
+                      </tr>
+                    )}
+                  </Fragment>
+                );
+              })
+            )}
+          </tbody>
+        </table>
+
+        {footer && (
+          <div className="sticky left-0 w-[min(100%,calc(100vw-2rem))] border-t border-slate-800 bg-[var(--dt-head-bg)] px-4 py-3 text-center text-xs text-slate-400">
+            {footer}
+          </div>
+        )}
+      </div>
+
+      {/* Marks the box's bottom edge, to know whether its scrollbar is on screen. */}
+      <div ref={bottomRef} aria-hidden="true" className="h-px" />
+
+      <div
+        ref={proxyRef}
+        aria-hidden="true"
+        tabIndex={-1}
+        data-testid="data-table-scrollbar"
+        onScroll={handleProxyScroll}
+        className={`${showProxy ? "" : "hidden"} sticky bottom-0 z-40 -mt-px overflow-x-auto overflow-y-hidden rounded-b-xl border-x border-b border-slate-800 bg-slate-950/95`}
+      >
+        <div style={{ width: scrollWidth, height: 1 }} />
+      </div>
     </div>
   );
 }
