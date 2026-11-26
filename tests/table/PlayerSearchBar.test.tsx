@@ -23,6 +23,7 @@ const player = (id: number, name: string, team: string, positions: string[]): Pl
   history: [],
   breakeven: 80,
   ownership: null,
+  previousGames: 20,
   active: true,
   availability: null,
 });
