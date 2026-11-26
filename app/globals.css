@@ -11,6 +11,35 @@
   --brand-navy: #1c242f; /* logo background */
   --brand-navy-deep: #151b24;
   --brand-grey: #8a97a8; /* tagline */
+
+  /* Height of the sticky site header (components/layout/Header.tsx).
+     Set once here; data tables size their scroll box from it. */
+  --site-header-h: 3.5rem;
+
+  /* Data tables (components/ui/DataTable.tsx). Solid colours, because
+     sticky cells must hide what scrolls underneath them. */
+  --dt-gap: 0.75rem;
+  --dt-row-bg: #0f172a; /* slate-900 */
+  --dt-row-hover-bg: #1a2436;
+  --dt-head-bg: #020617; /* slate-950 */
+  --dt-highlight-bg: color-mix(in srgb, var(--brand-green) 9%, #0f172a);
+  --dt-highlight-hover-bg: color-mix(in srgb, var(--brand-green) 14%, #0f172a);
+}
+
+@media (min-width: 48rem) {
+  :root {
+    --site-header-h: 4rem;
+  }
+}
+
+/* A data table's one scroll box: never taller than the screen below the
+   sticky site header, so its horizontal scrollbar is always on screen once
+   the table reaches the top. vh first as a fallback for browsers without
+   dvh. Overscroll is left at the default so touch scrolling chains to the
+   page. */
+.dt-viewport {
+  max-height: calc(100vh - var(--site-header-h) - var(--dt-gap));
+  max-height: calc(100dvh - var(--site-header-h) - var(--dt-gap));
 }
 
 @theme inline {
