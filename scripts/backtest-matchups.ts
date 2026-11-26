@@ -61,9 +61,10 @@ const {
   allPlayers, actualById, opponentOf, debutants,
   mean, median, quantile,
   buildOrigin, playedRound, scoreObs, priceObs,
-  segmentOf, band, gamesBand,
+  segmentOf, segmentFor,
   inSample, outSample, both, seg, mae, pairedBootstrap,
   fmt, money, signedMoney, verdict, csv, writeCsvs,
+  parsePool, poolFilter, reportMethods, comparisons,
 } = C;
 type OriginContext = ReturnType<typeof C.buildOrigin>;
 type PlayerState = NonNullable<ReturnType<OriginContext["states"]["get"]>>;
@@ -205,13 +206,19 @@ const shrunk = (pool: Pool, key: string, k: number) => {
   return a ? a.sum / (a.n + k) : 0; // average x n/(n+k)
 };
 
-type Params = { a: number | null; b: number | null; c: number | null };
+type Params = { a: number | null; b: number | null; c: number | null; lm?: number | null };
 
 function adjustment(model: Model, state: PlayerState, opponent: string, origin: number, p: Params) {
   const feed = feedOf.get(state.id);
   const player = actualById.get(state.id)!;
   let adj = 0;
   if (p.a !== null && feed) adj += shrunk(model.pvo, `${feed}:${opponent}`, p.a);
+  // Last meeting only: exactly one prior meeting, with a residual.
+  if (p.lm != null && feed) {
+    const pair = `${feed}:${opponent}`;
+    const pool = model.pvo.get(pair);
+    if (model.meetings.get(pair) === 1 && pool?.n === 1) adj += p.lm * pool.sum;
+  }
   if (p.b !== null) adj += shrunk(model.teamPos, `${opponent}:${state.position}`, p.b);
   if (p.c !== null && isRuck(player.positions)) {
     const ruck = expectedOpposingRuck(opponent, origin);
@@ -240,6 +247,9 @@ const add = (name: string, r: Result) => {
 };
 
 const priorMeetings = new Map<string, number>(); // origin:h:pid -> meetings before the target
+/** origin:h:pid targets where the last-meeting rule applies (1 meeting, with a residual). */
+const lastMeetingApplies = new Set<string>();
+const LAST_MEETING_WEIGHTS = [0.05, 0.1, 0.2, 0.3];
 const pairCounts: { origin: number; targets: number; zero: number; one: number; two: number; threePlus: number }[] = [];
 const contexts: OriginContext[] = [];
 const models = new Map<number, Model>();
@@ -286,15 +296,7 @@ for (const origin of ORIGINS) {
 
   const counts = { origin, targets: 0, zero: 0, one: 0, two: 0, threePlus: 0 };
   for (const s of ctx.states.values()) {
-    segmentOf.set(`${origin}:${s.id}`, {
-      band: band(s.price),
-      games: gamesBand(Math.max(s.scores.length, 1)),
-      position: s.position,
-      outlier: s.outlier,
-      price: s.price,
-      rookie: s.rookie,
-      gamesN: s.scores.length,
-    });
+    segmentOf.set(`${origin}:${s.id}`, segmentFor(s));
     const feed = feedOf.get(s.id);
     for (const h of HORIZONS) {
       const target = origin + h;
@@ -302,6 +304,7 @@ for (const origin of ORIGINS) {
       const opp = opponentOf.get(`${target}:${s.team}`);
       const n = feed && opp ? model.meetings.get(`${feed}:${opp}`) ?? 0 : 0;
       priorMeetings.set(`${origin}:${h}:${s.id}`, n);
+      if (n === 1 && feed && opp && model.pvo.get(`${feed}:${opp}`)?.n === 1) lastMeetingApplies.add(`${origin}:${h}:${s.id}`);
       counts.targets += 1;
       if (n === 0) counts.zero += 1;
       else if (n === 1) counts.one += 1;
@@ -315,6 +318,7 @@ for (const origin of ORIGINS) {
   for (const k of K_A) run(ctx, model, `a:k${k}`, { a: k, b: null, c: null });
   for (const k of K_B) run(ctx, model, `b:k${k}`, { a: null, b: k, c: null });
   for (const k of K_C) run(ctx, model, `c:k${k}`, { a: null, b: null, c: k });
+  for (const w of LAST_MEETING_WEIGHTS) run(ctx, model, `lm:w${w}`, { a: null, b: null, c: null, lm: w });
   process.stdout.write(`  origin ${origin} done\n`);
 }
 
@@ -480,5 +484,48 @@ for (const [label, n] of scenarios) {
 // ---------------------------------------------------------------------------
 
 console.log(`\nResidual quartiles (2026): ${fmt(quantile(residuals, 0.25))} / ${fmt(median(residuals))} / ${fmt(quantile(residuals, 0.75))}.`);
+// ---------------------------------------------------------------------------
+// Restricted pool, side by side with the full pool
+// ---------------------------------------------------------------------------
+
+const pool = parsePool(process.argv.slice(2));
+const inPool = poolFilter(pool);
+console.log(`\n\n=== RESTRICTED POOL: ${pool.label} ===`);
+console.log("Only who is SCORED is filtered. Team-by-position, ruck and player-vs-opponent pools, k and every projection still use all players.");
+const poolSizes = contexts.map((ctx) => [...ctx.states.values()].filter((st) => inPool({ origin: ctx.origin, h: 1, pid: st.id, err: 0 })).length);
+console.log(`Pool size by origin: ${contexts.map((ctx, i) => `R${ctx.origin} ${poolSizes[i]}`).join(", ")}`);
+console.log(`Scored predictions (base): rounds 5-11 origins ${base.score.filter((o) => inSample(o) && inPool(o)).length}; 12-17 origins ${base.score.filter((o) => outSample(o) && inPool(o)).length}.`);
+
+const lmFilter: Filter = (o) => lastMeetingApplies.has(`${o.origin}:${o.h}:${o.pid}`);
+for (const [label, population] of [["full", () => true], ["restricted", inPool]] as [string, Filter][]) {
+  const applied = base.score.filter((o) => population(o) && lmFilter(o));
+  console.log(`Last-meeting rule applies to ${applied.filter(inSample).length} scored targets in 5-11 and ${applied.filter(outSample).length} in 12-17 (${label} pool).`);
+}
+
+const segmentsM: [string, Filter][] = [
+  ["DEF", seg((st) => st.position === "DEF")],
+  ["MID", seg((st) => st.position === "MID")],
+  ["RUC", seg((st) => st.position === "RUC")],
+  ["FWD", seg((st) => st.position === "FWD")],
+  ["$450-600k", seg((st) => st.price > 450_000 && st.price <= 600_000)],
+  [">$600k", seg((st) => st.price > 600_000)],
+  ["3+ prior meetings", threePlus],
+  ["last-meeting applies", lmFilter],
+];
+const variants = [...results.keys()]
+  .filter((n) => n !== "base")
+  .map((n): [string, string, { score: Obs[]; price: Obs[] }] => [n, n, get(n)]);
+reportMethods({ title: "Matchup features vs base, FULL pool, out-of-sample 12-17", methods: variants, baseline: base, population: () => true, segments: segmentsM, csvName: "features_vs_base_full" });
+reportMethods({ title: `Matchup features vs base, RESTRICTED pool (${pool.label}), out-of-sample 12-17`, methods: variants, baseline: base, population: inPool, segments: segmentsM, csvName: `features_vs_base${pool.suffix}` });
+for (const [label, population] of [["full", () => true], ["restricted", inPool]] as [string, Filter][]) {
+  for (const prefix of ["a:", "b:", "c:", "lm:"]) {
+    const best = [...results.keys()]
+      .filter((n) => n.startsWith(prefix) || n === "base")
+      .sort((x, y) => mae(get(x).price, both(inSample, population)).value - mae(get(y).price, both(inSample, population)).value)[0];
+    console.log(`Chosen on 5-11 (${label} pool, ${prefix.replace(":", "")}): ${best}`);
+  }
+}
+console.log(`\nInterval comparisons run in this script: ${comparisons.count} (plus the earlier feature tables). About 5% of 95% intervals exclude zero by chance (~${Math.round(comparisons.count * 0.05)}).`);
+
 const csvCount = await writeCsvs("backtest-matchups");
 console.log(`CSVs written to scripts/output/backtest-matchups-*.csv (${csvCount} files).`);

@@ -317,10 +317,88 @@ export function flat(ctx: OriginContext, value: (s: PlayerState) => number | nul
 }
 
 
-export const segmentOf = new Map<string, { band: string; games: string; position: string; outlier: boolean; price: number; rookie: boolean; gamesN: number }>();
+export type Segment = {
+  band: string;
+  games: string;
+  position: string;
+  outlier: boolean;
+  /** Published price after the origin round (what a coach sees then). */
+  price: number;
+  rookie: boolean;
+  gamesN: number;
+  /** Season average to date (0 before his first game). */
+  average: number;
+  /** A score in his last 3 games more than 1.5 SD above his own median. */
+  hot: boolean;
+};
+export const segmentOf = new Map<string, Segment>();
 export const band = (price: number) =>
   price < 300_000 ? "<300k" : price < 500_000 ? "300-500k" : price < 700_000 ? "500-700k" : ">700k";
 export const gamesBand = (g: number) => (g <= 5 ? "1-5" : g <= 10 ? "6-10" : "11+");
+
+/** Any of his last 3 scores more than 1.5 SD *above* his own median. */
+export const recentlyHot = (xs: number[]) => {
+  if (xs.length < 3) return false;
+  const m = median(xs);
+  const sd = sdAroundMedian(xs);
+  return sd > 0 && xs.slice(-3).some((x) => x - m > 1.5 * sd);
+};
+
+/** The segment record for a player at an origin (all values known at O). */
+export function segmentFor(s: PlayerState): Segment {
+  return {
+    band: band(s.price),
+    games: gamesBand(Math.max(s.scores.length, 1)),
+    position: s.position,
+    outlier: s.outlier,
+    price: s.price,
+    rookie: s.rookie,
+    gamesN: s.scores.length,
+    average: s.scores.length ? mean(s.scores) : 0,
+    hot: recentlyHot(s.scores),
+  };
+}
+
+/** 2026 minutes played per player per round (from the player detail files). */
+export const minutesOf = new Map<number, Map<number, number>>();
+for (const file of readdirSync(detailsDir)) {
+  const detail = JSON.parse(readFileSync(path.join(detailsDir, file), "utf8")) as {
+    id: number;
+    player_stats?: { round: number; games?: number; minutes_played?: number | null }[];
+  };
+  const byRound = new Map<number, number>();
+  for (const row of detail.player_stats ?? []) {
+    if (Number(row.games ?? 0) > 0 && row.minutes_played != null) byRound.set(row.round, Number(row.minutes_played));
+  }
+  minutesOf.set(detail.id, byRound);
+}
+
+// ---------------------------------------------------------------------------
+// Restricted pool (who is scored; league-wide quantities still use everyone)
+// ---------------------------------------------------------------------------
+
+export type Pool = { minPrice: number; minAvg: number | null; label: string; suffix: string };
+
+/** --minPrice (default 450000) and optional --minAvg. */
+export function parsePool(argv: string[]): Pool {
+  const flag = (name: string) => {
+    const i = argv.indexOf(name);
+    return i === -1 ? null : Number(argv[i + 1]);
+  };
+  const minPrice = flag("--minPrice") ?? 450_000;
+  const minAvg = flag("--minAvg");
+  const k = `${Math.round(minPrice / 1000)}k`;
+  return {
+    minPrice,
+    minAvg,
+    label: `price after the origin round > $${minPrice.toLocaleString("en-AU")}${minAvg !== null ? ` and average to date >= ${minAvg}` : ""}`,
+    suffix: `_min${k}${minAvg !== null ? `_avg${minAvg}` : ""}`,
+  };
+}
+
+/** Scored only if in the pool at that origin (price after O, average to date). */
+export const poolFilter = (pool: Pool) =>
+  seg((s) => s.price > pool.minPrice && (pool.minAvg === null || s.average >= pool.minAvg));
 
 // ---------------------------------------------------------------------------
 // Metrics
@@ -407,4 +485,102 @@ export async function writeCsvs(prefix: string): Promise<number> {
     );
   }
   return Object.keys(csvRows).length;
+}
+
+// ---------------------------------------------------------------------------
+// Counted comparisons and the method report
+// ---------------------------------------------------------------------------
+
+/** Number of method-vs-baseline interval comparisons made in this run. */
+export const comparisons = { count: 0 };
+
+/**
+ * Paired bootstrap of price (or score) error versus the baseline, plus the
+ * smallest difference this sample could detect: about 2.8 standard errors
+ * (80% power at 5%), with the SE read from the interval width.
+ */
+export function compare(method: Obs[], baseline: Obs[], f: Filter) {
+  comparisons.count += 1;
+  const b = pairedBootstrap(method, baseline, f);
+  const se = (b.hi - b.lo) / 3.92;
+  return { ...b, detectable: 2.8 * se };
+}
+
+export type MethodResult = { score: Obs[]; price: Obs[] };
+
+/**
+ * One block per method for a population (pool): in-sample and
+ * out-of-sample price differences versus the baseline with intervals and
+ * the detectable margin, by horizon, position and price band, plus score
+ * MAE and bias. Flags in-sample-only wins and wins whose direction differs
+ * across positions. Returns the CSV rows.
+ */
+export function reportMethods({
+  title,
+  methods,
+  baseline,
+  population,
+  segments,
+  csvName,
+}: {
+  title: string;
+  methods: [string, string, MethodResult][];
+  baseline: MethodResult;
+  population: Filter;
+  segments: [string, Filter][];
+  csvName: string;
+}) {
+  console.log(`\n--- ${title} ---`);
+  console.log("method | OOS price diff vs mean [95%] | detectable | +1 | +2 | +3 | IS diff | OOS score MAE (bias) | flags");
+  const positions = segments.filter(([label]) => ["DEF", "MID", "RUC", "FWD"].includes(label));
+
+  for (const [name, label, r] of methods) {
+    const oos = both(outSample, population);
+    const all = compare(r.price, baseline.price, oos);
+    const is = compare(r.price, baseline.price, both(inSample, population));
+    const byH = HORIZONS.map((h) => compare(r.price, baseline.price, both(oos, horizon(h))));
+    const posDiffs = positions.map(([, f]) => compare(r.price, baseline.price, both(oos, f)).diff).filter(Number.isFinite);
+
+    const flags: string[] = [];
+    if (is.hi < 0 && !(all.hi < 0)) flags.push("wins in-sample only");
+    if (all.hi < 0 && posDiffs.some((d) => d > 0)) flags.push("direction differs by position");
+    if (!(all.hi < 0) && !(all.lo > 0)) flags.push(Math.abs(all.diff) < all.detectable ? "within noise" : "within noise (wide)");
+
+    console.log(
+      [
+        label.padEnd(46),
+        `${signedMoney(all.diff)} [${signedMoney(all.lo)}, ${signedMoney(all.hi)}]`,
+        money(all.detectable),
+        ...byH.map((b) => signedMoney(b.diff)),
+        signedMoney(is.diff),
+        `${fmt(mae(r.score, oos).value)} (${fmt(bias(r.score, oos))})`,
+        flags.join("; ") || "-",
+      ].join(" | "),
+    );
+
+    for (const [segLabel, f] of [["all", () => true] as [string, Filter], ...segments]) {
+      const filter = both(oos, f);
+      const p = segLabel === "all" ? all : compare(r.price, baseline.price, filter);
+      csv(csvName, {
+        method: name,
+        segment: segLabel,
+        n_price: mae(r.price, filter).n,
+        price_mae: Math.round(mae(r.price, filter).value),
+        price_mae_mean: Math.round(mae(baseline.price, filter).value),
+        diff: Math.round(p.diff),
+        lo: Math.round(p.lo),
+        hi: Math.round(p.hi),
+        detectable: Math.round(p.detectable),
+        verdict: verdict(p),
+        price_mae_h1: Math.round(mae(r.price, both(filter, horizon(1))).value),
+        price_mae_h2: Math.round(mae(r.price, both(filter, horizon(2))).value),
+        price_mae_h3: Math.round(mae(r.price, both(filter, horizon(3))).value),
+        n_score: mae(r.score, filter).n,
+        score_mae: fmt(mae(r.score, filter).value, 2),
+        score_bias: fmt(bias(r.score, filter), 2),
+        in_sample_diff: segLabel === "all" ? Math.round(is.diff) : "",
+        flags: segLabel === "all" ? flags.join("; ") : "",
+      });
+    }
+  }
 }

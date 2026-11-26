@@ -70,9 +70,10 @@ const {
   allPlayers, actualById, opponentOf, teamPlays, debutants, detailFiles, withFeedId, with2025Totals,
   mean, median, quantile, winsorise, ewma,
   buildOrigin, playedRound, scoreObs, priceObs, flat,
-  segmentOf, band, gamesBand,
+  segmentOf, segmentFor,
   inSample, outSample, horizon, both, seg, mae, bias, spread, pairedBootstrap,
   fmt, money, signedMoney, verdict, csv, writeCsvs,
+  minutesOf, parsePool, poolFilter, reportMethods, comparisons,
 } = C;
 type OriginContext = ReturnType<typeof C.buildOrigin>;
 type PlayerState = NonNullable<ReturnType<OriginContext["states"]["get"]>>;
@@ -140,6 +141,51 @@ function trustProjection(scores: number[], typical: number, band: number, step: 
 const TRUST_BANDS = [0.15, 0.25, 0.35, 0.5];
 const TRUST_STEPS = [0.2, 0.35, 0.5];
 const PRE_DEBUT = [50, 55, 60];
+
+// ---------------------------------------------------------------------------
+// Form tests (Part 2 of the restricted-pool task)
+// ---------------------------------------------------------------------------
+
+const rolling = (scores: number[], n: number) => mean(scores.slice(-n));
+
+/** Plain rolling 3/5-game averages, and blends w x rolling + (1 - w) x season mean. */
+const FORM_METHODS: [string, (s: PlayerState) => number][] = [
+  ["roll3", (s) => rolling(s.scores, 3)],
+  ["roll5", (s) => rolling(s.scores, 5)],
+  ...[3, 5].flatMap((n) =>
+    [0.25, 0.5, 0.75].map((w): [string, (s: PlayerState) => number] => [
+      `blend_roll${n}_w${w}`,
+      (s) => w * rolling(s.scores, n) + (1 - w) * mean(s.scores),
+    ]),
+  ),
+];
+
+const MINUTE_THRESHOLDS = [10, 15];
+const MINUTE_WEIGHTS = [0.25, 0.5];
+/** Origin:player keys where minutes-based form fired, per threshold. */
+const minutesFired = new Map(MINUTE_THRESHOLDS.map((t) => [t, new Set<string>()]));
+
+/**
+ * Last-3-games minutes minus season-average minutes (games up to O), when
+ * the gap is at least the threshold either way; otherwise 0. Needs 4+
+ * games with minutes.
+ */
+function minutesShift(s: PlayerState, origin: number, threshold: number) {
+  const byRound = minutesOf.get(s.id);
+  if (!byRound) return 0;
+  const minutes = s.rounds.filter((r) => r <= origin).map((r) => byRound.get(r)).filter((m): m is number => m !== undefined);
+  if (minutes.length < 4) return 0;
+  const gap = mean(minutes.slice(-3)) - mean(minutes);
+  return Math.abs(gap) >= threshold ? gap : 0;
+}
+
+/** Season mean, moved w of the way to his last-3 average when minutes shifted. */
+function minutesProjection(s: PlayerState, origin: number, threshold: number, w: number) {
+  const seasonMean = mean(s.scores);
+  return minutesShift(s, origin, threshold) === 0
+    ? seasonMean
+    : (1 - w) * seasonMean + w * rolling(s.scores, 3);
+}
 
 // ---------------------------------------------------------------------------
 // Matchups
@@ -220,15 +266,7 @@ for (const origin of ORIGINS) {
   contexts.push(ctx);
 
   for (const s of ctx.states.values()) {
-    segmentOf.set(`${origin}:${s.id}`, {
-      band: band(s.price),
-      games: gamesBand(Math.max(s.scores.length, 1)),
-      position: s.position,
-      outlier: s.outlier,
-      price: s.price,
-      rookie: s.rookie,
-      gamesN: s.scores.length,
-    });
+    segmentOf.set(`${origin}:${s.id}`, segmentFor(s));
 
     // "Projected to play": team has a game and he played the team's last game.
     for (const h of HORIZONS) {
@@ -245,6 +283,22 @@ for (const origin of ORIGINS) {
   for (const m of GENERAL_METHODS) {
     const proj = flat(ctx, (s) => m.project(s.scores), veteran);
     add(`gen:${m.name}`, scoreObs(ctx, proj), priceObs(ctx, proj));
+  }
+
+  // Form tests (same players): rolling 3/5-game averages, blends with the
+  // season mean, and minutes-based form.
+  for (const [name, value] of FORM_METHODS) {
+    const proj = flat(ctx, value, veteran);
+    add(`form:${name}`, scoreObs(ctx, proj), priceObs(ctx, proj));
+  }
+  for (const threshold of MINUTE_THRESHOLDS) {
+    for (const s of ctx.states.values()) {
+      if (veteran(s) && minutesShift(s, origin, threshold) !== 0) minutesFired.get(threshold)!.add(`${origin}:${s.id}`);
+    }
+    for (const w of MINUTE_WEIGHTS) {
+      const proj = flat(ctx, (s) => minutesProjection(s, origin, threshold, w), veteran);
+      add(`form:minutes_t${threshold}_w${w}`, scoreObs(ctx, proj), priceObs(ctx, proj));
+    }
   }
 
   // Rookies after debut.
@@ -607,6 +661,101 @@ for (const p of allPlayers) {
 const playersWithFeed = allPlayers.filter((p) => p.championDataId).length;
 console.log(`Detail files: ${detailFiles}; with feed_id: ${withFeedId}. Normalised players with championDataId: ${playersWithFeed} of ${allPlayers.length}.`);
 console.log(`2026 (player, opponent) pairs with a game: ${pairsSeason.size}. Players with 2025 totals (linked through feed_id in the same record): ${with2025Totals}.`);
+
+// ---------------------------------------------------------------------------
+// Restricted pool: Part 1 (existing methods) and Part 2 (form tests)
+// ---------------------------------------------------------------------------
+
+const pool = parsePool(process.argv.slice(2));
+const inPool = poolFilter(pool);
+const S = pool.suffix;
+
+console.log(`\n\n=== RESTRICTED POOL: ${pool.label} ===`);
+console.log("Only who is SCORED is filtered. k for the price engine, the typical rookie level and every projection still use all players, as the planner does. The pool is rebuilt at each origin from the price published after that round.");
+
+const poolBand = (price: number) => (price <= 600_000 ? "$450-600k" : ">$600k");
+const poolTotals = { playerOrigins: 0, hot: 0, positions: new Map<string, number>(), bands: new Map<string, number>() };
+console.log("\nPool by origin (players in the pool; recently hot = a score in the last 3 more than 1.5 SD above his own median):");
+for (const ctx of contexts) {
+  const members = [...ctx.states.values()].filter((s) => {
+    const seg_ = segmentOf.get(`${ctx.origin}:${s.id}`)!;
+    return seg_.price > pool.minPrice && (pool.minAvg === null || seg_.average >= pool.minAvg);
+  });
+  const hot = members.filter((s) => segmentOf.get(`${ctx.origin}:${s.id}`)!.hot).length;
+  const scored = base.score.filter((o) => o.origin === ctx.origin && inPool(o)).length;
+  poolTotals.playerOrigins += members.length;
+  poolTotals.hot += hot;
+  for (const s of members) {
+    poolTotals.positions.set(s.position, (poolTotals.positions.get(s.position) ?? 0) + 1);
+    poolTotals.bands.set(poolBand(s.price), (poolTotals.bands.get(poolBand(s.price)) ?? 0) + 1);
+  }
+  csv(`pool${S}`, { origin: ctx.origin, pool_size: members.length, recently_hot: hot, scored_predictions: scored });
+  console.log(`  O=${ctx.origin}: ${members.length} players, ${hot} recently hot (${fmt((100 * hot) / Math.max(members.length, 1))}%), ${scored} scored predictions`);
+}
+const scoredIS = base.score.filter((o) => inSample(o) && inPool(o)).length;
+const scoredOOS = base.score.filter((o) => outSample(o) && inPool(o)).length;
+console.log(`Scored predictions (season mean): rounds 5-11 origins ${scoredIS}; rounds 12-17 origins ${scoredOOS}.`);
+console.log(`Player-origins by position: ${[...poolTotals.positions].map(([k, v]) => `${k} ${v}`).join(", ")}; by price band: ${[...poolTotals.bands].map(([k, v]) => `${k} ${v}`).join(", ")}.`);
+console.log(`Recently hot: ${poolTotals.hot} of ${poolTotals.playerOrigins} player-origins (${fmt((100 * poolTotals.hot) / poolTotals.playerOrigins)}%).`);
+
+const sharedSegments: [string, Filter][] = [
+  ["DEF", seg((s) => s.position === "DEF")],
+  ["MID", seg((s) => s.position === "MID")],
+  ["RUC", seg((s) => s.position === "RUC")],
+  ["FWD", seg((s) => s.position === "FWD")],
+  ["$450-600k", seg((s) => s.price > 450_000 && s.price <= 600_000)],
+  [">$600k", seg((s) => s.price > 600_000)],
+  ["recently hot", seg((s) => s.hot)],
+];
+const labelOf = (name: string) =>
+  GENERAL_METHODS.find((m) => `gen:${m.name}` === name)?.label ?? name.replace(/^form:/, "form: ");
+const family = (prefix: string) =>
+  [...results.keys()]
+    .filter((n) => n.startsWith(prefix) && n !== "gen:mean")
+    .map((n): [string, string, { score: Obs[]; price: Obs[] }] => [n, labelOf(n), get(n)]);
+
+for (const [title, prefix, csvBase] of [
+  ["PART 1: existing methods vs season mean", "gen:", "general_vs_mean"],
+  ["PART 2: form tests vs season mean", "form:", "form_vs_mean"],
+] as const) {
+  reportMethods({ title: `${title}, FULL pool (non-rookies with games), out-of-sample 12-17`, methods: family(prefix), baseline: base, population: () => true, segments: sharedSegments, csvName: `${csvBase}_full` });
+  reportMethods({ title: `${title}, RESTRICTED pool (${pool.label}), out-of-sample 12-17`, methods: family(prefix), baseline: base, population: inPool, segments: sharedSegments, csvName: `${csvBase}${S}` });
+}
+
+// In-sample choice per family within each pool.
+for (const [label, population] of [["full", () => true], ["restricted", inPool]] as [string, Filter][]) {
+  for (const prefix of ["gen:", "form:"]) {
+    const ranked = [...results.keys()]
+      .filter((n) => n.startsWith(prefix) || n === "gen:mean")
+      .sort((x, y) => mae(get(x).price, both(inSample, population)).value - mae(get(y).price, both(inSample, population)).value);
+    console.log(`Chosen on 5-11 (${label} pool, ${prefix.replace(":", "")} family): ${ranked[0]}`);
+  }
+}
+
+// Minutes-based form: how often it fires, and the error where it fires.
+console.log("\nMinutes-based form (last 3 games vs season average minutes):");
+for (const threshold of MINUTE_THRESHOLDS) {
+  const fired = minutesFired.get(threshold)!;
+  const where: Filter = (o) => fired.has(`${o.origin}:${o.pid}`);
+  for (const [label, population] of [["full", () => true], ["restricted", inPool]] as [string, Filter][]) {
+    const eligible = [...segmentOf.entries()].filter(([key, s]) => {
+      const [origin] = key.split(":").map(Number);
+      return origin >= 5 && !s.rookie && s.gamesN >= 1 && population({ origin, h: 1, pid: Number(key.split(":")[1]), err: 0 });
+    });
+    const firedHere = eligible.filter(([key]) => fired.has(key)).length;
+    for (const w of MINUTE_WEIGHTS) {
+      const r = get(`form:minutes_t${threshold}_w${w}`);
+      const f = both(outSample, population, where);
+      const b = pairedBootstrap(r.price, base.price, f);
+      comparisons.count += 1;
+      const row = { pool: label, threshold, weight: w, fired: firedHere, of: eligible.length, n_scored_where_fired: mae(r.score, f).n, score_mae_mean: fmt(mae(base.score, f).value, 2), score_mae_method: fmt(mae(r.score, f).value, 2), price_mae_mean: Math.round(mae(base.price, f).value), price_mae_method: Math.round(mae(r.price, f).value), diff: Math.round(b.diff), lo: Math.round(b.lo), hi: Math.round(b.hi), verdict: verdict(b) };
+      csv(label === "full" ? "minutes_form_full" : `minutes_form${S}`, row);
+      console.log(`  ${label.padEnd(10)} ±${threshold} min, w=${w}: fires for ${firedHere} of ${eligible.length} player-origins (${fmt((100 * firedHere) / Math.max(eligible.length, 1))}%); where it fires (OOS): score ${row.score_mae_mean} -> ${row.score_mae_method}, price ${money(row.price_mae_mean)} -> ${money(row.price_mae_method)} (${signedMoney(b.diff)} [${signedMoney(b.lo)}, ${signedMoney(b.hi)}]) ${verdict(b)}`);
+    }
+  }
+}
+
+console.log(`\nInterval comparisons run in this script: ${comparisons.count}. About 5% of 95% intervals exclude zero by chance (~${Math.round(comparisons.count * 0.05)} here), so isolated "beyond noise" results need care.`);
 
 // ---------------------------------------------------------------------------
 // CSV output
