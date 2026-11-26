@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useMemo } from "react";
 
+import { availabilitySnapshot, likelyPlaying } from "@/lib/availability";
 import { evaluatePlan } from "@/lib/planner/evaluatePlan";
 import { addPlaceholder, isPlaceholderId } from "@/lib/planner/placeholders";
 import { createPlan, duplicatePlan } from "@/lib/planner/teamFile";
@@ -74,6 +75,9 @@ function Planner({ team }: { team: MyTeam }) {
   const priceOverrideCount = activePlan ? countPriceOverrides(activePlan) : 0;
   const lastShown = FIRST_ROUND + roundCount - 1;
 
+  // On by default: long-term injured and suspended don't count as playing.
+  const countUnavailableAsOut = team.countUnavailableAsOut !== false;
+
   const rounds = useMemo(
     () =>
       evaluatePlan({
@@ -83,8 +87,11 @@ function Planner({ team }: { team: MyTeam }) {
         projector,
         fixtures: plannerFixtures,
         lastRound: lastShown,
+        isOut: countUnavailableAsOut
+          ? (playerId, round) => !likelyPlaying(playersById.get(playerId) ?? { id: playerId }, round)
+          : undefined,
       }),
-    [team, activePlan, playersById, projector, lastShown],
+    [team, activePlan, playersById, projector, lastShown, countUnavailableAsOut],
   );
 
   const save = (next: MyTeam) => saveMyTeam(next);
@@ -262,6 +269,23 @@ function Planner({ team }: { team: MyTeam }) {
               </button>
             ))}
           </div>
+
+          <label className="flex items-start gap-2 text-sm text-slate-200">
+            <input
+              type="checkbox"
+              checked={countUnavailableAsOut}
+              onChange={(e) => save({ ...team, countUnavailableAsOut: e.target.checked })}
+              className="mt-0.5 h-4 w-4 shrink-0 accent-violet-500"
+            />
+            <span>
+              Count long-term injured and suspended players as not playing
+              <span className="block text-xs text-slate-400">
+                {availabilitySnapshot
+                  ? "Affects the playing counts and bye warnings only, not prices or projections."
+                  : "No injury list loaded yet, so everyone counts as playing."}
+              </span>
+            </span>
+          </label>
 
           {view === "plan" ? (
             <>

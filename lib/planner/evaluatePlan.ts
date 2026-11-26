@@ -62,6 +62,8 @@ export interface RoundSummary {
   tradedOut: number[];
   /** Squad players whose team has a bye this round. */
   byePlayerIds: number[];
+  /** Squad players with a game but counted as not playing (isOut). */
+  unavailablePlayerIds: number[];
 }
 
 /**
@@ -132,6 +134,7 @@ export function evaluatePlan({
   projector,
   fixtures,
   lastRound = projector.lastRound,
+  isOut,
 }: {
   team: MyTeam;
   plan: TradePlan | null;
@@ -140,6 +143,12 @@ export function evaluatePlan({
   fixtures: PlannerFixture[];
   /** Last round to evaluate (the plan's shown rounds). */
   lastRound?: number;
+  /**
+   * Players to count as not playing in a round (long-term injured or
+   * suspended). Only the playing counts and the bye warning use it;
+   * prices, trades and positions don't.
+   */
+  isOut?: (playerId: number, round: number) => boolean;
 }): RoundSummary[] {
   const summaries: RoundSummary[] = [];
   const pins = new Map(team.players.map((p) => [p.id, p.pin]));
@@ -315,11 +324,15 @@ export function evaluatePlan({
     // a game this round, after this round's trades; a placeholder with no
     // team always plays.
     const byeTeams = getByeTeams(round, fixtures);
-    const playingPlayers = squadPlayers.filter((p) => !byeTeams.includes(p.team));
-    const onFieldPlaying = squadPlayers.filter(
-      (p) => !byeTeams.includes(p.team) && match.assignment.get(p.id)?.area === "field",
+    const withGame = squadPlayers.filter((p) => !byeTeams.includes(p.team));
+    // With a game but likely out (injured or suspended), when asked.
+    const unavailable = isOut ? withGame.filter((p) => isOut(p.id, round)) : [];
+    const playingPlayers = withGame.filter((p) => !unavailable.includes(p));
+    const onFieldPlaying = playingPlayers.filter(
+      (p) => match.assignment.get(p.id)?.area === "field",
     ).length;
-    const fieldCheck = checkOnFieldPlaying(playingPlayers.map((p) => toMatchPlayer(p)));
+    // The non-bye on-field check stays about byes only.
+    const fieldCheck = checkOnFieldPlaying(withGame.map((p) => toMatchPlayer(p)));
 
     if (byeTeams.length > 0) {
       // Bye round: only the best BEST_SCORES_IN_BYE_ROUND scores count, so
@@ -334,6 +347,12 @@ export function evaluatePlan({
       // Non-bye rounds unchanged: whether the players with a game can fill
       // the on-field spots (only fails when the squad itself can't).
       warnings.push(...fieldCheck.problems.map((p) => `Byes: ${p}`));
+    }
+
+    if (unavailable.length > 0) {
+      warnings.push(
+        `${unavailable.length} injured or suspended player${unavailable.length === 1 ? "" : "s"} not counted as playing (${unavailable.map((p) => p.name).join(", ")}).`,
+      );
     }
 
     summaries.push({
@@ -365,7 +384,7 @@ export function evaluatePlan({
       ),
       warnings,
       byeTeams,
-      onBye: squadPlayers.length - playingPlayers.length,
+      onBye: squadPlayers.length - withGame.length,
       playing: playingPlayers.length,
       onFieldPlaying,
       onFieldNeeded: fieldCheck.needed,
@@ -375,6 +394,7 @@ export function evaluatePlan({
       byePlayerIds: squadPlayers
         .filter((p) => byeTeams.includes(p.team))
         .map((p) => p.id),
+      unavailablePlayerIds: unavailable.map((p) => p.id),
     });
   }
 

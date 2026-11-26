@@ -43,7 +43,12 @@ export function plannerSetup() {
     };
   }
 
-  function run(team: MyTeam, plan: TradePlan, lastRound = FINAL_ROUND) {
+  function run(
+    team: MyTeam,
+    plan: TradePlan,
+    lastRound = FINAL_ROUND,
+    isOut?: (playerId: number, round: number) => boolean,
+  ) {
     const projector = createPriceProjector({
       players,
       contexts: getScaledRoundContexts(),
@@ -61,7 +66,7 @@ export function plannerSetup() {
     return {
       projector,
       playersById,
-      rounds: evaluatePlan({ team, plan, playersById, projector, fixtures, lastRound }),
+      rounds: evaluatePlan({ team, plan, playersById, projector, fixtures, lastRound, isOut }),
     };
   }
 

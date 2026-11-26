@@ -6,6 +6,9 @@ export default defineConfig({
   resolve: {
     alias: {
       "@": path.resolve(__dirname),
+      // Tests never load the real availability file or the debug sample
+      // through the app's import; they pass data in explicitly.
+      "availability-snapshot": path.resolve(__dirname, "lib/availability/no-data.json"),
     },
   },
   test: {

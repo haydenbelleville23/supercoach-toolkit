@@ -1,8 +1,15 @@
 import { execFileSync } from "node:child_process";
+import { existsSync } from "node:fs";
 
 import type { NextConfig } from "next";
 
 import { parseAsOfRound } from "./lib/asOf/parseAsOfRound";
+import {
+  AVAILABILITY_FILE,
+  AVAILABILITY_FIXTURE_FILE,
+  AVAILABILITY_SPECIFIER,
+  availabilitySource,
+} from "./lib/availability/alias";
 
 /**
  * DEBUG_AS_OF_ROUND=N shows the site as it was straight after Round N.
@@ -30,6 +37,14 @@ if (asOfRound !== null) {
     `${dir}/players-normalised.json`;
   resolveAlias["@/data/2026/fixtures-raw.json"] = `${dir}/fixtures-raw.json`;
 }
+
+// Availability: the weekly file, the invented sample (debug lock only) or
+// a no-data stub. See lib/availability/alias.ts.
+resolveAlias[AVAILABILITY_SPECIFIER] = `./${availabilitySource({
+  asOfRound,
+  fileExists: existsSync(AVAILABILITY_FILE),
+  fixtureExists: existsSync(AVAILABILITY_FIXTURE_FILE),
+})}`;
 
 const nextConfig: NextConfig = {
   // Inlined into server and browser code so both see the same round.

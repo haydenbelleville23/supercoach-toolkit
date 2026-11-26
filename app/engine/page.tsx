@@ -99,6 +99,7 @@ export default function EnginePage() {
 
         <section className="mt-10 rounded-2xl border border-slate-800 bg-slate-900 p-6">
           <PlayerHeader
+            id={selectedPlayer.id}
             name={selectedPlayer.name}
             team={selectedPlayer.team}
             teamName={selectedPlayer.teamName}

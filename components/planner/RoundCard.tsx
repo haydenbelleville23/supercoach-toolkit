@@ -328,6 +328,7 @@ function RoundBody({
             <FieldDiagram
               layout={buildFieldLayout(summary, playersById)}
               priceFor={(playerId) => priceAt(playerId, round)}
+              round={round}
             />
           </div>
         )}
