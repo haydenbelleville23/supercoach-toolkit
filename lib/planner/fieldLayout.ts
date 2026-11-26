@@ -8,6 +8,8 @@ export interface FieldSpot {
   slotId: string;
   player: Player | null;
   onBye: boolean;
+  /** Has a game but counted as not playing (injured or suspended). */
+  unavailable: boolean;
   tradedIn: boolean;
   placeholder: boolean;
 }
@@ -44,6 +46,7 @@ export function buildFieldLayout(
   }
 
   const bye = new Set(summary.byePlayerIds);
+  const unavailable = new Set(summary.unavailablePlayerIds ?? []);
   const tradedIn = new Set(summary.tradedIn);
   const slots = buildSlots();
 
@@ -67,6 +70,7 @@ export function buildFieldLayout(
             slotId: slot.id,
             player,
             onBye: playerId !== undefined && bye.has(playerId),
+            unavailable: playerId !== undefined && unavailable.has(playerId),
             tradedIn: playerId !== undefined && tradedIn.has(playerId),
             placeholder: playerId !== undefined && isPlaceholderId(playerId),
           };
@@ -82,7 +86,7 @@ export function buildFieldLayout(
     tradedOut: summary.tradedOut
       .map((id) => playersById.get(id))
       .filter((p): p is Player => !!p),
-    playingOnField: fieldSpots.filter((s) => s.player && !s.onBye).length,
+    playingOnField: fieldSpots.filter((s) => s.player && !s.onBye && !s.unavailable).length,
     onFieldSlots: fieldSpots.length,
     playingTotal: summary.playing,
     squadSize: summary.squad.length,

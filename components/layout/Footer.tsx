@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
+import { AVAILABILITY_SOURCE_LABEL } from "@/lib/availability/config";
 import { BRAND, SITE_NAME } from "@/lib/site";
 
 export default function Footer() {
@@ -31,6 +32,9 @@ export default function Footer() {
           <p className="mt-1">
             Prices and scores from SuperCoach&apos;s public site. Live scores from DFS Australia.
           </p>
+          {AVAILABILITY_SOURCE_LABEL && (
+            <p className="mt-1">Injury information: {AVAILABILITY_SOURCE_LABEL}</p>
+          )}
           <p className="mt-1">
             Not affiliated with the AFL or the official AFL SuperCoach competition.
           </p>

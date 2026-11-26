@@ -129,5 +129,6 @@ export function parseTeamFile(value: unknown): MyTeam | string {
         )
       : [],
     plannerView: value.plannerView === "scores" ? "scores" : "plan",
+    countUnavailableAsOut: value.countUnavailableAsOut !== false,
   };
 }

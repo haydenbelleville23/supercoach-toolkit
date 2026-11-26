@@ -3,7 +3,10 @@
 import Link from "next/link";
 import { useMemo, useState } from "react";
 
+import AvailabilityBadge from "@/components/ui/AvailabilityBadge";
+import AvailabilitySampleNotice from "@/components/ui/AvailabilitySampleNotice";
 import PlayerSelect from "@/components/ui/PlayerSelect";
+import { availabilityFor } from "@/lib/availability";
 import TeamChip from "@/components/ui/TeamChip";
 import { formatMoney } from "@/lib/format";
 import { createAddPlayerReason } from "@/lib/planner/addPlayerReason";
@@ -289,9 +292,12 @@ export default function MyTeamTool() {
       <section className="space-y-4">
         {(["field", "bench"] as const).map((area) => (
           <div key={area} className="rounded-2xl border border-slate-800 bg-slate-900 p-5">
-            <h2 className="text-lg font-semibold">
-              {area === "field" ? "On field (23)" : "Bench (8)"}
-            </h2>
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <h2 className="text-lg font-semibold">
+                {area === "field" ? "On field (23)" : "Bench (8)"}
+              </h2>
+              {area === "field" && <AvailabilitySampleNotice />}
+            </div>
 
             {SLOT_ORDER.filter((pos) => !(area === "bench" && pos === "FLEX")).map((position) => {
               const rows = grouped.get(`${area}:${position}`) ?? [];
@@ -389,14 +395,15 @@ function SquadRow({
         <TeamChip team={player.team} />
 
         <div className="min-w-0 flex-1">
-        <p className="truncate font-semibold">
-          {player.name}
+        <div className="flex min-w-0 items-center gap-1.5">
+          <p className="truncate font-semibold">{player.name}</p>
           {isPlaceholderId(player.id) && (
-            <span className="ml-1.5 rounded bg-violet-500/30 px-1 text-[10px] font-bold text-violet-100">
+            <span className="shrink-0 rounded bg-violet-500/30 px-1 text-[10px] font-bold text-violet-100">
               TBC
             </span>
           )}
-        </p>
+          <AvailabilityBadge info={availabilityFor(player, PLANNER_COMPLETED_ROUND + 1)} />
+        </div>
         <p className="text-xs text-slate-400">
           {player.team || "No team"} · {player.positions.join("/")} · {formatMoney(player.price)}
         </p>

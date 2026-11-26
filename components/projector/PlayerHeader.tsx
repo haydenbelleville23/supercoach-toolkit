@@ -1,8 +1,12 @@
 import Image from "next/image";
 
+import AvailabilityBadge from "@/components/ui/AvailabilityBadge";
+import { CURRENT_COMPLETED_ROUND } from "@/data/season";
+import { availabilityFor } from "@/lib/availability";
 import { getTeamLogo } from "@/lib/teams";
 
 type PlayerHeaderProps = {
+  id: number;
   name: string;
   team: string;
   teamName: string;
@@ -11,6 +15,7 @@ type PlayerHeaderProps = {
 };
 
 export default function PlayerHeader({
+  id,
   name,
   team,
   teamName,
@@ -38,11 +43,9 @@ export default function PlayerHeader({
           {positions.join(" / ")} • {teamName}
         </p>
 
-        {availability && (
-          <p className="mt-2 inline-flex rounded-full bg-amber-500/15 px-3 py-1 text-sm font-medium text-amber-400">
-            {availability}
-          </p>
-        )}
+        <p className="mt-2">
+          <AvailabilityBadge info={availabilityFor({ id, availability }, CURRENT_COMPLETED_ROUND + 1)} />
+        </p>
       </div>
     </div>
   );

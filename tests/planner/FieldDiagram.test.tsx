@@ -34,6 +34,7 @@ const spot = (id: number, p: Player | null, extra: Partial<FieldSpot> = {}): Fie
   slotId: `s${id}`,
   player: p,
   onBye: false,
+  unavailable: false,
   tradedIn: false,
   placeholder: false,
   ...extra,
@@ -63,7 +64,7 @@ describe("FieldDiagram", () => {
   };
 
   it("renders cards with short name, team logo and that round's price", () => {
-    render(<FieldDiagram layout={layout} priceFor={(id) => (id === 1 ? 350_000 : null)} />);
+    render(<FieldDiagram round={11} layout={layout} priceFor={(id) => (id === 1 ? 350_000 : null)} />);
 
     const ridley = screen.getByText("J. Ridley").closest("li")!;
     expect(ridley).toHaveTextContent("$350,000");
@@ -72,7 +73,7 @@ describe("FieldDiagram", () => {
   });
 
   it("marks IN and BYE with tags, not just colour", () => {
-    render(<FieldDiagram layout={layout} priceFor={() => 1} />);
+    render(<FieldDiagram round={11} layout={layout} priceFor={() => 1} />);
 
     expect(screen.getByText("J. Ridley").closest("li")).toHaveTextContent("IN");
     const lloyd = screen.getByText("J. Lloyd").closest("li")!;
@@ -81,7 +82,7 @@ describe("FieldDiagram", () => {
   });
 
   it("shows line names, empty slots, the bench, counts and the out list", () => {
-    render(<FieldDiagram layout={layout} priceFor={() => 1} />);
+    render(<FieldDiagram round={11} layout={layout} priceFor={() => 1} />);
 
     expect(screen.getByText("Defenders")).toBeInTheDocument();
     expect(screen.getByText("Empty")).toBeInTheDocument();

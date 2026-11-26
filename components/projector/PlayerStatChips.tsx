@@ -1,3 +1,7 @@
+import AvailabilityBadge from "@/components/ui/AvailabilityBadge";
+import AvailabilitySampleNotice from "@/components/ui/AvailabilitySampleNotice";
+import { CURRENT_COMPLETED_ROUND } from "@/data/season";
+import { availabilityFor } from "@/lib/availability";
 import { formatMoney } from "@/lib/format";
 import type { Player } from "@/types/player";
 
@@ -18,11 +22,22 @@ function Chip({ label, value }: { label: string; value: string }) {
  * note. Replaces the large player card.
  */
 export default function PlayerStatChips({ player }: { player: Player }) {
+  const availability = availabilityFor(player, CURRENT_COMPLETED_ROUND + 1);
+  const showBadge = !!availability && availability.status !== "available";
+
   return (
+    <>
     <section
       aria-label={`${player.name}: ${player.positions.join("/")}, ${player.teamName}`}
       className="-mx-4 flex items-stretch gap-1.5 overflow-x-auto px-4 pb-1 sm:mx-0 sm:flex-wrap sm:px-0"
     >
+      {/* First, so it's visible on phones without scrolling the strip. */}
+      {showBadge && (
+        <div className="flex shrink-0 items-center self-center">
+          <AvailabilityBadge info={availability} />
+        </div>
+      )}
+
       <Chip label="Price" value={formatMoney(player.price)} />
       <Chip label="BE" value={player.breakeven.toString()} />
       <Chip label="Avg" value={player.average.toFixed(1)} />
@@ -38,11 +53,9 @@ export default function PlayerStatChips({ player }: { player: Player }) {
         <span>{player.teamName}</span>
       </div>
 
-      {player.availability && (
-        <p className="flex shrink-0 items-center self-center rounded-full bg-amber-500/15 px-2.5 py-1 text-xs font-medium text-amber-400">
-          {player.availability}
-        </p>
-      )}
     </section>
+
+    <AvailabilitySampleNotice className="mt-1.5" />
+    </>
   );
 }

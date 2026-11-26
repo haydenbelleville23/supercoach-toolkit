@@ -11,7 +11,11 @@ import {
   useState,
 } from "react";
 
+import AvailabilityBadge from "@/components/ui/AvailabilityBadge";
+import AvailabilitySampleNotice from "@/components/ui/AvailabilitySampleNotice";
 import DataTable, { type DataTableColumn } from "@/components/ui/DataTable";
+import { availabilityFor, availabilitySnapshot, selectionDataLoaded } from "@/lib/availability";
+import { matchesAvailabilityFilter, type AvailabilityFilter } from "@/lib/availability/filter";
 import PlayerCell from "@/components/ui/PlayerCell";
 import {
   sortRows,
@@ -176,6 +180,10 @@ export default function CashCowsPage() {
   const [clubFilter, setClubFilter] =
     useState("ALL");
 
+  // Status filter (All / Available / Selected) for the next round.
+  const [availabilityFilter, setAvailabilityFilter] =
+    useState<AvailabilityFilter>("all");
+
   const [visibleCount, setVisibleCount] =
     useState(50);
 
@@ -192,6 +200,7 @@ export default function CashCowsPage() {
     priceFilter !== "all",
     clubFilter !== "ALL",
     searchQuery.trim() !== "",
+    availabilityFilter !== "all",
   ].filter(Boolean).length;
 
   function resetFilters() {
@@ -199,6 +208,7 @@ export default function CashCowsPage() {
     setPositionFilter("ALL");
     setPriceFilter("all");
     setClubFilter("ALL");
+    setAvailabilityFilter("all");
     setProjectionMode("projected");
     setSort(DEFAULT_SORT);
   }
@@ -268,7 +278,13 @@ export default function CashCowsPage() {
         matchesPosition &&
         matchesClub &&
         matchesPrice &&
-        (!myTeamOnly || myTeamIds.has(row.player.id))
+        (!myTeamOnly || myTeamIds.has(row.player.id)) &&
+        matchesAvailabilityFilter(
+          row.player,
+          availabilityFilter,
+          CURRENT_COMPLETED_ROUND + 1,
+          availabilitySnapshot,
+        )
       );
     });
 
@@ -278,6 +294,7 @@ export default function CashCowsPage() {
 }, [
   myTeamOnly,
   myTeamIds,
+  availabilityFilter,
   contexts,
   projectionMode,
   searchQuery,
@@ -395,6 +412,11 @@ const visibleRows = useMemo(
           team={row.player.team}
           positions={row.player.positions}
           href={`/projector?player=${row.player.id}`}
+          trailing={
+            <AvailabilityBadge
+              info={availabilityFor(row.player, CURRENT_COMPLETED_ROUND + 1)}
+            />
+          }
         />
       ),
     },
@@ -766,6 +788,39 @@ const visibleRows = useMemo(
             >
               My team{myTeamIds.size > 0 ? ` (${myTeamIds.size})` : ""}
             </button>
+
+            <div
+              role="group"
+              aria-label={`Status for Round ${CURRENT_COMPLETED_ROUND + 1}`}
+              className="inline-flex rounded-lg border border-slate-700 p-0.5"
+            >
+              {(["all", "available", "selected"] as const).map((option) => {
+                const disabled = option === "selected" && !selectionDataLoaded;
+                return (
+                  <button
+                    key={option}
+                    type="button"
+                    aria-pressed={availabilityFilter === option}
+                    disabled={disabled}
+                    title={disabled ? "No team selections loaded yet" : undefined}
+                    onClick={() => setAvailabilityFilter(option)}
+                    className={`rounded-md px-2.5 py-1 text-xs font-semibold transition disabled:cursor-not-allowed disabled:opacity-40 ${
+                      availabilityFilter === option
+                        ? "bg-violet-500/25 text-violet-100"
+                        : "text-slate-300 hover:text-white"
+                    }`}
+                  >
+                    {option === "all" ? "All" : option === "available" ? "Available" : "Selected"}
+                  </button>
+                );
+              })}
+            </div>
+
+            {!selectionDataLoaded && (
+              <span className="text-xs text-slate-500">No team selections loaded yet</span>
+            )}
+
+            <AvailabilitySampleNotice />
 
             {myTeamIds.size > 0 && (
               <span className="flex items-center gap-1.5 text-xs text-slate-400">

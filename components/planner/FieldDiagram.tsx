@@ -1,9 +1,16 @@
 "use client";
 
+import AvailabilityBadge from "@/components/ui/AvailabilityBadge";
+import AvailabilitySampleNotice from "@/components/ui/AvailabilitySampleNotice";
 import TeamChip from "@/components/ui/TeamChip";
+import { availabilityFor as loadedAvailabilityFor } from "@/lib/availability";
+import type { RoundAvailability } from "@/lib/availability/selectors";
 import { formatMoney } from "@/lib/format";
 import type { FieldLayout, FieldLine, FieldSpot } from "@/lib/planner/fieldLayout";
 import { shortPlayerName } from "@/lib/players/shortName";
+import type { Player } from "@/types/player";
+
+type AvailabilityLookup = (player: Player) => RoundAvailability | null;
 
 const LINE_NAMES: Record<string, string> = {
   DEF: "Defenders",
@@ -30,16 +37,23 @@ function cardName(spot: FieldSpot): string {
 export default function FieldDiagram({
   layout,
   priceFor,
+  round,
+  availabilityFor = (player) => loadedAvailabilityFor(player, round),
 }: {
   layout: FieldLayout;
   /** The player's price at this round. */
   priceFor: (playerId: number) => number | null;
+  round: number;
+  /** Status badge per player (default: the loaded availability list). */
+  availabilityFor?: AvailabilityLookup;
 }) {
   const field = layout.lines.filter((l) => l.area === "field");
   const bench = layout.lines.filter((l) => l.area === "bench");
 
   return (
     <div className="space-y-3 text-xs">
+      <AvailabilitySampleNotice />
+
       <p className="text-slate-300">
         Total playing{" "}
         <strong className="text-white">
@@ -55,7 +69,7 @@ export default function FieldDiagram({
       <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_auto]">
         <section aria-label="On field" className="space-y-2.5">
           {field.map((line) => (
-            <Line key={line.position} line={line} title={LINE_NAMES[line.position]} priceFor={priceFor} centred />
+            <Line key={line.position} line={line} title={LINE_NAMES[line.position]} priceFor={priceFor} availabilityFor={availabilityFor} centred />
           ))}
         </section>
 
@@ -65,7 +79,7 @@ export default function FieldDiagram({
         >
           <h4 className="font-semibold uppercase tracking-wide text-slate-400">Bench</h4>
           {bench.map((line) => (
-            <Line key={line.position} line={line} title={line.position} priceFor={priceFor} />
+            <Line key={line.position} line={line} title={line.position} priceFor={priceFor} availabilityFor={availabilityFor} />
           ))}
         </section>
       </div>
@@ -89,11 +103,13 @@ function Line({
   line,
   title,
   priceFor,
+  availabilityFor,
   centred = false,
 }: {
   line: FieldLine;
   title: string;
   priceFor: (playerId: number) => number | null;
+  availabilityFor: AvailabilityLookup;
   centred?: boolean;
 }) {
   return (
@@ -103,7 +119,7 @@ function Line({
       </h5>
       <ul className={`flex flex-wrap gap-1.5 ${centred ? "sm:justify-center" : ""}`}>
         {line.spots.map((spot) => (
-          <PlayerCard key={spot.slotId} spot={spot} priceFor={priceFor} />
+          <PlayerCard key={spot.slotId} spot={spot} priceFor={priceFor} availabilityFor={availabilityFor} />
         ))}
       </ul>
     </div>
@@ -116,9 +132,11 @@ const CARD_WIDTH = "w-[calc((100%-0.75rem)/3)] sm:w-[5.5rem]";
 export function PlayerCard({
   spot,
   priceFor,
+  availabilityFor,
 }: {
   spot: FieldSpot;
   priceFor: (playerId: number) => number | null;
+  availabilityFor: AvailabilityLookup;
 }) {
   if (!spot.player) {
     return (
@@ -132,22 +150,37 @@ export function PlayerCard({
 
   const player = spot.player;
   const price = priceFor(player.id);
+  const availability = availabilityFor(player);
+  const hasBadge = !!availability && availability.status !== "available";
 
   return (
     <li
-      title={`${player.name}${player.team ? `, ${player.team}` : ""}${spot.onBye ? " (bye)" : ""}${spot.tradedIn ? " (traded in)" : ""}`}
+      title={`${player.name}${player.team ? `, ${player.team}` : ""}${spot.onBye ? " (bye)" : ""}${spot.unavailable ? " (not counted as playing)" : ""}${spot.tradedIn ? " (traded in)" : ""}`}
       className={`${CARD_WIDTH} relative min-h-[3.75rem] rounded-md border px-1.5 py-1 leading-tight ${
         spot.onBye
           ? "border-slate-700 bg-slate-950 text-slate-400 opacity-60"
-          : spot.tradedIn
+          : spot.unavailable
+            ? "border-dashed border-red-400/70 bg-red-950/40 text-slate-200"
+            : spot.tradedIn
             ? "border-emerald-500/60 bg-emerald-500/10 text-white"
             : "border-slate-700 bg-slate-800/60 text-white"
       }`}
     >
-      {/* Reserved for a player status icon (not built yet). */}
-      <span aria-hidden="true" className="absolute right-1 top-1 h-3 w-3" />
+      {/* Status corner. */}
+      {hasBadge && (
+        <span className="absolute right-0.5 top-0.5">
+          <AvailabilityBadge info={availability} size="xs" />
+        </span>
+      )}
 
-      <p className="truncate pr-3 text-[11px] font-semibold">{cardName(spot)}</p>
+      {/* Room for the corner badge (TEST is the widest). */}
+      <p
+        className={`truncate text-[11px] font-semibold ${
+          !hasBadge ? "" : availability.status === "test" ? "pr-10" : "pr-8"
+        }`}
+      >
+        {cardName(spot)}
+      </p>
 
       <p className="mt-0.5 flex items-center gap-1">
         <TeamChip team={player.team} size={14} />
@@ -160,6 +193,11 @@ export function PlayerCard({
         {spot.tradedIn && (
           <span className="rounded bg-emerald-500/30 px-1 text-[9.5px] font-bold leading-3.5 text-emerald-100">
             IN
+          </span>
+        )}
+        {spot.unavailable && (
+          <span className="rounded bg-red-500/30 px-1 text-[9.5px] font-bold leading-3.5 text-red-100">
+            Not counted
           </span>
         )}
         {spot.onBye && (

@@ -1,0 +1,159 @@
+{
+  "season": 2026,
+  "asOf": "2026-05-19",
+  "round": 11,
+  "source": "INVENTED SAMPLE for DEBUG_AS_OF_ROUND only (not real injury news)",
+  "sample": true,
+  "players": {
+    "10": {
+      "status": "unknown",
+      "injury": "Illness",
+      "returnText": "Unclear",
+      "returnWeeks": null,
+      "returnRound": null,
+      "selected": null,
+      "asOf": "2026-05-19",
+      "source": "INVENTED SAMPLE for DEBUG_AS_OF_ROUND only (not real injury news)"
+    },
+    "202": {
+      "status": "available",
+      "injury": null,
+      "returnText": null,
+      "returnWeeks": null,
+      "returnRound": null,
+      "selected": false,
+      "asOf": "2026-05-19",
+      "source": "INVENTED SAMPLE for DEBUG_AS_OF_ROUND only (not real injury news)"
+    },
+    "210": {
+      "status": "long-term",
+      "injury": "Foot",
+      "returnText": "4-6 weeks",
+      "returnWeeks": 6,
+      "returnRound": 17,
+      "selected": false,
+      "asOf": "2026-05-19",
+      "source": "INVENTED SAMPLE for DEBUG_AS_OF_ROUND only (not real injury news)"
+    },
+    "290": {
+      "status": "short-term",
+      "injury": "Calf",
+      "returnText": "1 week",
+      "returnWeeks": 1,
+      "returnRound": 12,
+      "selected": false,
+      "asOf": "2026-05-19",
+      "source": "INVENTED SAMPLE for DEBUG_AS_OF_ROUND only (not real injury news)"
+    },
+    "342": {
+      "status": "suspended",
+      "injury": "Suspension",
+      "returnText": "1 match",
+      "returnWeeks": 1,
+      "returnRound": 12,
+      "selected": false,
+      "asOf": "2026-05-19",
+      "source": "INVENTED SAMPLE for DEBUG_AS_OF_ROUND only (not real injury news)"
+    },
+    "365": {
+      "status": "long-term",
+      "injury": "Knee",
+      "returnText": "Season",
+      "returnWeeks": null,
+      "returnRound": null,
+      "selected": false,
+      "asOf": "2026-05-19",
+      "source": "INVENTED SAMPLE for DEBUG_AS_OF_ROUND only (not real injury news)"
+    },
+    "392": {
+      "status": "short-term",
+      "injury": "Hamstring",
+      "returnText": "1-2 weeks",
+      "returnWeeks": 2,
+      "returnRound": 13,
+      "selected": false,
+      "asOf": "2026-05-19",
+      "source": "INVENTED SAMPLE for DEBUG_AS_OF_ROUND only (not real injury news)"
+    },
+    "528": {
+      "status": "test",
+      "injury": "Hip",
+      "returnText": "Test",
+      "returnWeeks": null,
+      "returnRound": 12,
+      "selected": true,
+      "asOf": "2026-05-19",
+      "source": "INVENTED SAMPLE for DEBUG_AS_OF_ROUND only (not real injury news)"
+    },
+    "639": {
+      "status": "short-term",
+      "injury": "Ankle",
+      "returnText": "2-3 weeks",
+      "returnWeeks": 3,
+      "returnRound": 14,
+      "selected": false,
+      "asOf": "2026-05-19",
+      "source": "INVENTED SAMPLE for DEBUG_AS_OF_ROUND only (not real injury news)"
+    },
+    "652": {
+      "status": "test",
+      "injury": "Concussion",
+      "returnText": "Test",
+      "returnWeeks": null,
+      "returnRound": 12,
+      "selected": null,
+      "asOf": "2026-05-19",
+      "source": "INVENTED SAMPLE for DEBUG_AS_OF_ROUND only (not real injury news)"
+    },
+    "664": {
+      "status": "available",
+      "injury": null,
+      "returnText": null,
+      "returnWeeks": null,
+      "returnRound": null,
+      "selected": true,
+      "asOf": "2026-05-19",
+      "source": "INVENTED SAMPLE for DEBUG_AS_OF_ROUND only (not real injury news)"
+    },
+    "667": {
+      "status": "suspended",
+      "injury": "Suspension",
+      "returnText": "2 matches",
+      "returnWeeks": 2,
+      "returnRound": 13,
+      "selected": false,
+      "asOf": "2026-05-19",
+      "source": "INVENTED SAMPLE for DEBUG_AS_OF_ROUND only (not real injury news)"
+    },
+    "693": {
+      "status": "unknown",
+      "injury": "Back",
+      "returnText": "TBC",
+      "returnWeeks": null,
+      "returnRound": null,
+      "selected": null,
+      "asOf": "2026-05-19",
+      "source": "INVENTED SAMPLE for DEBUG_AS_OF_ROUND only (not real injury news)"
+    },
+    "701": {
+      "status": "long-term",
+      "injury": "Shoulder",
+      "returnText": "5 weeks",
+      "returnWeeks": 5,
+      "returnRound": 16,
+      "selected": false,
+      "asOf": "2026-05-19",
+      "source": "INVENTED SAMPLE for DEBUG_AS_OF_ROUND only (not real injury news)"
+    },
+    "719": {
+      "status": "available",
+      "injury": null,
+      "returnText": null,
+      "returnWeeks": null,
+      "returnRound": null,
+      "selected": true,
+      "asOf": "2026-05-19",
+      "source": "INVENTED SAMPLE for DEBUG_AS_OF_ROUND only (not real injury news)"
+    }
+  }
+}

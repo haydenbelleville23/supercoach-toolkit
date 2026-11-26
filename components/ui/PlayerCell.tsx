@@ -1,4 +1,5 @@
 import Link from "next/link";
+import type { ReactNode } from "react";
 
 import { shortPlayerName } from "@/lib/players/shortName";
 
@@ -10,6 +11,8 @@ type PlayerCellProps = {
   badge?: string;
   /** Links the name (e.g. to the Projector). */
   href?: string;
+  /** After the team badge (e.g. an availability badge). */
+  trailing?: ReactNode;
 };
 
 /**
@@ -18,7 +21,7 @@ type PlayerCellProps = {
  * Positions are in the tooltip, with the full name and team: shown inline
  * they truncated most full names at the 160px column width.
  */
-export default function PlayerCell({ name, team, positions, badge = team, href }: PlayerCellProps) {
+export default function PlayerCell({ name, team, positions, badge = team, href, trailing }: PlayerCellProps) {
   const label = (
     <>
       <span className="sm:hidden">{shortPlayerName(name)}</span>
@@ -54,6 +57,8 @@ export default function PlayerCell({ name, team, positions, badge = team, href }
       >
         {badge}
       </span>
+
+      {trailing}
 
     </span>
   );

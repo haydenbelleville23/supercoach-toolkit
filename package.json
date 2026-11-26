@@ -16,7 +16,8 @@
     "download:history": "node scripts/downloadHistory.mjs",
     "build:history": "node scripts/buildHistory.mjs",
     "accuracy:log": "node scripts/accuracy-log.ts",
-    "backtest:as-of": "node scripts/as-of-backtest.ts"
+    "backtest:as-of": "node scripts/as-of-backtest.ts",
+    "import:availability": "node scripts/import-availability.ts"
   },
   "dependencies": {
     "lucide-react": "^1.25.0",

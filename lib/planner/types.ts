@@ -67,6 +67,11 @@ export interface MyTeam {
   activePlanId: string | null;
   /** Trade Planner view (saved so it reopens the same way). */
   plannerView?: "plan" | "scores";
+  /**
+   * Trade Planner: count long-term injured and suspended players as not
+   * playing (playing counts and the bye warning). On when unset.
+   */
+  countUnavailableAsOut?: boolean;
   updatedAt: string;
 }
 
