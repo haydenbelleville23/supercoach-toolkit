@@ -148,6 +148,7 @@ export default function PlayerSearchBar({
           id="player-search-results"
           role="listbox"
           aria-label="Players"
+          tabIndex={-1}
           className="absolute z-40 mt-1 max-h-72 w-full min-w-64 overflow-y-auto rounded-lg border border-slate-700 bg-slate-950 shadow-xl"
         >
           {filteredPlayers.length === 0 ? (
