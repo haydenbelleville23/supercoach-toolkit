@@ -60,3 +60,7 @@ data/players-cf.json
 # Local script output and Claude Code settings
 /scripts/output/
 /.claude/
+
+# Past-season history downloads (raw, large); the compact
+# data/history/matchups-*.json files are committed.
+/data/history/*/
