@@ -10,4 +10,6 @@ export type SeasonProjectionRow = {
   threeRoundAverage: number | null;
   opponent: string | null;
   homeAway: "H" | "A" | null;
+  /** Matchup adjustment included in the projected score, shown beside the opponent. */
+  matchupAdjustment?: number | null;
 };

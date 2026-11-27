@@ -1,8 +1,12 @@
 "use client";
 
 import DataTable, { type DataTableColumn } from "@/components/ui/DataTable";
+import MatchupSwitch from "@/components/ui/MatchupSwitch";
 import PlayerCell from "@/components/ui/PlayerCell";
+import { formatSigned } from "@/lib/fixtureDifficulty/colour";
+import { currentMatchup } from "@/lib/fixtureDifficulty/current";
 import { formatMoney } from "@/lib/format";
+import { isPreDebutRookie } from "@/lib/planner/projectScore";
 import type { PriceProjector } from "@/lib/planner/pricePaths";
 
 import type { Player } from "@/types/player";
@@ -19,6 +23,8 @@ export default function PriceGrid({
   overrides,
   onOverride,
   onReset,
+  matchupOn,
+  onMatchupChange,
 }: {
   players: Player[];
   projector: PriceProjector;
@@ -27,7 +33,11 @@ export default function PriceGrid({
   overrides: Record<number, Record<number, number>>;
   onOverride: (playerId: number, round: number, score: number | null) => void;
   onReset: () => void;
+  /** "Matchup adjustment" switch (shown in this view). */
+  matchupOn: boolean;
+  onMatchupChange: (on: boolean) => void;
 }) {
+  const completedRound = projector.firstRound - 1;
   const rounds = Array.from(
     { length: lastRound - projector.firstRound + 1 },
     (_, i) => projector.firstRound + i,
@@ -94,6 +104,17 @@ export default function PriceGrid({
                   }`}
                 />
               )}
+
+              {/* The opponent and the adjustment in this score (not for overrides or debutants). */}
+              {!cell.onBye && matchupOn && !overridden && !isPreDebutRookie(player, completedRound) && (() => {
+                const matchup = currentMatchup(player, round);
+                return matchup ? (
+                  <div className="mt-0.5 text-[10px] tabular-nums text-slate-400" title={`Matchup adjustment against ${matchup.opponent}`}>
+                    {matchup.homeAway === "A" ? "@" : ""}
+                    {matchup.opponent} {formatSigned(matchup.value)}
+                  </div>
+                ) : null;
+              })()}
             </>
           );
         },
@@ -106,6 +127,7 @@ export default function PriceGrid({
       <div className="px-4 py-3 sm:px-5">
         <div className="flex flex-wrap items-center justify-between gap-2">
           <h2 className="text-lg font-semibold">Projected scores</h2>
+          <MatchupSwitch on={matchupOn} onChange={onMatchupChange} className="ml-auto" />
           <button
             type="button"
             disabled={overrideCount === 0}
@@ -120,7 +142,8 @@ export default function PriceGrid({
           </button>
         </div>
         <p className="mt-1 text-xs text-slate-400">
-          Players in the squad or in trades. Scores default to the season average; type a
+          Players in the squad or in trades. Scores default to the season average
+          {matchupOn ? ", adjusted for the opponent (the number under each score)" : ""}; type a
           score to override it (highlighted). Overrides feed the price engine, so later prices
           update. Price shown is before the round&apos;s games. Rookie placeholders have no
           scores and are not listed.

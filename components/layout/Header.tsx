@@ -10,6 +10,7 @@ const NAV_LINKS = [
   { href: "/cash-cows", label: "Cash Cows" },
   { href: "/my-team", label: "My Team" },
   { href: "/trade-planner", label: "Trade Planner" },
+  { href: "/fixture-difficulty", label: "Fixture Difficulty" },
   { href: "/live", label: "Live Scores" },
 ];
 
@@ -37,7 +38,8 @@ export default function Header() {
           />
         </Link>
 
-        <nav className="hidden items-center gap-6 text-sm text-slate-300 md:flex">
+        {/* Seven links need about 900px, so the full nav starts at lg. */}
+        <nav className="hidden items-center gap-4 whitespace-nowrap text-sm text-slate-300 lg:flex xl:gap-6">
           {NAV_LINKS.map((link) => (
             <Link
               key={link.href}

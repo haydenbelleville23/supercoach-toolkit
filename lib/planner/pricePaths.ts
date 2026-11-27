@@ -2,7 +2,7 @@ import { calculateScaledPlayerPrice } from "@/lib/priceEngine/calculateScaledPla
 import type { ScaledRoundContext } from "@/lib/priceEngine/estimateScaledRoundContexts";
 import type { Player } from "@/types/player";
 
-import { projectScore } from "./projectScore";
+import { projectScore, type ProjectionOptions } from "./projectScore";
 
 export interface PlannerFixture {
   round: number;
@@ -49,6 +49,7 @@ export function createPriceProjector({
   lastRound,
   scoreOverrides = {},
   placeholders = new Map(),
+  projection = {},
 }: {
   players: Player[];
   contexts: Map<number, ScaledRoundContext>;
@@ -58,6 +59,8 @@ export function createPriceProjector({
   scoreOverrides?: Record<number, Record<number, number>>;
   /** "Rookie (TBC)" placeholders: fixed price, no score projection. */
   placeholders?: Map<number, Player>;
+  /** Projection method (default: season average with the rookie 50 rule). Overrides always win. */
+  projection?: ProjectionOptions;
 }): PriceProjector {
   const firstRound = completedRound + 1;
   const byId = new Map(players.map((p) => [p.id, p]));
@@ -120,7 +123,7 @@ export function createPriceProjector({
         ? null
         : overridden
           ? override
-          : projectScore(player, round, completedRound);
+          : projectScore(player, round, completedRound, projection);
 
       const context = contexts.get(round);
       const priceAfter =

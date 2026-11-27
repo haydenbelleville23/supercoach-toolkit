@@ -25,6 +25,42 @@
   --dt-highlight-bg: color-mix(in srgb, var(--brand-green) 9%, #0f172a);
   --dt-highlight-hover-bg: color-mix(in srgb, var(--brand-green) 14%, #0f172a);
   --dt-muted-bg: #0a1120; /* completed rounds, between slate-950 and slate-900 */
+
+  /* Fixture difficulty: three states, set once here. Every page draws on
+     the dark slate surfaces above whatever the device theme, so one set
+     serves both themes. Tints are subtle; the text always carries the
+     signed number, so colour is never the only signal. */
+  --fd-easy-text: #9fe0a1;
+  --fd-easy-bg: color-mix(in srgb, var(--brand-green-soft) 15%, transparent);
+  --fd-easy-edge: color-mix(in srgb, var(--brand-green-soft) 45%, transparent);
+  --fd-hard-text: #f2b0a6;
+  --fd-hard-bg: color-mix(in srgb, #d0533f 17%, transparent);
+  --fd-hard-edge: color-mix(in srgb, #d0533f 50%, transparent);
+  --fd-neutral-text: #cbd5e1; /* slate-300 */
+  --fd-neutral-edge: transparent;
+}
+
+/* A difficulty value: tinted box with a thin edge (no solid pills). */
+.fd-cell {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  min-width: 3.25rem;
+  border: 1px solid var(--fd-neutral-edge);
+  border-radius: 0.375rem;
+  padding: 0.0625rem 0.375rem;
+  color: var(--fd-neutral-text);
+  font-variant-numeric: tabular-nums;
+}
+.fd-cell[data-band="easy"] {
+  background: var(--fd-easy-bg);
+  border-color: var(--fd-easy-edge);
+  color: var(--fd-easy-text);
+}
+.fd-cell[data-band="hard"] {
+  background: var(--fd-hard-bg);
+  border-color: var(--fd-hard-edge);
+  color: var(--fd-hard-text);
 }
 
 @media (min-width: 48rem) {

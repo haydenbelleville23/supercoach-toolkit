@@ -8,6 +8,8 @@ import PlayerSearchBar from "@/components/projector/PlayerSearchBar";
 import PlayerStatChips from "@/components/projector/PlayerStatChips";
 import ProjectionModeControl from "@/components/projector/ProjectionModeControl";
 import SeasonProjectionTable from "@/components/projector/SeasonProjectionTable";
+import MatchupSwitch from "@/components/ui/MatchupSwitch";
+import { useMatchupSetting } from "@/lib/fixtureDifficulty/useMatchupSetting";
 import { useLiveRoundContext } from "@/lib/liveMatch/useLiveRoundContext";
 import { buildPlayerRows } from "@/lib/projector/buildPlayerRows";
 import { calculateScaledProjectionRows as calculateProjectionRows } from "@/lib/projector/calculateScaledProjectionRows";
@@ -52,14 +54,29 @@ function ProjectorTool({
     playerRepository.getById(selectedPlayerId) ??
     players[0];
 
+  // "Matchup adjustment" (on by default, remembered in this browser).
+  const [matchupOn, setMatchupOn] = useMatchupSetting();
+
   const [seasonRows, setSeasonRows] = useState<
     SeasonProjectionRow[]
   >(() =>
     calculateProjectionRows(
-      buildPlayerRows(selectedPlayer, "projected"),
+      buildPlayerRows(selectedPlayer, "projected", undefined, { matchup: matchupOn }),
       selectedPlayer,
     ),
   );
+
+  // Rebuild when the switch changes (including the saved value loading).
+  const [rowsMatchup, setRowsMatchup] = useState(matchupOn);
+  if (rowsMatchup !== matchupOn) {
+    setRowsMatchup(matchupOn);
+    setSeasonRows((currentRows) =>
+      calculateProjectionRows(
+        buildPlayerRows(selectedPlayer, projectionMode, currentRows, { matchup: matchupOn }),
+        selectedPlayer,
+      ),
+    );
+  }
 
   // Next round's k updates from live scores as games finish; recalculate
   // the displayed prices whenever it changes.
@@ -83,6 +100,8 @@ function ProjectorTool({
     const newRows = buildPlayerRows(
       player,
       projectionMode,
+      undefined,
+      { matchup: matchupOn },
     );
 
     setSelectedPlayerId(player.id);
@@ -101,6 +120,7 @@ function ProjectorTool({
         selectedPlayer,
         mode,
         currentRows,
+        { matchup: matchupOn },
       );
 
       return calculateProjectionRows(
@@ -148,7 +168,12 @@ function ProjectorTool({
           value={projectionMode}
           onChange={handleProjectionModeChange}
         />
+
+        {/* Beside the mode from sm up; on its own line on phones (below). */}
+        <MatchupSwitch on={matchupOn} onChange={setMatchupOn} className="hidden sm:inline-flex" />
       </div>
+
+      <MatchupSwitch on={matchupOn} onChange={setMatchupOn} className="mt-2 sm:hidden" />
 
       <div className="mt-2">
         <PlayerStatChips player={selectedPlayer} />

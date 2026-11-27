@@ -8,6 +8,7 @@ import {
   placeholderToPlayer,
   withPlaceholders,
 } from "@/lib/planner/placeholders";
+import { currentMatchupValue } from "@/lib/fixtureDifficulty/current";
 import { createPriceProjector } from "@/lib/planner/pricePaths";
 import type { MyTeam, TradePlan } from "@/lib/planner/types";
 import { getScaledRoundContexts } from "@/lib/projector/getScaledRoundContexts";
@@ -40,8 +41,12 @@ export const ROOKIE_OPTIONS: { label: string; position: Position }[] = POSITIONS
   (position) => ({ label: `+ New Rookie (TBC) ${position}`, position }),
 );
 
-/** Price projector for a plan (its score overrides feed the engine). */
-export function createPlanProjector(plan: TradePlan | null, team: MyTeam | null) {
+/**
+ * Price projector for a plan (its score overrides feed the engine). With
+ * `matchup` on, projected scores add the opponent's position difficulty
+ * (seasonAverageRookie50Matchup); off gives the previous projections.
+ */
+export function createPlanProjector(plan: TradePlan | null, team: MyTeam | null, matchup = true) {
   return createPriceProjector({
     players: plannerPlayers,
     contexts: getScaledRoundContexts(),
@@ -49,6 +54,9 @@ export function createPlanProjector(plan: TradePlan | null, team: MyTeam | null)
     completedRound: PLANNER_COMPLETED_ROUND,
     lastRound: PLANNER_LAST_ROUND,
     scoreOverrides: plan?.scoreOverrides ?? {},
+    projection: matchup
+      ? { method: "seasonAverageRookie50Matchup", matchup: currentMatchupValue }
+      : { method: "seasonAverageRookie50" },
     placeholders: new Map(
       (team?.placeholders ?? []).map((p) => [p.id, placeholderToPlayer(p)]),
     ),

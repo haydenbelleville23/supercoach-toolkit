@@ -5,6 +5,7 @@ import {
   Sparkles,
   TrendingUp,
   type LucideIcon,
+  CalendarRange,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -40,6 +41,12 @@ const TOOLS: Tile[] = [
     description: "Plan trades for the rounds ahead, starting from your squad.",
     href: "/trade-planner",
     icon: ArrowRightLeft,
+  },
+  {
+    title: "Fixture Difficulty",
+    description: "See which opponents are easier for each position, and who each team plays next.",
+    href: "/fixture-difficulty",
+    icon: CalendarRange,
   },
   {
     title: "Live Scores",
