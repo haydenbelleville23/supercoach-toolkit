@@ -47,6 +47,12 @@ resolveAlias[AVAILABILITY_SPECIFIER] = `./${availabilitySource({
 })}`;
 
 const nextConfig: NextConfig = {
+  // The results archive reads one round file per request with fs, which
+  // the tracer can't see, so ship every season's games/ files with the
+  // Live routes (all small JSON).
+  outputFileTracingIncludes: {
+    "/live/**": ["./data/*/games/*.json"],
+  },
   // Inlined into server and browser code so both see the same round.
   env: {
     DEBUG_AS_OF_ROUND: asOfRound === null ? "" : String(asOfRound),

@@ -5,6 +5,7 @@ import Header from "@/components/layout/Header";
 import DataTable, { type DataTableColumn } from "@/components/ui/DataTable";
 import PlayerCell from "@/components/ui/PlayerCell";
 import PageHeader from "@/components/layout/PageHeader";
+import LiveViewToggle from "@/components/live/LiveViewToggle";
 import {
   type ReactNode,
   useEffect,
@@ -284,6 +285,7 @@ function LiveLayout({
           title="Live Scores"
           description="Live SuperCoach scores with projected end-of-round prices and breakevens."
         />
+        <LiveViewToggle active="live" />
       </section>
 
       {children}

@@ -3,7 +3,8 @@ import { getFixtures } from "@/lib/fixtures";
 import { getPlayers } from "@/lib/players";
 import { getLatestCompletedRound } from "@/lib/season/seasonStatus";
 
-export const SEASON_YEAR = 2026;
+// The one season setting (lib/season/seasonYear.ts).
+export { SEASON_YEAR } from "@/lib/season/seasonYear";
 export const FIRST_ROUND = 0;
 export const FINAL_ROUND = 24;
 
