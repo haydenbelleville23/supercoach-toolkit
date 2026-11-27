@@ -89,10 +89,25 @@ function parseScore(verbose: string | null, total: number | null, label: string)
 
 const num = (v: unknown): number | null => (typeof v === "number" && Number.isFinite(v) ? v : null);
 
-function toPlayer(detail: RawPlayerDetail, team: string, match: RawMatchStats, round: RawRoundStats | undefined): GamePlayer {
+/** Breakevens before and after a round, by player (see breakevens.ts). */
+export interface BreakevenLookup {
+  before: (round: number, playerId: number) => number | null;
+  next: (round: number, playerId: number) => number | null;
+}
+
+function toPlayer(
+  detail: RawPlayerDetail,
+  team: string,
+  match: RawMatchStats,
+  round: RawRoundStats | undefined,
+  roundNumber: number,
+  breakevens: BreakevenLookup | undefined,
+): GamePlayer {
   const kicks = num(match.kicks);
   const handballs = num(match.handballs);
   const tog = num(match.togp);
+  const price = num(round?.price);
+  const priceChange = num(round?.price_change);
 
   return {
     id: detail.id,
@@ -111,8 +126,11 @@ function toPlayer(detail: RawPlayerDetail, team: string, match: RawMatchStats, r
     hitouts: num(match.hitouts),
     goals: num(match.goals),
     behinds: num(match.behinds),
-    price: num(round?.price),
-    priceChange: num(round?.price_change),
+    price,
+    priceChange,
+    priceBefore: price !== null && priceChange !== null ? price - priceChange : null,
+    breakeven: breakevens?.before(roundNumber, detail.id) ?? null,
+    nextBreakeven: breakevens?.next(roundNumber, detail.id) ?? null,
   };
 }
 
@@ -132,10 +150,13 @@ export function buildRoundGames({
   season,
   round,
   players,
+  breakevens,
 }: {
   season: number;
   round: RawFixtureRound;
   players: readonly RawPlayerDetail[];
+  /** Breakevens from the price engine; null fields without it. */
+  breakevens?: BreakevenLookup;
 }): BuildRoundResult {
   const problems: string[] = [];
   const byFixture = new Map<number, { home: GamePlayer[]; away: GamePlayer[]; game: RawFixtureGame }>();
@@ -173,7 +194,7 @@ export function buildRoundGames({
         continue;
       }
 
-      slot[side].push(toPlayer(detail, team, match, roundStats));
+      slot[side].push(toPlayer(detail, team, match, roundStats, round.round, breakevens));
     }
   }
 

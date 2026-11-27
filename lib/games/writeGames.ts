@@ -1,6 +1,9 @@
 import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 
+import type { Player } from "../../types/player";
+
+import { createBreakevenLookup } from "./breakevens";
 import {
   buildRoundGames,
   isRoundComplete,
@@ -66,6 +69,16 @@ export function writeGamesFiles({
     throw new Error(`${fixturesFile} has no rounds.`);
   }
 
+  const normalisedFile = path.join(seasonDir, "players-normalised.json");
+  if (!existsSync(normalisedFile)) {
+    throw new Error(`Missing ${normalisedFile}. Run npm run build:players first.`);
+  }
+  // Breakevens as the site showed them after each round (computed lazily).
+  const breakevens = createBreakevenLookup(
+    JSON.parse(readFileSync(normalisedFile, "utf8")) as Player[],
+    fixtures as unknown as Parameters<typeof createBreakevenLookup>[1],
+  );
+
   const detailFiles = readdirSync(detailsDir).filter((name) => /^\d+\.json$/.test(name));
   if (detailFiles.length === 0) {
     throw new Error(`${detailsDir} has no player files.`);
@@ -95,7 +108,7 @@ export function writeGamesFiles({
       continue;
     }
 
-    const built = buildRoundGames({ season, round, players });
+    const built = buildRoundGames({ season, round, players, breakevens });
     result.problems.push(...built.problems);
 
     const linked = built.file.games.reduce((n, g) => n + g.players.home.length + g.players.away.length, 0);

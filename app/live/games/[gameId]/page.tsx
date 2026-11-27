@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import Header from "@/components/layout/Header";
-import GameTeamTable from "@/components/live/GameTeamTable";
+import GameTables from "@/components/live/GameTables";
 import TeamChip from "@/components/ui/TeamChip";
 import { formatKickoff, resultLine, roundLabel } from "@/lib/games/format";
 import { hasTogData } from "@/lib/games/stats";
@@ -89,15 +89,17 @@ export default async function GamePage({ params }: { params: Params }) {
           </p>
         </section>
 
-        <div className="mt-6 space-y-8">
-          <GameTeamTable teamName={game.home.teamName} team={game.home.team} players={game.players.home} showTog={showTog} />
-          <GameTeamTable teamName={game.away.teamName} team={game.away.team} players={game.players.away} showTog={showTog} />
+        <div className="mt-6">
+          <GameTables game={game} showTog={showTog} />
         </div>
 
         <p className="mt-6 text-xs leading-5 text-slate-400">
           SC is the SuperCoach score; D disposals, K kicks, HB handballs, M marks, T tackles, MIN minutes,
-          TOG% time on ground, HO hitouts, G goals; ± Price is that round&apos;s published price change.
-          Scores and stats from SuperCoach&apos;s public site.
+          TOG% time on ground, HO hitouts, G goals; ± Price and Δ Round are that round&apos;s published price
+          change. In Price view, BE is the score he needed that round to hold his price (green if he beat
+          it), Price is what he cost going in, New price the published price after the round, and Next BE
+          his breakeven for the following round. Breakevens are Footynomics estimates from our price
+          model, as shown at the time. Scores, stats and prices from SuperCoach&apos;s public site.
         </p>
       </section>
     </main>

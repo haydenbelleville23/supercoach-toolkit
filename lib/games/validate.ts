@@ -11,6 +11,7 @@ const isNullableNum = (v: unknown) => v === null || isNum(v);
 const NULLABLE_PLAYER_NUMBERS: (keyof GamePlayer)[] = [
   "minutes", "tog", "kicks", "handballs", "disposals", "marks", "tackles",
   "hitouts", "goals", "behinds", "price", "priceChange",
+  "priceBefore", "breakeven", "nextBreakeven",
 ];
 
 function checkScore(raw: unknown, where: string, errors: string[]): raw is GameTeamScore {

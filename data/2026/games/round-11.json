@@ -47,7 +47,10 @@
             "goals": 4,
             "behinds": 2,
             "price": 398900,
-            "priceChange": 8700
+            "priceChange": 8700,
+            "priceBefore": 390200,
+            "breakeven": 86,
+            "nextBreakeven": 48
           },
           {
             "id": 400,
@@ -68,7 +71,10 @@
             "goals": 0,
             "behinds": 1,
             "price": 375500,
-            "priceChange": -14000
+            "priceChange": -14000,
+            "priceBefore": 389500,
+            "breakeven": 136,
+            "nextBreakeven": 66
           },
           {
             "id": 434,
@@ -90,7 +96,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 340700,
-            "priceChange": 25100
+            "priceChange": 25100,
+            "priceBefore": 315600,
+            "breakeven": 43,
+            "nextBreakeven": 20
           },
           {
             "id": 433,
@@ -111,7 +120,10 @@
             "goals": 2,
             "behinds": 1,
             "price": 383600,
-            "priceChange": -3100
+            "priceChange": -3100,
+            "priceBefore": 386700,
+            "breakeven": 105,
+            "nextBreakeven": 80
           },
           {
             "id": 426,
@@ -132,7 +144,10 @@
             "goals": 0,
             "behinds": 1,
             "price": 300400,
-            "priceChange": -4200
+            "priceChange": -4200,
+            "priceBefore": 304600,
+            "breakeven": 104,
+            "nextBreakeven": 41
           },
           {
             "id": 415,
@@ -153,7 +168,10 @@
             "goals": 0,
             "behinds": 1,
             "price": 362300,
-            "priceChange": 10000
+            "priceChange": 10000,
+            "priceBefore": 352300,
+            "breakeven": 69,
+            "nextBreakeven": 61
           },
           {
             "id": 418,
@@ -174,7 +192,10 @@
             "goals": 1,
             "behinds": 0,
             "price": 329300,
-            "priceChange": -11000
+            "priceChange": -11000,
+            "priceBefore": 340300,
+            "breakeven": 111,
+            "nextBreakeven": 89
           },
           {
             "id": 396,
@@ -195,7 +216,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 495100,
-            "priceChange": 8100
+            "priceChange": 8100,
+            "priceBefore": 487000,
+            "breakeven": 65,
+            "nextBreakeven": 135
           },
           {
             "id": 432,
@@ -216,7 +240,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 381000,
-            "priceChange": 7500
+            "priceChange": 7500,
+            "priceBefore": 373500,
+            "breakeven": 67,
+            "nextBreakeven": 78
           },
           {
             "id": 430,
@@ -237,7 +264,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 479900,
-            "priceChange": 4200
+            "priceChange": 4200,
+            "priceBefore": 475700,
+            "breakeven": 62,
+            "nextBreakeven": 108
           },
           {
             "id": 410,
@@ -258,7 +288,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 443000,
-            "priceChange": -12000
+            "priceChange": -12000,
+            "priceBefore": 455000,
+            "breakeven": 98,
+            "nextBreakeven": 98
           },
           {
             "id": 424,
@@ -279,7 +312,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 510100,
-            "priceChange": -30300
+            "priceChange": -30300,
+            "priceBefore": 540400,
+            "breakeven": 136,
+            "nextBreakeven": 153
           },
           {
             "id": 416,
@@ -300,7 +336,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 260800,
-            "priceChange": -5600
+            "priceChange": -5600,
+            "priceBefore": 266400,
+            "breakeven": 78,
+            "nextBreakeven": 59
           },
           {
             "id": 393,
@@ -321,7 +360,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 487700,
-            "priceChange": -5400
+            "priceChange": -5400,
+            "priceBefore": 493100,
+            "breakeven": 76,
+            "nextBreakeven": 139
           },
           {
             "id": 423,
@@ -342,7 +384,10 @@
             "goals": 0,
             "behinds": 1,
             "price": 402100,
-            "priceChange": -7900
+            "priceChange": -7900,
+            "priceBefore": 410000,
+            "breakeven": 80,
+            "nextBreakeven": 92
           },
           {
             "id": 413,
@@ -363,7 +408,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 122600,
-            "priceChange": 0
+            "priceChange": 0,
+            "priceBefore": 122600,
+            "breakeven": null,
+            "nextBreakeven": null
           },
           {
             "id": 404,
@@ -384,7 +432,10 @@
             "goals": 0,
             "behinds": 2,
             "price": 394400,
-            "priceChange": -25100
+            "priceChange": -25100,
+            "priceBefore": 419500,
+            "breakeven": 112,
+            "nextBreakeven": 114
           },
           {
             "id": 399,
@@ -405,7 +456,10 @@
             "goals": 1,
             "behinds": 1,
             "price": 307100,
-            "priceChange": -22300
+            "priceChange": -22300,
+            "priceBefore": 329400,
+            "breakeven": 104,
+            "nextBreakeven": 123
           },
           {
             "id": 412,
@@ -426,7 +480,10 @@
             "goals": 1,
             "behinds": 0,
             "price": 365200,
-            "priceChange": -18600
+            "priceChange": -18600,
+            "priceBefore": 383800,
+            "breakeven": 96,
+            "nextBreakeven": 115
           },
           {
             "id": 414,
@@ -447,7 +504,10 @@
             "goals": 0,
             "behinds": 1,
             "price": 388700,
-            "priceChange": -38500
+            "priceChange": -38500,
+            "priceBefore": 427200,
+            "breakeven": 137,
+            "nextBreakeven": 114
           },
           {
             "id": 422,
@@ -469,7 +529,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 118000,
-            "priceChange": 0
+            "priceChange": 0,
+            "priceBefore": 118000,
+            "breakeven": null,
+            "nextBreakeven": null
           },
           {
             "id": 419,
@@ -490,7 +553,10 @@
             "goals": 1,
             "behinds": 0,
             "price": 359200,
-            "priceChange": -8100
+            "priceChange": -8100,
+            "priceBefore": 367300,
+            "breakeven": 55,
+            "nextBreakeven": 68
           },
           {
             "id": 427,
@@ -511,7 +577,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 139200,
-            "priceChange": 19300
+            "priceChange": 19300,
+            "priceBefore": 119900,
+            "breakeven": -14,
+            "nextBreakeven": -3
           }
         ],
         "away": [
@@ -534,7 +603,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 525000,
-            "priceChange": 14800
+            "priceChange": 14800,
+            "priceBefore": 510200,
+            "breakeven": 109,
+            "nextBreakeven": 108
           },
           {
             "id": 42,
@@ -555,7 +627,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 475100,
-            "priceChange": 19700
+            "priceChange": 19700,
+            "priceBefore": 455400,
+            "breakeven": 89,
+            "nextBreakeven": 58
           },
           {
             "id": 2,
@@ -576,7 +651,10 @@
             "goals": 0,
             "behinds": 1,
             "price": 506900,
-            "priceChange": -1500
+            "priceChange": -1500,
+            "priceBefore": 508400,
+            "breakeven": 135,
+            "nextBreakeven": 81
           },
           {
             "id": 10,
@@ -597,7 +675,10 @@
             "goals": 1,
             "behinds": 1,
             "price": 576600,
-            "priceChange": 5200
+            "priceChange": 5200,
+            "priceBefore": 571400,
+            "breakeven": 99,
+            "nextBreakeven": 113
           },
           {
             "id": 29,
@@ -618,7 +699,10 @@
             "goals": 0,
             "behinds": 2,
             "price": 379300,
-            "priceChange": 3900
+            "priceChange": 3900,
+            "priceBefore": 375400,
+            "breakeven": 88,
+            "nextBreakeven": 81
           },
           {
             "id": 19,
@@ -639,7 +723,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 453600,
-            "priceChange": 11800
+            "priceChange": 11800,
+            "priceBefore": 441800,
+            "breakeven": 60,
+            "nextBreakeven": 90
           },
           {
             "id": 28,
@@ -661,7 +748,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 241800,
-            "priceChange": 12800
+            "priceChange": 12800,
+            "priceBefore": 229000,
+            "breakeven": 53,
+            "nextBreakeven": 9
           },
           {
             "id": 4,
@@ -682,7 +772,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 287500,
-            "priceChange": 31200
+            "priceChange": 31200,
+            "priceBefore": 256300,
+            "breakeven": 10,
+            "nextBreakeven": 19
           },
           {
             "id": 38,
@@ -703,7 +796,10 @@
             "goals": 1,
             "behinds": 0,
             "price": 296800,
-            "priceChange": 26600
+            "priceChange": 26600,
+            "priceBefore": 270200,
+            "breakeven": 17,
+            "nextBreakeven": 19
           },
           {
             "id": 23,
@@ -724,7 +820,10 @@
             "goals": 1,
             "behinds": 0,
             "price": 409000,
-            "priceChange": 9400
+            "priceChange": 9400,
+            "priceBefore": 399600,
+            "breakeven": 53,
+            "nextBreakeven": 73
           },
           {
             "id": 9,
@@ -745,7 +844,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 351800,
-            "priceChange": -11300
+            "priceChange": -11300,
+            "priceBefore": 363100,
+            "breakeven": 97,
+            "nextBreakeven": 97
           },
           {
             "id": 6,
@@ -767,7 +869,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 381600,
-            "priceChange": -3000
+            "priceChange": -3000,
+            "priceBefore": 384600,
+            "breakeven": 73,
+            "nextBreakeven": 97
           },
           {
             "id": 14,
@@ -788,7 +893,10 @@
             "goals": 1,
             "behinds": 2,
             "price": 307400,
-            "priceChange": 4100
+            "priceChange": 4100,
+            "priceBefore": 303300,
+            "breakeven": 58,
+            "nextBreakeven": 21
           },
           {
             "id": 34,
@@ -810,7 +918,10 @@
             "goals": 1,
             "behinds": 0,
             "price": 504900,
-            "priceChange": 11200
+            "priceChange": 11200,
+            "priceBefore": 493700,
+            "breakeven": 38,
+            "nextBreakeven": 136
           },
           {
             "id": 1,
@@ -831,7 +942,10 @@
             "goals": 2,
             "behinds": 1,
             "price": 323400,
-            "priceChange": -25100
+            "priceChange": -25100,
+            "priceBefore": 348500,
+            "breakeven": 120,
+            "nextBreakeven": 93
           },
           {
             "id": 37,
@@ -853,7 +967,10 @@
             "goals": 1,
             "behinds": 0,
             "price": 362700,
-            "priceChange": -11200
+            "priceChange": -11200,
+            "priceBefore": 373900,
+            "breakeven": 84,
+            "nextBreakeven": 56
           },
           {
             "id": 39,
@@ -874,7 +991,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 339300,
-            "priceChange": -11100
+            "priceChange": -11100,
+            "priceBefore": 350400,
+            "breakeven": 84,
+            "nextBreakeven": 80
           },
           {
             "id": 31,
@@ -895,7 +1015,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 453500,
-            "priceChange": -13900
+            "priceChange": -13900,
+            "priceBefore": 467400,
+            "breakeven": 86,
+            "nextBreakeven": 111
           },
           {
             "id": 33,
@@ -917,7 +1040,10 @@
             "goals": 1,
             "behinds": 2,
             "price": 386000,
-            "priceChange": -12400
+            "priceChange": -12400,
+            "priceBefore": 398400,
+            "breakeven": 69,
+            "nextBreakeven": 111
           },
           {
             "id": 5,
@@ -938,7 +1064,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 245100,
-            "priceChange": -11800
+            "priceChange": -11800,
+            "priceBefore": 256900,
+            "breakeven": 65,
+            "nextBreakeven": 68
           },
           {
             "id": 24,
@@ -959,7 +1088,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 296500,
-            "priceChange": -10500
+            "priceChange": -10500,
+            "priceBefore": 307000,
+            "breakeven": 59,
+            "nextBreakeven": 75
           },
           {
             "id": 18,
@@ -980,7 +1112,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 360700,
-            "priceChange": -25400
+            "priceChange": -25400,
+            "priceBefore": 386100,
+            "breakeven": 90,
+            "nextBreakeven": 111
           },
           {
             "id": 27,
@@ -1002,7 +1137,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 259800,
-            "priceChange": 12900
+            "priceChange": 12900,
+            "priceBefore": 246900,
+            "breakeven": -29,
+            "nextBreakeven": 55
           }
         ]
       }
@@ -1052,7 +1190,10 @@
             "goals": 1,
             "behinds": 1,
             "price": 507400,
-            "priceChange": 24800
+            "priceChange": 24800,
+            "priceBefore": 482600,
+            "breakeven": 67,
+            "nextBreakeven": 66
           },
           {
             "id": 601,
@@ -1073,7 +1214,10 @@
             "goals": 0,
             "behinds": 1,
             "price": 487000,
-            "priceChange": 2100
+            "priceChange": 2100,
+            "priceBefore": 484900,
+            "breakeven": 111,
+            "nextBreakeven": 102
           },
           {
             "id": 591,
@@ -1094,7 +1238,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 281100,
-            "priceChange": 36500
+            "priceChange": 36500,
+            "priceBefore": 244600,
+            "breakeven": 24,
+            "nextBreakeven": 14
           },
           {
             "id": 594,
@@ -1116,7 +1263,10 @@
             "goals": 1,
             "behinds": 2,
             "price": 520800,
-            "priceChange": -500
+            "priceChange": -500,
+            "priceBefore": 521300,
+            "breakeven": 105,
+            "nextBreakeven": 114
           },
           {
             "id": 576,
@@ -1137,7 +1287,10 @@
             "goals": 2,
             "behinds": 1,
             "price": 299400,
-            "priceChange": 16600
+            "priceChange": 16600,
+            "priceBefore": 282800,
+            "breakeven": 56,
+            "nextBreakeven": 47
           },
           {
             "id": 583,
@@ -1158,7 +1311,10 @@
             "goals": 2,
             "behinds": 2,
             "price": 324800,
-            "priceChange": 10300
+            "priceChange": 10300,
+            "priceBefore": 314500,
+            "breakeven": 66,
+            "nextBreakeven": 76
           },
           {
             "id": 586,
@@ -1179,7 +1335,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 399500,
-            "priceChange": 35600
+            "priceChange": 35600,
+            "priceBefore": 363900,
+            "breakeven": 4,
+            "nextBreakeven": 51
           },
           {
             "id": 600,
@@ -1201,7 +1360,10 @@
             "goals": 0,
             "behinds": 1,
             "price": 322100,
-            "priceChange": 5300
+            "priceChange": 5300,
+            "priceBefore": 316800,
+            "breakeven": 73,
+            "nextBreakeven": 60
           },
           {
             "id": 569,
@@ -1222,7 +1384,10 @@
             "goals": 0,
             "behinds": 1,
             "price": 395000,
-            "priceChange": -16200
+            "priceChange": -16200,
+            "priceBefore": 411200,
+            "breakeven": 119,
+            "nextBreakeven": 84
           },
           {
             "id": 582,
@@ -1243,7 +1408,10 @@
             "goals": 1,
             "behinds": 0,
             "price": 270100,
-            "priceChange": 11500
+            "priceChange": 11500,
+            "priceBefore": 258600,
+            "breakeven": 52,
+            "nextBreakeven": 25
           },
           {
             "id": 579,
@@ -1264,7 +1432,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 340200,
-            "priceChange": 1200
+            "priceChange": 1200,
+            "priceBefore": 339000,
+            "breakeven": 74,
+            "nextBreakeven": 58
           },
           {
             "id": 604,
@@ -1285,7 +1456,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 412800,
-            "priceChange": 16400
+            "priceChange": 16400,
+            "priceBefore": 396400,
+            "breakeven": 37,
+            "nextBreakeven": 68
           },
           {
             "id": 567,
@@ -1306,7 +1480,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 317000,
-            "priceChange": 1200
+            "priceChange": 1200,
+            "priceBefore": 315800,
+            "breakeven": 69,
+            "nextBreakeven": 59
           },
           {
             "id": 571,
@@ -1327,7 +1504,10 @@
             "goals": 1,
             "behinds": 0,
             "price": 228100,
-            "priceChange": 3900
+            "priceChange": 3900,
+            "priceBefore": 224200,
+            "breakeven": 63,
+            "nextBreakeven": 28
           },
           {
             "id": 603,
@@ -1349,7 +1529,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 351200,
-            "priceChange": 16500
+            "priceChange": 16500,
+            "priceBefore": 334700,
+            "breakeven": 22,
+            "nextBreakeven": 59
           },
           {
             "id": 565,
@@ -1371,7 +1554,10 @@
             "goals": 0,
             "behinds": 1,
             "price": 363200,
-            "priceChange": -20300
+            "priceChange": -20300,
+            "priceBefore": 383500,
+            "breakeven": 99,
+            "nextBreakeven": 111
           },
           {
             "id": 563,
@@ -1392,7 +1578,10 @@
             "goals": 0,
             "behinds": 1,
             "price": 119900,
-            "priceChange": 0
+            "priceChange": 0,
+            "priceBefore": 119900,
+            "breakeven": null,
+            "nextBreakeven": 8
           },
           {
             "id": 578,
@@ -1413,7 +1602,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 194700,
-            "priceChange": 22700
+            "priceChange": 22700,
+            "priceBefore": 172000,
+            "breakeven": -5,
+            "nextBreakeven": 18
           },
           {
             "id": 577,
@@ -1435,7 +1627,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 272900,
-            "priceChange": -20700
+            "priceChange": -20700,
+            "priceBefore": 293600,
+            "breakeven": 88,
+            "nextBreakeven": 72
           },
           {
             "id": 602,
@@ -1456,7 +1651,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 255300,
-            "priceChange": -9400
+            "priceChange": -9400,
+            "priceBefore": 264700,
+            "breakeven": 60,
+            "nextBreakeven": 97
           },
           {
             "id": 792,
@@ -1477,7 +1675,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 152300,
-            "priceChange": 700
+            "priceChange": 700,
+            "priceBefore": 151600,
+            "breakeven": 32,
+            "nextBreakeven": 33
           },
           {
             "id": 593,
@@ -1498,7 +1699,10 @@
             "goals": 1,
             "behinds": 0,
             "price": 113500,
-            "priceChange": 0
+            "priceChange": 0,
+            "priceBefore": 113500,
+            "breakeven": null,
+            "nextBreakeven": -18
           },
           {
             "id": 572,
@@ -1519,7 +1723,10 @@
             "goals": 1,
             "behinds": 0,
             "price": 185900,
-            "priceChange": -7800
+            "priceChange": -7800,
+            "priceBefore": 193700,
+            "breakeven": 39,
+            "nextBreakeven": 47
           }
         ],
         "away": [
@@ -1542,7 +1749,10 @@
             "goals": 0,
             "behinds": 2,
             "price": 481100,
-            "priceChange": 38000
+            "priceChange": 38000,
+            "priceBefore": 443100,
+            "breakeven": 68,
+            "nextBreakeven": 34
           },
           {
             "id": 207,
@@ -1563,7 +1773,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 415700,
-            "priceChange": 300
+            "priceChange": 300,
+            "priceBefore": 415400,
+            "breakeven": 130,
+            "nextBreakeven": 80
           },
           {
             "id": 202,
@@ -1584,7 +1797,10 @@
             "goals": 1,
             "behinds": 0,
             "price": 554800,
-            "priceChange": -100
+            "priceChange": -100,
+            "priceBefore": 554900,
+            "breakeven": 126,
+            "nextBreakeven": 111
           },
           {
             "id": 196,
@@ -1606,7 +1822,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 349200,
-            "priceChange": 8200
+            "priceChange": 8200,
+            "priceBefore": 341000,
+            "breakeven": 86,
+            "nextBreakeven": 53
           },
           {
             "id": 200,
@@ -1627,7 +1846,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 251000,
-            "priceChange": 12400
+            "priceChange": 12400,
+            "priceBefore": 238600,
+            "breakeven": 70,
+            "nextBreakeven": 33
           },
           {
             "id": 175,
@@ -1648,7 +1870,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 282300,
-            "priceChange": 24700
+            "priceChange": 24700,
+            "priceBefore": 257600,
+            "breakeven": 40,
+            "nextBreakeven": 21
           },
           {
             "id": 205,
@@ -1669,7 +1894,10 @@
             "goals": 0,
             "behinds": 1,
             "price": 304800,
-            "priceChange": 31500
+            "priceChange": 31500,
+            "priceBefore": 273300,
+            "breakeven": 23,
+            "nextBreakeven": 27
           },
           {
             "id": 186,
@@ -1691,7 +1919,10 @@
             "goals": 0,
             "behinds": 1,
             "price": 310200,
-            "priceChange": 14600
+            "priceChange": 14600,
+            "priceBefore": 295600,
+            "breakeven": 58,
+            "nextBreakeven": 27
           },
           {
             "id": 206,
@@ -1712,7 +1943,10 @@
             "goals": 0,
             "behinds": 1,
             "price": 332100,
-            "priceChange": -4300
+            "priceChange": -4300,
+            "priceBefore": 336400,
+            "breakeven": 97,
+            "nextBreakeven": 64
           },
           {
             "id": 210,
@@ -1733,7 +1967,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 578300,
-            "priceChange": -11700
+            "priceChange": -11700,
+            "priceBefore": 590000,
+            "breakeven": 111,
+            "nextBreakeven": 177
           },
           {
             "id": 198,
@@ -1754,7 +1991,10 @@
             "goals": 3,
             "behinds": 1,
             "price": 247400,
-            "priceChange": 14900
+            "priceChange": 14900,
+            "priceBefore": 232500,
+            "breakeven": 47,
+            "nextBreakeven": 43
           },
           {
             "id": 174,
@@ -1776,7 +2016,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 240100,
-            "priceChange": 11100
+            "priceChange": 11100,
+            "priceBefore": 229000,
+            "breakeven": 44,
+            "nextBreakeven": 49
           },
           {
             "id": 211,
@@ -1798,7 +2041,10 @@
             "goals": 0,
             "behinds": 1,
             "price": 287000,
-            "priceChange": 33100
+            "priceChange": 33100,
+            "priceBefore": 253900,
+            "breakeven": -6,
+            "nextBreakeven": 16
           },
           {
             "id": 208,
@@ -1819,7 +2065,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 293100,
-            "priceChange": -2200
+            "priceChange": -2200,
+            "priceBefore": 295300,
+            "breakeven": 69,
+            "nextBreakeven": 46
           },
           {
             "id": 183,
@@ -1840,7 +2089,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 202000,
-            "priceChange": 11000
+            "priceChange": 11000,
+            "priceBefore": 191000,
+            "breakeven": 37,
+            "nextBreakeven": 25
           },
           {
             "id": 176,
@@ -1861,7 +2113,10 @@
             "goals": 2,
             "behinds": 3,
             "price": 317200,
-            "priceChange": -10300
+            "priceChange": -10300,
+            "priceBefore": 327500,
+            "breakeven": 79,
+            "nextBreakeven": 95
           },
           {
             "id": 182,
@@ -1882,7 +2137,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 333600,
-            "priceChange": -5900
+            "priceChange": -5900,
+            "priceBefore": 339500,
+            "breakeven": 62,
+            "nextBreakeven": 86
           },
           {
             "id": 189,
@@ -1903,7 +2161,10 @@
             "goals": 0,
             "behinds": 1,
             "price": 250800,
-            "priceChange": -21100
+            "priceChange": -21100,
+            "priceBefore": 271900,
+            "breakeven": 93,
+            "nextBreakeven": 84
           },
           {
             "id": 177,
@@ -1924,7 +2185,10 @@
             "goals": 1,
             "behinds": 0,
             "price": 390700,
-            "priceChange": -30300
+            "priceChange": -30300,
+            "priceBefore": 421000,
+            "breakeven": 103,
+            "nextBreakeven": 113
           },
           {
             "id": 180,
@@ -1946,7 +2210,10 @@
             "goals": 0,
             "behinds": 1,
             "price": 232700,
-            "priceChange": -7400
+            "priceChange": -7400,
+            "priceBefore": 240100,
+            "breakeven": 41,
+            "nextBreakeven": 54
           },
           {
             "id": 199,
@@ -1967,7 +2234,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 367100,
-            "priceChange": -24200
+            "priceChange": -24200,
+            "priceBefore": 391300,
+            "breakeven": 76,
+            "nextBreakeven": 114
           },
           {
             "id": 181,
@@ -1989,7 +2259,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 376500,
-            "priceChange": -27000
+            "priceChange": -27000,
+            "priceBefore": 403500,
+            "breakeven": 77,
+            "nextBreakeven": 155
           },
           {
             "id": 190,
@@ -2010,7 +2283,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 220800,
-            "priceChange": -36700
+            "priceChange": -36700,
+            "priceBefore": 257500,
+            "breakeven": 83,
+            "nextBreakeven": 114
           }
         ]
       }
@@ -2060,7 +2336,10 @@
             "goals": 2,
             "behinds": 2,
             "price": 516000,
-            "priceChange": 23500
+            "priceChange": 23500,
+            "priceBefore": 492500,
+            "breakeven": 72,
+            "nextBreakeven": 86
           },
           {
             "id": 245,
@@ -2082,7 +2361,10 @@
             "goals": 1,
             "behinds": 1,
             "price": 438000,
-            "priceChange": 24700
+            "priceChange": 24700,
+            "priceBefore": 413300,
+            "breakeven": 70,
+            "nextBreakeven": 50
           },
           {
             "id": 233,
@@ -2103,7 +2385,10 @@
             "goals": 0,
             "behinds": 1,
             "price": 613300,
-            "priceChange": -26100
+            "priceChange": -26100,
+            "priceBefore": 639400,
+            "breakeven": 178,
+            "nextBreakeven": 192
           },
           {
             "id": 247,
@@ -2124,7 +2409,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 461100,
-            "priceChange": -20900
+            "priceChange": -20900,
+            "priceBefore": 482000,
+            "breakeven": 141,
+            "nextBreakeven": 107
           },
           {
             "id": 221,
@@ -2145,7 +2433,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 463200,
-            "priceChange": 1700
+            "priceChange": 1700,
+            "priceBefore": 461500,
+            "breakeven": 89,
+            "nextBreakeven": 92
           },
           {
             "id": 225,
@@ -2166,7 +2457,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 336500,
-            "priceChange": 14600
+            "priceChange": 14600,
+            "priceBefore": 321900,
+            "breakeven": 59,
+            "nextBreakeven": 45
           },
           {
             "id": 223,
@@ -2187,7 +2481,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 398400,
-            "priceChange": 12700
+            "priceChange": 12700,
+            "priceBefore": 385700,
+            "breakeven": 62,
+            "nextBreakeven": 69
           },
           {
             "id": 224,
@@ -2208,7 +2505,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 452800,
-            "priceChange": -16100
+            "priceChange": -16100,
+            "priceBefore": 468900,
+            "breakeven": 119,
+            "nextBreakeven": 104
           },
           {
             "id": 259,
@@ -2229,7 +2529,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 403600,
-            "priceChange": 17900
+            "priceChange": 17900,
+            "priceBefore": 385700,
+            "breakeven": 42,
+            "nextBreakeven": 50
           },
           {
             "id": 231,
@@ -2250,7 +2553,10 @@
             "goals": 1,
             "behinds": 0,
             "price": 306500,
-            "priceChange": 6800
+            "priceChange": 6800,
+            "priceBefore": 299700,
+            "breakeven": 65,
+            "nextBreakeven": 40
           },
           {
             "id": 255,
@@ -2271,7 +2577,10 @@
             "goals": 3,
             "behinds": 0,
             "price": 321100,
-            "priceChange": 32700
+            "priceChange": 32700,
+            "priceBefore": 288400,
+            "breakeven": 5,
+            "nextBreakeven": 9
           },
           {
             "id": 218,
@@ -2292,7 +2601,10 @@
             "goals": 4,
             "behinds": 0,
             "price": 345000,
-            "priceChange": -1200
+            "priceChange": -1200,
+            "priceBefore": 346200,
+            "breakeven": 79,
+            "nextBreakeven": 80
           },
           {
             "id": 232,
@@ -2314,7 +2626,10 @@
             "goals": 1,
             "behinds": 1,
             "price": 373200,
-            "priceChange": 25300
+            "priceChange": 25300,
+            "priceBefore": 347900,
+            "breakeven": 15,
+            "nextBreakeven": 78
           },
           {
             "id": 220,
@@ -2336,7 +2651,10 @@
             "goals": 1,
             "behinds": 2,
             "price": 489500,
-            "priceChange": -30600
+            "priceChange": -30600,
+            "priceBefore": 520100,
+            "breakeven": 141,
+            "nextBreakeven": 152
           },
           {
             "id": 242,
@@ -2357,7 +2675,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 360600,
-            "priceChange": 4700
+            "priceChange": 4700,
+            "priceBefore": 355900,
+            "breakeven": 57,
+            "nextBreakeven": 80
           },
           {
             "id": 256,
@@ -2379,7 +2700,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 358900,
-            "priceChange": -18800
+            "priceChange": -18800,
+            "priceBefore": 377700,
+            "breakeven": 109,
+            "nextBreakeven": 97
           },
           {
             "id": 234,
@@ -2400,7 +2724,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 274400,
-            "priceChange": 6900
+            "priceChange": 6900,
+            "priceBefore": 267500,
+            "breakeven": 48,
+            "nextBreakeven": 25
           },
           {
             "id": 782,
@@ -2422,7 +2749,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 180000,
-            "priceChange": 24400
+            "priceChange": 24400,
+            "priceBefore": 155600,
+            "breakeven": 1,
+            "nextBreakeven": -13
           },
           {
             "id": 237,
@@ -2443,7 +2773,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 290600,
-            "priceChange": 10800
+            "priceChange": 10800,
+            "priceBefore": 279800,
+            "breakeven": 31,
+            "nextBreakeven": 52
           },
           {
             "id": 230,
@@ -2464,7 +2797,10 @@
             "goals": 2,
             "behinds": 0,
             "price": 232400,
-            "priceChange": 7900
+            "priceChange": 7900,
+            "priceBefore": 224500,
+            "breakeven": 36,
+            "nextBreakeven": 22
           },
           {
             "id": 253,
@@ -2485,7 +2821,10 @@
             "goals": 1,
             "behinds": 0,
             "price": 271900,
-            "priceChange": -22800
+            "priceChange": -22800,
+            "priceBefore": 294700,
+            "breakeven": 102,
+            "nextBreakeven": 66
           },
           {
             "id": 238,
@@ -2506,7 +2845,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 275100,
-            "priceChange": -22100
+            "priceChange": -22100,
+            "priceBefore": 297200,
+            "breakeven": 88,
+            "nextBreakeven": 88
           },
           {
             "id": 226,
@@ -2528,7 +2870,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 236700,
-            "priceChange": -21400
+            "priceChange": -21400,
+            "priceBefore": 258100,
+            "breakeven": 64,
+            "nextBreakeven": 94
           }
         ],
         "away": [
@@ -2551,7 +2896,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 563200,
-            "priceChange": 18500
+            "priceChange": 18500,
+            "priceBefore": 544700,
+            "breakeven": 71,
+            "nextBreakeven": 92
           },
           {
             "id": 619,
@@ -2573,7 +2921,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 491500,
-            "priceChange": 26900
+            "priceChange": 26900,
+            "priceBefore": 464600,
+            "breakeven": 49,
+            "nextBreakeven": 80
           },
           {
             "id": 621,
@@ -2595,7 +2946,10 @@
             "goals": 2,
             "behinds": 0,
             "price": 415600,
-            "priceChange": 23900
+            "priceChange": 23900,
+            "priceBefore": 391700,
+            "breakeven": 48,
+            "nextBreakeven": 52
           },
           {
             "id": 630,
@@ -2617,7 +2971,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 468300,
-            "priceChange": -8000
+            "priceChange": -8000,
+            "priceBefore": 476300,
+            "breakeven": 114,
+            "nextBreakeven": 105
           },
           {
             "id": 638,
@@ -2638,7 +2995,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 337800,
-            "priceChange": 23800
+            "priceChange": 23800,
+            "priceBefore": 314000,
+            "breakeven": 37,
+            "nextBreakeven": 30
           },
           {
             "id": 634,
@@ -2660,7 +3020,10 @@
             "goals": 2,
             "behinds": 0,
             "price": 344800,
-            "priceChange": 12200
+            "priceChange": 12200,
+            "priceBefore": 332600,
+            "breakeven": 60,
+            "nextBreakeven": 42
           },
           {
             "id": 644,
@@ -2681,7 +3044,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 437700,
-            "priceChange": -25700
+            "priceChange": -25700,
+            "priceBefore": 463400,
+            "breakeven": 144,
+            "nextBreakeven": 71
           },
           {
             "id": 647,
@@ -2703,7 +3069,10 @@
             "goals": 2,
             "behinds": 3,
             "price": 384500,
-            "priceChange": 6300
+            "priceChange": 6300,
+            "priceBefore": 378200,
+            "breakeven": 71,
+            "nextBreakeven": 87
           },
           {
             "id": 606,
@@ -2725,7 +3094,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 113500,
-            "priceChange": 0
+            "priceChange": 0,
+            "priceBefore": 113500,
+            "breakeven": null,
+            "nextBreakeven": -58
           },
           {
             "id": 645,
@@ -2747,7 +3119,10 @@
             "goals": 1,
             "behinds": 1,
             "price": 446100,
-            "priceChange": 19400
+            "priceChange": 19400,
+            "priceBefore": 426700,
+            "breakeven": 31,
+            "nextBreakeven": 85
           },
           {
             "id": 646,
@@ -2769,7 +3144,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 383900,
-            "priceChange": -6100
+            "priceChange": -6100,
+            "priceBefore": 390000,
+            "breakeven": 83,
+            "nextBreakeven": 103
           },
           {
             "id": 625,
@@ -2791,7 +3169,10 @@
             "goals": 2,
             "behinds": 0,
             "price": 431100,
-            "priceChange": -23300
+            "priceChange": -23300,
+            "priceBefore": 454400,
+            "breakeven": 120,
+            "nextBreakeven": 150
           },
           {
             "id": 629,
@@ -2812,7 +3193,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 420600,
-            "priceChange": -14600
+            "priceChange": -14600,
+            "priceBefore": 435200,
+            "breakeven": 94,
+            "nextBreakeven": 88
           },
           {
             "id": 615,
@@ -2833,7 +3217,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 397500,
-            "priceChange": 6300
+            "priceChange": 6300,
+            "priceBefore": 391200,
+            "breakeven": 41,
+            "nextBreakeven": 69
           },
           {
             "id": 632,
@@ -2854,7 +3241,10 @@
             "goals": 0,
             "behinds": 1,
             "price": 196000,
-            "priceChange": 10700
+            "priceChange": 10700,
+            "priceBefore": 185300,
+            "breakeven": 29,
+            "nextBreakeven": 34
           },
           {
             "id": 611,
@@ -2876,7 +3266,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 202700,
-            "priceChange": 4100
+            "priceChange": 4100,
+            "priceBefore": 198600,
+            "breakeven": 42,
+            "nextBreakeven": 31
           },
           {
             "id": 620,
@@ -2897,7 +3290,10 @@
             "goals": 0,
             "behinds": 1,
             "price": 474000,
-            "priceChange": 5000
+            "priceChange": 5000,
+            "priceBefore": 469000,
+            "breakeven": 36,
+            "nextBreakeven": 98
           },
           {
             "id": 637,
@@ -2918,7 +3314,10 @@
             "goals": 0,
             "behinds": 1,
             "price": 336300,
-            "priceChange": -43000
+            "priceChange": -43000,
+            "priceBefore": 379300,
+            "breakeven": 143,
+            "nextBreakeven": 112
           },
           {
             "id": 640,
@@ -2939,7 +3338,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 197300,
-            "priceChange": 6100
+            "priceChange": 6100,
+            "priceBefore": 191200,
+            "breakeven": 23,
+            "nextBreakeven": 18
           },
           {
             "id": 612,
@@ -2961,7 +3363,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 303600,
-            "priceChange": 100
+            "priceChange": 100,
+            "priceBefore": 303500,
+            "breakeven": 35,
+            "nextBreakeven": 46
           },
           {
             "id": 626,
@@ -2982,7 +3387,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 257800,
-            "priceChange": -24200
+            "priceChange": -24200,
+            "priceBefore": 282000,
+            "breakeven": 88,
+            "nextBreakeven": 77
           },
           {
             "id": 623,
@@ -3003,7 +3411,10 @@
             "goals": 2,
             "behinds": 0,
             "price": 197600,
-            "priceChange": 1200
+            "priceChange": 1200,
+            "priceBefore": 196400,
+            "breakeven": 28,
+            "nextBreakeven": 56
           },
           {
             "id": 610,
@@ -3025,7 +3436,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 325200,
-            "priceChange": -18600
+            "priceChange": -18600,
+            "priceBefore": 343800,
+            "breakeven": 68,
+            "nextBreakeven": 99
           }
         ]
       }
@@ -3075,7 +3489,10 @@
             "goals": 1,
             "behinds": 0,
             "price": 563200,
-            "priceChange": 13600
+            "priceChange": 13600,
+            "priceBefore": 549600,
+            "breakeven": 109,
+            "nextBreakeven": 114
           },
           {
             "id": 509,
@@ -3097,7 +3514,10 @@
             "goals": 0,
             "behinds": 1,
             "price": 540800,
-            "priceChange": -1000
+            "priceChange": -1000,
+            "priceBefore": 541800,
+            "breakeven": 127,
+            "nextBreakeven": 134
           },
           {
             "id": 519,
@@ -3118,7 +3538,10 @@
             "goals": 1,
             "behinds": 0,
             "price": 631500,
-            "priceChange": -35700
+            "priceChange": -35700,
+            "priceBefore": 667200,
+            "breakeven": 194,
+            "nextBreakeven": 186
           },
           {
             "id": 504,
@@ -3140,7 +3563,10 @@
             "goals": 0,
             "behinds": 1,
             "price": 397600,
-            "priceChange": 11700
+            "priceChange": 11700,
+            "priceBefore": 385900,
+            "breakeven": 77,
+            "nextBreakeven": 77
           },
           {
             "id": 510,
@@ -3162,7 +3588,10 @@
             "goals": 1,
             "behinds": 0,
             "price": 399800,
-            "priceChange": 5500
+            "priceChange": 5500,
+            "priceBefore": 394300,
+            "breakeven": 88,
+            "nextBreakeven": 73
           },
           {
             "id": 520,
@@ -3184,7 +3613,10 @@
             "goals": 1,
             "behinds": 1,
             "price": 381300,
-            "priceChange": 10400
+            "priceChange": 10400,
+            "priceBefore": 370900,
+            "breakeven": 74,
+            "nextBreakeven": 85
           },
           {
             "id": 482,
@@ -3205,7 +3637,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 290600,
-            "priceChange": -6100
+            "priceChange": -6100,
+            "priceBefore": 296700,
+            "breakeven": 101,
+            "nextBreakeven": 58
           },
           {
             "id": 485,
@@ -3226,7 +3661,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 449400,
-            "priceChange": -7100
+            "priceChange": -7100,
+            "priceBefore": 456500,
+            "breakeven": 102,
+            "nextBreakeven": 118
           },
           {
             "id": 486,
@@ -3247,7 +3685,10 @@
             "goals": 3,
             "behinds": 1,
             "price": 324500,
-            "priceChange": -5100
+            "priceChange": -5100,
+            "priceBefore": 329600,
+            "breakeven": 95,
+            "nextBreakeven": 69
           },
           {
             "id": 498,
@@ -3268,7 +3709,10 @@
             "goals": 2,
             "behinds": 0,
             "price": 233200,
-            "priceChange": 15900
+            "priceChange": 15900,
+            "priceBefore": 217300,
+            "breakeven": 44,
+            "nextBreakeven": 21
           },
           {
             "id": 517,
@@ -3289,7 +3733,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 407600,
-            "priceChange": -4500
+            "priceChange": -4500,
+            "priceBefore": 412100,
+            "breakeven": 85,
+            "nextBreakeven": 100
           },
           {
             "id": 505,
@@ -3311,7 +3758,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 478100,
-            "priceChange": -13300
+            "priceChange": -13300,
+            "priceBefore": 491400,
+            "breakeven": 103,
+            "nextBreakeven": 121
           },
           {
             "id": 484,
@@ -3332,7 +3782,10 @@
             "goals": 2,
             "behinds": 2,
             "price": 381400,
-            "priceChange": -20400
+            "priceChange": -20400,
+            "priceBefore": 401800,
+            "breakeven": 116,
+            "nextBreakeven": 83
           },
           {
             "id": 502,
@@ -3354,7 +3807,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 401800,
-            "priceChange": -11500
+            "priceChange": -11500,
+            "priceBefore": 413300,
+            "breakeven": 87,
+            "nextBreakeven": 119
           },
           {
             "id": 490,
@@ -3376,7 +3832,10 @@
             "goals": 1,
             "behinds": 0,
             "price": 223200,
-            "priceChange": 1600
+            "priceChange": 1600,
+            "priceBefore": 221600,
+            "breakeven": 58,
+            "nextBreakeven": 56
           },
           {
             "id": 501,
@@ -3397,7 +3856,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 350000,
-            "priceChange": -10800
+            "priceChange": -10800,
+            "priceBefore": 360800,
+            "breakeven": 79,
+            "nextBreakeven": 86
           },
           {
             "id": 511,
@@ -3418,7 +3880,10 @@
             "goals": 1,
             "behinds": 0,
             "price": 237400,
-            "priceChange": 1100
+            "priceChange": 1100,
+            "priceBefore": 236300,
+            "breakeven": 51,
+            "nextBreakeven": 54
           },
           {
             "id": 515,
@@ -3439,7 +3904,10 @@
             "goals": 2,
             "behinds": 0,
             "price": 246900,
-            "priceChange": -5900
+            "priceChange": -5900,
+            "priceBefore": 252800,
+            "breakeven": 66,
+            "nextBreakeven": 53
           },
           {
             "id": 499,
@@ -3460,7 +3928,10 @@
             "goals": 2,
             "behinds": 0,
             "price": 292500,
-            "priceChange": -27200
+            "priceChange": -27200,
+            "priceBefore": 319700,
+            "breakeven": 105,
+            "nextBreakeven": 74
           },
           {
             "id": 500,
@@ -3481,7 +3952,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 262300,
-            "priceChange": -16900
+            "priceChange": -16900,
+            "priceBefore": 279200,
+            "breakeven": 79,
+            "nextBreakeven": 90
           },
           {
             "id": 512,
@@ -3502,7 +3976,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 353400,
-            "priceChange": -13200
+            "priceChange": -13200,
+            "priceBefore": 366600,
+            "breakeven": 70,
+            "nextBreakeven": 111
           },
           {
             "id": 496,
@@ -3523,7 +4000,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 296400,
-            "priceChange": 0
+            "priceChange": 0,
+            "priceBefore": 296400,
+            "breakeven": null,
+            "nextBreakeven": null
           },
           {
             "id": 488,
@@ -3544,7 +4024,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 184300,
-            "priceChange": -9600
+            "priceChange": -9600,
+            "priceBefore": 193900,
+            "breakeven": 36,
+            "nextBreakeven": 73
           }
         ],
         "away": [
@@ -3567,7 +4050,10 @@
             "goals": 1,
             "behinds": 0,
             "price": 514400,
-            "priceChange": -19300
+            "priceChange": -19300,
+            "priceBefore": 533700,
+            "breakeven": 174,
+            "nextBreakeven": 87
           },
           {
             "id": 263,
@@ -3588,7 +4074,10 @@
             "goals": 1,
             "behinds": 0,
             "price": 565900,
-            "priceChange": 38500
+            "priceChange": 38500,
+            "priceBefore": 527400,
+            "breakeven": 38,
+            "nextBreakeven": 87
           },
           {
             "id": 292,
@@ -3610,7 +4099,10 @@
             "goals": 1,
             "behinds": 0,
             "price": 539100,
-            "priceChange": -13700
+            "priceChange": -13700,
+            "priceBefore": 552800,
+            "breakeven": 149,
+            "nextBreakeven": 119
           },
           {
             "id": 268,
@@ -3631,7 +4123,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 416200,
-            "priceChange": 22500
+            "priceChange": 22500,
+            "priceBefore": 393700,
+            "breakeven": 45,
+            "nextBreakeven": 52
           },
           {
             "id": 290,
@@ -3652,7 +4147,10 @@
             "goals": 1,
             "behinds": 0,
             "price": 571700,
-            "priceChange": 17800
+            "priceChange": 17800,
+            "priceBefore": 553900,
+            "breakeven": 43,
+            "nextBreakeven": 106
           },
           {
             "id": 287,
@@ -3674,7 +4172,10 @@
             "goals": 1,
             "behinds": 0,
             "price": 473900,
-            "priceChange": -8800
+            "priceChange": -8800,
+            "priceBefore": 482700,
+            "breakeven": 103,
+            "nextBreakeven": 121
           },
           {
             "id": 288,
@@ -3695,7 +4196,10 @@
             "goals": 1,
             "behinds": 1,
             "price": 366300,
-            "priceChange": 20500
+            "priceChange": 20500,
+            "priceBefore": 345800,
+            "breakeven": 36,
+            "nextBreakeven": 33
           },
           {
             "id": 279,
@@ -3717,7 +4221,10 @@
             "goals": 1,
             "behinds": 1,
             "price": 352700,
-            "priceChange": 8100
+            "priceChange": 8100,
+            "priceBefore": 344600,
+            "breakeven": 59,
+            "nextBreakeven": 93
           },
           {
             "id": 300,
@@ -3738,7 +4245,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 525100,
-            "priceChange": 13600
+            "priceChange": 13600,
+            "priceBefore": 511500,
+            "breakeven": 43,
+            "nextBreakeven": 120
           },
           {
             "id": 304,
@@ -3759,7 +4269,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 397000,
-            "priceChange": -29000
+            "priceChange": -29000,
+            "priceBefore": 426000,
+            "breakeven": 136,
+            "nextBreakeven": 89
           },
           {
             "id": 293,
@@ -3781,7 +4294,10 @@
             "goals": 1,
             "behinds": 0,
             "price": 386500,
-            "priceChange": -26400
+            "priceChange": -26400,
+            "priceBefore": 412900,
+            "breakeven": 130,
+            "nextBreakeven": 112
           },
           {
             "id": 280,
@@ -3802,7 +4318,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 401200,
-            "priceChange": -14300
+            "priceChange": -14300,
+            "priceBefore": 415500,
+            "breakeven": 100,
+            "nextBreakeven": 123
           },
           {
             "id": 286,
@@ -3823,7 +4342,10 @@
             "goals": 2,
             "behinds": 1,
             "price": 278600,
-            "priceChange": -20300
+            "priceChange": -20300,
+            "priceBefore": 298900,
+            "breakeven": 110,
+            "nextBreakeven": 70
           },
           {
             "id": 295,
@@ -3844,7 +4366,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 458200,
-            "priceChange": 19300
+            "priceChange": 19300,
+            "priceBefore": 438900,
+            "breakeven": 18,
+            "nextBreakeven": 94
           },
           {
             "id": 285,
@@ -3865,7 +4390,10 @@
             "goals": 0,
             "behinds": 1,
             "price": 289100,
-            "priceChange": 18500
+            "priceChange": 18500,
+            "priceBefore": 270600,
+            "breakeven": 16,
+            "nextBreakeven": 30
           },
           {
             "id": 264,
@@ -3886,7 +4414,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 476300,
-            "priceChange": -8300
+            "priceChange": -8300,
+            "priceBefore": 484600,
+            "breakeven": 72,
+            "nextBreakeven": 122
           },
           {
             "id": 276,
@@ -3907,7 +4438,10 @@
             "goals": 1,
             "behinds": 0,
             "price": 180600,
-            "priceChange": 3800
+            "priceChange": 3800,
+            "priceBefore": 176800,
+            "breakeven": 41,
+            "nextBreakeven": 23
           },
           {
             "id": 302,
@@ -3928,7 +4462,10 @@
             "goals": 3,
             "behinds": 1,
             "price": 253400,
-            "priceChange": 8600
+            "priceChange": 8600,
+            "priceBefore": 244800,
+            "breakeven": 28,
+            "nextBreakeven": 23
           },
           {
             "id": 267,
@@ -3949,7 +4486,10 @@
             "goals": 0,
             "behinds": 1,
             "price": 307700,
-            "priceChange": -42400
+            "priceChange": -42400,
+            "priceBefore": 350100,
+            "breakeven": 142,
+            "nextBreakeven": 118
           },
           {
             "id": 282,
@@ -3970,7 +4510,10 @@
             "goals": 1,
             "behinds": 0,
             "price": 293600,
-            "priceChange": -14400
+            "priceChange": -14400,
+            "priceBefore": 308000,
+            "breakeven": 75,
+            "nextBreakeven": 116
           },
           {
             "id": 301,
@@ -3992,7 +4535,10 @@
             "goals": 1,
             "behinds": 0,
             "price": 218200,
-            "priceChange": -15300
+            "priceChange": -15300,
+            "priceBefore": 233500,
+            "breakeven": 74,
+            "nextBreakeven": 50
           },
           {
             "id": 261,
@@ -4013,7 +4559,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 252100,
-            "priceChange": 12100
+            "priceChange": 12100,
+            "priceBefore": 240000,
+            "breakeven": 8,
+            "nextBreakeven": 36
           },
           {
             "id": 278,
@@ -4035,7 +4584,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 212700,
-            "priceChange": 0
+            "priceChange": 0,
+            "priceBefore": 212700,
+            "breakeven": null,
+            "nextBreakeven": 35
           }
         ]
       }
@@ -4086,7 +4638,10 @@
             "goals": 0,
             "behinds": 1,
             "price": 568900,
-            "priceChange": -9600
+            "priceChange": -9600,
+            "priceBefore": 578500,
+            "breakeven": 149,
+            "nextBreakeven": 113
           },
           {
             "id": 327,
@@ -4107,7 +4662,10 @@
             "goals": 1,
             "behinds": 0,
             "price": 436000,
-            "priceChange": 24200
+            "priceChange": 24200,
+            "priceBefore": 411800,
+            "breakeven": 65,
+            "nextBreakeven": 60
           },
           {
             "id": 342,
@@ -4128,7 +4686,10 @@
             "goals": 1,
             "behinds": 0,
             "price": 637500,
-            "priceChange": 9000
+            "priceChange": 9000,
+            "priceBefore": 628500,
+            "breakeven": 94,
+            "nextBreakeven": 122
           },
           {
             "id": 312,
@@ -4149,7 +4710,10 @@
             "goals": 3,
             "behinds": 0,
             "price": 466300,
-            "priceChange": 6100
+            "priceChange": 6100,
+            "priceBefore": 460200,
+            "breakeven": 97,
+            "nextBreakeven": 71
           },
           {
             "id": 339,
@@ -4170,7 +4734,10 @@
             "goals": 1,
             "behinds": 0,
             "price": 345500,
-            "priceChange": 10700
+            "priceChange": 10700,
+            "priceBefore": 334800,
+            "breakeven": 73,
+            "nextBreakeven": 69
           },
           {
             "id": 321,
@@ -4191,7 +4758,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 402000,
-            "priceChange": -100
+            "priceChange": -100,
+            "priceBefore": 402100,
+            "breakeven": 93,
+            "nextBreakeven": 83
           },
           {
             "id": 318,
@@ -4212,7 +4782,10 @@
             "goals": 0,
             "behinds": 1,
             "price": 387400,
-            "priceChange": 5800
+            "priceChange": 5800,
+            "priceBefore": 381600,
+            "breakeven": 73,
+            "nextBreakeven": 77
           },
           {
             "id": 316,
@@ -4233,7 +4806,10 @@
             "goals": 1,
             "behinds": 1,
             "price": 330200,
-            "priceChange": 4200
+            "priceChange": 4200,
+            "priceBefore": 326000,
+            "breakeven": 74,
+            "nextBreakeven": 78
           },
           {
             "id": 338,
@@ -4255,7 +4831,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 334200,
-            "priceChange": -4500
+            "priceChange": -4500,
+            "priceBefore": 338700,
+            "breakeven": 92,
+            "nextBreakeven": 75
           },
           {
             "id": 320,
@@ -4276,7 +4855,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 223700,
-            "priceChange": 16300
+            "priceChange": 16300,
+            "priceBefore": 207400,
+            "breakeven": 45,
+            "nextBreakeven": 9
           },
           {
             "id": 317,
@@ -4297,7 +4879,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 309300,
-            "priceChange": -2000
+            "priceChange": -2000,
+            "priceBefore": 311300,
+            "breakeven": 84,
+            "nextBreakeven": 55
           },
           {
             "id": 346,
@@ -4318,7 +4903,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 444300,
-            "priceChange": 11000
+            "priceChange": 11000,
+            "priceBefore": 433300,
+            "breakeven": 48,
+            "nextBreakeven": 71
           },
           {
             "id": 334,
@@ -4339,7 +4927,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 411900,
-            "priceChange": -29500
+            "priceChange": -29500,
+            "priceBefore": 441400,
+            "breakeven": 138,
+            "nextBreakeven": 127
           },
           {
             "id": 323,
@@ -4360,7 +4951,10 @@
             "goals": 2,
             "behinds": 2,
             "price": 284500,
-            "priceChange": 11800
+            "priceChange": 11800,
+            "priceBefore": 272700,
+            "breakeven": 35,
+            "nextBreakeven": 43
           },
           {
             "id": 329,
@@ -4381,7 +4975,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 236500,
-            "priceChange": -300
+            "priceChange": -300,
+            "priceBefore": 236800,
+            "breakeven": 57,
+            "nextBreakeven": 52
           },
           {
             "id": 305,
@@ -4402,7 +4999,10 @@
             "goals": 1,
             "behinds": 0,
             "price": 364700,
-            "priceChange": -22000
+            "priceChange": -22000,
+            "priceBefore": 386700,
+            "breakeven": 106,
+            "nextBreakeven": 72
           },
           {
             "id": 331,
@@ -4423,7 +5023,10 @@
             "goals": 1,
             "behinds": 2,
             "price": 308400,
-            "priceChange": -18600
+            "priceChange": -18600,
+            "priceBefore": 327000,
+            "breakeven": 97,
+            "nextBreakeven": 98
           },
           {
             "id": 330,
@@ -4444,7 +5047,10 @@
             "goals": 1,
             "behinds": 1,
             "price": 393700,
-            "priceChange": 9000
+            "priceChange": 9000,
+            "priceBefore": 384700,
+            "breakeven": 34,
+            "nextBreakeven": 58
           },
           {
             "id": 308,
@@ -4466,7 +5072,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 306400,
-            "priceChange": -44300
+            "priceChange": -44300,
+            "priceBefore": 350700,
+            "breakeven": 154,
+            "nextBreakeven": 90
           },
           {
             "id": 336,
@@ -4488,7 +5097,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 362200,
-            "priceChange": 17800
+            "priceChange": 17800,
+            "priceBefore": 344400,
+            "breakeven": 13,
+            "nextBreakeven": 63
           },
           {
             "id": 314,
@@ -4509,7 +5121,10 @@
             "goals": 2,
             "behinds": 1,
             "price": 265600,
-            "priceChange": -100
+            "priceChange": -100,
+            "priceBefore": 265700,
+            "breakeven": 53,
+            "nextBreakeven": 65
           },
           {
             "id": 337,
@@ -4530,7 +5145,10 @@
             "goals": 0,
             "behinds": 2,
             "price": 427700,
-            "priceChange": -10100
+            "priceChange": -10100,
+            "priceBefore": 437800,
+            "breakeven": 70,
+            "nextBreakeven": 113
           },
           {
             "id": 322,
@@ -4552,7 +5170,10 @@
             "goals": 1,
             "behinds": 2,
             "price": 289300,
-            "priceChange": -21800
+            "priceChange": -21800,
+            "priceBefore": 311100,
+            "breakeven": 92,
+            "nextBreakeven": 113
           }
         ],
         "away": [
@@ -4575,7 +5196,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 392100,
-            "priceChange": 29900
+            "priceChange": 29900,
+            "priceBefore": 362200,
+            "breakeven": 59,
+            "nextBreakeven": 40
           },
           {
             "id": 679,
@@ -4596,7 +5220,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 485700,
-            "priceChange": 2100
+            "priceChange": 2100,
+            "priceBefore": 483600,
+            "breakeven": 105,
+            "nextBreakeven": 94
           },
           {
             "id": 667,
@@ -4617,7 +5244,10 @@
             "goals": 1,
             "behinds": 0,
             "price": 604800,
-            "priceChange": -25500
+            "priceChange": -25500,
+            "priceBefore": 630300,
+            "breakeven": 162,
+            "nextBreakeven": 167
           },
           {
             "id": 673,
@@ -4639,7 +5269,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 356800,
-            "priceChange": 3700
+            "priceChange": 3700,
+            "priceBefore": 353100,
+            "breakeven": 95,
+            "nextBreakeven": 73
           },
           {
             "id": 663,
@@ -4660,7 +5293,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 677000,
-            "priceChange": -8400
+            "priceChange": -8400,
+            "priceBefore": 685400,
+            "breakeven": 113,
+            "nextBreakeven": 117
           },
           {
             "id": 678,
@@ -4681,7 +5317,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 311800,
-            "priceChange": 30700
+            "priceChange": 30700,
+            "priceBefore": 281100,
+            "breakeven": 25,
+            "nextBreakeven": 16
           },
           {
             "id": 686,
@@ -4703,7 +5342,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 329700,
-            "priceChange": 4900
+            "priceChange": 4900,
+            "priceBefore": 324800,
+            "breakeven": 80,
+            "nextBreakeven": 34
           },
           {
             "id": 674,
@@ -4724,7 +5366,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 439000,
-            "priceChange": 6900
+            "priceChange": 6900,
+            "priceBefore": 432100,
+            "breakeven": 63,
+            "nextBreakeven": 96
           },
           {
             "id": 685,
@@ -4746,7 +5391,10 @@
             "goals": 0,
             "behinds": 1,
             "price": 316500,
-            "priceChange": -8300
+            "priceChange": -8300,
+            "priceBefore": 324800,
+            "breakeven": 91,
+            "nextBreakeven": 63
           },
           {
             "id": 675,
@@ -4767,7 +5415,10 @@
             "goals": 2,
             "behinds": 0,
             "price": 263300,
-            "priceChange": 12800
+            "priceChange": 12800,
+            "priceBefore": 250500,
+            "breakeven": 40,
+            "nextBreakeven": 27
           },
           {
             "id": 652,
@@ -4788,7 +5439,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 551700,
-            "priceChange": 9300
+            "priceChange": 9300,
+            "priceBefore": 542400,
+            "breakeven": 46,
+            "nextBreakeven": 114
           },
           {
             "id": 649,
@@ -4809,7 +5463,10 @@
             "goals": 4,
             "behinds": 1,
             "price": 273700,
-            "priceChange": -24600
+            "priceChange": -24600,
+            "priceBefore": 298300,
+            "breakeven": 120,
+            "nextBreakeven": 73
           },
           {
             "id": 656,
@@ -4830,7 +5487,10 @@
             "goals": 1,
             "behinds": 2,
             "price": 243500,
-            "priceChange": 0
+            "priceChange": 0,
+            "priceBefore": 243500,
+            "breakeven": null,
+            "nextBreakeven": 69
           },
           {
             "id": 659,
@@ -4851,7 +5511,10 @@
             "goals": 2,
             "behinds": 0,
             "price": 298500,
-            "priceChange": -39600
+            "priceChange": -39600,
+            "priceBefore": 338100,
+            "breakeven": 151,
+            "nextBreakeven": 88
           },
           {
             "id": 661,
@@ -4872,7 +5535,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 211600,
-            "priceChange": 22600
+            "priceChange": 22600,
+            "priceBefore": 189000,
+            "breakeven": 3,
+            "nextBreakeven": 26
           },
           {
             "id": 687,
@@ -4893,7 +5559,10 @@
             "goals": 0,
             "behinds": 1,
             "price": 324700,
-            "priceChange": -20200
+            "priceChange": -20200,
+            "priceBefore": 344900,
+            "breakeven": 98,
+            "nextBreakeven": 99
           },
           {
             "id": 676,
@@ -4915,7 +5584,10 @@
             "goals": 1,
             "behinds": 1,
             "price": 457700,
-            "priceChange": -13600
+            "priceChange": -13600,
+            "priceBefore": 471300,
+            "breakeven": 82,
+            "nextBreakeven": 92
           },
           {
             "id": 689,
@@ -4937,7 +5609,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 438800,
-            "priceChange": -22400
+            "priceChange": -22400,
+            "priceBefore": 461200,
+            "breakeven": 96,
+            "nextBreakeven": 138
           },
           {
             "id": 691,
@@ -4958,7 +5633,10 @@
             "goals": 0,
             "behinds": 1,
             "price": 354700,
-            "priceChange": -11300
+            "priceChange": -11300,
+            "priceBefore": 366000,
+            "breakeven": 64,
+            "nextBreakeven": 92
           },
           {
             "id": 680,
@@ -4979,7 +5657,10 @@
             "goals": 0,
             "behinds": 1,
             "price": 376500,
-            "priceChange": -30000
+            "priceChange": -30000,
+            "priceBefore": 406500,
+            "breakeven": 105,
+            "nextBreakeven": 127
           },
           {
             "id": 669,
@@ -5001,7 +5682,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 326000,
-            "priceChange": -27300
+            "priceChange": -27300,
+            "priceBefore": 353300,
+            "breakeven": 97,
+            "nextBreakeven": 108
           },
           {
             "id": 666,
@@ -5022,7 +5706,10 @@
             "goals": 1,
             "behinds": 0,
             "price": 186000,
-            "priceChange": 0
+            "priceChange": 0,
+            "priceBefore": 186000,
+            "breakeven": null,
+            "nextBreakeven": null
           },
           {
             "id": 684,
@@ -5043,7 +5730,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 271400,
-            "priceChange": -61000
+            "priceChange": -61000,
+            "priceBefore": 332400,
+            "breakeven": 140,
+            "nextBreakeven": 141
           }
         ]
       }
@@ -5093,7 +5783,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 412600,
-            "priceChange": 5000
+            "priceChange": 5000,
+            "priceBefore": 407600,
+            "breakeven": 121,
+            "nextBreakeven": 48
           },
           {
             "id": 138,
@@ -5114,7 +5807,10 @@
             "goals": 3,
             "behinds": 2,
             "price": 515800,
-            "priceChange": -16100
+            "priceChange": -16100,
+            "priceBefore": 531900,
+            "breakeven": 160,
+            "nextBreakeven": 99
           },
           {
             "id": 139,
@@ -5136,7 +5832,10 @@
             "goals": 0,
             "behinds": 1,
             "price": 441800,
-            "priceChange": 41900
+            "priceChange": 41900,
+            "priceBefore": 399900,
+            "breakeven": 15,
+            "nextBreakeven": 62
           },
           {
             "id": 136,
@@ -5157,7 +5856,10 @@
             "goals": 0,
             "behinds": 1,
             "price": 475500,
-            "priceChange": 6900
+            "priceChange": 6900,
+            "priceBefore": 468600,
+            "breakeven": 87,
+            "nextBreakeven": 79
           },
           {
             "id": 154,
@@ -5178,7 +5880,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 332200,
-            "priceChange": 500
+            "priceChange": 500,
+            "priceBefore": 331700,
+            "breakeven": 95,
+            "nextBreakeven": 56
           },
           {
             "id": 141,
@@ -5199,7 +5904,10 @@
             "goals": 3,
             "behinds": 1,
             "price": 337500,
-            "priceChange": 11200
+            "priceChange": 11200,
+            "priceBefore": 326300,
+            "breakeven": 68,
+            "nextBreakeven": 55
           },
           {
             "id": 166,
@@ -5220,7 +5928,10 @@
             "goals": 1,
             "behinds": 2,
             "price": 359400,
-            "priceChange": -21400
+            "priceChange": -21400,
+            "priceBefore": 380800,
+            "breakeven": 138,
+            "nextBreakeven": 86
           },
           {
             "id": 150,
@@ -5242,7 +5953,10 @@
             "goals": 1,
             "behinds": 1,
             "price": 373300,
-            "priceChange": 6100
+            "priceChange": 6100,
+            "priceBefore": 367200,
+            "breakeven": 74,
+            "nextBreakeven": 58
           },
           {
             "id": 163,
@@ -5263,7 +5977,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 382800,
-            "priceChange": -400
+            "priceChange": -400,
+            "priceBefore": 383200,
+            "breakeven": 87,
+            "nextBreakeven": 55
           },
           {
             "id": 142,
@@ -5284,7 +6001,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 312800,
-            "priceChange": 900
+            "priceChange": 900,
+            "priceBefore": 311900,
+            "breakeven": 75,
+            "nextBreakeven": 48
           },
           {
             "id": 147,
@@ -5305,7 +6025,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 447100,
-            "priceChange": 4000
+            "priceChange": 4000,
+            "priceBefore": 443100,
+            "breakeven": 63,
+            "nextBreakeven": 108
           },
           {
             "id": 137,
@@ -5326,7 +6049,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 444500,
-            "priceChange": -16200
+            "priceChange": -16200,
+            "priceBefore": 460700,
+            "breakeven": 109,
+            "nextBreakeven": 120
           },
           {
             "id": 156,
@@ -5347,7 +6073,10 @@
             "goals": 2,
             "behinds": 0,
             "price": 288600,
-            "priceChange": 9000
+            "priceChange": 9000,
+            "priceBefore": 279600,
+            "breakeven": 51,
+            "nextBreakeven": 27
           },
           {
             "id": 167,
@@ -5368,7 +6097,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 303500,
-            "priceChange": -12000
+            "priceChange": -12000,
+            "priceBefore": 315500,
+            "breakeven": 89,
+            "nextBreakeven": 70
           },
           {
             "id": 169,
@@ -5389,7 +6121,10 @@
             "goals": 2,
             "behinds": 1,
             "price": 297100,
-            "priceChange": 10800
+            "priceChange": 10800,
+            "priceBefore": 286300,
+            "breakeven": 34,
+            "nextBreakeven": 34
           },
           {
             "id": 160,
@@ -5410,7 +6145,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 497500,
-            "priceChange": -1600
+            "priceChange": -1600,
+            "priceBefore": 499100,
+            "breakeven": 56,
+            "nextBreakeven": 157
           },
           {
             "id": 158,
@@ -5431,7 +6169,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 264600,
-            "priceChange": -32600
+            "priceChange": -32600,
+            "priceBefore": 297200,
+            "breakeven": 124,
+            "nextBreakeven": 87
           },
           {
             "id": 130,
@@ -5452,7 +6193,10 @@
             "goals": 1,
             "behinds": 0,
             "price": 265300,
-            "priceChange": 4900
+            "priceChange": 4900,
+            "priceBefore": 260400,
+            "breakeven": 39,
+            "nextBreakeven": 46
           },
           {
             "id": 152,
@@ -5473,7 +6217,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 427600,
-            "priceChange": -17800
+            "priceChange": -17800,
+            "priceBefore": 445400,
+            "breakeven": 86,
+            "nextBreakeven": 121
           },
           {
             "id": 146,
@@ -5494,7 +6241,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 450300,
-            "priceChange": -38700
+            "priceChange": -38700,
+            "priceBefore": 489000,
+            "breakeven": 133,
+            "nextBreakeven": 156
           },
           {
             "id": 151,
@@ -5516,7 +6266,10 @@
             "goals": 0,
             "behinds": 1,
             "price": 357200,
-            "priceChange": -15800
+            "priceChange": -15800,
+            "priceBefore": 373000,
+            "breakeven": 79,
+            "nextBreakeven": 96
           },
           {
             "id": 173,
@@ -5537,7 +6290,10 @@
             "goals": 0,
             "behinds": 1,
             "price": 119900,
-            "priceChange": 0
+            "priceChange": 0,
+            "priceBefore": 119900,
+            "breakeven": null,
+            "nextBreakeven": 16
           },
           {
             "id": 144,
@@ -5558,7 +6314,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 184900,
-            "priceChange": -2600
+            "priceChange": -2600,
+            "priceBefore": 187500,
+            "breakeven": 36,
+            "nextBreakeven": 42
           }
         ],
         "away": [
@@ -5582,7 +6341,10 @@
             "goals": 1,
             "behinds": 1,
             "price": 432400,
-            "priceChange": 56200
+            "priceChange": 56200,
+            "priceBefore": 376200,
+            "breakeven": 8,
+            "nextBreakeven": -18
           },
           {
             "id": 765,
@@ -5603,7 +6365,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 452300,
-            "priceChange": -2700
+            "priceChange": -2700,
+            "priceBefore": 455000,
+            "breakeven": 123,
+            "nextBreakeven": 117
           },
           {
             "id": 788,
@@ -5625,7 +6390,10 @@
             "goals": 1,
             "behinds": 0,
             "price": 325100,
-            "priceChange": 17400
+            "priceChange": 17400,
+            "priceBefore": 307700,
+            "breakeven": 54,
+            "nextBreakeven": 68
           },
           {
             "id": 777,
@@ -5646,7 +6414,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 278200,
-            "priceChange": -300
+            "priceChange": -300,
+            "priceBefore": 278500,
+            "breakeven": 85,
+            "nextBreakeven": 30
           },
           {
             "id": 779,
@@ -5668,7 +6439,10 @@
             "goals": 3,
             "behinds": 2,
             "price": 426300,
-            "priceChange": -10200
+            "priceChange": -10200,
+            "priceBefore": 436500,
+            "breakeven": 105,
+            "nextBreakeven": 112
           },
           {
             "id": 748,
@@ -5689,7 +6463,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 399500,
-            "priceChange": -4100
+            "priceChange": -4100,
+            "priceBefore": 403600,
+            "breakeven": 91,
+            "nextBreakeven": 76
           },
           {
             "id": 751,
@@ -5710,7 +6487,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 340900,
-            "priceChange": -300
+            "priceChange": -300,
+            "priceBefore": 341200,
+            "breakeven": 81,
+            "nextBreakeven": 65
           },
           {
             "id": 747,
@@ -5731,7 +6511,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 400600,
-            "priceChange": 22000
+            "priceChange": 22000,
+            "priceBefore": 378600,
+            "breakeven": 26,
+            "nextBreakeven": 66
           },
           {
             "id": 764,
@@ -5753,7 +6536,10 @@
             "goals": 0,
             "behinds": 1,
             "price": 365600,
-            "priceChange": -23000
+            "priceChange": -23000,
+            "priceBefore": 388600,
+            "breakeven": 124,
+            "nextBreakeven": 95
           },
           {
             "id": 760,
@@ -5775,7 +6561,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 449000,
-            "priceChange": -1500
+            "priceChange": -1500,
+            "priceBefore": 450500,
+            "breakeven": 69,
+            "nextBreakeven": 95
           },
           {
             "id": 744,
@@ -5796,7 +6585,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 290600,
-            "priceChange": 11400
+            "priceChange": 11400,
+            "priceBefore": 279200,
+            "breakeven": 39,
+            "nextBreakeven": 39
           },
           {
             "id": 773,
@@ -5817,7 +6609,10 @@
             "goals": 2,
             "behinds": 0,
             "price": 236300,
-            "priceChange": -800
+            "priceChange": -800,
+            "priceBefore": 237100,
+            "breakeven": 67,
+            "nextBreakeven": 35
           },
           {
             "id": 780,
@@ -5838,7 +6633,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 350100,
-            "priceChange": 1800
+            "priceChange": 1800,
+            "priceBefore": 348300,
+            "breakeven": 58,
+            "nextBreakeven": 63
           },
           {
             "id": 769,
@@ -5859,7 +6657,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 487000,
-            "priceChange": 21900
+            "priceChange": 21900,
+            "priceBefore": 465100,
+            "breakeven": 9,
+            "nextBreakeven": 72
           },
           {
             "id": 734,
@@ -5881,7 +6682,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 225100,
-            "priceChange": 200
+            "priceChange": 200,
+            "priceBefore": 224900,
+            "breakeven": 56,
+            "nextBreakeven": 52
           },
           {
             "id": 741,
@@ -5902,7 +6706,10 @@
             "goals": 2,
             "behinds": 0,
             "price": 198900,
-            "priceChange": 27200
+            "priceChange": 27200,
+            "priceBefore": 171700,
+            "breakeven": -5,
+            "nextBreakeven": -2
           },
           {
             "id": 742,
@@ -5924,7 +6731,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 323600,
-            "priceChange": -12000
+            "priceChange": -12000,
+            "priceBefore": 335600,
+            "breakeven": 84,
+            "nextBreakeven": 101
           },
           {
             "id": 757,
@@ -5946,7 +6756,10 @@
             "goals": 1,
             "behinds": 0,
             "price": 257000,
-            "priceChange": -11300
+            "priceChange": -11300,
+            "priceBefore": 268300,
+            "breakeven": 82,
+            "nextBreakeven": 72
           },
           {
             "id": 761,
@@ -5967,7 +6780,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 385300,
-            "priceChange": -100
+            "priceChange": -100,
+            "priceBefore": 385400,
+            "breakeven": 55,
+            "nextBreakeven": 85
           },
           {
             "id": 775,
@@ -5988,7 +6804,10 @@
             "goals": 1,
             "behinds": 2,
             "price": 383700,
-            "priceChange": -10900
+            "priceChange": -10900,
+            "priceBefore": 394600,
+            "breakeven": 77,
+            "nextBreakeven": 101
           },
           {
             "id": 738,
@@ -6009,7 +6828,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 258800,
-            "priceChange": 0
+            "priceChange": 0,
+            "priceBefore": 258800,
+            "breakeven": null,
+            "nextBreakeven": 42
           },
           {
             "id": 759,
@@ -6030,7 +6852,10 @@
             "goals": 1,
             "behinds": 1,
             "price": 132600,
-            "priceChange": 12700
+            "priceChange": 12700,
+            "priceBefore": 119900,
+            "breakeven": 14,
+            "nextBreakeven": 0
           },
           {
             "id": 736,
@@ -6051,7 +6876,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 315400,
-            "priceChange": -15600
+            "priceChange": -15600,
+            "priceBefore": 331000,
+            "breakeven": 69,
+            "nextBreakeven": 73
           }
         ]
       }
@@ -6102,7 +6930,10 @@
             "goals": 3,
             "behinds": 0,
             "price": 443300,
-            "priceChange": -2400
+            "priceChange": -2400,
+            "priceBefore": 445700,
+            "breakeven": 133,
+            "nextBreakeven": 83
           },
           {
             "id": 531,
@@ -6123,7 +6954,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 402500,
-            "priceChange": 8200
+            "priceChange": 8200,
+            "priceBefore": 394300,
+            "breakeven": 100,
+            "nextBreakeven": 45
           },
           {
             "id": 528,
@@ -6144,7 +6978,10 @@
             "goals": 0,
             "behinds": 2,
             "price": 632700,
-            "priceChange": -6100
+            "priceChange": -6100,
+            "priceBefore": 638800,
+            "breakeven": 116,
+            "nextBreakeven": 147
           },
           {
             "id": 533,
@@ -6165,7 +7002,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 385500,
-            "priceChange": 11200
+            "priceChange": 11200,
+            "priceBefore": 374300,
+            "breakeven": 74,
+            "nextBreakeven": 83
           },
           {
             "id": 551,
@@ -6186,7 +7026,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 326400,
-            "priceChange": -2800
+            "priceChange": -2800,
+            "priceBefore": 329200,
+            "breakeven": 89,
+            "nextBreakeven": 42
           },
           {
             "id": 527,
@@ -6208,7 +7051,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 418700,
-            "priceChange": 13100
+            "priceChange": 13100,
+            "priceBefore": 405600,
+            "breakeven": 51,
+            "nextBreakeven": 76
           },
           {
             "id": 529,
@@ -6230,7 +7076,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 393000,
-            "priceChange": 3800
+            "priceChange": 3800,
+            "priceBefore": 389200,
+            "breakeven": 66,
+            "nextBreakeven": 55
           },
           {
             "id": 560,
@@ -6251,7 +7100,10 @@
             "goals": 2,
             "behinds": 2,
             "price": 259400,
-            "priceChange": 6500
+            "priceChange": 6500,
+            "priceBefore": 252900,
+            "breakeven": 54,
+            "nextBreakeven": 42
           },
           {
             "id": 555,
@@ -6272,7 +7124,10 @@
             "goals": 0,
             "behinds": 2,
             "price": 456900,
-            "priceChange": -44700
+            "priceChange": -44700,
+            "priceBefore": 501600,
+            "breakeven": 169,
+            "nextBreakeven": 161
           },
           {
             "id": 534,
@@ -6293,7 +7148,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 430400,
-            "priceChange": 400
+            "priceChange": 400,
+            "priceBefore": 430000,
+            "breakeven": 65,
+            "nextBreakeven": 123
           },
           {
             "id": 521,
@@ -6314,7 +7172,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 428600,
-            "priceChange": -20600
+            "priceChange": -20600,
+            "priceBefore": 449200,
+            "breakeven": 109,
+            "nextBreakeven": 141
           },
           {
             "id": 543,
@@ -6336,7 +7197,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 287000,
-            "priceChange": 12700
+            "priceChange": 12700,
+            "priceBefore": 274300,
+            "breakeven": 32,
+            "nextBreakeven": 47
           },
           {
             "id": 538,
@@ -6358,7 +7222,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 262700,
-            "priceChange": 24500
+            "priceChange": 24500,
+            "priceBefore": 238200,
+            "breakeven": 5,
+            "nextBreakeven": 29
           },
           {
             "id": 535,
@@ -6379,7 +7246,10 @@
             "goals": 1,
             "behinds": 1,
             "price": 340700,
-            "priceChange": -20000
+            "priceChange": -20000,
+            "priceBefore": 360700,
+            "breakeven": 106,
+            "nextBreakeven": 121
           },
           {
             "id": 532,
@@ -6400,7 +7270,10 @@
             "goals": 1,
             "behinds": 0,
             "price": 296200,
-            "priceChange": -5700
+            "priceChange": -5700,
+            "priceBefore": 301900,
+            "breakeven": 65,
+            "nextBreakeven": 90
           },
           {
             "id": 550,
@@ -6421,7 +7294,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 329500,
-            "priceChange": -13600
+            "priceChange": -13600,
+            "priceBefore": 343100,
+            "breakeven": 83,
+            "nextBreakeven": 76
           },
           {
             "id": 525,
@@ -6442,7 +7318,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 329700,
-            "priceChange": 9200
+            "priceChange": 9200,
+            "priceBefore": 320500,
+            "breakeven": 23,
+            "nextBreakeven": 63
           },
           {
             "id": 544,
@@ -6464,7 +7343,10 @@
             "goals": 1,
             "behinds": 0,
             "price": 251000,
-            "priceChange": 4700
+            "priceChange": 4700,
+            "priceBefore": 246300,
+            "breakeven": 31,
+            "nextBreakeven": 71
           },
           {
             "id": 546,
@@ -6486,7 +7368,10 @@
             "goals": 0,
             "behinds": 1,
             "price": 272800,
-            "priceChange": -14000
+            "priceChange": -14000,
+            "priceBefore": 286800,
+            "breakeven": 70,
+            "nextBreakeven": 87
           },
           {
             "id": 522,
@@ -6507,7 +7392,10 @@
             "goals": 0,
             "behinds": 1,
             "price": 119900,
-            "priceChange": 0
+            "priceChange": 0,
+            "priceBefore": 119900,
+            "breakeven": null,
+            "nextBreakeven": -7
           },
           {
             "id": 558,
@@ -6529,7 +7417,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 173200,
-            "priceChange": 6300
+            "priceChange": 6300,
+            "priceBefore": 166900,
+            "breakeven": 12,
+            "nextBreakeven": 48
           },
           {
             "id": 559,
@@ -6551,7 +7442,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 255600,
-            "priceChange": -10300
+            "priceChange": -10300,
+            "priceBefore": 265900,
+            "breakeven": 47,
+            "nextBreakeven": 91
           },
           {
             "id": 561,
@@ -6572,7 +7466,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 384500,
-            "priceChange": -62400
+            "priceChange": -62400,
+            "priceBefore": 446900,
+            "breakeven": 161,
+            "nextBreakeven": 158
           }
         ],
         "away": [
@@ -6595,7 +7492,10 @@
             "goals": 1,
             "behinds": 1,
             "price": 486400,
-            "priceChange": -7900
+            "priceChange": -7900,
+            "priceBefore": 494300,
+            "breakeven": 143,
+            "nextBreakeven": 107
           },
           {
             "id": 99,
@@ -6616,7 +7516,10 @@
             "goals": 1,
             "behinds": 2,
             "price": 507000,
-            "priceChange": 34600
+            "priceChange": 34600,
+            "priceBefore": 472400,
+            "breakeven": 37,
+            "nextBreakeven": 76
           },
           {
             "id": 106,
@@ -6637,7 +7540,10 @@
             "goals": 2,
             "behinds": 0,
             "price": 381400,
-            "priceChange": 39200
+            "priceChange": 39200,
+            "priceBefore": 342200,
+            "breakeven": 24,
+            "nextBreakeven": 54
           },
           {
             "id": 123,
@@ -6659,7 +7565,10 @@
             "goals": 0,
             "behinds": 1,
             "price": 391000,
-            "priceChange": 33300
+            "priceChange": 33300,
+            "priceBefore": 357700,
+            "breakeven": 32,
+            "nextBreakeven": 53
           },
           {
             "id": 124,
@@ -6680,7 +7589,10 @@
             "goals": 1,
             "behinds": 0,
             "price": 475500,
-            "priceChange": -5700
+            "priceChange": -5700,
+            "priceBefore": 481200,
+            "breakeven": 116,
+            "nextBreakeven": 109
           },
           {
             "id": 103,
@@ -6702,7 +7614,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 437800,
-            "priceChange": 14600
+            "priceChange": 14600,
+            "priceBefore": 423200,
+            "breakeven": 66,
+            "nextBreakeven": 23
           },
           {
             "id": 102,
@@ -6723,7 +7638,10 @@
             "goals": 1,
             "behinds": 0,
             "price": 327900,
-            "priceChange": 11100
+            "priceChange": 11100,
+            "priceBefore": 316800,
+            "breakeven": 69,
+            "nextBreakeven": 35
           },
           {
             "id": 110,
@@ -6744,7 +7662,10 @@
             "goals": 2,
             "behinds": 0,
             "price": 302500,
-            "priceChange": 5800
+            "priceChange": 5800,
+            "priceBefore": 296700,
+            "breakeven": 79,
+            "nextBreakeven": 14
           },
           {
             "id": 117,
@@ -6765,7 +7686,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 438100,
-            "priceChange": -9600
+            "priceChange": -9600,
+            "priceBefore": 447700,
+            "breakeven": 110,
+            "nextBreakeven": 109
           },
           {
             "id": 120,
@@ -6786,7 +7710,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 349100,
-            "priceChange": 400
+            "priceChange": 400,
+            "priceBefore": 348700,
+            "breakeven": 86,
+            "nextBreakeven": 40
           },
           {
             "id": 113,
@@ -6807,7 +7734,10 @@
             "goals": 1,
             "behinds": 2,
             "price": 401400,
-            "priceChange": 36200
+            "priceChange": 36200,
+            "priceBefore": 365200,
+            "breakeven": 4,
+            "nextBreakeven": 76
           },
           {
             "id": 98,
@@ -6828,7 +7758,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 324200,
-            "priceChange": 27500
+            "priceChange": 27500,
+            "priceBefore": 296700,
+            "breakeven": 24,
+            "nextBreakeven": 18
           },
           {
             "id": 100,
@@ -6849,7 +7782,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 240600,
-            "priceChange": 20500
+            "priceChange": 20500,
+            "priceBefore": 220100,
+            "breakeven": 35,
+            "nextBreakeven": 16
           },
           {
             "id": 105,
@@ -6870,7 +7806,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 369600,
-            "priceChange": -17200
+            "priceChange": -17200,
+            "priceBefore": 386800,
+            "breakeven": 117,
+            "nextBreakeven": 83
           },
           {
             "id": 127,
@@ -6891,7 +7830,10 @@
             "goals": 0,
             "behinds": 1,
             "price": 242900,
-            "priceChange": 23200
+            "priceChange": 23200,
+            "priceBefore": 219700,
+            "breakeven": 23,
+            "nextBreakeven": -1
           },
           {
             "id": 88,
@@ -6912,7 +7854,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 373800,
-            "priceChange": 4100
+            "priceChange": 4100,
+            "priceBefore": 369700,
+            "breakeven": 62,
+            "nextBreakeven": 84
           },
           {
             "id": 109,
@@ -6933,7 +7878,10 @@
             "goals": 1,
             "behinds": 3,
             "price": 113500,
-            "priceChange": 0
+            "priceChange": 0,
+            "priceBefore": 113500,
+            "breakeven": null,
+            "nextBreakeven": -75
           },
           {
             "id": 783,
@@ -6954,7 +7902,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 143400,
-            "priceChange": 44300
+            "priceChange": 44300,
+            "priceBefore": 99100,
+            "breakeven": -33,
+            "nextBreakeven": -19
           },
           {
             "id": 112,
@@ -6976,7 +7927,10 @@
             "goals": 2,
             "behinds": 1,
             "price": 296900,
-            "priceChange": -23300
+            "priceChange": -23300,
+            "priceBefore": 320200,
+            "breakeven": 114,
+            "nextBreakeven": 94
           },
           {
             "id": 94,
@@ -6997,7 +7951,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 408900,
-            "priceChange": -20100
+            "priceChange": -20100,
+            "priceBefore": 429000,
+            "breakeven": 102,
+            "nextBreakeven": 109
           },
           {
             "id": 90,
@@ -7019,7 +7976,10 @@
             "goals": 1,
             "behinds": 2,
             "price": 155700,
-            "priceChange": 4300
+            "priceChange": 4300,
+            "priceBefore": 151400,
+            "breakeven": 30,
+            "nextBreakeven": 38
           },
           {
             "id": 128,
@@ -7040,7 +8000,10 @@
             "goals": 0,
             "behinds": 1,
             "price": 209700,
-            "priceChange": 0
+            "priceChange": 0,
+            "priceBefore": 209700,
+            "breakeven": null,
+            "nextBreakeven": null
           },
           {
             "id": 93,
@@ -7062,7 +8025,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 303900,
-            "priceChange": -15700
+            "priceChange": -15700,
+            "priceBefore": 319600,
+            "breakeven": 35,
+            "nextBreakeven": 80
           }
         ]
       }
@@ -7112,7 +8078,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 542500,
-            "priceChange": 8500
+            "priceChange": 8500,
+            "priceBefore": 534000,
+            "breakeven": 122,
+            "nextBreakeven": 75
           },
           {
             "id": 364,
@@ -7133,7 +8102,10 @@
             "goals": 2,
             "behinds": 0,
             "price": 324900,
-            "priceChange": 24100
+            "priceChange": 24100,
+            "priceBefore": 300800,
+            "breakeven": 87,
+            "nextBreakeven": 12
           },
           {
             "id": 358,
@@ -7154,7 +8126,10 @@
             "goals": 1,
             "behinds": 0,
             "price": 481400,
-            "priceChange": -4300
+            "priceChange": -4300,
+            "priceBefore": 485700,
+            "breakeven": 113,
+            "nextBreakeven": 112
           },
           {
             "id": 360,
@@ -7176,7 +8151,10 @@
             "goals": 2,
             "behinds": 0,
             "price": 369000,
-            "priceChange": 7700
+            "priceChange": 7700,
+            "priceBefore": 361300,
+            "breakeven": 79,
+            "nextBreakeven": 69
           },
           {
             "id": 352,
@@ -7197,7 +8175,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 510000,
-            "priceChange": -1400
+            "priceChange": -1400,
+            "priceBefore": 511400,
+            "breakeven": 98,
+            "nextBreakeven": 119
           },
           {
             "id": 354,
@@ -7218,7 +8199,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 410600,
-            "priceChange": 31100
+            "priceChange": 31100,
+            "priceBefore": 379500,
+            "breakeven": 22,
+            "nextBreakeven": 45
           },
           {
             "id": 353,
@@ -7240,7 +8224,10 @@
             "goals": 1,
             "behinds": 0,
             "price": 307900,
-            "priceChange": 18300
+            "priceChange": 18300,
+            "priceBefore": 289600,
+            "breakeven": 50,
+            "nextBreakeven": 28
           },
           {
             "id": 357,
@@ -7261,7 +8248,10 @@
             "goals": 3,
             "behinds": 1,
             "price": 369200,
-            "priceChange": -8700
+            "priceChange": -8700,
+            "priceBefore": 377900,
+            "breakeven": 109,
+            "nextBreakeven": 106
           },
           {
             "id": 375,
@@ -7282,7 +8272,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 376600,
-            "priceChange": 34300
+            "priceChange": 34300,
+            "priceBefore": 342300,
+            "breakeven": 10,
+            "nextBreakeven": 53
           },
           {
             "id": 366,
@@ -7304,7 +8297,10 @@
             "goals": 5,
             "behinds": 0,
             "price": 409600,
-            "priceChange": -8300
+            "priceChange": -8300,
+            "priceBefore": 417900,
+            "breakeven": 105,
+            "nextBreakeven": 122
           },
           {
             "id": 387,
@@ -7325,7 +8321,10 @@
             "goals": 5,
             "behinds": 4,
             "price": 334900,
-            "priceChange": 10900
+            "priceChange": 10900,
+            "priceBefore": 324000,
+            "breakeven": 61,
+            "nextBreakeven": 60
           },
           {
             "id": 370,
@@ -7346,7 +8345,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 354500,
-            "priceChange": 8600
+            "priceChange": 8600,
+            "priceBefore": 345900,
+            "breakeven": 63,
+            "nextBreakeven": 47
           },
           {
             "id": 367,
@@ -7367,7 +8369,10 @@
             "goals": 3,
             "behinds": 3,
             "price": 213900,
-            "priceChange": 16400
+            "priceChange": 16400,
+            "priceBefore": 197500,
+            "breakeven": 41,
+            "nextBreakeven": 17
           },
           {
             "id": 386,
@@ -7388,7 +8393,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 235200,
-            "priceChange": 0
+            "priceChange": 0,
+            "priceBefore": 235200,
+            "breakeven": null,
+            "nextBreakeven": null
           },
           {
             "id": 372,
@@ -7409,7 +8417,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 453600,
-            "priceChange": -2500
+            "priceChange": -2500,
+            "priceBefore": 456100,
+            "breakeven": 80,
+            "nextBreakeven": 114
           },
           {
             "id": 359,
@@ -7431,7 +8442,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 279600,
-            "priceChange": 8100
+            "priceChange": 8100,
+            "priceBefore": 271500,
+            "breakeven": 49,
+            "nextBreakeven": 43
           },
           {
             "id": 355,
@@ -7452,7 +8466,10 @@
             "goals": 2,
             "behinds": 0,
             "price": 242600,
-            "priceChange": -5000
+            "priceChange": -5000,
+            "priceBefore": 247600,
+            "breakeven": 75,
+            "nextBreakeven": 60
           },
           {
             "id": 378,
@@ -7473,7 +8490,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 192300,
-            "priceChange": -10200
+            "priceChange": -10200,
+            "priceBefore": 202500,
+            "breakeven": 86,
+            "nextBreakeven": 34
           },
           {
             "id": 363,
@@ -7494,7 +8514,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 341900,
-            "priceChange": -25800
+            "priceChange": -25800,
+            "priceBefore": 367700,
+            "breakeven": 101,
+            "nextBreakeven": 95
           },
           {
             "id": 390,
@@ -7516,7 +8539,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 402000,
-            "priceChange": -6700
+            "priceChange": -6700,
+            "priceBefore": 408700,
+            "breakeven": 54,
+            "nextBreakeven": 81
           },
           {
             "id": 381,
@@ -7537,7 +8563,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 119900,
-            "priceChange": 0
+            "priceChange": 0,
+            "priceBefore": 119900,
+            "breakeven": null,
+            "nextBreakeven": -9
           },
           {
             "id": 383,
@@ -7559,7 +8588,10 @@
             "goals": 2,
             "behinds": 0,
             "price": 263000,
-            "priceChange": -36300
+            "priceChange": -36300,
+            "priceBefore": 299300,
+            "breakeven": 116,
+            "nextBreakeven": 114
           },
           {
             "id": 356,
@@ -7580,7 +8612,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 291900,
-            "priceChange": -19700
+            "priceChange": -19700,
+            "priceBefore": 311600,
+            "breakeven": 51,
+            "nextBreakeven": 97
           }
         ],
         "away": [
@@ -7603,7 +8638,10 @@
             "goals": 1,
             "behinds": 0,
             "price": 549300,
-            "priceChange": -1800
+            "priceChange": -1800,
+            "priceBefore": 551100,
+            "breakeven": 117,
+            "nextBreakeven": 130
           },
           {
             "id": 84,
@@ -7624,7 +8662,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 463600,
-            "priceChange": -3200
+            "priceChange": -3200,
+            "priceBefore": 466800,
+            "breakeven": 107,
+            "nextBreakeven": 65
           },
           {
             "id": 70,
@@ -7645,7 +8686,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 197600,
-            "priceChange": 0
+            "priceChange": 0,
+            "priceBefore": 197600,
+            "breakeven": null,
+            "nextBreakeven": -6
           },
           {
             "id": 49,
@@ -7667,7 +8711,10 @@
             "goals": 0,
             "behinds": 1,
             "price": 449000,
-            "priceChange": -34500
+            "priceChange": -34500,
+            "priceBefore": 483500,
+            "breakeven": 164,
+            "nextBreakeven": 138
           },
           {
             "id": 53,
@@ -7688,7 +8735,10 @@
             "goals": 2,
             "behinds": 1,
             "price": 392100,
-            "priceChange": -4400
+            "priceChange": -4400,
+            "priceBefore": 396500,
+            "breakeven": 94,
+            "nextBreakeven": 75
           },
           {
             "id": 44,
@@ -7709,7 +8759,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 391900,
-            "priceChange": -21700
+            "priceChange": -21700,
+            "priceBefore": 413600,
+            "breakeven": 132,
+            "nextBreakeven": 76
           },
           {
             "id": 61,
@@ -7730,7 +8783,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 367700,
-            "priceChange": 3900
+            "priceChange": 3900,
+            "priceBefore": 363800,
+            "breakeven": 66,
+            "nextBreakeven": 90
           },
           {
             "id": 58,
@@ -7751,7 +8807,10 @@
             "goals": 0,
             "behinds": 1,
             "price": 417100,
-            "priceChange": -10500
+            "priceChange": -10500,
+            "priceBefore": 427600,
+            "breakeven": 97,
+            "nextBreakeven": 102
           },
           {
             "id": 79,
@@ -7772,7 +8831,10 @@
             "goals": 3,
             "behinds": 1,
             "price": 368900,
-            "priceChange": -6800
+            "priceChange": -6800,
+            "priceBefore": 375700,
+            "breakeven": 86,
+            "nextBreakeven": 70
           },
           {
             "id": 54,
@@ -7793,7 +8855,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 383300,
-            "priceChange": -3600
+            "priceChange": -3600,
+            "priceBefore": 386900,
+            "breakeven": 77,
+            "nextBreakeven": 84
           },
           {
             "id": 62,
@@ -7815,7 +8880,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 246000,
-            "priceChange": 19100
+            "priceChange": 19100,
+            "priceBefore": 226900,
+            "breakeven": 25,
+            "nextBreakeven": 26
           },
           {
             "id": 63,
@@ -7836,7 +8904,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 275800,
-            "priceChange": 11900
+            "priceChange": 11900,
+            "priceBefore": 263900,
+            "breakeven": 39,
+            "nextBreakeven": 54
           },
           {
             "id": 69,
@@ -7857,7 +8928,10 @@
             "goals": 3,
             "behinds": 1,
             "price": 310600,
-            "priceChange": -3000
+            "priceChange": -3000,
+            "priceBefore": 313600,
+            "breakeven": 72,
+            "nextBreakeven": 82
           },
           {
             "id": 48,
@@ -7878,7 +8952,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 443100,
-            "priceChange": -23400
+            "priceChange": -23400,
+            "priceBefore": 466500,
+            "breakeven": 116,
+            "nextBreakeven": 133
           },
           {
             "id": 83,
@@ -7899,7 +8976,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 198400,
-            "priceChange": 17100
+            "priceChange": 17100,
+            "priceBefore": 181300,
+            "breakeven": 20,
+            "nextBreakeven": 29
           },
           {
             "id": 73,
@@ -7920,7 +9000,10 @@
             "goals": 2,
             "behinds": 2,
             "price": 214900,
-            "priceChange": 22500
+            "priceChange": 22500,
+            "priceBefore": 192400,
+            "breakeven": 4,
+            "nextBreakeven": 20
           },
           {
             "id": 60,
@@ -7941,7 +9024,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 314000,
-            "priceChange": -33100
+            "priceChange": -33100,
+            "priceBefore": 347100,
+            "breakeven": 130,
+            "nextBreakeven": 100
           },
           {
             "id": 47,
@@ -7962,7 +9048,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 397500,
-            "priceChange": 4600
+            "priceChange": 4600,
+            "priceBefore": 392900,
+            "breakeven": 40,
+            "nextBreakeven": 106
           },
           {
             "id": 72,
@@ -7983,7 +9072,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 436800,
-            "priceChange": -29000
+            "priceChange": -29000,
+            "priceBefore": 465800,
+            "breakeven": 112,
+            "nextBreakeven": 164
           },
           {
             "id": 57,
@@ -8005,7 +9097,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 387900,
-            "priceChange": -4000
+            "priceChange": -4000,
+            "priceBefore": 391900,
+            "breakeven": 55,
+            "nextBreakeven": 107
           },
           {
             "id": 80,
@@ -8026,7 +9121,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 324800,
-            "priceChange": 8500
+            "priceChange": 8500,
+            "priceBefore": 316300,
+            "breakeven": 19,
+            "nextBreakeven": 86
           },
           {
             "id": 75,
@@ -8047,7 +9145,10 @@
             "goals": 1,
             "behinds": 2,
             "price": 364900,
-            "priceChange": -30500
+            "priceChange": -30500,
+            "priceBefore": 395400,
+            "breakeven": 102,
+            "nextBreakeven": 134
           },
           {
             "id": 74,
@@ -8068,7 +9169,10 @@
             "goals": 1,
             "behinds": 0,
             "price": 119900,
-            "priceChange": 0
+            "priceChange": 0,
+            "priceBefore": 119900,
+            "breakeven": null,
+            "nextBreakeven": null
           }
         ]
       }
@@ -8118,7 +9222,10 @@
             "goals": 3,
             "behinds": 0,
             "price": 522500,
-            "priceChange": 2600
+            "priceChange": 2600,
+            "priceBefore": 519900,
+            "breakeven": 134,
+            "nextBreakeven": 119
           },
           {
             "id": 693,
@@ -8139,7 +9246,10 @@
             "goals": 2,
             "behinds": 0,
             "price": 612300,
-            "priceChange": 600
+            "priceChange": 600,
+            "priceBefore": 611700,
+            "breakeven": 117,
+            "nextBreakeven": 169
           },
           {
             "id": 725,
@@ -8161,7 +9271,10 @@
             "goals": 0,
             "behinds": 1,
             "price": 512700,
-            "priceChange": 24200
+            "priceChange": 24200,
+            "priceBefore": 488500,
+            "breakeven": 63,
+            "nextBreakeven": 90
           },
           {
             "id": 722,
@@ -8182,7 +9295,10 @@
             "goals": 2,
             "behinds": 1,
             "price": 365600,
-            "priceChange": 35300
+            "priceChange": 35300,
+            "priceBefore": 330300,
+            "breakeven": 30,
+            "nextBreakeven": 22
           },
           {
             "id": 720,
@@ -8203,7 +9319,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 348400,
-            "priceChange": 15100
+            "priceChange": 15100,
+            "priceBefore": 333300,
+            "breakeven": 73,
+            "nextBreakeven": 13
           },
           {
             "id": 708,
@@ -8225,7 +9344,10 @@
             "goals": 1,
             "behinds": 0,
             "price": 451700,
-            "priceChange": 17300
+            "priceChange": 17300,
+            "priceBefore": 434400,
+            "breakeven": 58,
+            "nextBreakeven": 92
           },
           {
             "id": 701,
@@ -8246,7 +9368,10 @@
             "goals": 0,
             "behinds": 1,
             "price": 580800,
-            "priceChange": 9700
+            "priceChange": 9700,
+            "priceBefore": 571100,
+            "breakeven": 74,
+            "nextBreakeven": 118
           },
           {
             "id": 695,
@@ -8268,7 +9393,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 384200,
-            "priceChange": 20200
+            "priceChange": 20200,
+            "priceBefore": 364000,
+            "breakeven": 46,
+            "nextBreakeven": 85
           },
           {
             "id": 717,
@@ -8289,7 +9417,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 395200,
-            "priceChange": -15100
+            "priceChange": -15100,
+            "priceBefore": 410300,
+            "breakeven": 118,
+            "nextBreakeven": 90
           },
           {
             "id": 732,
@@ -8310,7 +9441,10 @@
             "goals": 2,
             "behinds": 0,
             "price": 328700,
-            "priceChange": -2400
+            "priceChange": -2400,
+            "priceBefore": 331100,
+            "breakeven": 84,
+            "nextBreakeven": 69
           },
           {
             "id": 723,
@@ -8331,7 +9465,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 326700,
-            "priceChange": 3700
+            "priceChange": 3700,
+            "priceBefore": 323000,
+            "breakeven": 66,
+            "nextBreakeven": 74
           },
           {
             "id": 699,
@@ -8352,7 +9489,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 254500,
-            "priceChange": 23900
+            "priceChange": 23900,
+            "priceBefore": 230600,
+            "breakeven": 17,
+            "nextBreakeven": 19
           },
           {
             "id": 718,
@@ -8374,7 +9514,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 288900,
-            "priceChange": 2300
+            "priceChange": 2300,
+            "priceBefore": 286600,
+            "breakeven": 58,
+            "nextBreakeven": 44
           },
           {
             "id": 694,
@@ -8396,7 +9539,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 291600,
-            "priceChange": -9400
+            "priceChange": -9400,
+            "priceBefore": 301000,
+            "breakeven": 84,
+            "nextBreakeven": 46
           },
           {
             "id": 790,
@@ -8417,7 +9563,10 @@
             "goals": 1,
             "behinds": 1,
             "price": 241900,
-            "priceChange": 27800
+            "priceChange": 27800,
+            "priceBefore": 214100,
+            "breakeven": -2,
+            "nextBreakeven": 33
           },
           {
             "id": 728,
@@ -8439,7 +9588,10 @@
             "goals": 0,
             "behinds": 1,
             "price": 311700,
-            "priceChange": 0
+            "priceChange": 0,
+            "priceBefore": 311700,
+            "breakeven": null,
+            "nextBreakeven": 57
           },
           {
             "id": 721,
@@ -8461,7 +9613,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 253100,
-            "priceChange": 2100
+            "priceChange": 2100,
+            "priceBefore": 251000,
+            "breakeven": 48,
+            "nextBreakeven": 50
           },
           {
             "id": 715,
@@ -8483,7 +9638,10 @@
             "goals": 2,
             "behinds": 2,
             "price": 236200,
-            "priceChange": 10700
+            "priceChange": 10700,
+            "priceBefore": 225500,
+            "breakeven": 28,
+            "nextBreakeven": 51
           },
           {
             "id": 700,
@@ -8504,7 +9662,10 @@
             "goals": 1,
             "behinds": 0,
             "price": 224400,
-            "priceChange": 9500
+            "priceChange": 9500,
+            "priceBefore": 214900,
+            "breakeven": 26,
+            "nextBreakeven": 55
           },
           {
             "id": 713,
@@ -8526,7 +9687,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 202300,
-            "priceChange": -3500
+            "priceChange": -3500,
+            "priceBefore": 205800,
+            "breakeven": 42,
+            "nextBreakeven": 43
           },
           {
             "id": 714,
@@ -8547,7 +9711,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 249900,
-            "priceChange": -9900
+            "priceChange": -9900,
+            "priceBefore": 259800,
+            "breakeven": 53,
+            "nextBreakeven": 53
           },
           {
             "id": 726,
@@ -8568,7 +9735,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 279100,
-            "priceChange": -14600
+            "priceChange": -14600,
+            "priceBefore": 293700,
+            "breakeven": 58,
+            "nextBreakeven": 96
           },
           {
             "id": 698,
@@ -8589,7 +9759,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 312200,
-            "priceChange": 0
+            "priceChange": 0,
+            "priceBefore": 312200,
+            "breakeven": null,
+            "nextBreakeven": null
           }
         ],
         "away": [
@@ -8612,7 +9785,10 @@
             "goals": 1,
             "behinds": 0,
             "price": 607000,
-            "priceChange": 100
+            "priceChange": 100,
+            "priceBefore": 606900,
+            "breakeven": 113,
+            "nextBreakeven": 140
           },
           {
             "id": 471,
@@ -8633,7 +9809,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 477800,
-            "priceChange": 100
+            "priceChange": 100,
+            "priceBefore": 477700,
+            "breakeven": 106,
+            "nextBreakeven": 92
           },
           {
             "id": 450,
@@ -8655,7 +9834,10 @@
             "goals": 1,
             "behinds": 1,
             "price": 433700,
-            "priceChange": 17300
+            "priceChange": 17300,
+            "priceBefore": 416400,
+            "breakeven": 65,
+            "nextBreakeven": 98
           },
           {
             "id": 465,
@@ -8677,7 +9859,10 @@
             "goals": 0,
             "behinds": 2,
             "price": 469800,
-            "priceChange": -33100
+            "priceChange": -33100,
+            "priceBefore": 502900,
+            "breakeven": 178,
+            "nextBreakeven": 125
           },
           {
             "id": 464,
@@ -8699,7 +9884,10 @@
             "goals": 1,
             "behinds": 1,
             "price": 331300,
-            "priceChange": 44700
+            "priceChange": 44700,
+            "priceBefore": 286600,
+            "breakeven": -5,
+            "nextBreakeven": 11
           },
           {
             "id": 437,
@@ -8720,7 +9908,10 @@
             "goals": 0,
             "behinds": 1,
             "price": 500400,
-            "priceChange": 200
+            "priceChange": 200,
+            "priceBefore": 500200,
+            "breakeven": 95,
+            "nextBreakeven": 110
           },
           {
             "id": 467,
@@ -8741,7 +9932,10 @@
             "goals": 1,
             "behinds": 0,
             "price": 419900,
-            "priceChange": -1200
+            "priceChange": -1200,
+            "priceBefore": 421100,
+            "breakeven": 95,
+            "nextBreakeven": 80
           },
           {
             "id": 470,
@@ -8763,7 +9957,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 468600,
-            "priceChange": 400
+            "priceChange": 400,
+            "priceBefore": 468200,
+            "breakeven": 86,
+            "nextBreakeven": 102
           },
           {
             "id": 451,
@@ -8784,7 +9981,10 @@
             "goals": 2,
             "behinds": 1,
             "price": 341100,
-            "priceChange": 19600
+            "priceChange": 19600,
+            "priceBefore": 321500,
+            "breakeven": 40,
+            "nextBreakeven": 40
           },
           {
             "id": 474,
@@ -8805,7 +10005,10 @@
             "goals": 1,
             "behinds": 0,
             "price": 399000,
-            "priceChange": 11100
+            "priceChange": 11100,
+            "priceBefore": 387900,
+            "breakeven": 48,
+            "nextBreakeven": 58
           },
           {
             "id": 473,
@@ -8827,7 +10030,10 @@
             "goals": 1,
             "behinds": 0,
             "price": 346600,
-            "priceChange": 700
+            "priceChange": 700,
+            "priceBefore": 345900,
+            "breakeven": 71,
+            "nextBreakeven": 93
           },
           {
             "id": 469,
@@ -8848,7 +10054,10 @@
             "goals": 2,
             "behinds": 0,
             "price": 325200,
-            "priceChange": -12600
+            "priceChange": -12600,
+            "priceBefore": 337800,
+            "breakeven": 99,
+            "nextBreakeven": 80
           },
           {
             "id": 439,
@@ -8869,7 +10078,10 @@
             "goals": 1,
             "behinds": 0,
             "price": 428200,
-            "priceChange": 8400
+            "priceChange": 8400,
+            "priceBefore": 419800,
+            "breakeven": 51,
+            "nextBreakeven": 95
           },
           {
             "id": 475,
@@ -8890,7 +10102,10 @@
             "goals": 0,
             "behinds": 1,
             "price": 325800,
-            "priceChange": 5800
+            "priceChange": 5800,
+            "priceBefore": 320000,
+            "breakeven": 49,
+            "nextBreakeven": 106
           },
           {
             "id": 789,
@@ -8912,7 +10127,10 @@
             "goals": 1,
             "behinds": 0,
             "price": 203500,
-            "priceChange": 34500
+            "priceChange": 34500,
+            "priceBefore": 169000,
+            "breakeven": -17,
+            "nextBreakeven": 17
           },
           {
             "id": 447,
@@ -8933,7 +10151,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 302100,
-            "priceChange": 7200
+            "priceChange": 7200,
+            "priceBefore": 294900,
+            "breakeven": 38,
+            "nextBreakeven": 66
           },
           {
             "id": 445,
@@ -8954,7 +10175,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 346200,
-            "priceChange": 6900
+            "priceChange": 6900,
+            "priceBefore": 339300,
+            "breakeven": 32,
+            "nextBreakeven": 88
           },
           {
             "id": 446,
@@ -8975,7 +10199,10 @@
             "goals": 0,
             "behinds": 2,
             "price": 207400,
-            "priceChange": 9100
+            "priceChange": 9100,
+            "priceBefore": 198300,
+            "breakeven": 26,
+            "nextBreakeven": 14
           },
           {
             "id": 441,
@@ -8996,7 +10223,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 330800,
-            "priceChange": -16400
+            "priceChange": -16400,
+            "priceBefore": 347200,
+            "breakeven": 75,
+            "nextBreakeven": 92
           },
           {
             "id": 453,
@@ -9017,7 +10247,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 375800,
-            "priceChange": 11100
+            "priceChange": 11100,
+            "priceBefore": 364700,
+            "breakeven": 12,
+            "nextBreakeven": 90
           },
           {
             "id": 478,
@@ -9039,7 +10272,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 346600,
-            "priceChange": -4100
+            "priceChange": -4100,
+            "priceBefore": 350700,
+            "breakeven": 46,
+            "nextBreakeven": 96
           },
           {
             "id": 452,
@@ -9060,7 +10296,10 @@
             "goals": 1,
             "behinds": 1,
             "price": 239100,
-            "priceChange": 11400
+            "priceChange": 11400,
+            "priceBefore": 227700,
+            "breakeven": 8,
+            "nextBreakeven": 28
           },
           {
             "id": 443,
@@ -9082,7 +10321,10 @@
             "goals": 0,
             "behinds": 0,
             "price": 270500,
-            "priceChange": -13800
+            "priceChange": -13800,
+            "priceBefore": 284300,
+            "breakeven": 50,
+            "nextBreakeven": 114
           }
         ]
       }

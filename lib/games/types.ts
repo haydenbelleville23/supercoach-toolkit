@@ -32,6 +32,12 @@ export interface GamePlayer {
   /** That round's published price and change, or null. */
   price: number | null;
   priceChange: number | null;
+  /** Price going into the round (price - priceChange), or null. */
+  priceBefore: number | null;
+  /** Breakeven for this round, as the site showed it before the round (null: price couldn't change). */
+  breakeven: number | null;
+  /** Breakeven for the next round, as shown straight after this one. */
+  nextBreakeven: number | null;
 }
 
 export interface Game {
