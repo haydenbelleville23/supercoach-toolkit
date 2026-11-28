@@ -19,7 +19,9 @@ import {
 import {
   CURRENT_COMPLETED_ROUND,
   DEBUG_AS_OF_ROUND,
+  SEASON_YEAR,
 } from "@/data/season";
+import { gameIdFor } from "@/lib/games/buildGames";
 import { getFixtures } from "@/lib/fixtures";
 import {
   GAME_PARAM,
@@ -119,6 +121,17 @@ function TeamLogo({
 
 /** The round the live feed is expected to be playing. */
 const LIVE_ROUND = CURRENT_COMPLETED_ROUND + 1;
+
+/**
+ * A feed game's id in the results archive's form ("2026-10-brl-gee"), from
+ * the scheduled fixture the page shows for it; null if it isn't scheduled.
+ */
+function liveGameId(fixture: DfsLiveFixture): string | null {
+  const scheduled = getScheduleFixture(fixture);
+  return scheduled
+    ? gameIdFor(SEASON_YEAR, scheduled.round, fixture.homeTeam, fixture.awayTeam)
+    : null;
+}
 
 function isScheduledGame(
   homeTeam: string,
@@ -499,6 +512,7 @@ function LiveScores() {
   const shownFixtureId = resolveSelectedFixtureId(
     fixtures,
     requestedGame,
+    liveGameId,
     selectedFixtureId,
   );
 
@@ -831,7 +845,13 @@ function LiveScores() {
     // Keep the choice in the address: replace (no new history entry), no
     // scroll jump. Polling is unaffected.
     router.replace(
-      `${pathname}${withGameParam(searchParams.toString(), fixtureId)}`,
+      `${pathname}${withGameParam(
+        searchParams.toString(),
+        (() => {
+          const picked = fixtures.find((fixture) => fixture.id === fixtureId);
+          return picked ? liveGameId(picked) : null;
+        })(),
+      )}`,
       { scroll: false },
     );
   }
@@ -959,7 +979,7 @@ function LiveScores() {
           <CopyLinkButton
             className="absolute right-3 top-3 z-10 flex flex-col items-end"
             getUrl={() =>
-              `${window.location.origin}${pathname}${withGameParam(window.location.search, selectedFixture.id)}`
+              `${window.location.origin}${pathname}${withGameParam(window.location.search, liveGameId(selectedFixture))}`
             }
           />
 

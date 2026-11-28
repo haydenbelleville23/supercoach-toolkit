@@ -31,13 +31,15 @@ const fixture = (id: number, homeTeam: string, awayTeam: string, status: string,
   timeRemaining: "",
 });
 
+// Real 2026 Round 24 pairings, so each has a results-style game id
+// (2026-24-stk-gcs, 2026-24-col-brl, 2026-24-car-fre).
 const feed: DfsLiveFeed = {
   updatedAt: "2026-09-26 07:40:11",
   status: "ok",
   fixtures: [
-    fixture(101, "COL", "CAR", "CONCLUDED", 100),
-    fixture(102, "FRE", "BRL", "LIVE", 60),
-    fixture(103, "SYD", "GEE", "SCHEDULED", 0),
+    fixture(101, "STK", "GCS", "CONCLUDED", 100),
+    fixture(102, "COL", "BRL", "LIVE", 60),
+    fixture(103, "CAR", "FRE", "SCHEDULED", 0),
   ],
   players: [],
 };
@@ -55,6 +57,8 @@ const shownMatch = () => {
     .join(" v ");
 };
 
+const fetchCalls = () => (fetch as unknown as ReturnType<typeof vi.fn>).mock.calls.length;
+
 beforeEach(() => {
   nav.search = "";
   nav.replace.mockReset();
@@ -70,45 +74,52 @@ afterEach(() => {
 });
 
 describe("?game helpers", () => {
-  it("accepts positive whole-number ids only", () => {
-    expect(parseGameParam("451")).toBe(451);
-    for (const bad of [null, "", "0", "-3", "4.5", "abc", "12abc", "1".repeat(12), " 5"]) {
+  it("accepts results-style game ids only (season-round-home-away)", () => {
+    expect(parseGameParam("2026-10-brl-gee")).toBe("2026-10-brl-gee");
+    expect(parseGameParam("2026-10-BRL-GEE")).toBe("2026-10-brl-gee");
+    for (const bad of [null, "", "451", "abc", "2026-10-brl", "2026-10-brl-gee-x", "../2026-10-brl-gee", "2026-100-brl-gee"]) {
       expect(parseGameParam(bad)).toBeNull();
     }
   });
 
   it("uses the requested match only when the feed has it", () => {
-    const fixtures = [{ id: 1 }, { id: 2 }];
-    expect(resolveSelectedFixtureId(fixtures, 2, 1)).toBe(2);
-    expect(resolveSelectedFixtureId(fixtures, 9, 1)).toBe(1);
-    expect(resolveSelectedFixtureId(fixtures, null, 1)).toBe(1);
-    expect(resolveSelectedFixtureId([], 2, null)).toBeNull();
+    const fixtures = [
+      { id: 1, slug: "2026-24-stk-gcs" },
+      { id: 2, slug: "2026-24-col-brl" },
+    ];
+    const idOf = (f: { slug: string }) => f.slug;
+    expect(resolveSelectedFixtureId(fixtures, "2026-24-col-brl", idOf, 1)).toBe(2);
+    expect(resolveSelectedFixtureId(fixtures, "2026-23-col-brl", idOf, 1)).toBe(1);
+    expect(resolveSelectedFixtureId(fixtures, null, idOf, 1)).toBe(1);
+    expect(resolveSelectedFixtureId([], "2026-24-col-brl", idOf, null)).toBeNull();
   });
 
-  it("sets ?game and keeps other parameters", () => {
-    expect(withGameParam("", 5)).toBe("?game=5");
-    expect(withGameParam("view=results&game=2", 5)).toBe("?view=results&game=5");
-    expect(withGameParam("?round=10", 7)).toBe("?round=10&game=7");
+  it("sets ?game and keeps other parameters; null removes it", () => {
+    expect(withGameParam("", "2026-10-brl-gee")).toBe("?game=2026-10-brl-gee");
+    expect(withGameParam("view=results&game=2026-9-ade-car", "2026-10-brl-gee")).toBe("?view=results&game=2026-10-brl-gee");
+    expect(withGameParam("?round=10", "2026-10-brl-gee")).toBe("?round=10&game=2026-10-brl-gee");
+    expect(withGameParam("round=10&game=2026-9-ade-car", null)).toBe("?round=10");
+    expect(withGameParam("game=2026-9-ade-car", null)).toBe("");
   });
 });
 
 describe("Live page selected match in the address", () => {
   it("defaults to the live match when there's no ?game", async () => {
     render(<LivePage />);
-    await waitFor(() => expect(shownMatch()).toBe("FRE v BRL"));
+    await waitFor(() => expect(shownMatch()).toBe("COL v BRL"));
   });
 
-  it("opens the match named in ?game once the feed has loaded", async () => {
-    nav.search = "game=103";
+  it("opens the match named in ?game (same ids as the results pages) once the feed has loaded", async () => {
+    nav.search = "game=2026-24-car-fre";
     render(<LivePage />);
-    await waitFor(() => expect(shownMatch()).toBe("SYD v GEE"));
+    await waitFor(() => expect(shownMatch()).toBe("CAR v FRE"));
   });
 
-  it("falls back silently for an unknown or malformed id", async () => {
-    for (const search of ["game=999", "game=abc", "game=-1"]) {
+  it("falls back silently for a game not in the feed, a malformed id or the old numeric form", async () => {
+    for (const search of ["game=2026-24-ade-wce", "game=2026-23-col-brl", "game=abc", "game=103"]) {
       nav.search = search;
       render(<LivePage />);
-      await waitFor(() => expect(shownMatch()).toBe("FRE v BRL"));
+      await waitFor(() => expect(shownMatch()).toBe("COL v BRL"));
       expect(screen.queryByRole("alert")).toBeNull();
       cleanup();
     }
@@ -117,37 +128,40 @@ describe("Live page selected match in the address", () => {
   it("puts a picked match in the address with replace, without scrolling, and keeps the Live | Results toggle", async () => {
     nav.search = "round=5";
     render(<LivePage />);
-    await waitFor(() => expect(shownMatch()).toBe("FRE v BRL"));
-    const requests = (fetch as unknown as ReturnType<typeof vi.fn>).mock.calls.length;
+    await waitFor(() => expect(shownMatch()).toBe("COL v BRL"));
+    const requests = fetchCalls();
 
-    fireEvent.click(screen.getByRole("button", { name: /COL[\s\S]*CAR/ }));
-    expect(nav.replace).toHaveBeenCalledWith("/live?round=5&game=101", { scroll: false });
+    const stkGcs = screen.getAllByRole("button").find((b) => /STK/.test(b.textContent ?? "") && /GCS/.test(b.textContent ?? ""))!;
+    fireEvent.click(stkGcs);
+    expect(nav.replace).toHaveBeenCalledWith("/live?round=5&game=2026-24-stk-gcs", { scroll: false });
     // No extra feed request for a selection.
-    expect((fetch as unknown as ReturnType<typeof vi.fn>).mock.calls.length).toBe(requests);
+    expect(fetchCalls()).toBe(requests);
 
     expect(screen.getByRole("link", { name: "Results" })).toHaveAttribute("href", "/live/results");
     expect(screen.getByRole("link", { name: "Live" })).toHaveAttribute("aria-current", "page");
   });
 
   it("copies the link to the selected match, and says so", async () => {
-    nav.search = "game=103";
+    nav.search = "game=2026-24-car-fre";
     const writeText = vi.fn(async () => undefined);
     vi.stubGlobal("navigator", { ...navigator, clipboard: { writeText } });
     render(<LivePage />);
-    await waitFor(() => expect(shownMatch()).toBe("SYD v GEE"));
+    await waitFor(() => expect(shownMatch()).toBe("CAR v FRE"));
 
     fireEvent.click(screen.getByRole("button", { name: /Copy link/ }));
     await waitFor(() => expect(screen.getByRole("button", { name: /Copied/ })).toBeInTheDocument());
-    expect(writeText).toHaveBeenCalledWith(`${window.location.origin}/live?game=103`);
+    expect(writeText).toHaveBeenCalledWith(`${window.location.origin}/live?game=2026-24-car-fre`);
   });
 
   it("shows the link to copy by hand when the browser can't copy", async () => {
     vi.stubGlobal("navigator", { ...navigator, clipboard: undefined });
     document.execCommand = vi.fn(() => false);
     render(<LivePage />);
-    await waitFor(() => expect(shownMatch()).toBe("FRE v BRL"));
+    await waitFor(() => expect(shownMatch()).toBe("COL v BRL"));
 
     fireEvent.click(screen.getByRole("button", { name: /Copy link/ }));
-    await waitFor(() => expect(screen.getByLabelText("Copy this link:")).toHaveValue(`${window.location.origin}/live?game=102`));
+    await waitFor(() =>
+      expect(screen.getByLabelText("Copy this link:")).toHaveValue(`${window.location.origin}/live?game=2026-24-col-brl`),
+    );
   });
 });
