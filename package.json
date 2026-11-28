@@ -4,6 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "dev:r10": "node scripts/dev.mjs --round 10",
+    "dev:live": "node scripts/dev.mjs --live",
     "build": "set NODE_OPTIONS=--max-old-space-size=8192 && next build",
     "start": "next start",
     "lint": "eslint",
