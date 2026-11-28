@@ -21,8 +21,11 @@ export const LOW_SAMPLE_N = 10;
 /** Position and Fixture cells: above +3 easy, below -3 hard (points). */
 export const POSITION_COLOUR_THRESHOLD = 3;
 
-/** Teams view Net: above +50 easy, below -50 hard (points per game). */
-export const TEAM_NET_COLOUR_THRESHOLD = 50;
+/**
+ * Teams view Net: above +75 easy, below -75 hard (points per game). Was
+ * 50; at Round 10 that put half the teams in red and 11% neutral.
+ */
+export const TEAM_NET_COLOUR_THRESHOLD = 75;
 
 /** Next5: this many upcoming played rounds (byes skipped). */
 export const NEXT_ROUNDS = 5;

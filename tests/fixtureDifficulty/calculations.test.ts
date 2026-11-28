@@ -177,10 +177,12 @@ describe("colour bands", () => {
   });
 
   it("uses a separate threshold for Team Net", () => {
-    expect(TEAM_NET_COLOUR_THRESHOLD).toBe(50);
+    expect(TEAM_NET_COLOUR_THRESHOLD).toBe(75);
+    expect(teamNetBand(75)).toBe("neutral");
+    expect(teamNetBand(76)).toBe("easy");
+    expect(teamNetBand(-75)).toBe("neutral");
+    expect(teamNetBand(-76)).toBe("hard");
     expect(teamNetBand(40)).toBe("neutral");
-    expect(teamNetBand(51)).toBe("easy");
-    expect(teamNetBand(-51)).toBe("hard");
     expect(difficultyBand(40)).toBe("easy"); // the position threshold would call 40 easy
   });
 
