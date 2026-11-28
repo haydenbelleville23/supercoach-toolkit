@@ -1,3 +1,6 @@
+// The shown season's fixtures: next.config.ts points this import at
+// data/{season}/fixtures-raw.json, the debug sample or a no-fixtures stub
+// (see lib/season/dataSource.ts). For 2026 it is this exact file.
 import rawFixtureData from "@/data/2026/fixtures-raw.json";
 import { DEBUG_AS_OF_ROUND } from "@/lib/asOf/debugAsOfRound";
 import {
@@ -35,6 +38,10 @@ type RawFixtureFile = {
   season: number;
   downloadedAt: string;
   rounds: RawFixtureRound[];
+  /** True for the invented sample (DEBUG_SEASON only). */
+  sample?: boolean;
+  /** True for the no-fixtures stub. */
+  noFixtures?: boolean;
 };
 
 // Under DEBUG_AS_OF_ROUND the build already imports trimmed data (see
@@ -47,6 +54,13 @@ const fixtureFile: RawFixtureFile =
         rawFixtureData as unknown as AsOfFixtureFile,
         DEBUG_AS_OF_ROUND,
       ) as unknown as RawFixtureFile);
+
+/** The season the loaded fixtures are for (null: no fixtures loaded). */
+export const FIXTURES_SEASON: number | null =
+  fixtureFile.noFixtures === true ? null : Number(fixtureFile.season);
+
+/** True when the fixtures are the invented sample (DEBUG_SEASON only). */
+export const FIXTURES_ARE_SAMPLE = fixtureFile.sample === true;
 
 /** The fixture file as the app sees it (trimmed under the debug lock). */
 export function getRawFixtureFile(): AsOfFixtureFile {

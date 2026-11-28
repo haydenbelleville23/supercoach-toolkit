@@ -22,6 +22,11 @@ const row = (team: string, rest: number | null, next5: number | null, opponent =
 function data(over: Partial<FixtureDifficultyData> = {}): FixtureDifficultyData {
   const rows = [row("ADE", 1, 4), row("BRL", 5, -2), row("CAR", -3, 9)];
   return {
+    season: 2026,
+    preseason: false,
+    basis: { kind: "current", season: 2026 },
+    sampleFixtures: false,
+    noFixtures: false,
     asOfRound: 1,
     lastRound: 3,
     hasFutureRounds: true,

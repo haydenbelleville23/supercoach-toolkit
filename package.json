@@ -6,6 +6,7 @@
     "dev": "next dev",
     "dev:r10": "node scripts/dev.mjs --round 10",
     "dev:live": "node scripts/dev.mjs --live",
+    "dev:2027": "node scripts/dev.mjs --season 2027",
     "build": "set NODE_OPTIONS=--max-old-space-size=8192 && next build",
     "start": "next start",
     "lint": "eslint",
@@ -21,6 +22,8 @@
     "backtest:as-of": "node scripts/as-of-backtest.ts",
     "build:games": "node scripts/build-games.ts",
     "import:availability": "node scripts/import-availability.ts",
+    "import:fixtures": "node scripts/import-fixtures.ts",
+    "generate:sample-fixtures": "node scripts/generate-sample-fixtures.ts",
     "live:snapshot": "node scripts/save-live-snapshot.ts"
   },
   "dependencies": {

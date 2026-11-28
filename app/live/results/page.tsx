@@ -12,9 +12,13 @@ import { TEAMS } from "@/lib/teams";
 
 type SearchParams = Promise<{ season?: string; round?: string }>;
 
-/** The season and round asked for (defaults: this season, latest round), or null when out of range. */
+/**
+ * The season and round asked for, or null when out of range. Defaults: the
+ * latest season with completed games (last season's during a new
+ * preseason), and its latest round.
+ */
 function resolve(params: { season?: string; round?: string }) {
-  const season = params.season === undefined ? SEASON_YEAR : Number(params.season);
+  const season = params.season === undefined ? (seasonsWithGames()[0] ?? SEASON_YEAR) : Number(params.season);
   if (!Number.isInteger(season)) return null;
 
   const rounds = visibleRoundsFor(season);

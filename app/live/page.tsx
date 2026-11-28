@@ -8,6 +8,7 @@ import PageHeader from "@/components/layout/PageHeader";
 import CopyLinkButton from "@/components/live/CopyLinkButton";
 import LiveViewToggle from "@/components/live/LiveViewToggle";
 import LiveStatusTag from "@/components/live/LiveStatusTag";
+import { PreseasonNotice } from "@/components/season/PreseasonNotice";
 import InfoPopover from "@/components/ui/InfoPopover";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import {
@@ -21,6 +22,7 @@ import {
 import {
   CURRENT_COMPLETED_ROUND,
   DEBUG_AS_OF_ROUND,
+  IS_PRESEASON,
   SEASON_YEAR,
 } from "@/data/season";
 import { gameIdFor } from "@/lib/games/buildGames";
@@ -410,6 +412,18 @@ function LiveMessage({
  * page reads the query string; that needs a Suspense boundary.
  */
 export default function LivePage() {
+  // No players or prices before the season's AFL SuperCoach launch (the
+  // results archive stays one tap away in the Live | Results toggle).
+  if (IS_PRESEASON) {
+    return (
+      <LiveLayout>
+        <div className="mx-auto max-w-7xl px-6 pb-12">
+          <PreseasonNotice tool="Live Scores" />
+        </div>
+      </LiveLayout>
+    );
+  }
+
   return (
     <Suspense
       fallback={

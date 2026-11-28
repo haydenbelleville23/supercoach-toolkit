@@ -1,0 +1,4481 @@
+{
+ "season": 2027,
+ "downloadedAt": "2027-01-01T00:00:00.000Z",
+ "source": "generated sample",
+ "rounds": [
+  {
+   "round": 0,
+   "response": [
+    {
+     "id": 2027001,
+     "season": "2027",
+     "kickoff": "2027-03-04T19:30:00+11:00",
+     "team1": {
+      "id": 18,
+      "abbrev": "GWS",
+      "name": "GWS Giants"
+     },
+     "team2": {
+      "id": 8,
+      "abbrev": "HAW",
+      "name": "Hawthorn"
+     },
+     "location": "ENGIE Stadium",
+     "round": 0,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027002,
+     "season": "2027",
+     "kickoff": "2027-03-05T19:40:00+11:00",
+     "team1": {
+      "id": 16,
+      "abbrev": "WCE",
+      "name": "West Coast"
+     },
+     "team2": {
+      "id": 15,
+      "abbrev": "WBD",
+      "name": "Western Bulldogs"
+     },
+     "location": "Optus Stadium",
+     "round": 0,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027003,
+     "season": "2027",
+     "kickoff": "2027-03-06T13:45:00+11:00",
+     "team1": {
+      "id": 14,
+      "abbrev": "SYD",
+      "name": "Sydney"
+     },
+     "team2": {
+      "id": 13,
+      "abbrev": "STK",
+      "name": "St Kilda"
+     },
+     "location": "SCG",
+     "round": 0,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027004,
+     "season": "2027",
+     "kickoff": "2027-03-06T16:35:00+11:00",
+     "team1": {
+      "id": 12,
+      "abbrev": "RIC",
+      "name": "Richmond"
+     },
+     "team2": {
+      "id": 11,
+      "abbrev": "PTA",
+      "name": "Port Adelaide"
+     },
+     "location": "MCG",
+     "round": 0,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027005,
+     "season": "2027",
+     "kickoff": "2027-03-06T19:35:00+11:00",
+     "team1": {
+      "id": 9,
+      "abbrev": "NTH",
+      "name": "North Melbourne"
+     },
+     "team2": {
+      "id": 10,
+      "abbrev": "MEL",
+      "name": "Melbourne"
+     },
+     "location": "Marvel Stadium",
+     "round": 0,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    }
+   ]
+  },
+  {
+   "round": 1,
+   "response": [
+    {
+     "id": 2027006,
+     "season": "2027",
+     "kickoff": "2027-03-11T19:30:00+11:00",
+     "team1": {
+      "id": 2,
+      "abbrev": "BRL",
+      "name": "Brisbane"
+     },
+     "team2": {
+      "id": 1,
+      "abbrev": "ADE",
+      "name": "Adelaide"
+     },
+     "location": "Gabba",
+     "round": 1,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027007,
+     "season": "2027",
+     "kickoff": "2027-03-12T19:40:00+11:00",
+     "team1": {
+      "id": 3,
+      "abbrev": "CAR",
+      "name": "Carlton"
+     },
+     "team2": {
+      "id": 16,
+      "abbrev": "WCE",
+      "name": "West Coast"
+     },
+     "location": "Marvel Stadium",
+     "round": 1,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027008,
+     "season": "2027",
+     "kickoff": "2027-03-13T13:45:00+11:00",
+     "team1": {
+      "id": 15,
+      "abbrev": "WBD",
+      "name": "Western Bulldogs"
+     },
+     "team2": {
+      "id": 4,
+      "abbrev": "COL",
+      "name": "Collingwood"
+     },
+     "location": "Marvel Stadium",
+     "round": 1,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027009,
+     "season": "2027",
+     "kickoff": "2027-03-13T16:35:00+11:00",
+     "team1": {
+      "id": 5,
+      "abbrev": "ESS",
+      "name": "Essendon"
+     },
+     "team2": {
+      "id": 14,
+      "abbrev": "SYD",
+      "name": "Sydney"
+     },
+     "location": "Marvel Stadium",
+     "round": 1,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027010,
+     "season": "2027",
+     "kickoff": "2027-03-13T19:35:00+11:00",
+     "team1": {
+      "id": 13,
+      "abbrev": "STK",
+      "name": "St Kilda"
+     },
+     "team2": {
+      "id": 6,
+      "abbrev": "FRE",
+      "name": "Fremantle"
+     },
+     "location": "Marvel Stadium",
+     "round": 1,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027011,
+     "season": "2027",
+     "kickoff": "2027-03-14T13:10:00+11:00",
+     "team1": {
+      "id": 17,
+      "abbrev": "GCS",
+      "name": "Gold Coast"
+     },
+     "team2": {
+      "id": 12,
+      "abbrev": "RIC",
+      "name": "Richmond"
+     },
+     "location": "People First Stadium",
+     "round": 1,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027012,
+     "season": "2027",
+     "kickoff": "2027-03-14T15:20:00+11:00",
+     "team1": {
+      "id": 11,
+      "abbrev": "PTA",
+      "name": "Port Adelaide"
+     },
+     "team2": {
+      "id": 7,
+      "abbrev": "GEE",
+      "name": "Geelong"
+     },
+     "location": "Adelaide Oval",
+     "round": 1,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027013,
+     "season": "2027",
+     "kickoff": "2027-03-14T17:40:00+11:00",
+     "team1": {
+      "id": 18,
+      "abbrev": "GWS",
+      "name": "GWS Giants"
+     },
+     "team2": {
+      "id": 9,
+      "abbrev": "NTH",
+      "name": "North Melbourne"
+     },
+     "location": "ENGIE Stadium",
+     "round": 1,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027014,
+     "season": "2027",
+     "kickoff": "2027-03-14T19:20:00+11:00",
+     "team1": {
+      "id": 10,
+      "abbrev": "MEL",
+      "name": "Melbourne"
+     },
+     "team2": {
+      "id": 8,
+      "abbrev": "HAW",
+      "name": "Hawthorn"
+     },
+     "location": "MCG",
+     "round": 1,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    }
+   ]
+  },
+  {
+   "round": 2,
+   "response": [
+    {
+     "id": 2027015,
+     "season": "2027",
+     "kickoff": "2027-03-18T19:30:00+11:00",
+     "team1": {
+      "id": 1,
+      "abbrev": "ADE",
+      "name": "Adelaide"
+     },
+     "team2": {
+      "id": 3,
+      "abbrev": "CAR",
+      "name": "Carlton"
+     },
+     "location": "Adelaide Oval",
+     "round": 2,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027016,
+     "season": "2027",
+     "kickoff": "2027-03-19T19:40:00+11:00",
+     "team1": {
+      "id": 2,
+      "abbrev": "BRL",
+      "name": "Brisbane"
+     },
+     "team2": {
+      "id": 4,
+      "abbrev": "COL",
+      "name": "Collingwood"
+     },
+     "location": "Gabba",
+     "round": 2,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027017,
+     "season": "2027",
+     "kickoff": "2027-03-20T13:45:00+11:00",
+     "team1": {
+      "id": 5,
+      "abbrev": "ESS",
+      "name": "Essendon"
+     },
+     "team2": {
+      "id": 16,
+      "abbrev": "WCE",
+      "name": "West Coast"
+     },
+     "location": "Marvel Stadium",
+     "round": 2,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027018,
+     "season": "2027",
+     "kickoff": "2027-03-20T16:35:00+11:00",
+     "team1": {
+      "id": 15,
+      "abbrev": "WBD",
+      "name": "Western Bulldogs"
+     },
+     "team2": {
+      "id": 6,
+      "abbrev": "FRE",
+      "name": "Fremantle"
+     },
+     "location": "Marvel Stadium",
+     "round": 2,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027019,
+     "season": "2027",
+     "kickoff": "2027-03-20T19:35:00+11:00",
+     "team1": {
+      "id": 17,
+      "abbrev": "GCS",
+      "name": "Gold Coast"
+     },
+     "team2": {
+      "id": 14,
+      "abbrev": "SYD",
+      "name": "Sydney"
+     },
+     "location": "People First Stadium",
+     "round": 2,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027020,
+     "season": "2027",
+     "kickoff": "2027-03-21T13:10:00+11:00",
+     "team1": {
+      "id": 13,
+      "abbrev": "STK",
+      "name": "St Kilda"
+     },
+     "team2": {
+      "id": 7,
+      "abbrev": "GEE",
+      "name": "Geelong"
+     },
+     "location": "Marvel Stadium",
+     "round": 2,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027021,
+     "season": "2027",
+     "kickoff": "2027-03-21T15:20:00+11:00",
+     "team1": {
+      "id": 12,
+      "abbrev": "RIC",
+      "name": "Richmond"
+     },
+     "team2": {
+      "id": 11,
+      "abbrev": "PTA",
+      "name": "Port Adelaide"
+     },
+     "location": "MCG",
+     "round": 2,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    }
+   ]
+  },
+  {
+   "round": 3,
+   "response": [
+    {
+     "id": 2027022,
+     "season": "2027",
+     "kickoff": "2027-03-25T19:30:00+11:00",
+     "team1": {
+      "id": 4,
+      "abbrev": "COL",
+      "name": "Collingwood"
+     },
+     "team2": {
+      "id": 1,
+      "abbrev": "ADE",
+      "name": "Adelaide"
+     },
+     "location": "MCG",
+     "round": 3,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027023,
+     "season": "2027",
+     "kickoff": "2027-03-26T19:40:00+11:00",
+     "team1": {
+      "id": 5,
+      "abbrev": "ESS",
+      "name": "Essendon"
+     },
+     "team2": {
+      "id": 3,
+      "abbrev": "CAR",
+      "name": "Carlton"
+     },
+     "location": "Marvel Stadium",
+     "round": 3,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027024,
+     "season": "2027",
+     "kickoff": "2027-03-27T13:45:00+11:00",
+     "team1": {
+      "id": 2,
+      "abbrev": "BRL",
+      "name": "Brisbane"
+     },
+     "team2": {
+      "id": 6,
+      "abbrev": "FRE",
+      "name": "Fremantle"
+     },
+     "location": "Gabba",
+     "round": 3,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027025,
+     "season": "2027",
+     "kickoff": "2027-03-27T16:35:00+11:00",
+     "team1": {
+      "id": 17,
+      "abbrev": "GCS",
+      "name": "Gold Coast"
+     },
+     "team2": {
+      "id": 16,
+      "abbrev": "WCE",
+      "name": "West Coast"
+     },
+     "location": "People First Stadium",
+     "round": 3,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027026,
+     "season": "2027",
+     "kickoff": "2027-03-27T19:35:00+11:00",
+     "team1": {
+      "id": 15,
+      "abbrev": "WBD",
+      "name": "Western Bulldogs"
+     },
+     "team2": {
+      "id": 7,
+      "abbrev": "GEE",
+      "name": "Geelong"
+     },
+     "location": "Marvel Stadium",
+     "round": 3,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027027,
+     "season": "2027",
+     "kickoff": "2027-03-28T13:10:00+11:00",
+     "team1": {
+      "id": 18,
+      "abbrev": "GWS",
+      "name": "GWS Giants"
+     },
+     "team2": {
+      "id": 8,
+      "abbrev": "HAW",
+      "name": "Hawthorn"
+     },
+     "location": "ENGIE Stadium",
+     "round": 3,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027028,
+     "season": "2027",
+     "kickoff": "2027-03-28T15:20:00+11:00",
+     "team1": {
+      "id": 10,
+      "abbrev": "MEL",
+      "name": "Melbourne"
+     },
+     "team2": {
+      "id": 9,
+      "abbrev": "NTH",
+      "name": "North Melbourne"
+     },
+     "location": "MCG",
+     "round": 3,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    }
+   ]
+  },
+  {
+   "round": 4,
+   "response": [
+    {
+     "id": 2027029,
+     "season": "2027",
+     "kickoff": "2027-04-01T19:30:00+11:00",
+     "team1": {
+      "id": 1,
+      "abbrev": "ADE",
+      "name": "Adelaide"
+     },
+     "team2": {
+      "id": 5,
+      "abbrev": "ESS",
+      "name": "Essendon"
+     },
+     "location": "Adelaide Oval",
+     "round": 4,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027030,
+     "season": "2027",
+     "kickoff": "2027-04-02T19:40:00+11:00",
+     "team1": {
+      "id": 4,
+      "abbrev": "COL",
+      "name": "Collingwood"
+     },
+     "team2": {
+      "id": 6,
+      "abbrev": "FRE",
+      "name": "Fremantle"
+     },
+     "location": "MCG",
+     "round": 4,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027031,
+     "season": "2027",
+     "kickoff": "2027-04-03T13:45:00+11:00",
+     "team1": {
+      "id": 17,
+      "abbrev": "GCS",
+      "name": "Gold Coast"
+     },
+     "team2": {
+      "id": 3,
+      "abbrev": "CAR",
+      "name": "Carlton"
+     },
+     "location": "People First Stadium",
+     "round": 4,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027032,
+     "season": "2027",
+     "kickoff": "2027-04-03T16:35:00+11:00",
+     "team1": {
+      "id": 2,
+      "abbrev": "BRL",
+      "name": "Brisbane"
+     },
+     "team2": {
+      "id": 7,
+      "abbrev": "GEE",
+      "name": "Geelong"
+     },
+     "location": "Gabba",
+     "round": 4,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027033,
+     "season": "2027",
+     "kickoff": "2027-04-03T19:35:00+11:00",
+     "team1": {
+      "id": 10,
+      "abbrev": "MEL",
+      "name": "Melbourne"
+     },
+     "team2": {
+      "id": 14,
+      "abbrev": "SYD",
+      "name": "Sydney"
+     },
+     "location": "MCG",
+     "round": 4,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027034,
+     "season": "2027",
+     "kickoff": "2027-04-04T13:10:00+10:00",
+     "team1": {
+      "id": 13,
+      "abbrev": "STK",
+      "name": "St Kilda"
+     },
+     "team2": {
+      "id": 9,
+      "abbrev": "NTH",
+      "name": "North Melbourne"
+     },
+     "location": "Marvel Stadium",
+     "round": 4,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027035,
+     "season": "2027",
+     "kickoff": "2027-04-04T15:20:00+10:00",
+     "team1": {
+      "id": 11,
+      "abbrev": "PTA",
+      "name": "Port Adelaide"
+     },
+     "team2": {
+      "id": 12,
+      "abbrev": "RIC",
+      "name": "Richmond"
+     },
+     "location": "Adelaide Oval",
+     "round": 4,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027036,
+     "season": "2027",
+     "kickoff": "2027-04-04T17:40:00+10:00",
+     "team1": {
+      "id": 18,
+      "abbrev": "GWS",
+      "name": "GWS Giants"
+     },
+     "team2": {
+      "id": 8,
+      "abbrev": "HAW",
+      "name": "Hawthorn"
+     },
+     "location": "ENGIE Stadium",
+     "round": 4,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    }
+   ]
+  },
+  {
+   "round": 5,
+   "response": [
+    {
+     "id": 2027037,
+     "season": "2027",
+     "kickoff": "2027-04-08T19:30:00+10:00",
+     "team1": {
+      "id": 6,
+      "abbrev": "FRE",
+      "name": "Fremantle"
+     },
+     "team2": {
+      "id": 1,
+      "abbrev": "ADE",
+      "name": "Adelaide"
+     },
+     "location": "Optus Stadium",
+     "round": 5,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027038,
+     "season": "2027",
+     "kickoff": "2027-04-09T19:40:00+10:00",
+     "team1": {
+      "id": 17,
+      "abbrev": "GCS",
+      "name": "Gold Coast"
+     },
+     "team2": {
+      "id": 5,
+      "abbrev": "ESS",
+      "name": "Essendon"
+     },
+     "location": "People First Stadium",
+     "round": 5,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027039,
+     "season": "2027",
+     "kickoff": "2027-04-10T13:45:00+10:00",
+     "team1": {
+      "id": 4,
+      "abbrev": "COL",
+      "name": "Collingwood"
+     },
+     "team2": {
+      "id": 7,
+      "abbrev": "GEE",
+      "name": "Geelong"
+     },
+     "location": "MCG",
+     "round": 5,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027040,
+     "season": "2027",
+     "kickoff": "2027-04-10T16:35:00+10:00",
+     "team1": {
+      "id": 18,
+      "abbrev": "GWS",
+      "name": "GWS Giants"
+     },
+     "team2": {
+      "id": 3,
+      "abbrev": "CAR",
+      "name": "Carlton"
+     },
+     "location": "ENGIE Stadium",
+     "round": 5,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027041,
+     "season": "2027",
+     "kickoff": "2027-04-10T19:35:00+10:00",
+     "team1": {
+      "id": 2,
+      "abbrev": "BRL",
+      "name": "Brisbane"
+     },
+     "team2": {
+      "id": 8,
+      "abbrev": "HAW",
+      "name": "Hawthorn"
+     },
+     "location": "Gabba",
+     "round": 5,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027042,
+     "season": "2027",
+     "kickoff": "2027-04-11T13:10:00+10:00",
+     "team1": {
+      "id": 10,
+      "abbrev": "MEL",
+      "name": "Melbourne"
+     },
+     "team2": {
+      "id": 16,
+      "abbrev": "WCE",
+      "name": "West Coast"
+     },
+     "location": "MCG",
+     "round": 5,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027043,
+     "season": "2027",
+     "kickoff": "2027-04-11T15:20:00+10:00",
+     "team1": {
+      "id": 15,
+      "abbrev": "WBD",
+      "name": "Western Bulldogs"
+     },
+     "team2": {
+      "id": 9,
+      "abbrev": "NTH",
+      "name": "North Melbourne"
+     },
+     "location": "Marvel Stadium",
+     "round": 5,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027044,
+     "season": "2027",
+     "kickoff": "2027-04-11T17:40:00+10:00",
+     "team1": {
+      "id": 11,
+      "abbrev": "PTA",
+      "name": "Port Adelaide"
+     },
+     "team2": {
+      "id": 14,
+      "abbrev": "SYD",
+      "name": "Sydney"
+     },
+     "location": "Adelaide Oval",
+     "round": 5,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027045,
+     "season": "2027",
+     "kickoff": "2027-04-11T19:20:00+10:00",
+     "team1": {
+      "id": 13,
+      "abbrev": "STK",
+      "name": "St Kilda"
+     },
+     "team2": {
+      "id": 12,
+      "abbrev": "RIC",
+      "name": "Richmond"
+     },
+     "location": "Marvel Stadium",
+     "round": 5,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    }
+   ]
+  },
+  {
+   "round": 6,
+   "response": [
+    {
+     "id": 2027046,
+     "season": "2027",
+     "kickoff": "2027-04-15T19:30:00+10:00",
+     "team1": {
+      "id": 1,
+      "abbrev": "ADE",
+      "name": "Adelaide"
+     },
+     "team2": {
+      "id": 17,
+      "abbrev": "GCS",
+      "name": "Gold Coast"
+     },
+     "location": "Adelaide Oval",
+     "round": 6,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027047,
+     "season": "2027",
+     "kickoff": "2027-04-16T19:40:00+10:00",
+     "team1": {
+      "id": 6,
+      "abbrev": "FRE",
+      "name": "Fremantle"
+     },
+     "team2": {
+      "id": 7,
+      "abbrev": "GEE",
+      "name": "Geelong"
+     },
+     "location": "Optus Stadium",
+     "round": 6,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027048,
+     "season": "2027",
+     "kickoff": "2027-04-17T13:45:00+10:00",
+     "team1": {
+      "id": 18,
+      "abbrev": "GWS",
+      "name": "GWS Giants"
+     },
+     "team2": {
+      "id": 5,
+      "abbrev": "ESS",
+      "name": "Essendon"
+     },
+     "location": "ENGIE Stadium",
+     "round": 6,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027049,
+     "season": "2027",
+     "kickoff": "2027-04-17T16:35:00+10:00",
+     "team1": {
+      "id": 4,
+      "abbrev": "COL",
+      "name": "Collingwood"
+     },
+     "team2": {
+      "id": 8,
+      "abbrev": "HAW",
+      "name": "Hawthorn"
+     },
+     "location": "MCG",
+     "round": 6,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027050,
+     "season": "2027",
+     "kickoff": "2027-04-17T19:35:00+10:00",
+     "team1": {
+      "id": 10,
+      "abbrev": "MEL",
+      "name": "Melbourne"
+     },
+     "team2": {
+      "id": 3,
+      "abbrev": "CAR",
+      "name": "Carlton"
+     },
+     "location": "MCG",
+     "round": 6,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027051,
+     "season": "2027",
+     "kickoff": "2027-04-18T13:10:00+10:00",
+     "team1": {
+      "id": 2,
+      "abbrev": "BRL",
+      "name": "Brisbane"
+     },
+     "team2": {
+      "id": 9,
+      "abbrev": "NTH",
+      "name": "North Melbourne"
+     },
+     "location": "Gabba",
+     "round": 6,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027052,
+     "season": "2027",
+     "kickoff": "2027-04-18T15:20:00+10:00",
+     "team1": {
+      "id": 11,
+      "abbrev": "PTA",
+      "name": "Port Adelaide"
+     },
+     "team2": {
+      "id": 16,
+      "abbrev": "WCE",
+      "name": "West Coast"
+     },
+     "location": "Adelaide Oval",
+     "round": 6,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027053,
+     "season": "2027",
+     "kickoff": "2027-04-18T17:40:00+10:00",
+     "team1": {
+      "id": 15,
+      "abbrev": "WBD",
+      "name": "Western Bulldogs"
+     },
+     "team2": {
+      "id": 12,
+      "abbrev": "RIC",
+      "name": "Richmond"
+     },
+     "location": "Marvel Stadium",
+     "round": 6,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027054,
+     "season": "2027",
+     "kickoff": "2027-04-18T19:20:00+10:00",
+     "team1": {
+      "id": 13,
+      "abbrev": "STK",
+      "name": "St Kilda"
+     },
+     "team2": {
+      "id": 14,
+      "abbrev": "SYD",
+      "name": "Sydney"
+     },
+     "location": "Marvel Stadium",
+     "round": 6,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    }
+   ]
+  },
+  {
+   "round": 7,
+   "response": [
+    {
+     "id": 2027055,
+     "season": "2027",
+     "kickoff": "2027-04-22T19:30:00+10:00",
+     "team1": {
+      "id": 7,
+      "abbrev": "GEE",
+      "name": "Geelong"
+     },
+     "team2": {
+      "id": 1,
+      "abbrev": "ADE",
+      "name": "Adelaide"
+     },
+     "location": "GMHBA Stadium",
+     "round": 7,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027056,
+     "season": "2027",
+     "kickoff": "2027-04-23T19:40:00+10:00",
+     "team1": {
+      "id": 18,
+      "abbrev": "GWS",
+      "name": "GWS Giants"
+     },
+     "team2": {
+      "id": 17,
+      "abbrev": "GCS",
+      "name": "Gold Coast"
+     },
+     "location": "ENGIE Stadium",
+     "round": 7,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027057,
+     "season": "2027",
+     "kickoff": "2027-04-24T13:45:00+10:00",
+     "team1": {
+      "id": 6,
+      "abbrev": "FRE",
+      "name": "Fremantle"
+     },
+     "team2": {
+      "id": 8,
+      "abbrev": "HAW",
+      "name": "Hawthorn"
+     },
+     "location": "Optus Stadium",
+     "round": 7,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027058,
+     "season": "2027",
+     "kickoff": "2027-04-24T16:35:00+10:00",
+     "team1": {
+      "id": 10,
+      "abbrev": "MEL",
+      "name": "Melbourne"
+     },
+     "team2": {
+      "id": 5,
+      "abbrev": "ESS",
+      "name": "Essendon"
+     },
+     "location": "MCG",
+     "round": 7,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027059,
+     "season": "2027",
+     "kickoff": "2027-04-24T19:35:00+10:00",
+     "team1": {
+      "id": 4,
+      "abbrev": "COL",
+      "name": "Collingwood"
+     },
+     "team2": {
+      "id": 9,
+      "abbrev": "NTH",
+      "name": "North Melbourne"
+     },
+     "location": "MCG",
+     "round": 7,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027060,
+     "season": "2027",
+     "kickoff": "2027-04-25T13:10:00+10:00",
+     "team1": {
+      "id": 11,
+      "abbrev": "PTA",
+      "name": "Port Adelaide"
+     },
+     "team2": {
+      "id": 3,
+      "abbrev": "CAR",
+      "name": "Carlton"
+     },
+     "location": "Adelaide Oval",
+     "round": 7,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027061,
+     "season": "2027",
+     "kickoff": "2027-04-25T15:20:00+10:00",
+     "team1": {
+      "id": 2,
+      "abbrev": "BRL",
+      "name": "Brisbane"
+     },
+     "team2": {
+      "id": 12,
+      "abbrev": "RIC",
+      "name": "Richmond"
+     },
+     "location": "Gabba",
+     "round": 7,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027062,
+     "season": "2027",
+     "kickoff": "2027-04-25T17:40:00+10:00",
+     "team1": {
+      "id": 13,
+      "abbrev": "STK",
+      "name": "St Kilda"
+     },
+     "team2": {
+      "id": 16,
+      "abbrev": "WCE",
+      "name": "West Coast"
+     },
+     "location": "Marvel Stadium",
+     "round": 7,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027063,
+     "season": "2027",
+     "kickoff": "2027-04-25T19:20:00+10:00",
+     "team1": {
+      "id": 15,
+      "abbrev": "WBD",
+      "name": "Western Bulldogs"
+     },
+     "team2": {
+      "id": 14,
+      "abbrev": "SYD",
+      "name": "Sydney"
+     },
+     "location": "Marvel Stadium",
+     "round": 7,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    }
+   ]
+  },
+  {
+   "round": 8,
+   "response": [
+    {
+     "id": 2027064,
+     "season": "2027",
+     "kickoff": "2027-04-29T19:30:00+10:00",
+     "team1": {
+      "id": 1,
+      "abbrev": "ADE",
+      "name": "Adelaide"
+     },
+     "team2": {
+      "id": 18,
+      "abbrev": "GWS",
+      "name": "GWS Giants"
+     },
+     "location": "Adelaide Oval",
+     "round": 8,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027065,
+     "season": "2027",
+     "kickoff": "2027-04-30T19:40:00+10:00",
+     "team1": {
+      "id": 7,
+      "abbrev": "GEE",
+      "name": "Geelong"
+     },
+     "team2": {
+      "id": 8,
+      "abbrev": "HAW",
+      "name": "Hawthorn"
+     },
+     "location": "GMHBA Stadium",
+     "round": 8,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027066,
+     "season": "2027",
+     "kickoff": "2027-05-01T13:45:00+10:00",
+     "team1": {
+      "id": 10,
+      "abbrev": "MEL",
+      "name": "Melbourne"
+     },
+     "team2": {
+      "id": 17,
+      "abbrev": "GCS",
+      "name": "Gold Coast"
+     },
+     "location": "MCG",
+     "round": 8,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027067,
+     "season": "2027",
+     "kickoff": "2027-05-01T16:35:00+10:00",
+     "team1": {
+      "id": 6,
+      "abbrev": "FRE",
+      "name": "Fremantle"
+     },
+     "team2": {
+      "id": 9,
+      "abbrev": "NTH",
+      "name": "North Melbourne"
+     },
+     "location": "Optus Stadium",
+     "round": 8,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027068,
+     "season": "2027",
+     "kickoff": "2027-05-01T19:35:00+10:00",
+     "team1": {
+      "id": 11,
+      "abbrev": "PTA",
+      "name": "Port Adelaide"
+     },
+     "team2": {
+      "id": 5,
+      "abbrev": "ESS",
+      "name": "Essendon"
+     },
+     "location": "Adelaide Oval",
+     "round": 8,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027069,
+     "season": "2027",
+     "kickoff": "2027-05-02T13:10:00+10:00",
+     "team1": {
+      "id": 4,
+      "abbrev": "COL",
+      "name": "Collingwood"
+     },
+     "team2": {
+      "id": 12,
+      "abbrev": "RIC",
+      "name": "Richmond"
+     },
+     "location": "MCG",
+     "round": 8,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027070,
+     "season": "2027",
+     "kickoff": "2027-05-02T15:20:00+10:00",
+     "team1": {
+      "id": 13,
+      "abbrev": "STK",
+      "name": "St Kilda"
+     },
+     "team2": {
+      "id": 3,
+      "abbrev": "CAR",
+      "name": "Carlton"
+     },
+     "location": "Marvel Stadium",
+     "round": 8,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027071,
+     "season": "2027",
+     "kickoff": "2027-05-02T17:40:00+10:00",
+     "team1": {
+      "id": 2,
+      "abbrev": "BRL",
+      "name": "Brisbane"
+     },
+     "team2": {
+      "id": 14,
+      "abbrev": "SYD",
+      "name": "Sydney"
+     },
+     "location": "Gabba",
+     "round": 8,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027072,
+     "season": "2027",
+     "kickoff": "2027-05-02T19:20:00+10:00",
+     "team1": {
+      "id": 15,
+      "abbrev": "WBD",
+      "name": "Western Bulldogs"
+     },
+     "team2": {
+      "id": 16,
+      "abbrev": "WCE",
+      "name": "West Coast"
+     },
+     "location": "Marvel Stadium",
+     "round": 8,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    }
+   ]
+  },
+  {
+   "round": 9,
+   "response": [
+    {
+     "id": 2027073,
+     "season": "2027",
+     "kickoff": "2027-05-06T19:30:00+10:00",
+     "team1": {
+      "id": 8,
+      "abbrev": "HAW",
+      "name": "Hawthorn"
+     },
+     "team2": {
+      "id": 1,
+      "abbrev": "ADE",
+      "name": "Adelaide"
+     },
+     "location": "MCG",
+     "round": 9,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027074,
+     "season": "2027",
+     "kickoff": "2027-05-07T19:40:00+10:00",
+     "team1": {
+      "id": 10,
+      "abbrev": "MEL",
+      "name": "Melbourne"
+     },
+     "team2": {
+      "id": 18,
+      "abbrev": "GWS",
+      "name": "GWS Giants"
+     },
+     "location": "MCG",
+     "round": 9,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027075,
+     "season": "2027",
+     "kickoff": "2027-05-08T13:45:00+10:00",
+     "team1": {
+      "id": 7,
+      "abbrev": "GEE",
+      "name": "Geelong"
+     },
+     "team2": {
+      "id": 9,
+      "abbrev": "NTH",
+      "name": "North Melbourne"
+     },
+     "location": "GMHBA Stadium",
+     "round": 9,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027076,
+     "season": "2027",
+     "kickoff": "2027-05-08T16:35:00+10:00",
+     "team1": {
+      "id": 11,
+      "abbrev": "PTA",
+      "name": "Port Adelaide"
+     },
+     "team2": {
+      "id": 17,
+      "abbrev": "GCS",
+      "name": "Gold Coast"
+     },
+     "location": "Adelaide Oval",
+     "round": 9,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027077,
+     "season": "2027",
+     "kickoff": "2027-05-08T19:35:00+10:00",
+     "team1": {
+      "id": 6,
+      "abbrev": "FRE",
+      "name": "Fremantle"
+     },
+     "team2": {
+      "id": 12,
+      "abbrev": "RIC",
+      "name": "Richmond"
+     },
+     "location": "Optus Stadium",
+     "round": 9,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027078,
+     "season": "2027",
+     "kickoff": "2027-05-09T13:10:00+10:00",
+     "team1": {
+      "id": 13,
+      "abbrev": "STK",
+      "name": "St Kilda"
+     },
+     "team2": {
+      "id": 5,
+      "abbrev": "ESS",
+      "name": "Essendon"
+     },
+     "location": "Marvel Stadium",
+     "round": 9,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027079,
+     "season": "2027",
+     "kickoff": "2027-05-09T15:20:00+10:00",
+     "team1": {
+      "id": 4,
+      "abbrev": "COL",
+      "name": "Collingwood"
+     },
+     "team2": {
+      "id": 14,
+      "abbrev": "SYD",
+      "name": "Sydney"
+     },
+     "location": "MCG",
+     "round": 9,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027080,
+     "season": "2027",
+     "kickoff": "2027-05-09T17:40:00+10:00",
+     "team1": {
+      "id": 15,
+      "abbrev": "WBD",
+      "name": "Western Bulldogs"
+     },
+     "team2": {
+      "id": 3,
+      "abbrev": "CAR",
+      "name": "Carlton"
+     },
+     "location": "Marvel Stadium",
+     "round": 9,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027081,
+     "season": "2027",
+     "kickoff": "2027-05-09T19:20:00+10:00",
+     "team1": {
+      "id": 2,
+      "abbrev": "BRL",
+      "name": "Brisbane"
+     },
+     "team2": {
+      "id": 16,
+      "abbrev": "WCE",
+      "name": "West Coast"
+     },
+     "location": "Gabba",
+     "round": 9,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    }
+   ]
+  },
+  {
+   "round": 10,
+   "response": [
+    {
+     "id": 2027082,
+     "season": "2027",
+     "kickoff": "2027-05-13T19:30:00+10:00",
+     "team1": {
+      "id": 1,
+      "abbrev": "ADE",
+      "name": "Adelaide"
+     },
+     "team2": {
+      "id": 10,
+      "abbrev": "MEL",
+      "name": "Melbourne"
+     },
+     "location": "Adelaide Oval",
+     "round": 10,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027083,
+     "season": "2027",
+     "kickoff": "2027-05-14T19:40:00+10:00",
+     "team1": {
+      "id": 8,
+      "abbrev": "HAW",
+      "name": "Hawthorn"
+     },
+     "team2": {
+      "id": 9,
+      "abbrev": "NTH",
+      "name": "North Melbourne"
+     },
+     "location": "MCG",
+     "round": 10,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027084,
+     "season": "2027",
+     "kickoff": "2027-05-15T13:45:00+10:00",
+     "team1": {
+      "id": 11,
+      "abbrev": "PTA",
+      "name": "Port Adelaide"
+     },
+     "team2": {
+      "id": 18,
+      "abbrev": "GWS",
+      "name": "GWS Giants"
+     },
+     "location": "Adelaide Oval",
+     "round": 10,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027085,
+     "season": "2027",
+     "kickoff": "2027-05-15T16:35:00+10:00",
+     "team1": {
+      "id": 7,
+      "abbrev": "GEE",
+      "name": "Geelong"
+     },
+     "team2": {
+      "id": 12,
+      "abbrev": "RIC",
+      "name": "Richmond"
+     },
+     "location": "GMHBA Stadium",
+     "round": 10,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027086,
+     "season": "2027",
+     "kickoff": "2027-05-15T19:35:00+10:00",
+     "team1": {
+      "id": 13,
+      "abbrev": "STK",
+      "name": "St Kilda"
+     },
+     "team2": {
+      "id": 17,
+      "abbrev": "GCS",
+      "name": "Gold Coast"
+     },
+     "location": "Marvel Stadium",
+     "round": 10,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027087,
+     "season": "2027",
+     "kickoff": "2027-05-16T13:10:00+10:00",
+     "team1": {
+      "id": 6,
+      "abbrev": "FRE",
+      "name": "Fremantle"
+     },
+     "team2": {
+      "id": 14,
+      "abbrev": "SYD",
+      "name": "Sydney"
+     },
+     "location": "Optus Stadium",
+     "round": 10,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027088,
+     "season": "2027",
+     "kickoff": "2027-05-16T15:20:00+10:00",
+     "team1": {
+      "id": 15,
+      "abbrev": "WBD",
+      "name": "Western Bulldogs"
+     },
+     "team2": {
+      "id": 5,
+      "abbrev": "ESS",
+      "name": "Essendon"
+     },
+     "location": "Marvel Stadium",
+     "round": 10,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027089,
+     "season": "2027",
+     "kickoff": "2027-05-16T17:40:00+10:00",
+     "team1": {
+      "id": 4,
+      "abbrev": "COL",
+      "name": "Collingwood"
+     },
+     "team2": {
+      "id": 16,
+      "abbrev": "WCE",
+      "name": "West Coast"
+     },
+     "location": "MCG",
+     "round": 10,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027090,
+     "season": "2027",
+     "kickoff": "2027-05-16T19:20:00+10:00",
+     "team1": {
+      "id": 2,
+      "abbrev": "BRL",
+      "name": "Brisbane"
+     },
+     "team2": {
+      "id": 3,
+      "abbrev": "CAR",
+      "name": "Carlton"
+     },
+     "location": "Gabba",
+     "round": 10,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    }
+   ]
+  },
+  {
+   "round": 11,
+   "response": [
+    {
+     "id": 2027091,
+     "season": "2027",
+     "kickoff": "2027-05-20T19:30:00+10:00",
+     "team1": {
+      "id": 9,
+      "abbrev": "NTH",
+      "name": "North Melbourne"
+     },
+     "team2": {
+      "id": 1,
+      "abbrev": "ADE",
+      "name": "Adelaide"
+     },
+     "location": "Marvel Stadium",
+     "round": 11,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027092,
+     "season": "2027",
+     "kickoff": "2027-05-21T19:40:00+10:00",
+     "team1": {
+      "id": 11,
+      "abbrev": "PTA",
+      "name": "Port Adelaide"
+     },
+     "team2": {
+      "id": 10,
+      "abbrev": "MEL",
+      "name": "Melbourne"
+     },
+     "location": "Adelaide Oval",
+     "round": 11,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027093,
+     "season": "2027",
+     "kickoff": "2027-05-22T13:45:00+10:00",
+     "team1": {
+      "id": 8,
+      "abbrev": "HAW",
+      "name": "Hawthorn"
+     },
+     "team2": {
+      "id": 12,
+      "abbrev": "RIC",
+      "name": "Richmond"
+     },
+     "location": "MCG",
+     "round": 11,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027094,
+     "season": "2027",
+     "kickoff": "2027-05-22T16:35:00+10:00",
+     "team1": {
+      "id": 13,
+      "abbrev": "STK",
+      "name": "St Kilda"
+     },
+     "team2": {
+      "id": 18,
+      "abbrev": "GWS",
+      "name": "GWS Giants"
+     },
+     "location": "Marvel Stadium",
+     "round": 11,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027095,
+     "season": "2027",
+     "kickoff": "2027-05-22T19:35:00+10:00",
+     "team1": {
+      "id": 7,
+      "abbrev": "GEE",
+      "name": "Geelong"
+     },
+     "team2": {
+      "id": 14,
+      "abbrev": "SYD",
+      "name": "Sydney"
+     },
+     "location": "GMHBA Stadium",
+     "round": 11,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027096,
+     "season": "2027",
+     "kickoff": "2027-05-23T13:10:00+10:00",
+     "team1": {
+      "id": 15,
+      "abbrev": "WBD",
+      "name": "Western Bulldogs"
+     },
+     "team2": {
+      "id": 17,
+      "abbrev": "GCS",
+      "name": "Gold Coast"
+     },
+     "location": "Marvel Stadium",
+     "round": 11,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027097,
+     "season": "2027",
+     "kickoff": "2027-05-23T15:20:00+10:00",
+     "team1": {
+      "id": 6,
+      "abbrev": "FRE",
+      "name": "Fremantle"
+     },
+     "team2": {
+      "id": 16,
+      "abbrev": "WCE",
+      "name": "West Coast"
+     },
+     "location": "Optus Stadium",
+     "round": 11,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027098,
+     "season": "2027",
+     "kickoff": "2027-05-23T17:40:00+10:00",
+     "team1": {
+      "id": 2,
+      "abbrev": "BRL",
+      "name": "Brisbane"
+     },
+     "team2": {
+      "id": 5,
+      "abbrev": "ESS",
+      "name": "Essendon"
+     },
+     "location": "Gabba",
+     "round": 11,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027099,
+     "season": "2027",
+     "kickoff": "2027-05-23T19:20:00+10:00",
+     "team1": {
+      "id": 4,
+      "abbrev": "COL",
+      "name": "Collingwood"
+     },
+     "team2": {
+      "id": 3,
+      "abbrev": "CAR",
+      "name": "Carlton"
+     },
+     "location": "MCG",
+     "round": 11,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    }
+   ]
+  },
+  {
+   "round": 12,
+   "response": [
+    {
+     "id": 2027100,
+     "season": "2027",
+     "kickoff": "2027-05-27T19:30:00+10:00",
+     "team1": {
+      "id": 9,
+      "abbrev": "NTH",
+      "name": "North Melbourne"
+     },
+     "team2": {
+      "id": 12,
+      "abbrev": "RIC",
+      "name": "Richmond"
+     },
+     "location": "Marvel Stadium",
+     "round": 12,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027101,
+     "season": "2027",
+     "kickoff": "2027-05-28T19:40:00+10:00",
+     "team1": {
+      "id": 13,
+      "abbrev": "STK",
+      "name": "St Kilda"
+     },
+     "team2": {
+      "id": 10,
+      "abbrev": "MEL",
+      "name": "Melbourne"
+     },
+     "location": "Marvel Stadium",
+     "round": 12,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027102,
+     "season": "2027",
+     "kickoff": "2027-05-29T13:45:00+10:00",
+     "team1": {
+      "id": 8,
+      "abbrev": "HAW",
+      "name": "Hawthorn"
+     },
+     "team2": {
+      "id": 14,
+      "abbrev": "SYD",
+      "name": "Sydney"
+     },
+     "location": "MCG",
+     "round": 12,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027103,
+     "season": "2027",
+     "kickoff": "2027-05-29T16:35:00+10:00",
+     "team1": {
+      "id": 15,
+      "abbrev": "WBD",
+      "name": "Western Bulldogs"
+     },
+     "team2": {
+      "id": 18,
+      "abbrev": "GWS",
+      "name": "GWS Giants"
+     },
+     "location": "Marvel Stadium",
+     "round": 12,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027104,
+     "season": "2027",
+     "kickoff": "2027-05-29T19:35:00+10:00",
+     "team1": {
+      "id": 7,
+      "abbrev": "GEE",
+      "name": "Geelong"
+     },
+     "team2": {
+      "id": 16,
+      "abbrev": "WCE",
+      "name": "West Coast"
+     },
+     "location": "GMHBA Stadium",
+     "round": 12,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027105,
+     "season": "2027",
+     "kickoff": "2027-05-30T13:10:00+10:00",
+     "team1": {
+      "id": 11,
+      "abbrev": "PTA",
+      "name": "Port Adelaide"
+     },
+     "team2": {
+      "id": 17,
+      "abbrev": "GCS",
+      "name": "Gold Coast"
+     },
+     "location": "Adelaide Oval",
+     "round": 12,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027106,
+     "season": "2027",
+     "kickoff": "2027-05-30T15:20:00+10:00",
+     "team1": {
+      "id": 6,
+      "abbrev": "FRE",
+      "name": "Fremantle"
+     },
+     "team2": {
+      "id": 5,
+      "abbrev": "ESS",
+      "name": "Essendon"
+     },
+     "location": "Optus Stadium",
+     "round": 12,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    }
+   ]
+  },
+  {
+   "round": 13,
+   "response": [
+    {
+     "id": 2027107,
+     "season": "2027",
+     "kickoff": "2027-06-03T19:30:00+10:00",
+     "team1": {
+      "id": 12,
+      "abbrev": "RIC",
+      "name": "Richmond"
+     },
+     "team2": {
+      "id": 1,
+      "abbrev": "ADE",
+      "name": "Adelaide"
+     },
+     "location": "MCG",
+     "round": 13,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027108,
+     "season": "2027",
+     "kickoff": "2027-06-04T19:40:00+10:00",
+     "team1": {
+      "id": 13,
+      "abbrev": "STK",
+      "name": "St Kilda"
+     },
+     "team2": {
+      "id": 11,
+      "abbrev": "PTA",
+      "name": "Port Adelaide"
+     },
+     "location": "Marvel Stadium",
+     "round": 13,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027109,
+     "season": "2027",
+     "kickoff": "2027-06-05T13:45:00+10:00",
+     "team1": {
+      "id": 9,
+      "abbrev": "NTH",
+      "name": "North Melbourne"
+     },
+     "team2": {
+      "id": 14,
+      "abbrev": "SYD",
+      "name": "Sydney"
+     },
+     "location": "Marvel Stadium",
+     "round": 13,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027110,
+     "season": "2027",
+     "kickoff": "2027-06-05T16:35:00+10:00",
+     "team1": {
+      "id": 15,
+      "abbrev": "WBD",
+      "name": "Western Bulldogs"
+     },
+     "team2": {
+      "id": 10,
+      "abbrev": "MEL",
+      "name": "Melbourne"
+     },
+     "location": "Marvel Stadium",
+     "round": 13,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027111,
+     "season": "2027",
+     "kickoff": "2027-06-05T19:35:00+10:00",
+     "team1": {
+      "id": 8,
+      "abbrev": "HAW",
+      "name": "Hawthorn"
+     },
+     "team2": {
+      "id": 16,
+      "abbrev": "WCE",
+      "name": "West Coast"
+     },
+     "location": "MCG",
+     "round": 13,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027112,
+     "season": "2027",
+     "kickoff": "2027-06-06T13:10:00+10:00",
+     "team1": {
+      "id": 2,
+      "abbrev": "BRL",
+      "name": "Brisbane"
+     },
+     "team2": {
+      "id": 18,
+      "abbrev": "GWS",
+      "name": "GWS Giants"
+     },
+     "location": "Gabba",
+     "round": 13,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027113,
+     "season": "2027",
+     "kickoff": "2027-06-06T15:20:00+10:00",
+     "team1": {
+      "id": 7,
+      "abbrev": "GEE",
+      "name": "Geelong"
+     },
+     "team2": {
+      "id": 3,
+      "abbrev": "CAR",
+      "name": "Carlton"
+     },
+     "location": "GMHBA Stadium",
+     "round": 13,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027114,
+     "season": "2027",
+     "kickoff": "2027-06-06T17:40:00+10:00",
+     "team1": {
+      "id": 4,
+      "abbrev": "COL",
+      "name": "Collingwood"
+     },
+     "team2": {
+      "id": 17,
+      "abbrev": "GCS",
+      "name": "Gold Coast"
+     },
+     "location": "MCG",
+     "round": 13,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    }
+   ]
+  },
+  {
+   "round": 14,
+   "response": [
+    {
+     "id": 2027115,
+     "season": "2027",
+     "kickoff": "2027-06-10T19:30:00+10:00",
+     "team1": {
+      "id": 1,
+      "abbrev": "ADE",
+      "name": "Adelaide"
+     },
+     "team2": {
+      "id": 13,
+      "abbrev": "STK",
+      "name": "St Kilda"
+     },
+     "location": "Adelaide Oval",
+     "round": 14,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027116,
+     "season": "2027",
+     "kickoff": "2027-06-11T19:40:00+10:00",
+     "team1": {
+      "id": 12,
+      "abbrev": "RIC",
+      "name": "Richmond"
+     },
+     "team2": {
+      "id": 14,
+      "abbrev": "SYD",
+      "name": "Sydney"
+     },
+     "location": "MCG",
+     "round": 14,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027117,
+     "season": "2027",
+     "kickoff": "2027-06-12T13:45:00+10:00",
+     "team1": {
+      "id": 15,
+      "abbrev": "WBD",
+      "name": "Western Bulldogs"
+     },
+     "team2": {
+      "id": 11,
+      "abbrev": "PTA",
+      "name": "Port Adelaide"
+     },
+     "location": "Marvel Stadium",
+     "round": 14,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027118,
+     "season": "2027",
+     "kickoff": "2027-06-12T16:35:00+10:00",
+     "team1": {
+      "id": 9,
+      "abbrev": "NTH",
+      "name": "North Melbourne"
+     },
+     "team2": {
+      "id": 16,
+      "abbrev": "WCE",
+      "name": "West Coast"
+     },
+     "location": "Marvel Stadium",
+     "round": 14,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027119,
+     "season": "2027",
+     "kickoff": "2027-06-12T19:35:00+10:00",
+     "team1": {
+      "id": 2,
+      "abbrev": "BRL",
+      "name": "Brisbane"
+     },
+     "team2": {
+      "id": 10,
+      "abbrev": "MEL",
+      "name": "Melbourne"
+     },
+     "location": "Gabba",
+     "round": 14,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027120,
+     "season": "2027",
+     "kickoff": "2027-06-13T13:10:00+10:00",
+     "team1": {
+      "id": 3,
+      "abbrev": "CAR",
+      "name": "Carlton"
+     },
+     "team2": {
+      "id": 4,
+      "abbrev": "COL",
+      "name": "Collingwood"
+     },
+     "location": "Marvel Stadium",
+     "round": 14,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027121,
+     "season": "2027",
+     "kickoff": "2027-06-13T15:20:00+10:00",
+     "team1": {
+      "id": 5,
+      "abbrev": "ESS",
+      "name": "Essendon"
+     },
+     "team2": {
+      "id": 6,
+      "abbrev": "FRE",
+      "name": "Fremantle"
+     },
+     "location": "Marvel Stadium",
+     "round": 14,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    }
+   ]
+  },
+  {
+   "round": 15,
+   "response": [
+    {
+     "id": 2027122,
+     "season": "2027",
+     "kickoff": "2027-06-17T19:30:00+10:00",
+     "team1": {
+      "id": 14,
+      "abbrev": "SYD",
+      "name": "Sydney"
+     },
+     "team2": {
+      "id": 1,
+      "abbrev": "ADE",
+      "name": "Adelaide"
+     },
+     "location": "SCG",
+     "round": 15,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027123,
+     "season": "2027",
+     "kickoff": "2027-06-18T19:40:00+10:00",
+     "team1": {
+      "id": 15,
+      "abbrev": "WBD",
+      "name": "Western Bulldogs"
+     },
+     "team2": {
+      "id": 13,
+      "abbrev": "STK",
+      "name": "St Kilda"
+     },
+     "location": "Marvel Stadium",
+     "round": 15,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027124,
+     "season": "2027",
+     "kickoff": "2027-06-19T13:45:00+10:00",
+     "team1": {
+      "id": 8,
+      "abbrev": "HAW",
+      "name": "Hawthorn"
+     },
+     "team2": {
+      "id": 5,
+      "abbrev": "ESS",
+      "name": "Essendon"
+     },
+     "location": "MCG",
+     "round": 15,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027125,
+     "season": "2027",
+     "kickoff": "2027-06-19T16:35:00+10:00",
+     "team1": {
+      "id": 6,
+      "abbrev": "FRE",
+      "name": "Fremantle"
+     },
+     "team2": {
+      "id": 18,
+      "abbrev": "GWS",
+      "name": "GWS Giants"
+     },
+     "location": "Optus Stadium",
+     "round": 15,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027126,
+     "season": "2027",
+     "kickoff": "2027-06-19T19:35:00+10:00",
+     "team1": {
+      "id": 7,
+      "abbrev": "GEE",
+      "name": "Geelong"
+     },
+     "team2": {
+      "id": 17,
+      "abbrev": "GCS",
+      "name": "Gold Coast"
+     },
+     "location": "GMHBA Stadium",
+     "round": 15,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027127,
+     "season": "2027",
+     "kickoff": "2027-06-20T13:10:00+10:00",
+     "team1": {
+      "id": 16,
+      "abbrev": "WCE",
+      "name": "West Coast"
+     },
+     "team2": {
+      "id": 2,
+      "abbrev": "BRL",
+      "name": "Brisbane"
+     },
+     "location": "Optus Stadium",
+     "round": 15,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027128,
+     "season": "2027",
+     "kickoff": "2027-06-20T15:20:00+10:00",
+     "team1": {
+      "id": 3,
+      "abbrev": "CAR",
+      "name": "Carlton"
+     },
+     "team2": {
+      "id": 4,
+      "abbrev": "COL",
+      "name": "Collingwood"
+     },
+     "location": "Marvel Stadium",
+     "round": 15,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    }
+   ]
+  },
+  {
+   "round": 16,
+   "response": [
+    {
+     "id": 2027129,
+     "season": "2027",
+     "kickoff": "2027-06-24T19:30:00+10:00",
+     "team1": {
+      "id": 12,
+      "abbrev": "RIC",
+      "name": "Richmond"
+     },
+     "team2": {
+      "id": 3,
+      "abbrev": "CAR",
+      "name": "Carlton"
+     },
+     "location": "MCG",
+     "round": 16,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027130,
+     "season": "2027",
+     "kickoff": "2027-06-25T19:40:00+10:00",
+     "team1": {
+      "id": 4,
+      "abbrev": "COL",
+      "name": "Collingwood"
+     },
+     "team2": {
+      "id": 11,
+      "abbrev": "PTA",
+      "name": "Port Adelaide"
+     },
+     "location": "MCG",
+     "round": 16,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027131,
+     "season": "2027",
+     "kickoff": "2027-06-26T13:45:00+10:00",
+     "team1": {
+      "id": 9,
+      "abbrev": "NTH",
+      "name": "North Melbourne"
+     },
+     "team2": {
+      "id": 5,
+      "abbrev": "ESS",
+      "name": "Essendon"
+     },
+     "location": "Marvel Stadium",
+     "round": 16,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027132,
+     "season": "2027",
+     "kickoff": "2027-06-26T16:35:00+10:00",
+     "team1": {
+      "id": 6,
+      "abbrev": "FRE",
+      "name": "Fremantle"
+     },
+     "team2": {
+      "id": 10,
+      "abbrev": "MEL",
+      "name": "Melbourne"
+     },
+     "location": "Optus Stadium",
+     "round": 16,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027133,
+     "season": "2027",
+     "kickoff": "2027-06-26T19:35:00+10:00",
+     "team1": {
+      "id": 8,
+      "abbrev": "HAW",
+      "name": "Hawthorn"
+     },
+     "team2": {
+      "id": 17,
+      "abbrev": "GCS",
+      "name": "Gold Coast"
+     },
+     "location": "MCG",
+     "round": 16,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027134,
+     "season": "2027",
+     "kickoff": "2027-06-27T13:10:00+10:00",
+     "team1": {
+      "id": 7,
+      "abbrev": "GEE",
+      "name": "Geelong"
+     },
+     "team2": {
+      "id": 18,
+      "abbrev": "GWS",
+      "name": "GWS Giants"
+     },
+     "location": "GMHBA Stadium",
+     "round": 16,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027135,
+     "season": "2027",
+     "kickoff": "2027-06-27T15:20:00+10:00",
+     "team1": {
+      "id": 1,
+      "abbrev": "ADE",
+      "name": "Adelaide"
+     },
+     "team2": {
+      "id": 2,
+      "abbrev": "BRL",
+      "name": "Brisbane"
+     },
+     "location": "Adelaide Oval",
+     "round": 16,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    }
+   ]
+  },
+  {
+   "round": 17,
+   "response": [
+    {
+     "id": 2027136,
+     "season": "2027",
+     "kickoff": "2027-07-01T19:30:00+10:00",
+     "team1": {
+      "id": 16,
+      "abbrev": "WCE",
+      "name": "West Coast"
+     },
+     "team2": {
+      "id": 1,
+      "abbrev": "ADE",
+      "name": "Adelaide"
+     },
+     "location": "Optus Stadium",
+     "round": 17,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027137,
+     "season": "2027",
+     "kickoff": "2027-07-02T19:40:00+10:00",
+     "team1": {
+      "id": 2,
+      "abbrev": "BRL",
+      "name": "Brisbane"
+     },
+     "team2": {
+      "id": 15,
+      "abbrev": "WBD",
+      "name": "Western Bulldogs"
+     },
+     "location": "Gabba",
+     "round": 17,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027138,
+     "season": "2027",
+     "kickoff": "2027-07-03T13:45:00+10:00",
+     "team1": {
+      "id": 14,
+      "abbrev": "SYD",
+      "name": "Sydney"
+     },
+     "team2": {
+      "id": 3,
+      "abbrev": "CAR",
+      "name": "Carlton"
+     },
+     "location": "SCG",
+     "round": 17,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027139,
+     "season": "2027",
+     "kickoff": "2027-07-03T16:35:00+10:00",
+     "team1": {
+      "id": 4,
+      "abbrev": "COL",
+      "name": "Collingwood"
+     },
+     "team2": {
+      "id": 13,
+      "abbrev": "STK",
+      "name": "St Kilda"
+     },
+     "location": "MCG",
+     "round": 17,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027140,
+     "season": "2027",
+     "kickoff": "2027-07-03T19:35:00+10:00",
+     "team1": {
+      "id": 12,
+      "abbrev": "RIC",
+      "name": "Richmond"
+     },
+     "team2": {
+      "id": 5,
+      "abbrev": "ESS",
+      "name": "Essendon"
+     },
+     "location": "MCG",
+     "round": 17,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027141,
+     "season": "2027",
+     "kickoff": "2027-07-04T13:10:00+10:00",
+     "team1": {
+      "id": 6,
+      "abbrev": "FRE",
+      "name": "Fremantle"
+     },
+     "team2": {
+      "id": 11,
+      "abbrev": "PTA",
+      "name": "Port Adelaide"
+     },
+     "location": "Optus Stadium",
+     "round": 17,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027142,
+     "season": "2027",
+     "kickoff": "2027-07-04T15:20:00+10:00",
+     "team1": {
+      "id": 9,
+      "abbrev": "NTH",
+      "name": "North Melbourne"
+     },
+     "team2": {
+      "id": 17,
+      "abbrev": "GCS",
+      "name": "Gold Coast"
+     },
+     "location": "Marvel Stadium",
+     "round": 17,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027143,
+     "season": "2027",
+     "kickoff": "2027-07-04T17:40:00+10:00",
+     "team1": {
+      "id": 7,
+      "abbrev": "GEE",
+      "name": "Geelong"
+     },
+     "team2": {
+      "id": 10,
+      "abbrev": "MEL",
+      "name": "Melbourne"
+     },
+     "location": "GMHBA Stadium",
+     "round": 17,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027144,
+     "season": "2027",
+     "kickoff": "2027-07-04T19:20:00+10:00",
+     "team1": {
+      "id": 8,
+      "abbrev": "HAW",
+      "name": "Hawthorn"
+     },
+     "team2": {
+      "id": 18,
+      "abbrev": "GWS",
+      "name": "GWS Giants"
+     },
+     "location": "MCG",
+     "round": 17,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    }
+   ]
+  },
+  {
+   "round": 18,
+   "response": [
+    {
+     "id": 2027145,
+     "season": "2027",
+     "kickoff": "2027-07-08T19:30:00+10:00",
+     "team1": {
+      "id": 1,
+      "abbrev": "ADE",
+      "name": "Adelaide"
+     },
+     "team2": {
+      "id": 2,
+      "abbrev": "BRL",
+      "name": "Brisbane"
+     },
+     "location": "Adelaide Oval",
+     "round": 18,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027146,
+     "season": "2027",
+     "kickoff": "2027-07-09T19:40:00+10:00",
+     "team1": {
+      "id": 16,
+      "abbrev": "WCE",
+      "name": "West Coast"
+     },
+     "team2": {
+      "id": 3,
+      "abbrev": "CAR",
+      "name": "Carlton"
+     },
+     "location": "Optus Stadium",
+     "round": 18,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027147,
+     "season": "2027",
+     "kickoff": "2027-07-10T13:45:00+10:00",
+     "team1": {
+      "id": 4,
+      "abbrev": "COL",
+      "name": "Collingwood"
+     },
+     "team2": {
+      "id": 15,
+      "abbrev": "WBD",
+      "name": "Western Bulldogs"
+     },
+     "location": "MCG",
+     "round": 18,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027148,
+     "season": "2027",
+     "kickoff": "2027-07-10T16:35:00+10:00",
+     "team1": {
+      "id": 14,
+      "abbrev": "SYD",
+      "name": "Sydney"
+     },
+     "team2": {
+      "id": 5,
+      "abbrev": "ESS",
+      "name": "Essendon"
+     },
+     "location": "SCG",
+     "round": 18,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027149,
+     "season": "2027",
+     "kickoff": "2027-07-10T19:35:00+10:00",
+     "team1": {
+      "id": 6,
+      "abbrev": "FRE",
+      "name": "Fremantle"
+     },
+     "team2": {
+      "id": 13,
+      "abbrev": "STK",
+      "name": "St Kilda"
+     },
+     "location": "Optus Stadium",
+     "round": 18,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027150,
+     "season": "2027",
+     "kickoff": "2027-07-11T13:10:00+10:00",
+     "team1": {
+      "id": 12,
+      "abbrev": "RIC",
+      "name": "Richmond"
+     },
+     "team2": {
+      "id": 17,
+      "abbrev": "GCS",
+      "name": "Gold Coast"
+     },
+     "location": "MCG",
+     "round": 18,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027151,
+     "season": "2027",
+     "kickoff": "2027-07-11T15:20:00+10:00",
+     "team1": {
+      "id": 7,
+      "abbrev": "GEE",
+      "name": "Geelong"
+     },
+     "team2": {
+      "id": 11,
+      "abbrev": "PTA",
+      "name": "Port Adelaide"
+     },
+     "location": "GMHBA Stadium",
+     "round": 18,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027152,
+     "season": "2027",
+     "kickoff": "2027-07-11T17:40:00+10:00",
+     "team1": {
+      "id": 9,
+      "abbrev": "NTH",
+      "name": "North Melbourne"
+     },
+     "team2": {
+      "id": 18,
+      "abbrev": "GWS",
+      "name": "GWS Giants"
+     },
+     "location": "Marvel Stadium",
+     "round": 18,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027153,
+     "season": "2027",
+     "kickoff": "2027-07-11T19:20:00+10:00",
+     "team1": {
+      "id": 8,
+      "abbrev": "HAW",
+      "name": "Hawthorn"
+     },
+     "team2": {
+      "id": 10,
+      "abbrev": "MEL",
+      "name": "Melbourne"
+     },
+     "location": "MCG",
+     "round": 18,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    }
+   ]
+  },
+  {
+   "round": 19,
+   "response": [
+    {
+     "id": 2027154,
+     "season": "2027",
+     "kickoff": "2027-07-15T19:30:00+10:00",
+     "team1": {
+      "id": 3,
+      "abbrev": "CAR",
+      "name": "Carlton"
+     },
+     "team2": {
+      "id": 1,
+      "abbrev": "ADE",
+      "name": "Adelaide"
+     },
+     "location": "Marvel Stadium",
+     "round": 19,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027155,
+     "season": "2027",
+     "kickoff": "2027-07-16T19:40:00+10:00",
+     "team1": {
+      "id": 4,
+      "abbrev": "COL",
+      "name": "Collingwood"
+     },
+     "team2": {
+      "id": 2,
+      "abbrev": "BRL",
+      "name": "Brisbane"
+     },
+     "location": "MCG",
+     "round": 19,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027156,
+     "season": "2027",
+     "kickoff": "2027-07-17T13:45:00+10:00",
+     "team1": {
+      "id": 16,
+      "abbrev": "WCE",
+      "name": "West Coast"
+     },
+     "team2": {
+      "id": 5,
+      "abbrev": "ESS",
+      "name": "Essendon"
+     },
+     "location": "Optus Stadium",
+     "round": 19,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027157,
+     "season": "2027",
+     "kickoff": "2027-07-17T16:35:00+10:00",
+     "team1": {
+      "id": 6,
+      "abbrev": "FRE",
+      "name": "Fremantle"
+     },
+     "team2": {
+      "id": 15,
+      "abbrev": "WBD",
+      "name": "Western Bulldogs"
+     },
+     "location": "Optus Stadium",
+     "round": 19,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027158,
+     "season": "2027",
+     "kickoff": "2027-07-17T19:35:00+10:00",
+     "team1": {
+      "id": 14,
+      "abbrev": "SYD",
+      "name": "Sydney"
+     },
+     "team2": {
+      "id": 17,
+      "abbrev": "GCS",
+      "name": "Gold Coast"
+     },
+     "location": "SCG",
+     "round": 19,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027159,
+     "season": "2027",
+     "kickoff": "2027-07-18T13:10:00+10:00",
+     "team1": {
+      "id": 7,
+      "abbrev": "GEE",
+      "name": "Geelong"
+     },
+     "team2": {
+      "id": 13,
+      "abbrev": "STK",
+      "name": "St Kilda"
+     },
+     "location": "GMHBA Stadium",
+     "round": 19,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027160,
+     "season": "2027",
+     "kickoff": "2027-07-18T15:20:00+10:00",
+     "team1": {
+      "id": 12,
+      "abbrev": "RIC",
+      "name": "Richmond"
+     },
+     "team2": {
+      "id": 18,
+      "abbrev": "GWS",
+      "name": "GWS Giants"
+     },
+     "location": "MCG",
+     "round": 19,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027161,
+     "season": "2027",
+     "kickoff": "2027-07-18T17:40:00+10:00",
+     "team1": {
+      "id": 8,
+      "abbrev": "HAW",
+      "name": "Hawthorn"
+     },
+     "team2": {
+      "id": 11,
+      "abbrev": "PTA",
+      "name": "Port Adelaide"
+     },
+     "location": "MCG",
+     "round": 19,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027162,
+     "season": "2027",
+     "kickoff": "2027-07-18T19:20:00+10:00",
+     "team1": {
+      "id": 9,
+      "abbrev": "NTH",
+      "name": "North Melbourne"
+     },
+     "team2": {
+      "id": 10,
+      "abbrev": "MEL",
+      "name": "Melbourne"
+     },
+     "location": "Marvel Stadium",
+     "round": 19,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    }
+   ]
+  },
+  {
+   "round": 20,
+   "response": [
+    {
+     "id": 2027163,
+     "season": "2027",
+     "kickoff": "2027-07-22T19:30:00+10:00",
+     "team1": {
+      "id": 1,
+      "abbrev": "ADE",
+      "name": "Adelaide"
+     },
+     "team2": {
+      "id": 4,
+      "abbrev": "COL",
+      "name": "Collingwood"
+     },
+     "location": "Adelaide Oval",
+     "round": 20,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027164,
+     "season": "2027",
+     "kickoff": "2027-07-23T19:40:00+10:00",
+     "team1": {
+      "id": 3,
+      "abbrev": "CAR",
+      "name": "Carlton"
+     },
+     "team2": {
+      "id": 5,
+      "abbrev": "ESS",
+      "name": "Essendon"
+     },
+     "location": "Marvel Stadium",
+     "round": 20,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027165,
+     "season": "2027",
+     "kickoff": "2027-07-24T13:45:00+10:00",
+     "team1": {
+      "id": 6,
+      "abbrev": "FRE",
+      "name": "Fremantle"
+     },
+     "team2": {
+      "id": 2,
+      "abbrev": "BRL",
+      "name": "Brisbane"
+     },
+     "location": "Optus Stadium",
+     "round": 20,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027166,
+     "season": "2027",
+     "kickoff": "2027-07-24T16:35:00+10:00",
+     "team1": {
+      "id": 16,
+      "abbrev": "WCE",
+      "name": "West Coast"
+     },
+     "team2": {
+      "id": 17,
+      "abbrev": "GCS",
+      "name": "Gold Coast"
+     },
+     "location": "Optus Stadium",
+     "round": 20,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027167,
+     "season": "2027",
+     "kickoff": "2027-07-24T19:35:00+10:00",
+     "team1": {
+      "id": 7,
+      "abbrev": "GEE",
+      "name": "Geelong"
+     },
+     "team2": {
+      "id": 15,
+      "abbrev": "WBD",
+      "name": "Western Bulldogs"
+     },
+     "location": "GMHBA Stadium",
+     "round": 20,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027168,
+     "season": "2027",
+     "kickoff": "2027-07-25T13:10:00+10:00",
+     "team1": {
+      "id": 14,
+      "abbrev": "SYD",
+      "name": "Sydney"
+     },
+     "team2": {
+      "id": 18,
+      "abbrev": "GWS",
+      "name": "GWS Giants"
+     },
+     "location": "SCG",
+     "round": 20,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027169,
+     "season": "2027",
+     "kickoff": "2027-07-25T15:20:00+10:00",
+     "team1": {
+      "id": 8,
+      "abbrev": "HAW",
+      "name": "Hawthorn"
+     },
+     "team2": {
+      "id": 13,
+      "abbrev": "STK",
+      "name": "St Kilda"
+     },
+     "location": "MCG",
+     "round": 20,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027170,
+     "season": "2027",
+     "kickoff": "2027-07-25T17:40:00+10:00",
+     "team1": {
+      "id": 12,
+      "abbrev": "RIC",
+      "name": "Richmond"
+     },
+     "team2": {
+      "id": 10,
+      "abbrev": "MEL",
+      "name": "Melbourne"
+     },
+     "location": "MCG",
+     "round": 20,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027171,
+     "season": "2027",
+     "kickoff": "2027-07-25T19:20:00+10:00",
+     "team1": {
+      "id": 9,
+      "abbrev": "NTH",
+      "name": "North Melbourne"
+     },
+     "team2": {
+      "id": 11,
+      "abbrev": "PTA",
+      "name": "Port Adelaide"
+     },
+     "location": "Marvel Stadium",
+     "round": 20,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    }
+   ]
+  },
+  {
+   "round": 21,
+   "response": [
+    {
+     "id": 2027172,
+     "season": "2027",
+     "kickoff": "2027-07-29T19:30:00+10:00",
+     "team1": {
+      "id": 5,
+      "abbrev": "ESS",
+      "name": "Essendon"
+     },
+     "team2": {
+      "id": 1,
+      "abbrev": "ADE",
+      "name": "Adelaide"
+     },
+     "location": "Marvel Stadium",
+     "round": 21,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027173,
+     "season": "2027",
+     "kickoff": "2027-07-30T19:40:00+10:00",
+     "team1": {
+      "id": 6,
+      "abbrev": "FRE",
+      "name": "Fremantle"
+     },
+     "team2": {
+      "id": 4,
+      "abbrev": "COL",
+      "name": "Collingwood"
+     },
+     "location": "Optus Stadium",
+     "round": 21,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027174,
+     "season": "2027",
+     "kickoff": "2027-07-31T13:45:00+10:00",
+     "team1": {
+      "id": 3,
+      "abbrev": "CAR",
+      "name": "Carlton"
+     },
+     "team2": {
+      "id": 17,
+      "abbrev": "GCS",
+      "name": "Gold Coast"
+     },
+     "location": "Marvel Stadium",
+     "round": 21,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027175,
+     "season": "2027",
+     "kickoff": "2027-07-31T16:35:00+10:00",
+     "team1": {
+      "id": 7,
+      "abbrev": "GEE",
+      "name": "Geelong"
+     },
+     "team2": {
+      "id": 2,
+      "abbrev": "BRL",
+      "name": "Brisbane"
+     },
+     "location": "GMHBA Stadium",
+     "round": 21,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027176,
+     "season": "2027",
+     "kickoff": "2027-07-31T19:35:00+10:00",
+     "team1": {
+      "id": 16,
+      "abbrev": "WCE",
+      "name": "West Coast"
+     },
+     "team2": {
+      "id": 18,
+      "abbrev": "GWS",
+      "name": "GWS Giants"
+     },
+     "location": "Optus Stadium",
+     "round": 21,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027177,
+     "season": "2027",
+     "kickoff": "2027-08-01T13:10:00+10:00",
+     "team1": {
+      "id": 8,
+      "abbrev": "HAW",
+      "name": "Hawthorn"
+     },
+     "team2": {
+      "id": 15,
+      "abbrev": "WBD",
+      "name": "Western Bulldogs"
+     },
+     "location": "MCG",
+     "round": 21,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027178,
+     "season": "2027",
+     "kickoff": "2027-08-01T15:20:00+10:00",
+     "team1": {
+      "id": 14,
+      "abbrev": "SYD",
+      "name": "Sydney"
+     },
+     "team2": {
+      "id": 10,
+      "abbrev": "MEL",
+      "name": "Melbourne"
+     },
+     "location": "SCG",
+     "round": 21,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027179,
+     "season": "2027",
+     "kickoff": "2027-08-01T17:40:00+10:00",
+     "team1": {
+      "id": 9,
+      "abbrev": "NTH",
+      "name": "North Melbourne"
+     },
+     "team2": {
+      "id": 13,
+      "abbrev": "STK",
+      "name": "St Kilda"
+     },
+     "location": "Marvel Stadium",
+     "round": 21,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027180,
+     "season": "2027",
+     "kickoff": "2027-08-01T19:20:00+10:00",
+     "team1": {
+      "id": 12,
+      "abbrev": "RIC",
+      "name": "Richmond"
+     },
+     "team2": {
+      "id": 11,
+      "abbrev": "PTA",
+      "name": "Port Adelaide"
+     },
+     "location": "MCG",
+     "round": 21,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    }
+   ]
+  },
+  {
+   "round": 22,
+   "response": [
+    {
+     "id": 2027181,
+     "season": "2027",
+     "kickoff": "2027-08-05T19:30:00+10:00",
+     "team1": {
+      "id": 1,
+      "abbrev": "ADE",
+      "name": "Adelaide"
+     },
+     "team2": {
+      "id": 6,
+      "abbrev": "FRE",
+      "name": "Fremantle"
+     },
+     "location": "Adelaide Oval",
+     "round": 22,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027182,
+     "season": "2027",
+     "kickoff": "2027-08-06T19:40:00+10:00",
+     "team1": {
+      "id": 5,
+      "abbrev": "ESS",
+      "name": "Essendon"
+     },
+     "team2": {
+      "id": 17,
+      "abbrev": "GCS",
+      "name": "Gold Coast"
+     },
+     "location": "Marvel Stadium",
+     "round": 22,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027183,
+     "season": "2027",
+     "kickoff": "2027-08-07T13:45:00+10:00",
+     "team1": {
+      "id": 7,
+      "abbrev": "GEE",
+      "name": "Geelong"
+     },
+     "team2": {
+      "id": 4,
+      "abbrev": "COL",
+      "name": "Collingwood"
+     },
+     "location": "GMHBA Stadium",
+     "round": 22,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027184,
+     "season": "2027",
+     "kickoff": "2027-08-07T16:35:00+10:00",
+     "team1": {
+      "id": 3,
+      "abbrev": "CAR",
+      "name": "Carlton"
+     },
+     "team2": {
+      "id": 18,
+      "abbrev": "GWS",
+      "name": "GWS Giants"
+     },
+     "location": "Marvel Stadium",
+     "round": 22,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027185,
+     "season": "2027",
+     "kickoff": "2027-08-07T19:35:00+10:00",
+     "team1": {
+      "id": 8,
+      "abbrev": "HAW",
+      "name": "Hawthorn"
+     },
+     "team2": {
+      "id": 2,
+      "abbrev": "BRL",
+      "name": "Brisbane"
+     },
+     "location": "MCG",
+     "round": 22,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027186,
+     "season": "2027",
+     "kickoff": "2027-08-08T13:10:00+10:00",
+     "team1": {
+      "id": 16,
+      "abbrev": "WCE",
+      "name": "West Coast"
+     },
+     "team2": {
+      "id": 10,
+      "abbrev": "MEL",
+      "name": "Melbourne"
+     },
+     "location": "Optus Stadium",
+     "round": 22,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027187,
+     "season": "2027",
+     "kickoff": "2027-08-08T15:20:00+10:00",
+     "team1": {
+      "id": 9,
+      "abbrev": "NTH",
+      "name": "North Melbourne"
+     },
+     "team2": {
+      "id": 15,
+      "abbrev": "WBD",
+      "name": "Western Bulldogs"
+     },
+     "location": "Marvel Stadium",
+     "round": 22,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027188,
+     "season": "2027",
+     "kickoff": "2027-08-08T17:40:00+10:00",
+     "team1": {
+      "id": 14,
+      "abbrev": "SYD",
+      "name": "Sydney"
+     },
+     "team2": {
+      "id": 11,
+      "abbrev": "PTA",
+      "name": "Port Adelaide"
+     },
+     "location": "SCG",
+     "round": 22,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027189,
+     "season": "2027",
+     "kickoff": "2027-08-08T19:20:00+10:00",
+     "team1": {
+      "id": 12,
+      "abbrev": "RIC",
+      "name": "Richmond"
+     },
+     "team2": {
+      "id": 13,
+      "abbrev": "STK",
+      "name": "St Kilda"
+     },
+     "location": "MCG",
+     "round": 22,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    }
+   ]
+  },
+  {
+   "round": 23,
+   "response": [
+    {
+     "id": 2027190,
+     "season": "2027",
+     "kickoff": "2027-08-12T19:30:00+10:00",
+     "team1": {
+      "id": 17,
+      "abbrev": "GCS",
+      "name": "Gold Coast"
+     },
+     "team2": {
+      "id": 1,
+      "abbrev": "ADE",
+      "name": "Adelaide"
+     },
+     "location": "People First Stadium",
+     "round": 23,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027191,
+     "season": "2027",
+     "kickoff": "2027-08-13T19:40:00+10:00",
+     "team1": {
+      "id": 7,
+      "abbrev": "GEE",
+      "name": "Geelong"
+     },
+     "team2": {
+      "id": 6,
+      "abbrev": "FRE",
+      "name": "Fremantle"
+     },
+     "location": "GMHBA Stadium",
+     "round": 23,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027192,
+     "season": "2027",
+     "kickoff": "2027-08-14T13:45:00+10:00",
+     "team1": {
+      "id": 5,
+      "abbrev": "ESS",
+      "name": "Essendon"
+     },
+     "team2": {
+      "id": 18,
+      "abbrev": "GWS",
+      "name": "GWS Giants"
+     },
+     "location": "Marvel Stadium",
+     "round": 23,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027193,
+     "season": "2027",
+     "kickoff": "2027-08-14T16:35:00+10:00",
+     "team1": {
+      "id": 8,
+      "abbrev": "HAW",
+      "name": "Hawthorn"
+     },
+     "team2": {
+      "id": 4,
+      "abbrev": "COL",
+      "name": "Collingwood"
+     },
+     "location": "MCG",
+     "round": 23,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027194,
+     "season": "2027",
+     "kickoff": "2027-08-14T19:35:00+10:00",
+     "team1": {
+      "id": 3,
+      "abbrev": "CAR",
+      "name": "Carlton"
+     },
+     "team2": {
+      "id": 10,
+      "abbrev": "MEL",
+      "name": "Melbourne"
+     },
+     "location": "Marvel Stadium",
+     "round": 23,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027195,
+     "season": "2027",
+     "kickoff": "2027-08-15T13:10:00+10:00",
+     "team1": {
+      "id": 9,
+      "abbrev": "NTH",
+      "name": "North Melbourne"
+     },
+     "team2": {
+      "id": 2,
+      "abbrev": "BRL",
+      "name": "Brisbane"
+     },
+     "location": "Marvel Stadium",
+     "round": 23,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027196,
+     "season": "2027",
+     "kickoff": "2027-08-15T15:20:00+10:00",
+     "team1": {
+      "id": 16,
+      "abbrev": "WCE",
+      "name": "West Coast"
+     },
+     "team2": {
+      "id": 11,
+      "abbrev": "PTA",
+      "name": "Port Adelaide"
+     },
+     "location": "Optus Stadium",
+     "round": 23,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027197,
+     "season": "2027",
+     "kickoff": "2027-08-15T17:40:00+10:00",
+     "team1": {
+      "id": 12,
+      "abbrev": "RIC",
+      "name": "Richmond"
+     },
+     "team2": {
+      "id": 15,
+      "abbrev": "WBD",
+      "name": "Western Bulldogs"
+     },
+     "location": "MCG",
+     "round": 23,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027198,
+     "season": "2027",
+     "kickoff": "2027-08-15T19:20:00+10:00",
+     "team1": {
+      "id": 14,
+      "abbrev": "SYD",
+      "name": "Sydney"
+     },
+     "team2": {
+      "id": 13,
+      "abbrev": "STK",
+      "name": "St Kilda"
+     },
+     "location": "SCG",
+     "round": 23,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    }
+   ]
+  },
+  {
+   "round": 24,
+   "response": [
+    {
+     "id": 2027199,
+     "season": "2027",
+     "kickoff": "2027-08-19T19:30:00+10:00",
+     "team1": {
+      "id": 1,
+      "abbrev": "ADE",
+      "name": "Adelaide"
+     },
+     "team2": {
+      "id": 7,
+      "abbrev": "GEE",
+      "name": "Geelong"
+     },
+     "location": "Adelaide Oval",
+     "round": 24,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027200,
+     "season": "2027",
+     "kickoff": "2027-08-20T19:40:00+10:00",
+     "team1": {
+      "id": 17,
+      "abbrev": "GCS",
+      "name": "Gold Coast"
+     },
+     "team2": {
+      "id": 18,
+      "abbrev": "GWS",
+      "name": "GWS Giants"
+     },
+     "location": "People First Stadium",
+     "round": 24,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027201,
+     "season": "2027",
+     "kickoff": "2027-08-21T13:45:00+10:00",
+     "team1": {
+      "id": 8,
+      "abbrev": "HAW",
+      "name": "Hawthorn"
+     },
+     "team2": {
+      "id": 6,
+      "abbrev": "FRE",
+      "name": "Fremantle"
+     },
+     "location": "MCG",
+     "round": 24,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027202,
+     "season": "2027",
+     "kickoff": "2027-08-21T16:35:00+10:00",
+     "team1": {
+      "id": 5,
+      "abbrev": "ESS",
+      "name": "Essendon"
+     },
+     "team2": {
+      "id": 10,
+      "abbrev": "MEL",
+      "name": "Melbourne"
+     },
+     "location": "Marvel Stadium",
+     "round": 24,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027203,
+     "season": "2027",
+     "kickoff": "2027-08-21T19:35:00+10:00",
+     "team1": {
+      "id": 9,
+      "abbrev": "NTH",
+      "name": "North Melbourne"
+     },
+     "team2": {
+      "id": 4,
+      "abbrev": "COL",
+      "name": "Collingwood"
+     },
+     "location": "Marvel Stadium",
+     "round": 24,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027204,
+     "season": "2027",
+     "kickoff": "2027-08-22T13:10:00+10:00",
+     "team1": {
+      "id": 3,
+      "abbrev": "CAR",
+      "name": "Carlton"
+     },
+     "team2": {
+      "id": 11,
+      "abbrev": "PTA",
+      "name": "Port Adelaide"
+     },
+     "location": "Marvel Stadium",
+     "round": 24,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027205,
+     "season": "2027",
+     "kickoff": "2027-08-22T15:20:00+10:00",
+     "team1": {
+      "id": 12,
+      "abbrev": "RIC",
+      "name": "Richmond"
+     },
+     "team2": {
+      "id": 2,
+      "abbrev": "BRL",
+      "name": "Brisbane"
+     },
+     "location": "MCG",
+     "round": 24,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027206,
+     "season": "2027",
+     "kickoff": "2027-08-22T17:40:00+10:00",
+     "team1": {
+      "id": 16,
+      "abbrev": "WCE",
+      "name": "West Coast"
+     },
+     "team2": {
+      "id": 13,
+      "abbrev": "STK",
+      "name": "St Kilda"
+     },
+     "location": "Optus Stadium",
+     "round": 24,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    },
+    {
+     "id": 2027207,
+     "season": "2027",
+     "kickoff": "2027-08-22T19:20:00+10:00",
+     "team1": {
+      "id": 14,
+      "abbrev": "SYD",
+      "name": "Sydney"
+     },
+     "team2": {
+      "id": 15,
+      "abbrev": "WBD",
+      "name": "Western Bulldogs"
+     },
+     "location": "SCG",
+     "round": 24,
+     "team1_score": null,
+     "team2_score": null,
+     "match_status": "Scheduled",
+     "status": "pre"
+    }
+   ]
+  }
+ ],
+ "sample": true,
+ "note": "INVENTED SAMPLE: made-up 2027 fixtures for testing (DEBUG_SEASON only). Not the real AFL fixture."
+}

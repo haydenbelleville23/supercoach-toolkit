@@ -1,14 +1,28 @@
-import { FINAL_ROUND } from "@/data/season";
-import { getFixtures } from "@/lib/fixtures";
+import { FINAL_ROUND, IS_PRESEASON, SEASON_YEAR } from "@/data/season";
+import { FIXTURES_ARE_SAMPLE, getFixtures } from "@/lib/fixtures";
 import { getSeasonTeams } from "@/lib/rules/squadRules";
 
 import { POSITION_GROUPS, type PositionGroup } from "./config";
-import { currentPositionDifficulty, currentTeamDifficulty, DIFFICULTY_AS_OF_ROUND } from "./current";
+import {
+  currentPositionDifficulty,
+  currentTeamDifficulty,
+  DIFFICULTY_AS_OF_ROUND,
+  DIFFICULTY_BASIS,
+  type DifficultyBasis,
+} from "./current";
 import { buildFixtureRows, type FixtureRow } from "./fixtureDifficulty";
 import type { DifficultyCell } from "./positionDifficulty";
 import type { TeamDifficulty } from "./teamDifficulty";
 
 export interface FixtureDifficultyData {
+  season: number;
+  preseason: boolean;
+  /** Where the values come from (last season's data in a preseason). */
+  basis: DifficultyBasis;
+  /** The fixtures are the invented sample (DEBUG_SEASON only). */
+  sampleFixtures: boolean;
+  /** No fixtures for the season yet. */
+  noFixtures: boolean;
   asOfRound: number;
   lastRound: number;
   /** Rounds with a fixture still to come. */
@@ -28,6 +42,11 @@ export function getFixtureDifficultyData(): FixtureDifficultyData {
   const difficulty = currentPositionDifficulty();
 
   return {
+    season: SEASON_YEAR,
+    preseason: IS_PRESEASON,
+    basis: DIFFICULTY_BASIS,
+    sampleFixtures: FIXTURES_ARE_SAMPLE,
+    noFixtures: fixtures.length === 0,
     asOfRound: DIFFICULTY_AS_OF_ROUND,
     lastRound: FINAL_ROUND,
     hasFutureRounds: fixtures.some((f) => f.round > DIFFICULTY_AS_OF_ROUND),

@@ -15,6 +15,7 @@ import Footer from "@/components/layout/Footer";
 import Header from "@/components/layout/Header";
 import { ruckQuiz } from "@/lib/quiz/ruckQuiz";
 import { BRAND, SITE_NAME } from "@/lib/site";
+import { IS_PRESEASON, SEASON_YEAR } from "@/data/season";
 
 type Tile = {
   title: string;
@@ -106,6 +107,21 @@ export default function Home() {
             </p>
           </div>
         </div>
+
+        {IS_PRESEASON && (
+          <p
+            role="status"
+            className="mt-8 flex max-w-3xl items-start gap-3 rounded-2xl border border-sky-500/40 bg-sky-500/10 p-4 text-sm leading-6 text-sky-50 sm:p-5 sm:text-base"
+          >
+            <CalendarRange aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-sky-300" />
+            <span>
+              {SEASON_YEAR} fixtures are in. Prices and players open when AFL SuperCoach launches.{" "}
+              <Link href="/fixture-difficulty" className="font-semibold text-white underline underline-offset-2">
+                See Fixture Difficulty
+              </Link>
+            </span>
+          </p>
+        )}
 
         <div className="mt-8 max-w-3xl rounded-2xl border border-slate-800 bg-brand-navy/60 p-5 sm:p-6">
           <h2 className="text-sm font-semibold uppercase tracking-widest text-brand-green">

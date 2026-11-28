@@ -4,6 +4,7 @@ import { Search, SlidersHorizontal, X } from "lucide-react";
 import { useMemo, useState } from "react";
 
 import PriceRangeControl from "@/components/cashcows/PriceRangeControl";
+import PreseasonPage from "@/components/season/PreseasonNotice";
 import Header from "@/components/layout/Header";
 import LiveIndicator from "@/components/layout/LiveIndicator";
 import PageHeader from "@/components/layout/PageHeader";
@@ -18,7 +19,7 @@ import PlayerListFilterControl, {
   type PlayerListFilter,
 } from "@/components/ui/PlayerListFilter";
 import WatchlistStar from "@/components/ui/WatchlistStar";
-import { CURRENT_COMPLETED_ROUND, FINAL_ROUND } from "@/data/season";
+import { CURRENT_COMPLETED_ROUND, FINAL_ROUND, IS_PRESEASON } from "@/data/season";
 import { availabilityFor, availabilitySnapshot, selectionDataLoaded } from "@/lib/availability";
 import { matchesAvailabilityFilter, type AvailabilityFilter } from "@/lib/availability/filter";
 import { calculateCashCowRows } from "@/lib/cashcows";
@@ -150,6 +151,20 @@ const control =
   "h-11 rounded-lg border border-slate-700 bg-slate-950 px-3 text-sm text-white outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-500/20";
 
 export default function CashCowsPage() {
+  // No players or prices before the season's AFL SuperCoach launch.
+  if (IS_PRESEASON) {
+    return (
+      <PreseasonPage
+        title="Cash Cows"
+        description="Compare projected cash generation, breakevens and price rises across every AFL SuperCoach player."
+      />
+    );
+  }
+
+  return <CashCows />;
+}
+
+function CashCows() {
   const [projectionMode, setProjectionMode] = useState<ProjectionMode>("projected");
   const [searchQuery, setSearchQuery] = useState("");
 

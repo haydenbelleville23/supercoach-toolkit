@@ -15,6 +15,14 @@ import {
   LIVE_SAMPLE_SPECIFIER,
   liveSampleSource,
 } from "./lib/liveMatch/sampleAlias";
+import {
+  BASE_DATA_SEASON,
+  fixturesFile,
+  fixturesSource,
+  playersFile,
+  playersSeason,
+} from "./lib/season/dataSource";
+import { DEBUG_SEASON, SEASON_YEAR } from "./lib/season/seasonYear";
 
 /**
  * DEBUG_AS_OF_ROUND=N shows the site as it was straight after Round N.
@@ -28,6 +36,31 @@ import {
 const asOfRound = parseAsOfRound(process.env.DEBUG_AS_OF_ROUND);
 
 const resolveAlias: Record<string, string> = {};
+
+if (asOfRound !== null && DEBUG_SEASON !== null) {
+  throw new Error("Set DEBUG_AS_OF_ROUND or DEBUG_SEASON, not both.");
+}
+
+/**
+ * Season data (see lib/season/dataSource.ts). For the committed season
+ * (2026) nothing is aliased, so production reads exactly what it did.
+ * For another season (ACTIVE_SEASON changed, or DEBUG_SEASON locally) the
+ * two data imports point at that season's files.
+ */
+const playersDataSeason =
+  playersSeason({ season: SEASON_YEAR, exists: existsSync }) ?? BASE_DATA_SEASON;
+
+if (SEASON_YEAR !== BASE_DATA_SEASON) {
+  resolveAlias[`@/${fixturesFile(BASE_DATA_SEASON)}`] = `./${fixturesSource({
+    season: SEASON_YEAR,
+    debugSeason: DEBUG_SEASON,
+    exists: existsSync,
+  })}`;
+}
+
+if (playersDataSeason !== BASE_DATA_SEASON) {
+  resolveAlias[`@/${playersFile(BASE_DATA_SEASON)}`] = `./${playersFile(playersDataSeason)}`;
+}
 
 if (asOfRound !== null) {
   execFileSync(
@@ -68,6 +101,8 @@ const nextConfig: NextConfig = {
   // Inlined into server and browser code so both see the same round.
   env: {
     DEBUG_AS_OF_ROUND: asOfRound === null ? "" : String(asOfRound),
+    DEBUG_SEASON: DEBUG_SEASON === null ? "" : String(DEBUG_SEASON),
+    PLAYERS_DATA_SEASON: String(playersDataSeason),
   },
   turbopack: {
     resolveAlias,

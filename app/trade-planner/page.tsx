@@ -2,10 +2,22 @@ import Header from "@/components/layout/Header";
 import PageHeader from "@/components/layout/PageHeader";
 import TradePlannerTool from "@/components/planner/TradePlannerTool";
 import InfoPopover from "@/components/ui/InfoPopover";
+import PreseasonPage from "@/components/season/PreseasonNotice";
+import { IS_PRESEASON } from "@/data/season";
+
 
 export const metadata = { title: "Trade Planner" };
 
 export default function TradePlannerPage() {
+  if (IS_PRESEASON) {
+    return (
+      <PreseasonPage
+        title="Trade Planner"
+        description="Plan trades round by round. Cash and trades carry forward, and prices are projected for each round."
+      />
+    );
+  }
+
   return (
     <main className="min-h-screen bg-slate-950 text-white">
       <Header />
