@@ -48,6 +48,36 @@ On Windows PowerShell: `$env:DEBUG_AS_OF_ROUND = "10"; npm run dev`.
   is explicitly set, so **do not set it on Vercel**. Restart `npm run dev`
   after changing it.
 
+### Round 10 debug mode (local)
+
+The lock above, ready to switch on and off without editing anything:
+
+| Command | What it does |
+| --- | --- |
+| `npm run dev:r10` | Dev server as of Round 10 (banner shows). |
+| `npm run dev:live` | Dev server with the lock explicitly cleared: live data, no banner. |
+| `npm run dev` | Uses `DEBUG_AS_OF_ROUND` from `.env.development.local`, if you have one. |
+
+Both scripts run `scripts/dev.mjs`, which works the same in Windows
+PowerShell, macOS and Linux. Options after `--` go to `next dev`
+(for example `npm run dev:r10 -- -p 3001`).
+
+To make plain `npm run dev` start locked, put this in
+`.env.development.local` (gitignored, never committed):
+
+```bash
+DEBUG_AS_OF_ROUND=10
+```
+
+This is `.env.development.local`, not `.env.local`: Next.js reads
+`.env.local` for `next build` too, so a lock there would also lock local
+production builds. `.env.development.local` is only read by `next dev`.
+Delete the line (or use `npm run dev:live`) to go back to live data.
+
+Production and Vercel previews are controlled only by Vercel's environment
+variables. `DEBUG_AS_OF_ROUND` isn't set in any committed file,
+`next.config.ts` or `vercel.json`, and env files aren't deployed.
+
 Development backtest: `npm run backtest:as-of -- 10` prints the Projector's
 projections as of Round 10 beside the prices actually published later, with
 the error per round (`--player <id>` for one player, `--mode` to change the
