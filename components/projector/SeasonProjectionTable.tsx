@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { formatSigned } from "@/lib/fixtureDifficulty/colour";
 
 import DataTable, { type DataTableColumn } from "@/components/ui/DataTable";
 import { CURRENT_COMPLETED_ROUND } from "@/data/season";
@@ -106,6 +107,15 @@ export default function SeasonProjectionTable({
             <div className="mt-0.5 text-[11px] text-slate-400 sm:text-xs">
               <span className="hidden sm:inline">vs </span>
               {row.opponent} ({row.homeAway})
+              {/* The column is narrow, so the matchup adjustment sits on its own line. */}
+              {row.matchupAdjustment != null && isFuture(row) && (
+                <span
+                  className="block text-[10px] tabular-nums text-slate-300 sm:text-[11px]"
+                  title={`Matchup adjustment against ${row.opponent}`}
+                >
+                  {formatSigned(row.matchupAdjustment)}
+                </span>
+              )}
             </div>
           ) : (
             <div className="mt-0.5 text-[11px] font-medium text-slate-400 sm:text-xs">

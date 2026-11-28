@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useMemo } from "react";
 
 import { availabilitySnapshot, likelyPlaying } from "@/lib/availability";
+import { useMatchupSetting } from "@/lib/fixtureDifficulty/useMatchupSetting";
 import { evaluatePlan } from "@/lib/planner/evaluatePlan";
 import { addPlaceholder, isPlaceholderId } from "@/lib/planner/placeholders";
 import { createPlan, duplicatePlan } from "@/lib/planner/teamFile";
@@ -66,9 +67,12 @@ function Planner({ team }: { team: MyTeam }) {
   const playersById = useMemo(() => teamPlayersById(team), [team]);
   const pickerPlayers = useMemo(() => [...playersById.values()], [playersById]);
 
+  // "Matchup adjustment" (on by default, shared with the Projector).
+  const [matchupOn, setMatchupOn] = useMatchupSetting();
+
   const projector = useMemo(
-    () => createPlanProjector(activePlan, team),
-    [activePlan, team],
+    () => createPlanProjector(activePlan, team, matchupOn),
+    [activePlan, team, matchupOn],
   );
 
   const roundCount = planRoundCount(activePlan);
@@ -387,6 +391,8 @@ function Planner({ team }: { team: MyTeam }) {
               overrides={activePlan.scoreOverrides}
               onOverride={setOverride}
               onReset={() => updatePlan((plan) => ({ ...plan, scoreOverrides: {} }))}
+              matchupOn={matchupOn}
+              onMatchupChange={setMatchupOn}
             />
           )}
         </>

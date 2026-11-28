@@ -1,6 +1,8 @@
 import { CURRENT_COMPLETED_ROUND } from "@/data/season";
 import { getTeamFixture } from "@/lib/fixtures";
 import { createSeasonRows } from "@/lib/priceEngine/createSeasonRows";
+import { currentMatchup } from "@/lib/fixtureDifficulty/current";
+import { isPreDebutRookie } from "@/lib/planner/projectScore";
 import { getProjectedScore } from "@/lib/projector/getProjectedScore";
 import type { ProjectionMode } from "@/lib/projector/projectionModes";
 import type { Player } from "@/types/player";
@@ -10,8 +12,12 @@ export function buildPlayerRows(
   player: Player,
   mode: ProjectionMode = "projected",
   existingRows?: SeasonProjectionRow[],
+  { matchup = false }: { matchup?: boolean } = {},
 ): SeasonProjectionRow[] {
   const rows = createSeasonRows();
+  // Shown only where it was added: Projected mode, switch on, not a debutant.
+  const showMatchup =
+    matchup && mode === "projected" && !isPreDebutRookie(player, CURRENT_COMPLETED_ROUND);
 
   return rows.map((row) => {
     const teamFixture = getTeamFixture(
@@ -86,6 +92,7 @@ export function buildPlayerRows(
           completedRound: CURRENT_COMPLETED_ROUND,
           mode,
           existingScore,
+          matchup,
         });
     
         return {
@@ -95,6 +102,9 @@ export function buildPlayerRows(
           score: suggestedScore,
           opponent: teamFixture?.opponent ?? null,
           homeAway: teamFixture?.homeAway ?? null,
+          matchupAdjustment: showMatchup
+            ? (currentMatchup(player, row.round)?.value ?? null)
+            : null,
         };
       });
     }
