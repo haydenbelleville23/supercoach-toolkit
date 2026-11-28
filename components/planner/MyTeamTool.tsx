@@ -6,8 +6,6 @@ import { useMemo, useState } from "react";
 import AvailabilityBadge from "@/components/ui/AvailabilityBadge";
 import AvailabilitySampleNotice from "@/components/ui/AvailabilitySampleNotice";
 import PlayerSelect from "@/components/ui/PlayerSelect";
-import WatchlistStar from "@/components/ui/WatchlistStar";
-import { useWatchlist } from "@/lib/watchlist/useWatchlist";
 import { availabilityFor } from "@/lib/availability";
 import TeamChip from "@/components/ui/TeamChip";
 import { formatMoney } from "@/lib/format";
@@ -60,7 +58,6 @@ function parsePin(value: string): SquadEntry["pin"] {
 
 export default function MyTeamTool() {
   const team = useMyTeam();
-  const watchlist = useWatchlist();
   const [rookiePosition, setRookiePosition] = useState<Position>("MID");
   const [rookieTeam, setRookieTeam] = useState("");
 
@@ -231,9 +228,6 @@ export default function MyTeamTool() {
             disabledReasons={addReason}
             priceFor={(player) => player.price}
             keepOpenAfterSelect
-            rowAction={(player) => (
-              <WatchlistStar playerId={player.id} playerName={player.name} watchlist={watchlist} />
-            )}
             onSelect={(player) =>
               update({ players: [...team.players, { id: player.id, pin: null }] })
             }

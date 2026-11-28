@@ -70,7 +70,7 @@ describe("Cash Cows watchlist", () => {
     // Removing from the filtered list.
     fireEvent.click(screen.getByRole("button", { name: `Remove ${name} from watchlist` }));
     expect(stored()).toEqual([]);
-    expect(screen.getByText("Tap the star on a player to add them.")).toBeInTheDocument();
+    expect(screen.getByText(/Tap the star on a player in Cash Cows or the Price Projector/)).toBeInTheDocument();
   });
 
   it("keeps the star after a reload (persistence)", () => {
@@ -180,7 +180,7 @@ describe("My Team Watchlist tab", () => {
     render(<MyTeamTabs />);
     fireEvent.click(screen.getByRole("tab", { name: /Watchlist/ }));
     expect(screen.getByRole("tab", { name: /Watchlist/ })).toHaveAttribute("aria-selected", "true");
-    expect(screen.getByText("Tap the star on a player to add them.")).toBeInTheDocument();
+    expect(screen.getByText(/Tap the star on a player in Cash Cows or the Price Projector/)).toBeInTheDocument();
     cleanup();
 
     storeWatchlist([SQUAD[0], SQUAD[1]]);
@@ -197,14 +197,31 @@ describe("My Team Watchlist tab", () => {
     expect(stored()).toEqual([SQUAD[1]]);
   });
 
-  it("adds a player from the Add player box", () => {
+  it("has no way to add players there (stars are only in Cash Cows and the Projector)", () => {
+    window.localStorage.setItem(
+      TEAM_KEY,
+      JSON.stringify({
+        version: 1,
+        season: 2026,
+        asOfRound: 10,
+        players: SQUAD.slice(0, 5).map((id) => ({ id, pin: null })),
+        cashInBank: 0,
+        tradesRemaining: 30,
+        boostsRemaining: 5,
+        plans: [],
+        activePlanId: null,
+        updatedAt: "2026-05-01T00:00:00Z",
+      }),
+    );
     render(<MyTeamTabs />);
+    // The squad's add-player search has no stars.
+    const search = screen.getByRole("combobox", { name: "Add players" });
+    fireEvent.focus(search);
+    expect(screen.getAllByRole("option").length).toBeGreaterThan(0);
+    expect(screen.queryByRole("button", { name: /to watchlist$/ })).toBeNull();
+
     fireEvent.click(screen.getByRole("tab", { name: /Watchlist/ }));
-    const input = screen.getByRole("combobox", { name: "Add player to watchlist" });
-    fireEvent.focus(input);
-    fireEvent.change(input, { target: { value: byId(SQUAD[2]).name } });
-    fireEvent.click(screen.getAllByRole("option")[0]);
-    expect(stored()).toEqual([SQUAD[2]]);
+    expect(screen.queryByRole("combobox")).toBeNull();
   });
 
   it("switches tabs with the arrow keys", () => {

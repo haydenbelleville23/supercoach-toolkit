@@ -221,6 +221,12 @@ describe("Live page in-game status", () => {
     expect(screen.queryByRole("group", { name: "Filter by in-game status" })).toBeNull();
   });
 
+  it("has no watchlist stars", async () => {
+    render(<LivePage />);
+    await screen.findByRole("table");
+    expect(screen.queryByRole("button", { name: /watchlist/i })).toBeNull();
+  });
+
   it("never uses the sample without the debug lock: fetches the real feed, no sample label", async () => {
     render(<LivePage />);
     await screen.findByRole("table");

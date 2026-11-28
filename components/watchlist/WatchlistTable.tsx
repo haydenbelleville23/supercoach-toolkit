@@ -6,7 +6,6 @@ import AvailabilityBadge from "@/components/ui/AvailabilityBadge";
 import DataTable, { type DataTableColumn } from "@/components/ui/DataTable";
 import PlayerCell from "@/components/ui/PlayerCell";
 import { EmptyWatchlistMessage } from "@/components/ui/PlayerListFilter";
-import PlayerSelect from "@/components/ui/PlayerSelect";
 import WatchlistStar from "@/components/ui/WatchlistStar";
 import { CURRENT_COMPLETED_ROUND } from "@/data/season";
 import { availabilityFor } from "@/lib/availability";
@@ -147,31 +146,12 @@ export default function WatchlistTable() {
 
   return (
     <section aria-label="Watchlist" className="space-y-4">
-      <div className="rounded-2xl border border-slate-800 bg-slate-900 p-5">
-        <h2 id="add-watch-label" className="text-xs font-semibold uppercase tracking-wide text-slate-400">
-          Add player
-        </h2>
-        <div className="mt-1 flex">
-          <PlayerSelect
-            idPrefix="add-watch"
-            label="Add player to watchlist"
-            placeholder="Search by name or team (e.g. COL)"
-            players={players}
-            value={null}
-            excludeIds={watchlist.ids}
-            disabledReasons={watchlist.isFull ? () => "Watchlist full" : undefined}
-            priceFor={(player) => player.price}
-            keepOpenAfterSelect
-            onSelect={(player) => {
-              if (!watchlist.has(player.id)) watchlist.toggle(player.id);
-            }}
-          />
-        </div>
-        <p className="mt-2 text-xs text-slate-400">
-          {watchlist.count} of {WATCHLIST_MAX} players. Saved in this browser only.
-          {watchlist.isFull && <span className="block text-amber-200">{WATCHLIST_FULL_MESSAGE}</span>}
-        </p>
-      </div>
+      {/* Players are added with the star in Cash Cows and the Price Projector. */}
+      <p className="text-xs text-slate-400">
+        {watchlist.count} of {WATCHLIST_MAX} players. Saved in this browser only. Add players with the
+        star in Cash Cows or the Price Projector.
+        {watchlist.isFull && <span className="block text-amber-200">{WATCHLIST_FULL_MESSAGE}</span>}
+      </p>
 
       <DataTable
         caption="Your watchlist"

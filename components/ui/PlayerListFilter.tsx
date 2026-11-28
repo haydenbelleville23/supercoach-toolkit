@@ -55,7 +55,9 @@ export function EmptyWatchlistMessage() {
   return (
     <div role="status" className="flex max-w-xl flex-col items-start gap-1">
       <p className="font-semibold text-white">Your watchlist is empty.</p>
-      <p className="text-sm text-slate-400">Tap the star on a player to add them.</p>
+      <p className="text-sm text-slate-400">
+        Tap the star on a player in Cash Cows or the Price Projector to add them.
+      </p>
     </div>
   );
 }

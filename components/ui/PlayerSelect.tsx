@@ -70,8 +70,6 @@ export interface PlayerSelectProps {
    * everyone else (e.g. the watchlist). Filtered by the search like the rest.
    */
   featured?: { heading: string; players: readonly Player[] };
-  /** A control at the end of each player row (e.g. a watchlist star). Not in the list's keyboard order. */
-  rowAction?: (player: Player) => ReactNode;
 }
 
 type Row =
@@ -114,7 +112,6 @@ export default function PlayerSelect({
   keepOpenAfterSelect = false,
   maxResults = DEFAULT_MAX_RESULTS,
   featured,
-  rowAction,
 }: PlayerSelectProps) {
   const reactId = useId().replace(/:/g, "");
   const prefix = idPrefix ?? `ps${reactId}`;
@@ -434,7 +431,6 @@ export default function PlayerSelect({
                       : null
                 }
                 onPick={() => pick(row)}
-                action={row.kind === "player" && rowAction ? rowAction(row.player) : null}
               />
               ),
             )
@@ -458,7 +454,6 @@ function OptionRow({
   selected,
   price,
   onPick,
-  action,
 }: {
   id: string;
   row: Exclude<Row, { kind: "heading" }>;
@@ -466,7 +461,6 @@ function OptionRow({
   selected: boolean;
   price: number | null;
   onPick: () => void;
-  action?: ReactNode;
 }) {
   const name = row.kind === "pinned" ? row.option.label : row.player.name;
   const detail =
@@ -475,7 +469,7 @@ function OptionRow({
       : `${row.player.teamName || row.player.team || "No team"} • ${row.player.positions.join(" / ")}`;
   const reason = row.kind === "player" ? row.reason : null;
 
-  const option = (
+  return (
     <button
       id={id}
       type="button"
@@ -523,18 +517,5 @@ function OptionRow({
         </span>
       )}
     </button>
-  );
-
-  if (!action) return option;
-
-  // The action sits beside the option (never inside it). Pressing it keeps
-  // focus in the search box, so the list stays open.
-  return (
-    <div role="presentation" className="flex items-stretch border-b border-slate-800 last:border-b-0 [&>button]:border-b-0">
-      <div className="min-w-0 flex-1">{option}</div>
-      <span className="flex shrink-0 items-center px-2" onMouseDown={(event) => event.preventDefault()}>
-        {action}
-      </span>
-    </div>
   );
 }
