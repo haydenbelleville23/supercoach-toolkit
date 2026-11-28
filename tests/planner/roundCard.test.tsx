@@ -9,7 +9,7 @@ vi.hoisted(() => {
 });
 
 import RoundCard, { type RoundCardProps } from "@/components/planner/RoundCard";
-import { createPlanProjector, plannerFixtures, teamPlayersById } from "@/components/planner/plannerData";
+import { createPlanProjector, plannerFixtures, plannerPlayers, teamPlayersById } from "@/components/planner/plannerData";
 import { evaluatePlan } from "@/lib/planner/evaluatePlan";
 import { createPlan } from "@/lib/planner/teamFile";
 import type { TradePlan } from "@/lib/planner/types";
@@ -22,12 +22,12 @@ const { makeTeam } = plannerSetup();
 const SQUAD = [210, 701, 392, 290, 639, 652, 300, 352, 528, 667, 342, 693, 365, 10, 664, 719, 202, 77, 487, 424, 663, 519, 233, 254, 312, 334, 702, 337, 414, 439, 404];
 const team = makeTeam(SQUAD.map((id) => ({ id })), { tradesRemaining: 30 });
 
-function setup(rounds: TradePlan["rounds"], roundIndex = 0, extra: Partial<RoundCardProps> = {}) {
+function setup(rounds: TradePlan["rounds"], roundIndex = 0, extra: Partial<RoundCardProps> = {}, forTeam = team) {
   const plan = { ...createPlan("Test"), rounds };
   // Built as the page builds it (matchup adjustment on, its default).
-  const projector = createPlanProjector(plan, team, true);
-  const playersById = teamPlayersById(team);
-  const summaries = evaluatePlan({ team, plan, playersById, projector, fixtures: plannerFixtures, lastRound: 13 });
+  const projector = createPlanProjector(plan, forTeam, true);
+  const playersById = teamPlayersById(forTeam);
+  const summaries = evaluatePlan({ team: forTeam, plan, playersById, projector, fixtures: plannerFixtures, lastRound: 13 });
   const summary = summaries[roundIndex];
   const onChange = vi.fn();
   const props: RoundCardProps = {
@@ -66,22 +66,62 @@ afterEach(cleanup);
 describe("RoundCard summary strip", () => {
   it("shows the same cash, trades and boosts as before for the worked example, without squad or team value", () => {
     setup(worked, 0);
-    expect(stat("Trades")).toBe("1/2");
+    expect(stat("This Rd")).toBe("1/2");
     expect(stat("Out")).toBe("$511,500");
     expect(stat("In")).toBe("$475,700");
-    expect(stat("Cash")).toBe("$535,800was $500,000");
-    expect(stat("Left")).toBe("29");
+    expect(stat("Cash")).toBe("$535,800");
+    expect(stat("Trades")).toBe("29");
     expect(stat("Boosts")).toBe("5");
     expect(screen.queryByText(/Squad value/i)).toBeNull();
     expect(screen.queryByText(/Team value/i)).toBeNull();
     cleanup();
 
     setup(worked, 1);
-    expect(stat("Trades")).toBe("1/3");
+    expect(stat("This Rd")).toBe("1/3");
     expect(stat("Out")).toBe("$512,100");
     expect(stat("In")).toBe("$502,900");
-    expect(stat("Cash")).toBe("$545,000was $535,800");
-    expect(stat("Left")).toBe("28");
+    expect(stat("Cash")).toBe("$545,000");
+    expect(stat("Trades")).toBe("28");
+  });
+
+  it("labels the six values This Rd, Out, In, Cash, Trades, Boosts, all the same size, with no \"was\" text", () => {
+    setup(worked, 0);
+    const terms = [...document.querySelectorAll("dl dt")].map((dt) => dt.textContent?.trim());
+    expect(terms).toEqual(["This Rd", "Out", "In", "Cash", "Trades", "Boosts"]);
+    const values = [...document.querySelectorAll("dl dd")];
+    expect(new Set(values.map((dd) => dd.className.replace(/text-(white|red-300)/, "")))).toHaveLength(1);
+    for (const dd of values) {
+      expect(dd.className.split(" ")).toEqual(expect.arrayContaining(["text-sm", "font-semibold"]));
+      expect(dd.className).not.toMatch(/text-base|font-bold/);
+    }
+    expect(screen.queryByText(/was \$/)).toBeNull();
+    expect(document.body.textContent).not.toMatch(/was \$/);
+
+    // Screen readers hear what each number means.
+    expect(values[0]).toHaveAttribute("aria-label", "1 of 2 trades used this round");
+    expect(values[4]).toHaveAttribute("aria-label", "29 trades left this season");
+  });
+
+  it("explains This Rd and Trades in popovers", () => {
+    setup(worked, 0);
+    fireEvent.click(screen.getByRole("button", { name: "About trades this round" }));
+    expect(screen.getByRole("tooltip")).toHaveTextContent("2, or 3 in a bye round, plus 1 with a boost");
+    fireEvent.click(screen.getByRole("button", { name: "About trades left" }));
+    expect(screen.getByRole("tooltip")).toHaveTextContent("Trades left this season");
+  });
+
+  it("keeps negative cash in the error colour with its sign", () => {
+    const broke = makeTeam(SQUAD.map((id) => ({ id })), { tradesRemaining: 30, cashInBank: 0 });
+    // Bring in the dearest player not in the squad for player 300.
+    const dearest = plannerPlayers
+      .filter((p) => !SQUAD.includes(p.id))
+      .reduce((a, b) => (b.price > a.price ? b : a));
+    setup({ 11: { boost: false, trades: [{ outId: 300, inId: dearest.id }] } }, 0, {}, broke);
+    const cash = stat("Cash")!;
+    const dd = screen.getAllByText("Cash", { selector: "dt" })[0].nextElementSibling!;
+    // formatMoney writes negatives as "$-95,400".
+    expect(cash).toMatch(/^\$-\d/);
+    expect(dd.className).toContain("text-red-300");
   });
 
   it("puts the playing counts in one chip, with bye detail in its popover", () => {

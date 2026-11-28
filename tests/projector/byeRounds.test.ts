@@ -21,7 +21,7 @@ describe("Projector bye rounds", () => {
   const byeRound = [13, 14, 15, 16].find((round) => !getTeamFixture(player.team, round))!;
 
   it("gives no score and holds the price in a bye", () => {
-    for (const mode of ["projected", "season-average", "custom"] as const) {
+    for (const mode of ["projected", "season-average", "three-round-average", "five-round-average"] as const) {
       const rows = calculateScaledProjectionRows(buildPlayerRows(player, mode), player);
       const bye = rows.find((r) => r.round === byeRound)!;
       const before = rows.find((r) => r.round === byeRound - 1)!;
@@ -38,9 +38,9 @@ describe("Projector bye rounds", () => {
     }
   });
 
-  it("keeps the bye unplayed when other scores are kept in custom mode", () => {
-    const first = calculateScaledProjectionRows(buildPlayerRows(player, "projected"), player);
-    const rebuilt = buildPlayerRows(player, "custom", first);
+  it("keeps the bye unplayed even when a score is typed for it", () => {
+    const rebuilt = buildPlayerRows(player, "projected", { [byeRound]: 90 });
     expect(rebuilt.find((r) => r.round === byeRound)!.score).toBeNull();
+    expect(rebuilt.find((r) => r.round === byeRound)!.played).toBe(false);
   });
 });

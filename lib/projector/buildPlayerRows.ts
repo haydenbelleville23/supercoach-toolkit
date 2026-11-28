@@ -8,10 +8,13 @@ import type { ProjectionMode } from "@/lib/projector/projectionModes";
 import type { Player } from "@/types/player";
 import type { SeasonProjectionRow } from "@/types/projection";
 
+/** Scores typed in for future rounds: round -> score (null clears the round). */
+export type ScoreEdits = Readonly<Record<number, number | null>>;
+
 export function buildPlayerRows(
   player: Player,
   mode: ProjectionMode = "projected",
-  existingRows?: SeasonProjectionRow[],
+  edits: ScoreEdits = {},
   { matchup = false }: { matchup?: boolean } = {},
 ): SeasonProjectionRow[] {
   const rows = createSeasonRows();
@@ -81,19 +84,18 @@ export function buildPlayerRows(
       };
     }
 
-        const existingScore = existingRows?.find(
-          (existingRow) =>
-            existingRow.round === row.round,
-        )?.score;
-    
-        const suggestedScore = getProjectedScore({
-          player,
-          round: row.round,
-          completedRound: CURRENT_COMPLETED_ROUND,
-          mode,
-          existingScore,
-          matchup,
-        });
+        // An edited score wins in every mode.
+        const edited = Object.prototype.hasOwnProperty.call(edits, row.round);
+
+        const suggestedScore = edited
+          ? edits[row.round]
+          : getProjectedScore({
+              player,
+              round: row.round,
+              completedRound: CURRENT_COMPLETED_ROUND,
+              mode,
+              matchup,
+            });
     
         return {
           ...row,
@@ -102,9 +104,10 @@ export function buildPlayerRows(
           score: suggestedScore,
           opponent: teamFixture?.opponent ?? null,
           homeAway: teamFixture?.homeAway ?? null,
-          matchupAdjustment: showMatchup
+          matchupAdjustment: showMatchup && !edited
             ? (currentMatchup(player, row.round)?.value ?? null)
             : null,
+          ...(edited ? { edited: true } : {}),
         };
       });
     }

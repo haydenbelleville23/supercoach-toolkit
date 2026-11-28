@@ -12,4 +12,6 @@ export type SeasonProjectionRow = {
   homeAway: "H" | "A" | null;
   /** Matchup adjustment included in the projected score, shown beside the opponent. */
   matchupAdjustment?: number | null;
+  /** A score the user typed in (it wins over the projection). */
+  edited?: boolean;
 };

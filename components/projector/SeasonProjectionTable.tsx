@@ -145,7 +145,7 @@ export default function SeasonProjectionTable({
           <input
             type="text"
             inputMode="numeric"
-            aria-label={`Round ${row.round} score`}
+            aria-label={`Round ${row.round} score${row.edited ? " (edited)" : ""}`}
             value={row.score ?? ""}
             placeholder="-"
             id={`round-${row.round}-score`}
@@ -173,7 +173,13 @@ export default function SeasonProjectionTable({
                 cleanedValue === "" ? null : Number(cleanedValue),
               );
             }}
-            className="w-11 rounded-md border border-slate-700 bg-slate-950 px-1 py-1 text-right font-semibold tabular-nums text-white outline-none transition focus:border-violet-500 focus:ring-1 focus:ring-violet-500 sm:w-12 sm:px-1.5"
+            title={row.edited ? "Edited: your score. Pick a projection to refill every round." : undefined}
+            // Edited rounds look like Cash Cows' edited scores.
+            className={`w-11 rounded-md border px-1 py-1 text-right font-semibold tabular-nums outline-none transition focus:border-violet-500 focus:ring-1 focus:ring-violet-500 sm:w-12 sm:px-1.5 ${
+              row.edited
+                ? "border-emerald-500 bg-emerald-500/10 text-emerald-300"
+                : "border-slate-700 bg-slate-950 text-white"
+            }`}
           />
         );
       },

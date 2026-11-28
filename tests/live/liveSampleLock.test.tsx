@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 import "@testing-library/jest-dom/vitest";
 
-import { cleanup, render, screen, within } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen, within } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 vi.hoisted(() => {
@@ -40,11 +40,10 @@ describe("Live page under DEBUG_AS_OF_ROUND with the sample feed", () => {
     const table = screen.getByRole("table");
     expect(table).toHaveAccessibleName("Live scores for HAW");
     const tags = within(table).getAllByRole("button").map((b) => b.textContent?.trim());
-    expect(tags).toContain("BENCH");
     expect(tags).toContain("?");
-    expect(within(table).getAllByRole("button", { name: /^BENCH:/ })[0].getAttribute("aria-label")).toContain(
-      "Sample live data (invented)",
-    );
+    const bench = within(table).getAllByRole("button", { name: "On the interchange bench" })[0];
+    fireEvent.click(bench);
+    expect(screen.getByRole("tooltip")).toHaveTextContent("Sample live data (invented)");
     expect(fetch).not.toHaveBeenCalled();
   });
 });

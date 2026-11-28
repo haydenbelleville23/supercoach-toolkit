@@ -111,7 +111,7 @@ describe("planner price path for a debutant yet to play", () => {
 describe("Projector suggested score", () => {
   it("uses last season's average in every mode until he has played", () => {
     const injured = { ...synthetic(22, [], 110.86), games: 0 };
-    for (const mode of ["projected", "season-average", "three-round-average", "five-round-average", "custom"] as const) {
+    for (const mode of ["projected", "season-average", "three-round-average", "five-round-average"] as const) {
       expect(getProjectedScore({ player: injured, round: 11, completedRound: 10, mode })).toBe(111);
     }
   });

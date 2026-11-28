@@ -13,7 +13,7 @@ import SeasonProjectionTable from "@/components/projector/SeasonProjectionTable"
 import MatchupSwitch from "@/components/ui/MatchupSwitch";
 import { useMatchupSetting } from "@/lib/fixtureDifficulty/useMatchupSetting";
 import { useLiveRoundContext } from "@/lib/liveMatch/useLiveRoundContext";
-import { buildPlayerRows } from "@/lib/projector/buildPlayerRows";
+import { buildPlayerRows, type ScoreEdits } from "@/lib/projector/buildPlayerRows";
 import { calculateScaledProjectionRows as calculateProjectionRows } from "@/lib/projector/calculateScaledProjectionRows";
 import { playerRepository } from "@/lib/repository/PlayerRepository";
 
@@ -60,22 +60,27 @@ function ProjectorTool({
   // "Matchup adjustment" (on by default, remembered in this browser).
   const [matchupOn, setMatchupOn] = useMatchupSetting();
 
+  // Scores typed in (round -> score). They win in every mode, are marked
+  // as edited, and are cleared by picking a mode or another player.
+  const [edits, setEdits] = useState<ScoreEdits>({});
+
   const [seasonRows, setSeasonRows] = useState<
     SeasonProjectionRow[]
   >(() =>
     calculateProjectionRows(
-      buildPlayerRows(selectedPlayer, "projected", undefined, { matchup: matchupOn }),
+      buildPlayerRows(selectedPlayer, "projected", {}, { matchup: matchupOn }),
       selectedPlayer,
     ),
   );
 
-  // Rebuild when the switch changes (including the saved value loading).
+  // Rebuild when the switch changes (including the saved value loading);
+  // edits are kept.
   const [rowsMatchup, setRowsMatchup] = useState(matchupOn);
   if (rowsMatchup !== matchupOn) {
     setRowsMatchup(matchupOn);
-    setSeasonRows((currentRows) =>
+    setSeasonRows(
       calculateProjectionRows(
-        buildPlayerRows(selectedPlayer, projectionMode, currentRows, { matchup: matchupOn }),
+        buildPlayerRows(selectedPlayer, projectionMode, edits, { matchup: matchupOn }),
         selectedPlayer,
       ),
     );
@@ -103,10 +108,11 @@ function ProjectorTool({
     const newRows = buildPlayerRows(
       player,
       projectionMode,
-      undefined,
+      {},
       { matchup: matchupOn },
     );
 
+    setEdits({});
     setSelectedPlayerId(player.id);
     setSeasonRows(
       calculateProjectionRows(newRows, player),
@@ -117,44 +123,31 @@ function ProjectorTool({
     mode: ProjectionMode,
   ) {
     setProjectionMode(mode);
+    // As before Custom was removed: a new mode refills every future round.
+    setEdits({});
 
-    setSeasonRows((currentRows) => {
-      const rebuiltRows = buildPlayerRows(
+    setSeasonRows(
+      calculateProjectionRows(
+        buildPlayerRows(selectedPlayer, mode, {}, { matchup: matchupOn }),
         selectedPlayer,
-        mode,
-        currentRows,
-        { matchup: matchupOn },
-      );
-
-      return calculateProjectionRows(
-        rebuiltRows,
-        selectedPlayer,
-      );
-    });
+      ),
+    );
   }
 
   function updateSeasonScore(
     round: number,
     score: number | null,
   ) {
-    setProjectionMode("custom");
+    // The mode stays as it is; the round is marked as edited.
+    const nextEdits = { ...edits, [round]: score };
+    setEdits(nextEdits);
 
-    setSeasonRows((currentRows) => {
-      const updatedRows = currentRows.map((row) =>
-        row.round === round
-          ? {
-              ...row,
-              played: row.opponent !== null,
-              score,
-            }
-          : row,
-      );
-
-      return calculateProjectionRows(
-        updatedRows,
+    setSeasonRows(
+      calculateProjectionRows(
+        buildPlayerRows(selectedPlayer, projectionMode, nextEdits, { matchup: matchupOn }),
         selectedPlayer,
-      );
-    });
+      ),
+    );
   }
 
   return (

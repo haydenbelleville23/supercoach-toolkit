@@ -1,13 +1,13 @@
 "use client";
 
 import type { ProjectionMode } from "@/lib/projector";
+import { parseProjectionMode } from "@/lib/projector/projectionModes";
 
 const OPTIONS: { value: ProjectionMode; label: string; title: string }[] = [
   { value: "projected", label: "Projected", title: "Season average from completed rounds" },
   { value: "season-average", label: "Season Avg", title: "Season average" },
   { value: "three-round-average", label: "3RA", title: "Three-round average" },
   { value: "five-round-average", label: "5RA", title: "Five-round average" },
-  { value: "custom", label: "Custom", title: "Your own scores" },
 ];
 
 type ProjectionModeControlProps = {
@@ -26,7 +26,7 @@ export default function ProjectionModeControl({ value, onChange }: ProjectionMod
         <span className="sr-only">Prefill future scores with</span>
         <select
           value={value}
-          onChange={(event) => onChange(event.target.value as ProjectionMode)}
+          onChange={(event) => onChange(parseProjectionMode(event.target.value))}
           className="h-11 rounded-lg border border-slate-700 bg-slate-950 px-2 text-sm font-semibold text-white outline-none focus:border-violet-500"
         >
           {OPTIONS.map((option) => (

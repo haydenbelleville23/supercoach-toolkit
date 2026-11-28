@@ -172,27 +172,32 @@ export default function RoundCard(props: RoundCardProps) {
   );
 }
 
-/** Trades 1/2 · Out · In · Cash (was) · Left · Boosts, one compact strip. */
+/** This Rd 1/3 · Out · In · Cash · Trades · Boosts: one strip, all the same size. */
 function SummaryStrip({ summary }: { summary: RoundSummary }) {
   const overLimit = summary.tradesUsed > summary.tradeLimit;
 
   return (
     <dl className="mt-2 grid grid-cols-3 gap-x-3 gap-y-2 rounded-xl border border-slate-800 bg-slate-950/40 px-3 py-2 sm:flex sm:flex-wrap sm:items-end sm:gap-x-6">
-      <Stat label="Trades" value={`${summary.tradesUsed}/${summary.tradeLimit}`} bad={overLimit} />
+      <Stat
+        label="This Rd"
+        value={`${summary.tradesUsed}/${summary.tradeLimit}`}
+        ariaValue={`${summary.tradesUsed} of ${summary.tradeLimit} trades used this round`}
+        bad={overLimit}
+        info={
+          <InfoPopover label="About trades this round">
+            Trades used out of this round&apos;s limit: 2, or 3 in a bye round, plus 1 with a boost.
+          </InfoPopover>
+        }
+      />
       <Stat label="Out" value={formatMoney(summary.outTotal)} />
       <Stat label="In" value={formatMoney(summary.inTotal)} />
+      <Stat label="Cash" value={formatMoney(summary.cashAfter)} bad={summary.cashAfter < 0} />
       <Stat
-        label="Cash"
-        value={formatMoney(summary.cashAfter)}
-        detail={`was ${formatMoney(summary.cashBefore)}`}
-        bad={summary.cashAfter < 0}
-        prominent
-      />
-      <Stat
-        label="Left"
+        label="Trades"
         value={String(summary.tradesLeftAfter)}
+        ariaValue={`${summary.tradesLeftAfter} trades left this season`}
         bad={summary.tradesLeftAfter < 0}
-        info={<InfoPopover label="About trades left">Trades left in your season pool after this round.</InfoPopover>}
+        info={<InfoPopover label="About trades left">Trades left this season, after this round.</InfoPopover>}
       />
       <Stat
         label="Boosts"
@@ -210,31 +215,29 @@ function SummaryStrip({ summary }: { summary: RoundSummary }) {
 function Stat({
   label,
   value,
-  detail,
+  ariaValue,
   bad,
-  prominent,
   info,
 }: {
   label: string;
   value: string;
-  detail?: string;
+  /** Read instead of the value (e.g. "1 of 3 trades used this round"). */
+  ariaValue?: string;
   bad?: boolean;
-  prominent?: boolean;
   info?: React.ReactNode;
 }) {
   return (
     <div className="min-w-0">
-      <dt className="flex items-center gap-0.5 text-[10px] font-semibold uppercase tracking-wide text-slate-400">
+      {/* Same height with or without an info button, so the values line up. */}
+      <dt className="flex min-h-6 items-center gap-0.5 text-[10px] font-semibold uppercase tracking-wide text-slate-400">
         {label}
         {info}
       </dt>
       <dd
-        className={`tabular-nums ${prominent ? "text-base font-bold" : "text-sm font-semibold"} ${
-          bad ? "text-red-300" : "text-white"
-        }`}
+        aria-label={ariaValue}
+        className={`text-sm font-semibold tabular-nums ${bad ? "text-red-300" : "text-white"}`}
       >
         {value}
-        {detail && <span className="block text-[11px] font-normal text-slate-400 sm:ml-1 sm:inline">{detail}</span>}
       </dd>
     </div>
   );
