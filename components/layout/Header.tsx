@@ -34,7 +34,9 @@ export default function Header() {
             priority
             // The logo has wide built-in margins: object-cover crops the
             // empty top and bottom so the wordmark is legible in a slim bar.
-            className="h-11 w-[200px] object-cover object-[50%_41%] motion-safe:transition hover:opacity-90 md:h-12 md:w-[218px]"
+            // Sized so the whole artwork (ball and arrow to the tail of the
+            // "y", rows 84-451 of 528) stays inside the crop.
+            className="h-12 w-[200px] object-cover object-[50%_52%] motion-safe:transition hover:opacity-90 md:h-[52px] md:w-[218px]"
           />
         </Link>
 
