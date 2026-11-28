@@ -55,7 +55,8 @@ The lock above, ready to switch on and off without editing anything:
 | Command | What it does |
 | --- | --- |
 | `npm run dev:r10` | Dev server as of Round 10 (banner shows). |
-| `npm run dev:live` | Dev server with the lock explicitly cleared: live data, no banner. |
+| `npm run dev:2027` | Dev server showing the 2027 season (`DEBUG_SEASON=2027`; see [docs/new-season.md](docs/new-season.md)). |
+| `npm run dev:live` | Dev server with both debug settings explicitly cleared: live data, no banner. |
 | `npm run dev` | Uses `DEBUG_AS_OF_ROUND` from `.env.development.local`, if you have one. |
 
 Both scripts run `scripts/dev.mjs`, which works the same in Windows

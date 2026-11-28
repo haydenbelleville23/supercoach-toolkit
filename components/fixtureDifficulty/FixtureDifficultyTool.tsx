@@ -164,7 +164,9 @@ function FixturesView({ data }: { data: FixtureDifficultyData }) {
           value={position}
           onChange={setPosition}
         />
-        {data.hasFutureRounds ? (
+        {data.preseason ? (
+          <p className="text-sm text-slate-400">Every round from Round 0 is shown: the season hasn&apos;t started.</p>
+        ) : data.hasFutureRounds ? (
           <label className="flex items-center gap-2 text-sm text-slate-300">
             <input
               type="checkbox"
@@ -295,6 +297,40 @@ function TeamsView({ data }: { data: FixtureDifficultyData }) {
   );
 }
 
+/** Labels for a new season: the data basis, the sample fixtures, missing data. */
+function SeasonNotes({ data }: { data: FixtureDifficultyData }) {
+  return (
+    <>
+      {data.sampleFixtures && (
+        <p
+          role="note"
+          className="inline-flex items-center rounded-md border border-dashed border-amber-400/60 bg-amber-500/10 px-2 py-0.5 text-[11px] font-semibold text-amber-200"
+        >
+          Sample fixtures (invented, for testing)
+        </p>
+      )}
+
+      {data.noFixtures && (
+        <p role="status" className="rounded-2xl border border-slate-800 bg-slate-900 px-5 py-6 text-sm text-slate-300">
+          The {data.season} fixtures aren&apos;t in yet.
+        </p>
+      )}
+
+      {!data.noFixtures && data.basis.kind === "previous" && (
+        <p role="note" className="rounded-xl border border-sky-500/40 bg-sky-500/10 px-4 py-2.5 text-sm text-sky-100">
+          Based on {data.basis.season} results; updates as {data.season} scores arrive.
+        </p>
+      )}
+
+      {!data.noFixtures && data.basis.kind === "none" && (
+        <p role="status" className="rounded-xl border border-amber-400/50 bg-amber-500/10 px-4 py-2.5 text-sm text-amber-100">
+          No {data.basis.season} results were found, so the {data.season} fixtures are shown without difficulty values.
+        </p>
+      )}
+    </>
+  );
+}
+
 /** Fixtures (default), Positions and Teams. */
 export default function FixtureDifficultyTool({ data }: { data: FixtureDifficultyData }) {
   const [view, setView] = useState<View>("fixtures");
@@ -307,7 +343,9 @@ export default function FixtureDifficultyTool({ data }: { data: FixtureDifficult
         <Legend />
       </div>
 
-      {!hasData && (
+      <SeasonNotes data={data} />
+
+      {!hasData && !data.noFixtures && data.basis.kind !== "none" && (
         <p role="status" className="rounded-2xl border border-slate-800 bg-slate-900 px-5 py-6 text-sm text-slate-300">
           Not enough games yet: values appear once players have played 5 games this season.
         </p>

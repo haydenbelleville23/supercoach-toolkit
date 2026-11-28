@@ -9,6 +9,7 @@ import {
 } from "@/lib/planner/useMyTeam";
 import type { MyTeam } from "@/lib/planner/types";
 import { saveWatchlist } from "@/lib/watchlist/useWatchlist";
+import { SEASON_YEAR as PLANNER_SEASON } from "@/lib/season/seasonYear";
 import { WATCHLIST_VERSION } from "@/lib/watchlist/watchlist";
 
 /** Export / import the saved team as a JSON file, and clear it. */
@@ -29,6 +30,12 @@ export default function TeamFileControls({ team }: { team: MyTeam | null }) {
     }
 
     const { team: imported, watchlist } = result;
+
+    // Teams are per season: a file from another season isn't loaded.
+    if (imported.season !== PLANNER_SEASON) {
+      setMessage(`That team file is for ${imported.season}; this site is showing ${PLANNER_SEASON}.`);
+      return;
+    }
 
     if (
       team &&

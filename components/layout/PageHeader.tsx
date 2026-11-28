@@ -1,4 +1,5 @@
 import DataFreshness from "@/components/layout/DataFreshness";
+import { SEASON_YEAR } from "@/data/season";
 
 type PageHeaderProps = {
   title: string;
@@ -19,7 +20,7 @@ type PageHeaderProps = {
 export default function PageHeader({
   title,
   description,
-  eyebrow = "2026 season",
+  eyebrow = `${SEASON_YEAR} season`,
   showFreshness = true,
   compact = false,
   titleAside,

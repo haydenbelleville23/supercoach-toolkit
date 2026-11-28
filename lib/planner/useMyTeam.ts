@@ -2,14 +2,23 @@
 
 import { useSyncExternalStore } from "react";
 
+import { SEASON_YEAR } from "@/lib/season/seasonYear";
 import { readWatchlist } from "@/lib/watchlist/useWatchlist";
 import { cleanEntries, type WatchlistEntry } from "@/lib/watchlist/watchlist";
 
 import { parseTeamFile } from "./teamFile";
 import type { MyTeam } from "./types";
 
-/** The saved team lives in the browser only (no account or database). */
-const STORAGE_KEY = "footynomics.my-team.v1";
+/**
+ * The saved team lives in the browser only (no account or database), one
+ * per season. 2026 keeps the key it always had, so nothing is migrated;
+ * later seasons get their own key and start empty.
+ */
+export function myTeamKey(season: number): string {
+  return season === 2026 ? "footynomics.my-team.v1" : `footynomics.my-team.v1.${season}`;
+}
+
+const STORAGE_KEY = myTeamKey(SEASON_YEAR);
 
 const listeners = new Set<() => void>();
 
@@ -38,7 +47,8 @@ function getSnapshot(): MyTeam | null {
       parsed = null;
     }
 
-    cachedTeam = typeof parsed === "string" ? null : parsed;
+    // A team saved for another season isn't this season's team.
+    cachedTeam = typeof parsed === "string" || parsed?.season !== SEASON_YEAR ? null : parsed;
   }
 
   return cachedTeam;

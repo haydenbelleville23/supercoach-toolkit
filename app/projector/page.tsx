@@ -3,6 +3,9 @@ import { Suspense } from "react";
 import Header from "@/components/layout/Header";
 import PageHeader from "@/components/layout/PageHeader";
 import ProjectorToolFromUrl from "@/components/projector/ProjectorTool";
+import PreseasonPage from "@/components/season/PreseasonNotice";
+import { IS_PRESEASON } from "@/data/season";
+
 
 function ProjectorToolFallback() {
   return (
@@ -16,6 +19,15 @@ function ProjectorToolFallback() {
 }
 
 export default function ProjectorPage() {
+  if (IS_PRESEASON) {
+    return (
+      <PreseasonPage
+        title="Price Projector"
+        description="See what any player's price does for any score, round by round."
+      />
+    );
+  }
+
   return (
     <main className="min-h-screen bg-slate-950 text-white">
       <Header />

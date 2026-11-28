@@ -1,4 +1,10 @@
-import { CURRENT_COMPLETED_ROUND } from "@/data/season";
+import {
+  CURRENT_COMPLETED_ROUND,
+  FINAL_ROUND,
+  IS_PRESEASON,
+  PLAYERS_DATA_SEASON,
+  SEASON_YEAR,
+} from "@/data/season";
 import { getFixtures } from "@/lib/fixtures";
 import { playerRepository } from "@/lib/repository/PlayerRepository";
 import type { Player } from "@/types/player";
@@ -15,16 +21,40 @@ import { computeTeamDifficulty, type TeamDifficulty } from "./teamDifficulty";
  */
 export const DIFFICULTY_AS_OF_ROUND = CURRENT_COMPLETED_ROUND;
 
+/**
+ * Where the difficulty values come from. In a new season's preseason
+ * there are no games yet, so they come from last season's final data
+ * (applied to the new fixtures); with no data at all there are none.
+ */
+export type DifficultyBasis =
+  | { kind: "current"; season: number }
+  | { kind: "previous"; season: number }
+  | { kind: "none"; season: number };
+
+export const DIFFICULTY_BASIS: DifficultyBasis =
+  PLAYERS_DATA_SEASON === SEASON_YEAR
+    ? { kind: "current", season: SEASON_YEAR }
+    : IS_PRESEASON && PLAYERS_DATA_SEASON === SEASON_YEAR - 1
+      ? { kind: "previous", season: PLAYERS_DATA_SEASON }
+      : { kind: "none", season: SEASON_YEAR - 1 };
+
+/** The last round of data the values use (all of last season in a preseason). */
+const SOURCE_ROUND = DIFFICULTY_BASIS.kind === "previous" ? FINAL_ROUND : DIFFICULTY_AS_OF_ROUND;
+
 let positionCache: PositionDifficulty | null = null;
 let teamCache: TeamDifficulty[] | null = null;
 
 export function currentPositionDifficulty(): PositionDifficulty {
-  positionCache ??= computePositionDifficulty(playerRepository.getAll(), DIFFICULTY_AS_OF_ROUND);
+  positionCache ??=
+    DIFFICULTY_BASIS.kind === "none"
+      ? new Map()
+      : computePositionDifficulty(playerRepository.getAll(), SOURCE_ROUND);
   return positionCache;
 }
 
 export function currentTeamDifficulty(): TeamDifficulty[] {
-  teamCache ??= computeTeamDifficulty(playerRepository.getAll(), DIFFICULTY_AS_OF_ROUND);
+  teamCache ??=
+    DIFFICULTY_BASIS.kind === "none" ? [] : computeTeamDifficulty(playerRepository.getAll(), SOURCE_ROUND);
   return teamCache;
 }
 
