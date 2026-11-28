@@ -10,7 +10,7 @@ type Tagged = Exclude<LiveStatus, "onGround">;
 // Rounded pills with an outline and no fill, so they don't look like the
 // weekly availability badges (square corners, filled).
 export const LIVE_TAG: Record<Tagged, { label: string; name: string; icon: LucideIcon; tone: string }> = {
-  bench: { label: "BENCH", name: "On the bench", icon: Armchair, tone: "border-sky-400/70 text-sky-200" },
+  bench: { label: "BENCH", name: "On the interchange bench", icon: Armchair, tone: "border-sky-400/70 text-sky-200" },
   bloodRule: { label: "BLOOD", name: "Off under the blood rule", icon: Droplet, tone: "border-rose-400/70 text-rose-200" },
   injured: { label: "INJ", name: "Off injured", icon: Ambulance, tone: "border-fuchsia-400/70 text-fuchsia-200" },
   ruledOut: { label: "OUT", name: "Ruled out of the game", icon: OctagonX, tone: "border-slate-400/70 text-slate-200" },
@@ -39,16 +39,20 @@ export default function LiveStatusTag({ info, sample = false }: { info: LiveStat
   const tag = LIVE_TAG[info.status];
   const details = liveTagDetails(info, sample);
   const Icon = tag.icon;
+  // BENCH is the icon alone, to save space; the name says what it means.
+  const iconOnly = info.status === "bench";
 
   return (
     <InfoPopover
-      label={`${tag.label}: ${details.join(". ")}`}
+      label={iconOnly ? tag.name : `${tag.label}: ${details.join(". ")}`}
       widthRem={14}
-      triggerClassName={`inline-flex shrink-0 items-center gap-0.5 rounded-full border bg-transparent px-1.5 py-0.5 text-[10px] font-bold leading-none tracking-wide focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 ${tag.tone}`}
+      triggerClassName={`inline-flex shrink-0 items-center gap-0.5 rounded-full border bg-transparent py-0.5 text-[10px] font-bold leading-none tracking-wide focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 ${
+        iconOnly ? "px-1" : "px-1.5"
+      } ${tag.tone}`}
       trigger={
         <>
           <Icon aria-hidden="true" className="h-3 w-3" strokeWidth={2.5} />
-          {tag.label}
+          {!iconOnly && tag.label}
         </>
       }
     >

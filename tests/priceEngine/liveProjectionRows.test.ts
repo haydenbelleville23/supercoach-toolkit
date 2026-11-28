@@ -97,7 +97,7 @@ const player = players.find(
 )!;
 
 function nextRoundPrice(contexts?: Map<number, ScaledRoundContext>) {
-  const rows = buildPlayerRows(player, "custom").map((row) =>
+  const rows = buildPlayerRows(player, "projected").map((row) =>
     row.round === ROUND ? { ...row, score: 100, played: true } : row,
   );
 
@@ -122,8 +122,8 @@ describe("live k in projection rows", () => {
   });
 
   it("feeds the same live k into Cash Cows", () => {
-    const base = calculateCashCowRow(player, "custom")!;
-    const live = calculateCashCowRow(player, "custom", {}, liveContexts(160))!;
+    const base = calculateCashCowRow(player, "projected")!;
+    const live = calculateCashCowRow(player, "projected", {}, liveContexts(160))!;
 
     expect(live.rise1).not.toBe(base.rise1);
   });

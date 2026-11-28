@@ -11,6 +11,7 @@ import { CURRENT_COMPLETED_ROUND } from "@/data/season";
 import { availabilityFor } from "@/lib/availability";
 import { calculateCashCowRows } from "@/lib/cashcows";
 import { formatChange, formatMoney } from "@/lib/format";
+import { useMatchupSetting } from "@/lib/fixtureDifficulty/useMatchupSetting";
 import { useLiveRoundContext } from "@/lib/liveMatch/useLiveRoundContext";
 import { playerRepository } from "@/lib/repository/PlayerRepository";
 import { useWatchlist } from "@/lib/watchlist/useWatchlist";
@@ -37,11 +38,13 @@ const gain = (value: number | null) => (value === null ? "-" : formatChange(valu
 /**
  * The My Team page's Watchlist tab: each watched player's price, BE and
  * projected price changes, from the same calculation as Cash Cows
- * (projected mode, no overrides).
+ * (Projected mode with the shared matchup switch, no overrides).
  */
 export default function WatchlistTable() {
   const watchlist = useWatchlist(PLAYER_IDS);
   const { contexts } = useLiveRoundContext();
+  // The same shared switch as Cash Cows and the Projector.
+  const [matchupOn] = useMatchupSetting();
 
   const rows = useMemo<WatchRow[]>(() => {
     const watched = watchlist.entries
@@ -49,7 +52,10 @@ export default function WatchlistTable() {
       .filter((player): player is Player => player !== undefined);
     // Players without enough scores have no projection: shown with "-".
     const projections = new Map(
-      calculateCashCowRows(watched, "projected", {}, contexts).map((row) => [row.player.id, row]),
+      calculateCashCowRows(watched, "projected", {}, contexts, { matchup: matchupOn }).map((row) => [
+        row.player.id,
+        row,
+      ]),
     );
 
     return watched.map((player) => {
@@ -62,7 +68,7 @@ export default function WatchlistTable() {
         peakRound: row?.toppedOutRound ?? null,
       };
     });
-  }, [watchlist.entries, contexts]);
+  }, [watchlist.entries, contexts, matchupOn]);
 
   const columns: DataTableColumn<WatchRow>[] = [
     {

@@ -111,7 +111,8 @@ const tagsIn = (row: HTMLElement) =>
   within(row)
     .queryAllByRole("button")
     .filter((b) => !b.hasAttribute("aria-pressed"))
-    .map((b) => b.textContent?.trim());
+    // An icon-only tag is listed by its accessible name.
+    .map((b) => b.textContent?.trim() || b.getAttribute("aria-label"));
 const filterButton = (label: RegExp) =>
   within(screen.getByRole("group", { name: "Filter by in-game status" })).getByRole("button", { name: label });
 const shownNames = () =>
@@ -132,19 +133,28 @@ describe("Live page in-game status", () => {
     render(<LivePage />);
     await screen.findByRole("table");
 
-    expect(tagsIn(rowOf(mccreery.name))).toEqual(["BENCH"]);
-    expect(tagsIn(rowOf(frampton.name))).toEqual(["BENCH"]);
+    expect(tagsIn(rowOf(mccreery.name))).toEqual(["On the interchange bench"]);
+    expect(tagsIn(rowOf(frampton.name))).toEqual(["On the interchange bench"]);
     expect(tagsIn(rowOf(maynard.name))).toEqual(["?"]);
     expect(tagsIn(rowOf(ander.name))).toEqual([]);
     expect(tagsIn(rowOf(hill.name))).toEqual([]);
 
-    const tag = within(rowOf(mccreery.name)).getByRole("button", { name: /^BENCH:/ });
-    expect(tag.getAttribute("aria-label")).toContain("Feed reason: Blood rule");
-    expect(tag.getAttribute("aria-label")).not.toMatch(/^BLOOD/);
-    // An icon as well as the text.
+    // BENCH is the icon alone, in the outlined chip, named for screen readers.
+    const tag = within(rowOf(mccreery.name)).getByRole("button", { name: "On the interchange bench" });
+    expect(tag).toHaveTextContent(/^$/);
     expect(tag.querySelector("svg")).not.toBeNull();
-    // Not the shared square availability badge style.
     expect(tag.className).toContain("rounded-full");
+    expect(tag.className).toContain("border");
+    // Tap shows the details, with the feed's reason as text.
+    fireEvent.click(tag);
+    const tip = screen.getByRole("tooltip");
+    expect(tip).toHaveTextContent("Feed reason: Blood rule");
+    expect(tip).not.toHaveTextContent(/^BLOOD/);
+    fireEvent.keyDown(document, { key: "Escape" });
+
+    // The other tags keep their word, and the filter keeps "On bench".
+    expect(within(rowOf(maynard.name)).getByRole("button", { name: /^\?:/ })).toHaveTextContent("?");
+    expect(filterButton(/^On bench/)).toBeInTheDocument();
   });
 
   it("dims bench rows only (not unclear or untagged players)", async () => {

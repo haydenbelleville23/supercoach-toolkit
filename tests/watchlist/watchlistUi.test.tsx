@@ -92,7 +92,7 @@ describe("Cash Cows watchlist", () => {
     const star = screen.getAllByRole("button", { name: /^Add .+ to watchlist$/ })[0];
     expect(star).toHaveAttribute("title", `Watchlist full (${WATCHLIST_MAX} players)`);
     fireEvent.click(star);
-    expect(screen.getByRole("status", { name: "" })).toHaveTextContent(/watchlist is full/i);
+    expect(screen.getAllByRole("status").some((el) => /watchlist is full/i.test(el.textContent ?? ""))).toBe(true);
     expect(stored()).toHaveLength(WATCHLIST_MAX);
   });
 

@@ -5,6 +5,10 @@ export type CashCowProjectedRound = {
   score: number;
   price: number;
   priceChange: number | null;
+  opponent?: string | null;
+  homeAway?: "H" | "A" | null;
+  /** The matchup adjustment included in the score (Projected mode, switch on). */
+  matchupAdjustment?: number | null;
 };
 
 export type CashCowRow = {

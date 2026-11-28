@@ -30,7 +30,7 @@ describe("projectNextRoundPrice", () => {
   it.each([50, 100, 120])(
     "matches the Price Projector for a score of %i",
     (score) => {
-      const rows = buildPlayerRows(player, "custom").map((row) =>
+      const rows = buildPlayerRows(player, "projected").map((row) =>
         row.round === nextRound ? { ...row, score, played: true } : row,
       );
 

@@ -4,11 +4,11 @@ import type { ProjectionMode } from "@/lib/projector/projectionModes";
 import type { Player } from "@/types/player";
 
 /**
- * The suggested score for a future round. "projected" (and "custom" with no
- * score typed) uses the Trade Planner's projection (projectScore): the
- * season average from completed rounds, else last season's average (50 for
- * a debutant). With `matchup` on, "projected" and "custom" add the
- * opponent's position difficulty (method seasonAverageRookie50Matchup).
+ * The suggested score for a future round. "projected" uses the Trade
+ * Planner's projection (projectScore): the season average from completed
+ * rounds, else last season's average (50 for a debutant). With `matchup`
+ * on, "projected" adds the opponent's position difficulty (method
+ * seasonAverageRookie50Matchup).
  * The average modes stay plain, and use the plain projection until he
  * has played this season, so no one is shown as 0.
  */
@@ -17,15 +17,13 @@ export function getProjectedScore({
   round,
   completedRound,
   mode,
-  existingScore,
   matchup = false,
 }: {
   player: Player;
   round: number;
   completedRound: number;
   mode: ProjectionMode;
-  existingScore?: number | null;
-  /** Add the matchup adjustment (Projected and Custom only). */
+  /** Add the matchup adjustment (Projected only). */
   matchup?: boolean;
 }): number {
   const projected = (withMatchup: boolean) =>
@@ -40,9 +38,9 @@ export function getProjectedScore({
       ) ?? player.average,
     );
 
-  const usesMatchup = matchup && (mode === "projected" || mode === "custom");
+  const usesMatchup = matchup && mode === "projected";
 
-  if (player.games === 0 && mode !== "custom") {
+  if (player.games === 0) {
     return projected(usesMatchup);
   }
 
@@ -59,7 +57,5 @@ export function getProjectedScore({
     case "five-round-average":
       return Math.round(player.average5);
 
-    case "custom":
-      return existingScore ?? projected(usesMatchup);
   }
 }

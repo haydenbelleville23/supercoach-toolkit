@@ -47,6 +47,8 @@ function applyScoreOverrides(
       score: overriddenScore,
       played: true,
       isActual: false,
+      // A typed score wins, so no adjustment is in it.
+      matchupAdjustment: null,
     };
   });
 }
@@ -68,6 +70,9 @@ function getProjectedRounds(
       score: row.score as number,
       price: row.price as number,
       priceChange: row.priceChange,
+      opponent: row.opponent,
+      homeAway: row.homeAway,
+      matchupAdjustment: row.matchupAdjustment ?? null,
     }));
 }
 
@@ -117,6 +122,8 @@ export function calculateCashCowRow(
   scoreOverrides: CashCowScoreOverrides = {},
   /** Round estimates, e.g. with live scores applied (useLiveRoundContext). */
   contexts?: Map<number, ScaledRoundContext>,
+  /** Add the matchup adjustment in Projected mode (the shared switch; default off). */
+  { matchup = false }: { matchup?: boolean } = {},
 ): CashCowRow | null {
   if (
     player.recentScores.length < 2 ||
@@ -125,9 +132,13 @@ export function calculateCashCowRow(
     return null;
   }
 
+  // Projected mode uses the Projector's method: season average plus the
+  // opponent's position difficulty when the matchup switch is on.
   const baseRows = buildPlayerRows(
     player,
     mode,
+    {},
+    { matchup },
   );
 
   const rowsWithOverrides =
@@ -231,6 +242,7 @@ export function calculateCashCowRows(
   mode: ProjectionMode,
   scoreOverrides: CashCowScoreOverrides = {},
   contexts?: Map<number, ScaledRoundContext>,
+  options: { matchup?: boolean } = {},
 ): CashCowRow[] {
   return players
     .map((player) =>
@@ -239,6 +251,7 @@ export function calculateCashCowRows(
         mode,
         scoreOverrides,
         contexts,
+        options,
       ),
     )
     .filter(
