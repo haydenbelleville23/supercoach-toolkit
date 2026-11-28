@@ -11,6 +11,8 @@ type PageHeaderProps = {
    * behind a small "?" toggle. Used where the tool should start near the top.
    */
   compact?: boolean;
+  /** Beside the title (e.g. an info popover with more detail). */
+  titleAside?: React.ReactNode;
 };
 
 /** Eyebrow, title, description and data freshness used at the top of each tool page. */
@@ -20,6 +22,7 @@ export default function PageHeader({
   eyebrow = "2026 season",
   showFreshness = true,
   compact = false,
+  titleAside,
 }: PageHeaderProps) {
   if (compact) {
     return (
@@ -56,8 +59,9 @@ export default function PageHeader({
         {eyebrow}
       </p>
 
-      <h1 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
+      <h1 className="mt-3 flex items-center gap-2 text-3xl font-bold tracking-tight sm:text-4xl">
         {title}
+        {titleAside}
       </h1>
 
       <p className="mt-4 text-slate-300">{description}</p>

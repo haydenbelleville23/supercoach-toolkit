@@ -2,6 +2,7 @@
 
 import { Search, X } from "lucide-react";
 import {
+  type ReactNode,
   useCallback,
   useDeferredValue,
   useEffect,
@@ -55,6 +56,8 @@ export interface PlayerSelectProps {
   idPrefix?: string;
   /** Shows a clear button while a player is selected. */
   onClear?: () => void;
+  /** Shown on the right inside the box while a player is selected (e.g. a price button). */
+  aside?: ReactNode;
   /**
    * After a pick, keep focus and the list open with the search cleared,
    * for adding several players in a row.
@@ -99,6 +102,7 @@ export default function PlayerSelect({
   ariaDescribedBy,
   idPrefix,
   onClear,
+  aside,
   keepOpenAfterSelect = false,
   maxResults = DEFAULT_MAX_RESULTS,
 }: PlayerSelectProps) {
@@ -328,18 +332,19 @@ export default function PlayerSelect({
       {/* The selected player, shown over the empty input while closed. */}
       {!isOpen && value && (
         <span
-          aria-hidden="true"
           className={`pointer-events-none absolute inset-y-0 left-9 flex min-w-0 items-center gap-1.5 text-sm ${
             onClear ? "right-10" : "right-3"
           }`}
         >
-          <span className="truncate font-semibold text-white">
+          <span aria-hidden="true" className="truncate font-semibold text-white">
             <span className="sm:hidden">{shortPlayerName(value.name)}</span>
             <span className="hidden sm:inline">{value.name}</span>
           </span>
-          <span className="shrink-0 rounded bg-slate-800 px-1 text-[10px] font-bold leading-4 text-slate-300">
+          <span aria-hidden="true" className="shrink-0 rounded bg-slate-800 px-1 text-[10px] font-bold leading-4 text-slate-300">
             {value.team || "TBC"}
           </span>
+          {/* Extra content on the right of the box (e.g. the trade price), clickable. */}
+          {aside && <span className="pointer-events-auto ml-auto flex h-full shrink-0 items-center">{aside}</span>}
         </span>
       )}
 

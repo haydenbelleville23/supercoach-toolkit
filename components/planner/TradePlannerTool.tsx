@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { useMemo } from "react";
 
+import InfoPopover from "@/components/ui/InfoPopover";
+import OverflowMenu from "@/components/ui/OverflowMenu";
 import { availabilitySnapshot, likelyPlaying } from "@/lib/availability";
 import { useMatchupSetting } from "@/lib/fixtureDifficulty/useMatchupSetting";
 import { evaluatePlan } from "@/lib/planner/evaluatePlan";
@@ -162,6 +164,9 @@ function Planner({ team }: { team: MyTeam }) {
       .sort((a, b) => a.name.localeCompare(b.name));
   }, [team, rounds, playersById]);
 
+  const plansFull = team.plans.length >= MAX_PLANS;
+  const plansFullReason = `${MAX_PLANS} plans is the most`;
+
   const button =
     "rounded-lg border border-slate-700 px-3 py-1.5 text-xs font-semibold text-slate-200 hover:border-slate-500 disabled:opacity-40";
 
@@ -198,58 +203,56 @@ function Planner({ team }: { team: MyTeam }) {
             </button>
           ))}
 
-          <button type="button" className={button} disabled={team.plans.length >= MAX_PLANS} onClick={() => addPlan(null)}>
+          <button type="button" className={button} disabled={plansFull} onClick={() => addPlan(null)}>
             + New plan
           </button>
+          {plansFull && <span className="text-xs text-slate-400">{plansFullReason}</span>}
+
+          <InfoPopover label="About plans">Up to {MAX_PLANS} plans, saved in this browser with your team.</InfoPopover>
+
+          {activePlan && (
+            <div className="ml-auto">
+              <OverflowMenu
+                label={`Actions for ${activePlan.name}`}
+                items={[
+                  {
+                    label: "Duplicate",
+                    disabledReason: plansFull ? plansFullReason : null,
+                    onSelect: () => addPlan(activePlan),
+                  },
+                  {
+                    label: "Rename",
+                    onSelect: () => {
+                      const name = window.prompt("Plan name", activePlan.name)?.trim();
+                      if (name) {
+                        updatePlan((p) => ({ ...p, name }));
+                      }
+                    },
+                  },
+                  {
+                    label: `Reset price overrides${priceOverrideCount > 0 ? ` (${priceOverrideCount})` : ""}`,
+                    disabledReason: priceOverrideCount === 0 ? "No typed trade prices in this plan" : null,
+                    onSelect: () => {
+                      if (window.confirm(`Reset all ${priceOverrideCount} typed trade prices in "${activePlan.name}"?`)) {
+                        updatePlan(resetPriceOverrides);
+                      }
+                    },
+                  },
+                  {
+                    label: "Delete",
+                    danger: true,
+                    onSelect: () => {
+                      if (window.confirm(`Delete "${activePlan.name}"?`)) {
+                        const remaining = team.plans.filter((p) => p.id !== activePlan.id);
+                        save({ ...team, plans: remaining, activePlanId: remaining[0]?.id ?? null });
+                      }
+                    },
+                  },
+                ]}
+              />
+            </div>
+          )}
         </div>
-
-        {activePlan && (
-          <div className="mt-3 flex flex-wrap gap-2">
-            <button type="button" className={button} disabled={team.plans.length >= MAX_PLANS} onClick={() => addPlan(activePlan)}>
-              Duplicate
-            </button>
-            <button
-              type="button"
-              className={button}
-              onClick={() => {
-                const name = window.prompt("Plan name", activePlan.name)?.trim();
-                if (name) {
-                  updatePlan((p) => ({ ...p, name }));
-                }
-              }}
-            >
-              Rename
-            </button>
-            <button
-              type="button"
-              className={button}
-              disabled={priceOverrideCount === 0}
-              onClick={() => {
-                if (window.confirm(`Reset all ${priceOverrideCount} typed trade prices in "${activePlan.name}"?`)) {
-                  updatePlan(resetPriceOverrides);
-                }
-              }}
-            >
-              Reset price overrides{priceOverrideCount > 0 ? ` (${priceOverrideCount})` : ""}
-            </button>
-            <button
-              type="button"
-              className={`${button} text-red-300`}
-              onClick={() => {
-                if (window.confirm(`Delete "${activePlan.name}"?`)) {
-                  const remaining = team.plans.filter((p) => p.id !== activePlan.id);
-                  save({ ...team, plans: remaining, activePlanId: remaining[0]?.id ?? null });
-                }
-              }}
-            >
-              Delete
-            </button>
-          </div>
-        )}
-
-        <p className="mt-2 text-xs text-slate-400">
-          Up to {MAX_PLANS} plans, saved in this browser with your team.
-        </p>
       </section>
 
       {!activePlan ? (
@@ -274,22 +277,22 @@ function Planner({ team }: { team: MyTeam }) {
             ))}
           </div>
 
-          <label className="flex items-start gap-2 text-sm text-slate-200">
+          <div className="flex items-center">
+          <label className="flex min-h-11 cursor-pointer items-center gap-2 text-sm text-slate-200">
             <input
               type="checkbox"
               checked={countUnavailableAsOut}
               onChange={(e) => save({ ...team, countUnavailableAsOut: e.target.checked })}
-              className="mt-0.5 h-4 w-4 shrink-0 accent-violet-500"
+              className="h-5 w-5 shrink-0 accent-violet-500"
             />
-            <span>
-              Count long-term injured and suspended players as not playing
-              <span className="block text-xs text-slate-400">
-                {availabilitySnapshot
-                  ? "Affects the playing counts and bye warnings only, not prices or projections."
-                  : "No injury list loaded yet, so everyone counts as playing."}
-              </span>
-            </span>
+            <span>Injured and suspended players don&apos;t count as playing</span>
           </label>
+          <InfoPopover label="About the injured setting">
+            {availabilitySnapshot
+              ? "Long-term injured and suspended players aren't counted in the playing counts and bye warnings. Prices and projections are unaffected."
+              : "No injury list loaded yet, so everyone counts as playing."}
+          </InfoPopover>
+          </div>
 
           {view === "plan" ? (
             <>

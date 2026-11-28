@@ -1,8 +1,8 @@
 "use client";
 
 import { Ban, Bandage, CircleHelp, Clock, type LucideIcon } from "lucide-react";
-import { useEffect, useId, useRef, useState } from "react";
 
+import InfoPopover from "@/components/ui/InfoPopover";
 import { isStale, type RoundAvailability } from "@/lib/availability/selectors";
 import type { AvailabilityStatus } from "@/lib/availability/types";
 
@@ -61,8 +61,8 @@ export function badgeDetails(info: RoundAvailability, stale: boolean): string[] 
 /**
  * A player's availability as a small text label with an icon (INJ, SUS,
  * TEST, OUT 2w, ?). Nothing for available players or when nothing is
- * known. Tap (or hover) shows the injury, return, date and source. Greyed
- * when the list is more than a week old.
+ * known. Tap, hover or focus shows the injury, return, date and source
+ * (the shared InfoPopover). Greyed when the list is more than a week old.
  */
 export default function AvailabilityBadge({
   info,
@@ -74,25 +74,6 @@ export default function AvailabilityBadge({
   size?: "xs" | "sm";
   today?: Date;
 }) {
-  const [open, setOpen] = useState(false);
-  const [position, setPosition] = useState<{ top: number; left: number } | null>(null);
-  const buttonRef = useRef<HTMLButtonElement>(null);
-  const detailsId = useId();
-
-  useEffect(() => {
-    if (!open) return;
-    const close = (event: Event) => {
-      if (event.target instanceof Node && buttonRef.current?.contains(event.target)) return;
-      setOpen(false);
-    };
-    document.addEventListener("pointerdown", close);
-    window.addEventListener("scroll", close, true);
-    return () => {
-      document.removeEventListener("pointerdown", close);
-      window.removeEventListener("scroll", close, true);
-    };
-  }, [open]);
-
   if (!info || info.status === "available") return null;
 
   const style = STYLE[info.status];
@@ -102,56 +83,25 @@ export default function AvailabilityBadge({
   const details = badgeDetails(info, stale);
   const Icon = style.icon;
 
-  function toggle() {
-    const rect = buttonRef.current?.getBoundingClientRect();
-    if (rect) {
-      const width = 224;
-      setPosition({
-        top: rect.bottom + 4,
-        left: Math.max(8, Math.min(rect.right - width, window.innerWidth - width - 8)),
-      });
-    }
-    setOpen((value) => !value);
-  }
-
   return (
-    <>
-      <button
-        ref={buttonRef}
-        type="button"
-        onClick={(event) => {
-          event.preventDefault();
-          event.stopPropagation();
-          toggle();
-        }}
-        title={details.join("\n")}
-        aria-label={`${label}: ${details.join(". ")}`}
-        aria-expanded={open}
-        aria-describedby={open ? detailsId : undefined}
-        className={`inline-flex shrink-0 items-center gap-0.5 rounded border font-bold leading-none tracking-wide ${
-          size === "xs" ? "px-0.5 py-px text-[8px]" : "px-1 py-0.5 text-[10px]"
-        } ${stale ? "border-slate-600 bg-slate-800 text-slate-400" : style.tone} ${
-          info.sample ? "border-dashed" : ""
-        }`}
-      >
-        <Icon aria-hidden="true" className={size === "xs" ? "h-2 w-2" : "h-3 w-3"} strokeWidth={2.5} />
-        {label}
-      </button>
-
-      {open && position && (
-        <span
-          id={detailsId}
-          role="tooltip"
-          style={{ top: position.top, left: position.left, width: 224 }}
-          className="fixed z-50 rounded-lg border border-slate-700 bg-slate-950 p-2 text-left text-xs font-normal normal-case leading-5 tracking-normal text-slate-200 shadow-xl"
-        >
-          {details.map((line) => (
-            <span key={line} className="block">
-              {line}
-            </span>
-          ))}
+    <InfoPopover
+      label={`${label}: ${details.join(". ")}`}
+      widthRem={14}
+      triggerClassName={`inline-flex shrink-0 items-center gap-0.5 rounded border font-bold leading-none tracking-wide focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 ${
+        size === "xs" ? "px-0.5 py-px text-[8px]" : "px-1 py-0.5 text-[10px]"
+      } ${stale ? "border-slate-600 bg-slate-800 text-slate-400" : style.tone} ${info.sample ? "border-dashed" : ""}`}
+      trigger={
+        <>
+          <Icon aria-hidden="true" className={size === "xs" ? "h-2 w-2" : "h-3 w-3"} strokeWidth={2.5} />
+          {label}
+        </>
+      }
+    >
+      {details.map((line) => (
+        <span key={line} className="block">
+          {line}
         </span>
-      )}
-    </>
+      ))}
+    </InfoPopover>
   );
 }
