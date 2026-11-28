@@ -314,8 +314,8 @@ describe("DataTable", () => {
 });
 
 describe("PlayerCell", () => {
-  it("shows the short and full names and team; positions in the tooltip", () => {
-    render(
+  it("shows the logo, then the short and full names; positions on the line below", () => {
+    const { container } = render(
       <PlayerCell
         name="Jordan De Goey"
         team="COL"
@@ -329,7 +329,9 @@ describe("PlayerCell", () => {
     expect(link).toHaveAttribute("href", "/projector?player=1");
     expect(within(link).getByText("J. De Goey").className).toContain("sm:hidden");
     expect(within(link).getByText("Jordan De Goey").className).toContain("hidden sm:inline");
-    expect(screen.getByText("COL")).toBeInTheDocument();
-    expect(screen.queryByText("MID/FWD")).toBeNull();
+    expect(container.querySelector('img[alt="Collingwood"]')).toHaveAttribute("title", "COL");
+    expect(screen.getByText("MID/FWD")).toBeInTheDocument();
+    // No text club chip.
+    expect(screen.queryByText("COL")).toBeNull();
   });
 });

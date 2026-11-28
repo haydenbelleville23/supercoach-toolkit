@@ -6,6 +6,8 @@ import { useMemo, useState } from "react";
 import LiveIndicator from "@/components/layout/LiveIndicator";
 import PlayerSearchBar from "@/components/projector/PlayerSearchBar";
 import PlayerStatChips from "@/components/projector/PlayerStatChips";
+import WatchlistStar from "@/components/ui/WatchlistStar";
+import { useWatchlist } from "@/lib/watchlist/useWatchlist";
 import ProjectionModeControl from "@/components/projector/ProjectionModeControl";
 import SeasonProjectionTable from "@/components/projector/SeasonProjectionTable";
 import MatchupSwitch from "@/components/ui/MatchupSwitch";
@@ -44,6 +46,7 @@ function ProjectorTool({
 }: {
   initialPlayerId: number;
 }) {
+  const watchlist = useWatchlist();
   const [selectedPlayerId, setSelectedPlayerId] =
     useState(initialPlayerId);
 
@@ -175,8 +178,16 @@ function ProjectorTool({
 
       <MatchupSwitch on={matchupOn} onChange={setMatchupOn} className="mt-2 sm:hidden" />
 
-      <div className="mt-2">
-        <PlayerStatChips player={selectedPlayer} />
+      <div className="mt-2 flex items-start gap-2">
+        <WatchlistStar
+          playerId={selectedPlayer.id}
+          playerName={selectedPlayer.name}
+          watchlist={watchlist}
+          size="md"
+        />
+        <div className="min-w-0 flex-1">
+          <PlayerStatChips player={selectedPlayer} />
+        </div>
       </div>
 
       <div className="mt-3">

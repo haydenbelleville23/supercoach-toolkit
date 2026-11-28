@@ -17,6 +17,10 @@ import {
   type SortValue,
 } from "@/lib/table/sortRows";
 
+import { Info } from "lucide-react";
+
+import InfoPopover from "./InfoPopover";
+
 export type { SortDirection, SortState, SortValue };
 
 /** Pixels, or different widths below and from the sm breakpoint. */
@@ -39,6 +43,8 @@ export type DataTableColumn<Row> = {
   hideBelow?: "sm" | "md";
   /** Pins this column too (after the first), from this breakpoint up. */
   pinFrom?: "base" | "sm";
+  /** Explanation shown in an info popover beside the header (tap, hover or focus). */
+  info?: ReactNode;
   /** Extra classes for this column's body cells (e.g. colours). */
   cellClassName?: (row: Row) => string;
 };
@@ -62,6 +68,9 @@ export type DataTableProps<Row> = {
   stickyFirstColumn?: boolean;
   /** Cap the scroll box at the screen height below the site header. Default true. */
   fitToViewport?: boolean;
+
+  /** Keep every header on one line. */
+  singleLineHeaders?: boolean;
 
   highlightRow?: (row: Row) => boolean;
   /** Quieter rows (e.g. completed rounds): darker background, grey text. */
@@ -209,6 +218,7 @@ export default function DataTable<Row>({
   stickyHeader = true,
   stickyFirstColumn = true,
   fitToViewport = true,
+  singleLineHeaders = false,
   highlightRow,
   mutedRow,
   compact = false,
@@ -393,6 +403,7 @@ export default function DataTable<Row>({
                       // Room for overlay scrollbars on the right edge.
                       index === columns.length - 1 ? "pr-3" : "",
                       ALIGN[align],
+                      singleLineHeaders ? "whitespace-nowrap" : "",
                       stickyHeader ? "sticky top-0" : "",
                       // Pinned header cells sit above both the header row
                       // and the pinned body cells (the crossing corner).
@@ -401,7 +412,38 @@ export default function DataTable<Row>({
                       column.hideBelow ? HIDE_CELL[column.hideBelow] : "",
                     ].join(" ")}
                   >
-                    {column.sortValue ? (
+                    {column.info ? (
+                      <span
+                        className={`inline-flex items-end gap-0.5 ${
+                          align === "right" ? "w-full justify-end" : align === "center" ? "w-full justify-center" : ""
+                        }`}
+                      >
+                        {column.sortValue ? (
+                          <button
+                            type="button"
+                            onClick={() => changeSort(column)}
+                            className={`inline-flex items-end gap-1 rounded uppercase focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-green ${
+                              active ? "text-white" : "hover:text-slate-200"
+                            }`}
+                          >
+                            <span>{column.header}</span>
+                            <span aria-hidden="true" className={`shrink-0 text-[10px] ${active ? "text-brand-green" : "text-slate-600"}`}>
+                              {active ? (sort!.direction === "asc" ? "▲" : "▼") : "↕"}
+                            </span>
+                          </button>
+                        ) : (
+                          <span>{column.header}</span>
+                        )}
+                        <InfoPopover
+                          label={`About ${column.label ?? (typeof column.header === "string" ? column.header : column.id)}`}
+                          widthRem={14}
+                          triggerClassName="relative inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-slate-500 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 after:absolute after:-inset-2 after:content-['']"
+                          trigger={<Info aria-hidden="true" className="h-3.5 w-3.5" />}
+                        >
+                          <span className="block normal-case tracking-normal">{column.info}</span>
+                        </InfoPopover>
+                      </span>
+                    ) : column.sortValue ? (
                       <button
                         type="button"
                         onClick={() => changeSort(column)}

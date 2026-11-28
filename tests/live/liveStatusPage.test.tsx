@@ -106,9 +106,11 @@ afterEach(() => {
 
 const table = () => screen.getByRole("table");
 const rowOf = (name: string) => within(table()).getByRole("link", { name }).closest("tr")!;
+// Status tags only (not the watchlist star).
 const tagsIn = (row: HTMLElement) =>
   within(row)
     .queryAllByRole("button")
+    .filter((b) => !b.hasAttribute("aria-pressed"))
     .map((b) => b.textContent?.trim());
 const filterButton = (label: RegExp) =>
   within(screen.getByRole("group", { name: "Filter by in-game status" })).getByRole("button", { name: label });

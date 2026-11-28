@@ -8,6 +8,8 @@ import {
   saveMyTeam,
 } from "@/lib/planner/useMyTeam";
 import type { MyTeam } from "@/lib/planner/types";
+import { saveWatchlist } from "@/lib/watchlist/useWatchlist";
+import { WATCHLIST_VERSION } from "@/lib/watchlist/watchlist";
 
 /** Export / import the saved team as a JSON file, and clear it. */
 export default function TeamFileControls({ team }: { team: MyTeam | null }) {
@@ -26,15 +28,29 @@ export default function TeamFileControls({ team }: { team: MyTeam | null }) {
       return;
     }
 
+    const { team: imported, watchlist } = result;
+
     if (
       team &&
-      !window.confirm("Replace your saved team (and its plans) with this file?")
+      !window.confirm(
+        watchlist
+          ? "Replace your saved team (and its plans) and watchlist with this file?"
+          : "Replace your saved team (and its plans) with this file?",
+      )
     ) {
       return;
     }
 
-    saveMyTeam(result);
-    setMessage(`Imported a team of ${result.players.length} players.`);
+    saveMyTeam(imported);
+    // Older files have no watchlist: the current one is kept.
+    if (watchlist) {
+      saveWatchlist({ version: WATCHLIST_VERSION, season: imported.season, players: watchlist });
+    }
+    setMessage(
+      `Imported a team of ${imported.players.length} players${
+        watchlist ? ` and a watchlist of ${watchlist.length}` : ""
+      }.`,
+    );
   }
 
   const button =

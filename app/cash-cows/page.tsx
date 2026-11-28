@@ -17,6 +17,12 @@ import DataTable, { type DataTableColumn } from "@/components/ui/DataTable";
 import { availabilityFor, availabilitySnapshot, selectionDataLoaded } from "@/lib/availability";
 import { matchesAvailabilityFilter, type AvailabilityFilter } from "@/lib/availability/filter";
 import PlayerCell from "@/components/ui/PlayerCell";
+import PlayerListFilterControl, {
+  EmptyWatchlistMessage,
+  type PlayerListFilter,
+} from "@/components/ui/PlayerListFilter";
+import WatchlistStar from "@/components/ui/WatchlistStar";
+import { useWatchlist } from "@/lib/watchlist/useWatchlist";
 import {
   sortRows,
   type SortState,
@@ -61,6 +67,7 @@ type PriceFilter =
   | "premiums";
 
 const players = playerRepository.getAll();
+const PLAYER_IDS: ReadonlySet<number> = new Set(players.map((player) => player.id));
 
 const clubs = Array.from(
   new Set(players.map((player) => player.team)),
@@ -149,9 +156,9 @@ function sortModeFor(sort: SortState): SortMode | null {
 
 const COLUMN_NAMES: Record<string, string> = {
   player: "Player",
-  projectedAverage: "Proj Avg",
-  toppedOutRound: "Topped Out Rd",
-  toppedOutGain: "Topped Out Gain",
+  projectedAverage: "Proj",
+  toppedOutRound: "Peak Rd",
+  toppedOutGain: "Peak gain",
   rise1: "+1 Round",
   rise3: "+3 Rounds",
   rise5: "+5 Rounds",
@@ -209,6 +216,7 @@ export default function CashCowsPage() {
     setPriceFilter("all");
     setClubFilter("ALL");
     setAvailabilityFilter("all");
+    setListFilter("all");
     setProjectionMode("projected");
     setSort(DEFAULT_SORT);
   }
@@ -219,9 +227,10 @@ export default function CashCowsPage() {
   // Next round's k updates from live scores as games finish.
   const { contexts, isLive } = useLiveRoundContext();
 
-  // "My team" toggle: show only the players in the saved squad.
+  // All players | My team | Watchlist.
   const myTeam = useMyTeam();
-  const [myTeamOnly, setMyTeamOnly] = useState(false);
+  const watchlist = useWatchlist(PLAYER_IDS);
+  const [listFilter, setListFilter] = useState<PlayerListFilter>("all");
   const myTeamIds = useMemo(
     () => new Set((myTeam?.players ?? []).map((p) => p.id)),
     [myTeam],
@@ -278,7 +287,8 @@ export default function CashCowsPage() {
         matchesPosition &&
         matchesClub &&
         matchesPrice &&
-        (!myTeamOnly || myTeamIds.has(row.player.id)) &&
+        (listFilter !== "my-team" || myTeamIds.has(row.player.id)) &&
+        (listFilter !== "watchlist" || watchlist.ids.has(row.player.id)) &&
         matchesAvailabilityFilter(
           row.player,
           availabilityFilter,
@@ -292,8 +302,9 @@ export default function CashCowsPage() {
   // shows the sort (manualSorting).
   return sortRows(rows, SORT_VALUES[sort.columnId], sort.direction);
 }, [
-  myTeamOnly,
+  listFilter,
   myTeamIds,
+  watchlist.ids,
   availabilityFilter,
   contexts,
   projectionMode,
@@ -369,7 +380,7 @@ const visibleRows = useMemo(
     clubFilter,
     sort.columnId,
     sort.direction,
-    myTeamOnly,
+    listFilter,
   ].join("|");
 
   const [visibleCountKey, setVisibleCountKey] =
@@ -389,10 +400,12 @@ const visibleRows = useMemo(
     id: string,
     header: string,
     value: (row: CashCowRow) => number | null,
+    info: string,
   ): DataTableColumn<CashCowRow> => ({
     id,
     header,
-    width: 72,
+    info,
+    width: 80,
     align: "right",
     sortValue: SORT_VALUES[id],
     cell: (row) => formatGain(value(row)),
@@ -403,7 +416,8 @@ const visibleRows = useMemo(
     {
       id: "player",
       header: "Player",
-      width: { base: 124, sm: 160 },
+      // Two lines of name, plus the 24px watchlist star.
+      width: { base: 174, sm: 200 },
       sortValue: SORT_VALUES.player,
       firstSortDirection: "asc",
       cell: (row) => (
@@ -412,6 +426,13 @@ const visibleRows = useMemo(
           team={row.player.team}
           positions={row.player.positions}
           href={`/projector?player=${row.player.id}`}
+          leading={
+            <WatchlistStar
+              playerId={row.player.id}
+              playerName={row.player.name}
+              watchlist={watchlist}
+            />
+          }
           trailing={
             <AvailabilityBadge
               info={availabilityFor(row.player, CURRENT_COMPLETED_ROUND + 1)}
@@ -423,7 +444,8 @@ const visibleRows = useMemo(
     {
       id: "price",
       header: "Price",
-      width: 84,
+      info: "Current price.",
+      width: 92,
       align: "right",
       // Pinned next to the player from the sm breakpoint up.
       pinFrom: "sm",
@@ -433,7 +455,8 @@ const visibleRows = useMemo(
     {
       id: "breakeven",
       header: "BE",
-      width: 52,
+      info: "Breakeven: the score needed next round to hold the current price.",
+      width: 64,
       align: "right",
       sortValue: SORT_VALUES.breakeven,
       firstSortDirection: "asc",
@@ -442,21 +465,28 @@ const visibleRows = useMemo(
     },
     {
       id: "projectedAverage",
-      header: "Proj Avg",
-      width: 64,
+      header: "Proj",
+      info: "The projected average score used for these projections.",
+      width: 72,
       align: "right",
       sortValue: SORT_VALUES.projectedAverage,
       cell: (row) => row.projectedAverage,
       cellClassName: () => "text-slate-300",
     },
     {
-      ...gainColumn("toppedOutGain", "Topped Out Gain", (row) => row.toppedOutGain),
-      width: 84,
+      ...gainColumn(
+        "toppedOutGain",
+        "Peak gain",
+        (row) => row.toppedOutGain,
+        "Total price rise from now until the price stops rising, using the projected scores.",
+      ),
+      width: 112,
     },
     {
       id: "toppedOutRound",
-      header: "Topped Out Rd",
-      width: 56,
+      header: "Peak Rd",
+      info: "The round the price stops rising.",
+      width: 96,
       align: "right",
       sortValue: SORT_VALUES.toppedOutRound,
       firstSortDirection: "asc",
@@ -464,9 +494,9 @@ const visibleRows = useMemo(
         row.toppedOutRound === null ? "-" : `R${row.toppedOutRound}`,
       cellClassName: () => "text-slate-300",
     },
-    gainColumn("rise1", "+1R", (row) => row.rise1),
-    gainColumn("rise3", "+3R", (row) => row.rise3),
-    gainColumn("rise5", "+5R", (row) => row.rise5),
+    gainColumn("rise1", "+1R", (row) => row.rise1, "Price change over the next round."),
+    gainColumn("rise3", "+3R", (row) => row.rise3, "Price change over the next 3 rounds."),
+    gainColumn("rise5", "+5R", (row) => row.rise5, "Price change over the next 5 rounds."),
     ...futureRounds.map(
       (round): DataTableColumn<CashCowRow> => ({
         id: `round-${round}`,
@@ -693,7 +723,7 @@ const visibleRows = useMemo(
               className="mt-2 w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-sm outline-none focus:border-emerald-500"
             >
               <option value="peak-gain">
-                Topped Out Gain
+                Peak gain
               </option>
 
               <option value="rise-1">
@@ -774,20 +804,12 @@ const visibleRows = useMemo(
 
             {isLive && <LiveIndicator />}
 
-            <button
-              type="button"
-              aria-pressed={myTeamOnly}
-              disabled={myTeamIds.size === 0}
-              title={myTeamIds.size === 0 ? "Save a team on My Team first" : undefined}
-              onClick={() => setMyTeamOnly((current) => !current)}
-              className={`rounded-lg border px-3 py-1.5 text-xs font-semibold transition disabled:opacity-40 ${
-                myTeamOnly
-                  ? "border-violet-500 bg-violet-500/20 text-violet-100"
-                  : "border-slate-700 text-slate-300 hover:border-slate-500 hover:text-white"
-              }`}
-            >
-              My team{myTeamIds.size > 0 ? ` (${myTeamIds.size})` : ""}
-            </button>
+            <PlayerListFilterControl
+              value={listFilter}
+              onChange={setListFilter}
+              myTeamCount={myTeamIds.size}
+              watchlistCount={watchlist.count}
+            />
 
             <div
               role="group"
@@ -855,9 +877,13 @@ const visibleRows = useMemo(
           sort={sort}
           onSortChange={setSort}
           manualSorting
+          singleLineHeaders
           highlightRow={(row) => myTeamIds.has(row.player.id)}
           onNearEnd={loadMoreRows}
           empty={
+            listFilter === "watchlist" && watchlist.count === 0 ? (
+              <EmptyWatchlistMessage />
+            ) : (
             <div role="status" className="flex max-w-xl flex-col items-start gap-3">
               <p className="font-semibold text-white">
                 No players match these filters.
@@ -877,6 +903,7 @@ const visibleRows = useMemo(
                 Reset filters
               </button>
             </div>
+            )
           }
           footer={
             visibleRows.length < filteredRows.length

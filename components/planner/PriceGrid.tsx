@@ -52,7 +52,7 @@ export default function PriceGrid({
     {
       id: "player",
       header: "Player",
-      width: { base: 124, sm: 160 },
+      width: { base: 150, sm: 176 },
       cell: (player) => (
         <PlayerCell name={player.name} team={player.team} positions={player.positions} />
       ),

@@ -19,20 +19,16 @@ type Column = DataTableColumn<GamePlayer>;
 const playerColumn: Column = {
   id: "player",
   header: "Player",
-  width: { base: 116, sm: 190 },
+  width: { base: 150, sm: 190 },
   sortValue: (p) => p.name,
   firstSortDirection: "asc",
   cell: (p) => (
-    <span className="flex min-w-0 items-center gap-1.5">
-      <TeamChip team={p.team} size={16} />
-      <PlayerCell
-        name={p.name}
-        team={p.team}
-        positions={p.positions}
-        badge={null}
-        href={`/projector?player=${p.id}`}
-      />
-    </span>
+    <PlayerCell
+      name={p.name}
+      team={p.team}
+      positions={p.positions}
+      href={`/projector?player=${p.id}`}
+    />
   ),
 };
 

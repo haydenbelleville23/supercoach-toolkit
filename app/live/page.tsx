@@ -8,6 +8,8 @@ import PageHeader from "@/components/layout/PageHeader";
 import CopyLinkButton from "@/components/live/CopyLinkButton";
 import LiveViewToggle from "@/components/live/LiveViewToggle";
 import LiveStatusTag from "@/components/live/LiveStatusTag";
+import WatchlistStar from "@/components/ui/WatchlistStar";
+import { useWatchlist } from "@/lib/watchlist/useWatchlist";
 import InfoPopover from "@/components/ui/InfoPopover";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import {
@@ -61,6 +63,7 @@ import type {
 } from "@/lib/liveMatch";
 
 const players = playerRepository.getAll();
+const PLAYER_IDS: ReadonlySet<number> = new Set(players.map((player) => player.id));
 
 const scheduledFixtures = getFixtures() as Array<{
   id?: number;
@@ -430,6 +433,7 @@ function LiveScores() {
   const router = useRouter();
   const pathname = usePathname();
   const requestedGame = parseGameParam(searchParams.get(GAME_PARAM));
+  const watchlist = useWatchlist(PLAYER_IDS);
 
   const [feedState, setFeedState] =
     useState<FeedState>(
@@ -836,10 +840,8 @@ function LiveScores() {
     {
       id: "player",
       header: "Player",
-      // Wider when the game has status tags, so names still fit beside them.
-      width: showStatusFilter
-        ? { base: 164, sm: 220 }
-        : { base: 124, sm: 160 },
+      // Room for two lines of name, plus the watchlist star.
+      width: { base: 174, sm: 200 },
       cell: ({ player, livePlayer, status }) => (
         <PlayerCell
           name={player.name}
@@ -849,6 +851,13 @@ function LiveScores() {
           badge={`#${livePlayer.jumperNumber}`}
           positions={player.positions}
           href={`/projector?player=${player.id}`}
+          leading={
+            <WatchlistStar
+              playerId={player.id}
+              playerName={player.name}
+              watchlist={watchlist}
+            />
+          }
           trailing={
             <LiveStatusTag
               info={status}

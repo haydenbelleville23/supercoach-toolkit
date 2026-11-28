@@ -32,7 +32,7 @@ export default function MyTeamTile() {
       <h2 className="mt-5 text-xl font-bold text-white">My Team</h2>
 
       <p className="mt-2 text-sm leading-6 text-slate-300">
-        Add your squad once and every tool works from it.
+        Add your squad once and every tool works from it, and keep a watchlist.
       </p>
 
       <div className="mt-auto pt-5">

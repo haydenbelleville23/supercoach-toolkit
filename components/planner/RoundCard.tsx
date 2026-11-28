@@ -17,6 +17,7 @@ import {
 import { tradeInExclusions, tradeOutCandidates } from "@/lib/planner/tradeOptions";
 import type { PlanRound, RookiePlaceholder } from "@/lib/planner/types";
 import { groupWarnings, type WarningSeverity } from "@/lib/planner/warningSeverity";
+import { useWatchlist } from "@/lib/watchlist/useWatchlist";
 import { ROOKIE_PLACEHOLDER, type Position } from "@/lib/rules/squadRules";
 
 import type { Player } from "@/types/player";
@@ -287,6 +288,19 @@ function RoundBody({
   const round = summary.round;
   const priceFor = (player: Player) => priceAt(player.id, round);
 
+  // Watchlisted players are pinned in "player in", after the Rookie (TBC)
+  // options; those already in the squad or traded in are left out there.
+  const watchlist = useWatchlist();
+  const watchlistPlayers = useMemo(
+    () => ({
+      heading: "Watchlist",
+      players: watchlist.entries
+        .map((entry) => playersById.get(entry.id))
+        .filter((p): p is Player => !!p && !isPlaceholderId(p.id)),
+    }),
+    [watchlist.entries, playersById],
+  );
+
   // Squad going into the round, alphabetical (placeholders included).
   const squadPlayers = useMemo(
     () =>
@@ -365,6 +379,7 @@ function RoundBody({
                 players={allPlayers}
                 excludeIds={tradeInExclusions(squadBefore, planRound.trades, index)}
                 pinnedOptions={rookieOptions}
+                featured={watchlistPlayers}
                 value={inPlayer}
                 priceFor={priceFor}
                 onSelect={(player) => setTrade(index, { inId: player.id })}
@@ -473,6 +488,7 @@ function TradeSide({
   players,
   excludeIds,
   pinnedOptions,
+  featured,
   value,
   priceFor,
   onSelect,
@@ -491,6 +507,7 @@ function TradeSide({
   players: Player[];
   excludeIds?: ReadonlySet<number>;
   pinnedOptions?: PinnedOption[];
+  featured?: { heading: string; players: readonly Player[] };
   value: Player | null;
   priceFor: (player: Player) => number | null;
   onSelect: (player: Player) => void;
@@ -556,6 +573,7 @@ function TradeSide({
           players={players}
           excludeIds={excludeIds}
           pinnedOptions={pinnedOptions}
+          featured={featured}
           value={value}
           priceFor={priceFor}
           onSelect={onSelect}
