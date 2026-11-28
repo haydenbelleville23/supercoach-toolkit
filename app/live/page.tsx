@@ -836,10 +836,8 @@ function LiveScores() {
     {
       id: "player",
       header: "Player",
-      // Wider when the game has status tags, so names still fit beside them.
-      width: showStatusFilter
-        ? { base: 164, sm: 220 }
-        : { base: 124, sm: 160 },
+      // Room for two lines of name.
+      width: { base: 150, sm: 176 },
       cell: ({ player, livePlayer, status }) => (
         <PlayerCell
           name={player.name}

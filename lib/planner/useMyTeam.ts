@@ -2,6 +2,9 @@
 
 import { useSyncExternalStore } from "react";
 
+import { readWatchlist } from "@/lib/watchlist/useWatchlist";
+import { cleanEntries, type WatchlistEntry } from "@/lib/watchlist/watchlist";
+
 import { parseTeamFile } from "./teamFile";
 import type { MyTeam } from "./types";
 
@@ -81,9 +84,21 @@ export function useMyTeam(): MyTeam | null {
   return useSyncExternalStore(subscribe, getSnapshot, () => null);
 }
 
-/** Downloads the team as a JSON file. */
+/**
+ * The exported file: the team, plus the season's watchlist. The team
+ * file stays version 1; older files without a watchlist still import.
+ */
+export function teamExportFile(
+  team: MyTeam,
+  watchlist: WatchlistEntry[],
+): MyTeam & { watchlist: WatchlistEntry[] } {
+  return { ...team, watchlist };
+}
+
+/** Downloads the team (and this season's watchlist) as a JSON file. */
 export function exportMyTeam(team: MyTeam): void {
-  const blob = new Blob([JSON.stringify(team, null, 2)], {
+  const file = teamExportFile(team, readWatchlist(team.season).players);
+  const blob = new Blob([JSON.stringify(file, null, 2)], {
     type: "application/json",
   });
   const url = URL.createObjectURL(blob);
@@ -96,10 +111,31 @@ export function exportMyTeam(team: MyTeam): void {
   URL.revokeObjectURL(url);
 }
 
-/** Reads an imported JSON file; returns the team or an error message. */
-export async function importMyTeam(file: File): Promise<MyTeam | string> {
+export interface ImportedTeam {
+  team: MyTeam;
+  /** Null when the file has no watchlist (exports from before it existed). */
+  watchlist: WatchlistEntry[] | null;
+}
+
+/** Checks a parsed export: the team (without the watchlist) and the watchlist. */
+export function parseTeamExport(value: unknown): ImportedTeam | string {
+  const team = parseTeamFile(value);
+  if (typeof team === "string") return team;
+
+  const raw = (value as { watchlist?: unknown }).watchlist;
+  const { watchlist: _dropped, ...teamOnly } = team as MyTeam & { watchlist?: unknown };
+  void _dropped;
+
+  return {
+    team: teamOnly,
+    watchlist: Array.isArray(raw) ? cleanEntries(raw) : null,
+  };
+}
+
+/** Reads an imported JSON file; returns the team and watchlist, or an error message. */
+export async function importMyTeam(file: File): Promise<ImportedTeam | string> {
   try {
-    return parseTeamFile(JSON.parse(await file.text()));
+    return parseTeamExport(JSON.parse(await file.text()));
   } catch {
     return "That file isn't valid JSON.";
   }

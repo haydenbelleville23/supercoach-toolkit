@@ -106,9 +106,11 @@ afterEach(() => {
 
 const table = () => screen.getByRole("table");
 const rowOf = (name: string) => within(table()).getByRole("link", { name }).closest("tr")!;
+// Status tags only (not the watchlist star).
 const tagsIn = (row: HTMLElement) =>
   within(row)
     .queryAllByRole("button")
+    .filter((b) => !b.hasAttribute("aria-pressed"))
     .map((b) => b.textContent?.trim());
 const filterButton = (label: RegExp) =>
   within(screen.getByRole("group", { name: "Filter by in-game status" })).getByRole("button", { name: label });
@@ -217,6 +219,12 @@ describe("Live page in-game status", () => {
     render(<LivePage />);
     expect(await screen.findByText(/No games are in the live feed/)).toBeInTheDocument();
     expect(screen.queryByRole("group", { name: "Filter by in-game status" })).toBeNull();
+  });
+
+  it("has no watchlist stars", async () => {
+    render(<LivePage />);
+    await screen.findByRole("table");
+    expect(screen.queryByRole("button", { name: /watchlist/i })).toBeNull();
   });
 
   it("never uses the sample without the debug lock: fetches the real feed, no sample label", async () => {

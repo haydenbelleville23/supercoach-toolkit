@@ -38,13 +38,17 @@ const players = [
 afterEach(cleanup);
 
 describe("PlayerSearchBar", () => {
-  it("shows the selected player's short name and team while closed", () => {
-    render(<PlayerSearchBar players={players} selectedPlayer={players[2]} onChange={vi.fn()} />);
+  it("shows the selected player's logo and short name while closed; the club code is in the name", () => {
+    const { container } = render(<PlayerSearchBar players={players} selectedPlayer={players[2]} onChange={vi.fn()} />);
 
     const input = screen.getByRole("combobox");
     expect(input).toHaveAccessibleName("Search player (selected: Jordan De Goey, COL)");
     expect(screen.getByText("J. De Goey").className).toContain("sm:hidden");
-    expect(screen.getByText("COL")).toBeInTheDocument();
+    // The logo comes before the name, and the text chip is gone.
+    const logo = container.querySelector('img[alt="Collingwood"]')!;
+    expect(logo).toHaveAttribute("title", "COL");
+    expect(logo.compareDocumentPosition(screen.getByText("J. De Goey")) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(screen.queryByText("COL")).toBeNull();
   });
 
   it("moves through matches with the arrow keys and picks with Enter", () => {

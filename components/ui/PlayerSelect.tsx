@@ -17,7 +17,7 @@ import { normaliseSearchText, searchPlayers } from "@/lib/players/playerSearch";
 import { shortPlayerName } from "@/lib/players/shortName";
 import type { Player } from "@/types/player";
 
-import TeamChip from "./TeamChip";
+import TeamLogo, { TEAM_LOGO_SIZE } from "./TeamLogo";
 
 /** An extra choice pinned above the players (e.g. "New Rookie (TBC) MID"). */
 export interface PinnedOption {
@@ -65,10 +65,16 @@ export interface PlayerSelectProps {
   keepOpenAfterSelect?: boolean;
   /** Most rows rendered at once (default 50). */
   maxResults?: number;
+  /**
+   * Players listed under a heading after the pinned options and before
+   * everyone else (e.g. the watchlist). Filtered by the search like the rest.
+   */
+  featured?: { heading: string; players: readonly Player[] };
 }
 
 type Row =
   | { kind: "pinned"; key: string; option: PinnedOption; disabled: false }
+  | { kind: "heading"; key: string; label: string; disabled: true }
   | { kind: "player"; key: string; player: Player; reason: string | null; disabled: boolean };
 
 const DEFAULT_MAX_RESULTS = 50;
@@ -105,6 +111,7 @@ export default function PlayerSelect({
   aside,
   keepOpenAfterSelect = false,
   maxResults = DEFAULT_MAX_RESULTS,
+  featured,
 }: PlayerSelectProps) {
   const reactId = useId().replace(/:/g, "");
   const prefix = idPrefix ?? `ps${reactId}`;
@@ -128,10 +135,24 @@ export default function PlayerSelect({
   // input stays responsive and the list catches up.
   const deferredQuery = useDeferredValue(query);
 
-  const matches = useMemo(() => {
-    const pool = excludeIds?.size ? players.filter((p) => !excludeIds.has(p.id)) : players;
+  const featuredIds = useMemo(
+    () => new Set((featured?.players ?? []).map((p) => p.id)),
+    [featured],
+  );
+
+  const featuredMatches = useMemo(() => {
+    if (!featured?.players.length) return [];
+    const pool = featured.players.filter((p) => !excludeIds?.has(p.id));
     return searchPlayers(pool, deferredQuery);
-  }, [players, excludeIds, deferredQuery]);
+  }, [featured, excludeIds, deferredQuery]);
+
+  const matches = useMemo(() => {
+    const pool =
+      excludeIds?.size || featuredIds.size
+        ? players.filter((p) => !excludeIds?.has(p.id) && !featuredIds.has(p.id))
+        : players;
+    return searchPlayers(pool, deferredQuery);
+  }, [players, excludeIds, featuredIds, deferredQuery]);
 
   const rows: Row[] = useMemo(() => {
     const q = normaliseSearchText(deferredQuery);
@@ -150,13 +171,21 @@ export default function PlayerSelect({
           ? disabledReasons(player)
           : (disabledReasons.get(player.id) ?? null);
 
-    const playerRows = matches.slice(0, maxResults).map((player): Row => {
+    const toRow = (player: Player): Row => {
       const reason = reasonFor(player);
       return { kind: "player", key: String(player.id), player, reason, disabled: reason !== null };
-    });
+    };
 
-    return [...pinned, ...playerRows];
-  }, [matches, pinnedOptions, disabledReasons, maxResults, deferredQuery]);
+    const featuredRows: Row[] =
+      featured && featuredMatches.length > 0
+        ? [
+            { kind: "heading", key: "heading-featured", label: featured.heading, disabled: true },
+            ...featuredMatches.map(toRow),
+          ]
+        : [];
+
+    return [...pinned, ...featuredRows, ...matches.slice(0, maxResults).map(toRow)];
+  }, [matches, featured, featuredMatches, pinnedOptions, disabledReasons, maxResults, deferredQuery]);
 
   const hiddenCount = Math.max(0, matches.length - maxResults);
 
@@ -336,12 +365,13 @@ export default function PlayerSelect({
             onClear ? "right-10" : "right-3"
           }`}
         >
+          {/* Logo before the name; the club code is in the box's accessible name. */}
+          <span aria-hidden="true" className="flex shrink-0">
+            <TeamLogo team={value.team} size={TEAM_LOGO_SIZE.table} />
+          </span>
           <span aria-hidden="true" className="truncate font-semibold text-white">
             <span className="sm:hidden">{shortPlayerName(value.name)}</span>
             <span className="hidden sm:inline">{value.name}</span>
-          </span>
-          <span aria-hidden="true" className="shrink-0 rounded bg-slate-800 px-1 text-[10px] font-bold leading-4 text-slate-300">
-            {value.team || "TBC"}
           </span>
           {/* Extra content on the right of the box (e.g. the trade price), clickable. */}
           {aside && <span className="pointer-events-auto ml-auto flex h-full shrink-0 items-center">{aside}</span>}
@@ -377,7 +407,16 @@ export default function PlayerSelect({
           {rows.length === 0 ? (
             <p className="px-4 py-3 text-sm text-slate-400">No players found.</p>
           ) : (
-            rows.map((row, index) => (
+            rows.map((row, index) =>
+              row.kind === "heading" ? (
+                <div
+                  key={row.key}
+                  role="presentation"
+                  className="border-b border-slate-800 bg-slate-900 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-wide text-amber-200"
+                >
+                  {row.label}
+                </div>
+              ) : (
               <OptionRow
                 key={row.key}
                 id={optionId(row.key)}
@@ -393,7 +432,8 @@ export default function PlayerSelect({
                 }
                 onPick={() => pick(row)}
               />
-            ))
+              ),
+            )
           )}
 
           {hiddenCount > 0 && (
@@ -416,7 +456,7 @@ function OptionRow({
   onPick,
 }: {
   id: string;
-  row: Row;
+  row: Exclude<Row, { kind: "heading" }>;
   active: boolean;
   selected: boolean;
   price: number | null;
@@ -459,7 +499,10 @@ function OptionRow({
           +
         </span>
       ) : (
-        <TeamChip team={row.player.team} />
+        // The club is named on the row's second line.
+        <span aria-hidden="true" className="flex shrink-0">
+          <TeamLogo team={row.player.team} size={TEAM_LOGO_SIZE.dropdown} />
+        </span>
       )}
 
       <span className="min-w-0 flex-1">
