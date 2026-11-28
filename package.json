@@ -20,7 +20,8 @@
     "accuracy:log": "node scripts/accuracy-log.ts",
     "backtest:as-of": "node scripts/as-of-backtest.ts",
     "build:games": "node scripts/build-games.ts",
-    "import:availability": "node scripts/import-availability.ts"
+    "import:availability": "node scripts/import-availability.ts",
+    "live:snapshot": "node scripts/save-live-snapshot.ts"
   },
   "dependencies": {
     "@vercel/analytics": "^2.0.1",

@@ -9,6 +9,8 @@ export default defineConfig({
       // Tests never load the real availability file or the debug sample
       // through the app's import; they pass data in explicitly.
       "availability-snapshot": path.resolve(__dirname, "lib/availability/no-data.json"),
+      // Likewise the Live page's sample feed: tests pass feeds in explicitly.
+      "live-sample-feed": path.resolve(__dirname, "lib/liveMatch/no-live-sample.json"),
     },
   },
   test: {

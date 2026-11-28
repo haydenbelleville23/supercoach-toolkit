@@ -83,6 +83,23 @@ projections as of Round 10 beside the prices actually published later, with
 the error per round (`--player <id>` for one player, `--mode` to change the
 projection), and writes a CSV to `scripts/output/`.
 
+Under the lock the Live page shows an invented sample feed
+(`data/2026/live-sample.fixture.json`, labelled "Sample live data") instead
+of the real one, which is never fetched. It covers on-ground, bench (with
+and without a reason), unclear, missing fields, and live, finished and
+upcoming games. Production never loads it.
+
+### Live feed snapshot (manual)
+
+`npm run live:snapshot` makes ONE request to the DFS Australia live feed
+(the URL `/api/live-scores` uses) and saves the response exactly as
+received to `scripts/output/live-snapshots/` (gitignored). It prints every
+top-level, per-game and per-player key, and every `onBench`, `benchReason`
+and `status` value, to base the Live page's in-game status mapping on real
+data. It refuses to run within 30 seconds of the last request; no loops,
+no scheduling, and it's not part of `update:weekly`. Run it by hand during
+a live game.
+
 ## Analytics (Vercel Web Analytics)
 
 The site counts page views with Vercel Web Analytics (`@vercel/analytics`,

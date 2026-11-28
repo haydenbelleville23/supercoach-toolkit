@@ -39,11 +39,19 @@ export type DfsLivePlayer = {
 
   timeOnGroundPercentage: number;
 
+  // True only when the raw record had a timeOnGroundPercentage key.
+  // When false, timeOnGroundPercentage is a 0 placeholder.
+  timeOnGroundKnown: boolean;
+
   position: string;
   jumperNumber: number;
 
   benchReason: string | null;
   onBench: boolean;
+
+  // True only when the raw record had an onBench key. When false,
+  // onBench is a false placeholder and says nothing about the player.
+  onBenchKnown: boolean;
 };
 
 export type DfsLiveFeed = {
@@ -54,7 +62,7 @@ export type DfsLiveFeed = {
   players: DfsLivePlayer[];
 };
 
-type RawDfsFixture = {
+export type RawDfsFixture = {
   id: number;
   providerId?: string;
   status?: string;
@@ -70,7 +78,7 @@ type RawDfsFixture = {
   timeRemaining?: string;
 };
 
-type RawDfsPlayer = {
+export type RawDfsPlayer = {
   playerId?: string;
   playerName?: string;
 
@@ -95,12 +103,22 @@ type RawDfsPlayer = {
   onBench?: number;
 };
 
-type RawDfsFeed = {
+export type RawDfsFeed = {
   timeStamp?: string[];
   status?: string[];
   fixtures?: RawDfsFixture[];
   playerStats?: RawDfsPlayer[];
 };
+
+function hasKey(
+  record: object,
+  key: string,
+): boolean {
+  return Object.prototype.hasOwnProperty.call(
+    record,
+    key,
+  );
+}
 
 function finiteNumber(
   value: unknown,
@@ -214,6 +232,11 @@ export function normaliseDfsLiveFeed(
           player.timeOnGroundPercentage,
         ),
 
+      timeOnGroundKnown: hasKey(
+        player,
+        "timeOnGroundPercentage",
+      ),
+
       position:
         player.position ?? "",
 
@@ -227,6 +250,11 @@ export function normaliseDfsLiveFeed(
 
       onBench:
         player.onBench === 1,
+
+      onBenchKnown: hasKey(
+        player,
+        "onBench",
+      ),
     }));
 
   return {

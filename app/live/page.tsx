@@ -7,6 +7,8 @@ import PlayerCell from "@/components/ui/PlayerCell";
 import PageHeader from "@/components/layout/PageHeader";
 import CopyLinkButton from "@/components/live/CopyLinkButton";
 import LiveViewToggle from "@/components/live/LiveViewToggle";
+import LiveStatusTag from "@/components/live/LiveStatusTag";
+import InfoPopover from "@/components/ui/InfoPopover";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import {
   type ReactNode,
@@ -35,6 +37,18 @@ import {
   calculateLiveMatch,
   getFixtureState,
 } from "@/lib/liveMatch";
+import { liveSampleFeed } from "@/lib/liveMatch/liveSample";
+import {
+  LIVE_STATUS_FILTERS,
+  countByLiveFilter,
+  displayLiveStatus,
+  hasLiveStatusDetail,
+  isOffGround,
+  mapLiveStatus,
+  matchesLiveFilter,
+  type LiveStatusFilter,
+  type LiveStatusInfo,
+} from "@/lib/liveMatch/liveStatus";
 import { getScaledRoundContexts } from "@/lib/projector/getScaledRoundContexts";
 import { playerRepository } from "@/lib/repository/PlayerRepository";
 
@@ -59,6 +73,11 @@ const scheduledFixtures = getFixtures() as Array<{
 
 const REFRESH_INTERVAL_MS = 30_000;
 
+// DEBUG_AS_OF_ROUND only: an invented sample feed in place of the real one
+// (which is never fetched under the lock). Always null in production.
+const SAMPLE_FEED =
+  DEBUG_AS_OF_ROUND !== null ? liveSampleFeed : null;
+
 type FeedState = {
   data: DfsLiveFeed | null;
   loading: boolean;
@@ -72,7 +91,31 @@ type DisplayRow = {
   livePlayer: DfsLivePlayer;
   projection: LivePlayerProjection;
   effectiveScore: number;
+  /** In-game status shown for the player (null: no tag). */
+  status: LiveStatusInfo | null;
 };
+
+/** The game shown first: a live one, else a finished one, else the first. */
+function pickDefaultFixtureId(
+  feed: DfsLiveFeed,
+): number | null {
+  const liveFixture = feed.fixtures.find(
+    (fixture) =>
+      getFixtureState(fixture) === "live",
+  );
+
+  const concludedFixture = feed.fixtures.find(
+    (fixture) =>
+      getFixtureState(fixture) === "finished",
+  );
+
+  return (
+    liveFixture?.id ??
+    concludedFixture?.id ??
+    feed.fixtures[0]?.id ??
+    null
+  );
+}
 
 
 function getChangeColour(
@@ -389,16 +432,35 @@ function LiveScores() {
   const requestedGame = parseGameParam(searchParams.get(GAME_PARAM));
 
   const [feedState, setFeedState] =
-    useState<FeedState>({
-      data: null,
-      loading: true,
-      error: null,
-    });
+    useState<FeedState>(
+      SAMPLE_FEED
+        ? {
+            data: SAMPLE_FEED,
+            loading: false,
+            error: null,
+          }
+        : {
+            data: null,
+            loading: true,
+            error: null,
+          },
+    );
 
   const [
     selectedFixtureId,
     setSelectedFixtureId,
-  ] = useState<number | null>(null);
+  ] = useState<number | null>(
+    SAMPLE_FEED
+      ? pickDefaultFixtureId(SAMPLE_FEED)
+      : null,
+  );
+
+  // In-game status filter, per game: a new game starts on All.
+  const [statusFilter, setStatusFilter] =
+    useState<{
+      fixtureId: number | null;
+      filter: LiveStatusFilter;
+    }>({ fixtureId: null, filter: "all" });
 
   const [selectedTeam, setSelectedTeam] =
     useState<TeamTab>("home");
@@ -454,26 +516,7 @@ function LiveScores() {
               return current;
             }
 
-            const liveFixture =
-              feed.fixtures.find(
-                (fixture) =>
-                  getFixtureState(fixture) ===
-                  "live",
-              );
-
-            const concludedFixture =
-              feed.fixtures.find(
-                (fixture) =>
-                  getFixtureState(fixture) ===
-                  "finished",
-              );
-
-            return (
-              liveFixture?.id ??
-              concludedFixture?.id ??
-              feed.fixtures[0]?.id ??
-              null
-            );
+            return pickDefaultFixtureId(feed);
           },
         );
       } catch (error) {
@@ -628,6 +671,11 @@ function LiveScores() {
     ],
   );
 
+  // Bench flags are hidden at full time (an assumption to verify in March).
+  const fixtureFinished =
+    selectedFixture !== null &&
+    getFixtureState(selectedFixture) === "finished";
+
   const displayRows =
     useMemo<DisplayRow[]>(() => {
       const projectionByPlayerId =
@@ -661,6 +709,11 @@ function LiveScores() {
               ] ??
               entry.livePlayer
                 .superCoachPoints,
+
+            status: displayLiveStatus(
+              mapLiveStatus(entry.livePlayer),
+              fixtureFinished,
+            ),
           };
         })
         .filter(
@@ -673,6 +726,7 @@ function LiveScores() {
       matchedPlayers,
       projections,
       effectiveScores,
+      fixtureFinished,
     ]);
 
   const activeTeam =
@@ -682,7 +736,7 @@ function LiveScores() {
         ? selectedFixture.homeTeam
         : selectedFixture.awayTeam;
 
-  const visibleRows = useMemo(
+  const teamRows = useMemo(
     () =>
       displayRows
         .filter(
@@ -696,6 +750,38 @@ function LiveScores() {
             a.effectiveScore,
         ),
     [displayRows, activeTeam],
+  );
+
+  // The filter only appears when someone in the game has a status other
+  // than on ground; a missing field means no tag.
+  const showStatusFilter = hasLiveStatusDetail(
+    displayRows.map((row) => row.status),
+  );
+
+  const activeFilter: LiveStatusFilter =
+    showStatusFilter &&
+    statusFilter.fixtureId === selectedFixture?.id
+      ? statusFilter.filter
+      : "all";
+
+  const filterCounts = countByLiveFilter(
+    teamRows.map((row) => row.status),
+  );
+
+  const visibleRows = useMemo(
+    () =>
+      teamRows.filter((row) =>
+        matchesLiveFilter(
+          row.status,
+          activeFilter,
+        ),
+      ),
+    [teamRows, activeFilter],
+  );
+
+  // TOG only when the feed gives it for someone in this game.
+  const showTimeOnGround = displayRows.some(
+    (row) => row.livePlayer.timeOnGroundKnown,
   );
 
   const homePlayerCount =
@@ -750,8 +836,11 @@ function LiveScores() {
     {
       id: "player",
       header: "Player",
-      width: { base: 124, sm: 160 },
-      cell: ({ player, livePlayer }) => (
+      // Wider when the game has status tags, so names still fit beside them.
+      width: showStatusFilter
+        ? { base: 164, sm: 220 }
+        : { base: 124, sm: 160 },
+      cell: ({ player, livePlayer, status }) => (
         <PlayerCell
           name={player.name}
           team={player.team}
@@ -760,6 +849,12 @@ function LiveScores() {
           badge={`#${livePlayer.jumperNumber}`}
           positions={player.positions}
           href={`/projector?player=${player.id}`}
+          trailing={
+            <LiveStatusTag
+              info={status}
+              sample={SAMPLE_FEED !== null}
+            />
+          }
         />
       ),
     },
@@ -786,14 +881,21 @@ function LiveScores() {
         />
       ),
     },
-    {
-      id: "timeOnGround",
-      header: "TOG",
-      width: 52,
-      align: "right",
-      cell: ({ livePlayer }) => `${livePlayer.timeOnGroundPercentage}%`,
-      cellClassName: () => "text-slate-300",
-    },
+    ...(showTimeOnGround
+      ? [
+          {
+            id: "timeOnGround",
+            header: "TOG",
+            width: 52,
+            align: "right",
+            cell: ({ livePlayer }) =>
+              livePlayer.timeOnGroundKnown
+                ? `${livePlayer.timeOnGroundPercentage}%`
+                : "-",
+            cellClassName: () => "text-slate-300",
+          } satisfies DataTableColumn<LiveRow>,
+        ]
+      : []),
     {
       id: "breakeven",
       header: "BE",
@@ -856,7 +958,7 @@ function LiveScores() {
     );
   }
 
-  if (DEBUG_AS_OF_ROUND !== null) {
+  if (DEBUG_AS_OF_ROUND !== null && !SAMPLE_FEED) {
     return (
       <LiveLayout>
         <LiveMessage>
@@ -911,6 +1013,16 @@ function LiveScores() {
   return (
     <LiveLayout>
       <section className="mx-auto max-w-7xl px-6 py-8">
+        {SAMPLE_FEED && (
+          <p
+            role="note"
+            className="mb-4 inline-flex items-center gap-1.5 rounded-md border border-dashed border-amber-400/60 bg-amber-500/10 px-2 py-0.5 text-[11px] font-semibold text-amber-200"
+          >
+            Sample live data (invented, for testing as of Round{" "}
+            {DEBUG_AS_OF_ROUND})
+          </p>
+        )}
+
         <div className="flex gap-3 overflow-x-auto pb-3">
           {fixtures.map((fixture) => {
             const isSelected =
@@ -1062,7 +1174,7 @@ function LiveScores() {
           </div>
         </section>
 
-        <section className="mt-6">
+        <section className="mt-6 flex flex-wrap items-center gap-3">
           <div className="inline-flex rounded-xl border border-slate-800 bg-slate-900 p-1">
             <button
               type="button"
@@ -1098,6 +1210,65 @@ function LiveScores() {
               </span>
             </button>
           </div>
+
+          {showStatusFilter && (
+            <div className="flex items-center gap-1.5">
+              <div
+                role="group"
+                aria-label="Filter by in-game status"
+                className="inline-flex flex-wrap rounded-xl border border-slate-800 bg-slate-900 p-1"
+              >
+                {LIVE_STATUS_FILTERS.map(({ id, label }) => {
+                  const active = activeFilter === id;
+                  const count = filterCounts[id];
+
+                  return (
+                    <button
+                      key={id}
+                      type="button"
+                      aria-pressed={active}
+                      disabled={!active && count === 0}
+                      onClick={() =>
+                        setStatusFilter({
+                          fixtureId: selectedFixture.id,
+                          filter: id,
+                        })
+                      }
+                      className={`rounded-lg px-2.5 py-1.5 text-xs font-semibold transition disabled:cursor-not-allowed disabled:opacity-40 ${
+                        active
+                          ? "bg-sky-500/20 text-sky-100"
+                          : "text-slate-400 hover:text-white"
+                      }`}
+                    >
+                      {label}
+                      <span className="ml-1.5 tabular-nums opacity-70">
+                        {count}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+
+              <InfoPopover label="About in-game status">
+                <span className="block">
+                  In-game status from the live feed, not weekly
+                  availability. BENCH: the feed marks the player on the
+                  bench; any reason it gives is in the tag&apos;s
+                  details. ?: unclear.
+                </span>
+                <span className="mt-1 block">
+                  A player the feed says nothing about has no tag and
+                  counts as on ground. ? players are only under All.
+                </span>
+                {fixtureFinished && (
+                  <span className="mt-1 block">
+                    BENCH tags are hidden at full time (an assumption,
+                    to be checked against the real feed in March).
+                  </span>
+                )}
+              </InfoPopover>
+            </div>
+          )}
         </section>
 
         <DataTable
@@ -1106,7 +1277,12 @@ function LiveScores() {
           rows={visibleRows}
           columns={columns}
           rowKey={({ player }) => player.id}
-          empty="No matched players were found for this team."
+          mutedRow={({ status }) => isOffGround(status)}
+          empty={
+            activeFilter === "all"
+              ? "No matched players were found for this team."
+              : "No players match this filter."
+          }
         />
 
         <section className="mt-5 rounded-xl border border-slate-800 bg-slate-900 p-4">
