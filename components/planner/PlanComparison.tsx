@@ -28,7 +28,7 @@ function evaluateFor(team: MyTeam, plan: TradePlan | null) {
     : [];
 }
 
-/** Side-by-side: squad value, cash, trades left and warnings per round. */
+/** Side-by-side: cash, trades left and warnings per round. */
 export default function PlanComparison({ team }: { team: MyTeam }) {
   const [aId, setAId] = useState("");
   const [bId, setBId] = useState("");
@@ -102,7 +102,6 @@ export default function PlanComparison({ team }: { team: MyTeam }) {
       cell: (row) => `R${row.a.round}`,
       cellClassName: () => "font-semibold",
     },
-    ...pair("squadValue", "Squad value", (round) => formatMoney(round.squadValue)),
     ...pair("cash", "Cash", (round) => formatMoney(round.cashAfter)),
     ...pair("tradesLeft", "Trades left", (round) => round.tradesLeftAfter),
     ...pair("warnings", "Warnings", (round) => round.warnings.length, (round) => warnings(round?.warnings.length)),

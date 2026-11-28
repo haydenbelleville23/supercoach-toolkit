@@ -28,11 +28,11 @@ function cardName(spot: FieldSpot): string {
 
 /**
  * The squad after a round's trades as a field: Defenders, Midfielders,
- * Rucks, Forwards and Flex, with the bench to the right on wide screens
- * and below on phones. Each card shows the short name, team logo and that
- * round's price; IN marks a player traded in this round, BYE (dimmed,
- * tagged) a player whose team has no game. Players traded out are listed
- * underneath.
+ * Rucks, Forwards and Flex (labels on the left from lg up), three cards
+ * per row, with the bench to the right on wide screens and below on
+ * phones. Each card shows the team logo and name, then that round's price
+ * and markers: IN for a player traded in this round, BYE (dimmed, tagged)
+ * for a team with no game. Players traded out are listed underneath.
  */
 export default function FieldDiagram({
   layout,
@@ -66,20 +66,20 @@ export default function FieldDiagram({
         </strong>
       </p>
 
-      <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_auto]">
+      <div className="flex flex-col gap-4 lg:flex-row lg:items-start">
         <section aria-label="On field" className="space-y-2.5">
           {field.map((line) => (
-            <Line key={line.position} line={line} title={LINE_NAMES[line.position]} priceFor={priceFor} availabilityFor={availabilityFor} centred />
+            <Line key={line.position} line={line} title={LINE_NAMES[line.position]} priceFor={priceFor} availabilityFor={availabilityFor} labelLeft />
           ))}
         </section>
 
         <section
           aria-label="Bench"
-          className="space-y-2.5 border-t border-slate-800 pt-3 lg:w-[6.5rem] lg:border-l lg:border-t-0 lg:pl-4 lg:pt-0"
+          className="space-y-2.5 border-t border-slate-800 pt-3 lg:border-l lg:border-t-0 lg:pl-4 lg:pt-0"
         >
           <h4 className="font-semibold uppercase tracking-wide text-slate-400">Bench</h4>
           {bench.map((line) => (
-            <Line key={line.position} line={line} title={line.position} priceFor={priceFor} availabilityFor={availabilityFor} />
+            <Line key={line.position} line={line} title={line.position} priceFor={priceFor} availabilityFor={availabilityFor} bench />
           ))}
         </section>
       </div>
@@ -104,20 +104,28 @@ function Line({
   title,
   priceFor,
   availabilityFor,
-  centred = false,
+  labelLeft = false,
+  bench = false,
 }: {
   line: FieldLine;
   title: string;
   priceFor: (playerId: number) => number | null;
   availabilityFor: AvailabilityLookup;
-  centred?: boolean;
+  /** Position label on the left from lg up (the field); above otherwise. */
+  labelLeft?: boolean;
+  /** Bench: two cards across from lg up, so it fits beside the field. */
+  bench?: boolean;
 }) {
   return (
-    <div>
-      <h5 className="mb-1 text-[11px] font-semibold uppercase tracking-wide text-slate-400">
+    <div className={labelLeft ? "lg:flex lg:items-start lg:gap-3" : ""}>
+      <h5
+        className={`mb-1 text-[11px] font-semibold uppercase tracking-wide text-slate-400 ${
+          labelLeft ? "lg:mb-0 lg:w-20 lg:shrink-0 lg:pt-1.5" : ""
+        }`}
+      >
         {title}
       </h5>
-      <ul className={`flex flex-wrap gap-1.5 ${centred ? "sm:justify-center" : ""}`}>
+      <ul className={`${CARD_GRID} ${bench ? "lg:grid-cols-[repeat(2,9rem)]" : ""}`}>
         {line.spots.map((spot) => (
           <PlayerCard key={spot.slotId} spot={spot} priceFor={priceFor} availabilityFor={availabilityFor} />
         ))}
@@ -126,8 +134,14 @@ function Line({
   );
 }
 
-/** Three cards per row on phones, a fixed width from sm up. */
-const CARD_WIDTH = "w-[calc((100%-0.75rem)/3)] sm:w-[5.5rem]";
+/**
+ * At most three cards per row at every width: lines with more players
+ * wrap onto further rows of three. Phones share the width; from sm up
+ * the cards are a fixed 9rem.
+ */
+const CARD_GRID = "grid grid-cols-3 gap-1.5 sm:grid-cols-[repeat(3,9rem)]";
+
+const TAG = "rounded px-1 text-[9.5px] font-bold leading-4";
 
 export function PlayerCard({
   spot,
@@ -140,9 +154,7 @@ export function PlayerCard({
 }) {
   if (!spot.player) {
     return (
-      <li
-        className={`${CARD_WIDTH} flex min-h-[3.75rem] items-center justify-center rounded-md border border-dashed border-slate-700 text-slate-500`}
-      >
+      <li className="flex min-h-[4.25rem] items-center justify-center rounded-md border border-dashed border-slate-700 text-slate-500">
         Empty
       </li>
     );
@@ -152,65 +164,57 @@ export function PlayerCard({
   const price = priceFor(player.id);
   const availability = availabilityFor(player);
   const hasBadge = !!availability && availability.status !== "available";
+  const notes = [
+    player.team ? player.team : null,
+    spot.onBye ? "on bye" : null,
+    spot.unavailable ? "not counted as playing" : null,
+    spot.tradedIn ? "traded in" : null,
+    spot.placeholder ? "rookie placeholder" : null,
+  ].filter(Boolean);
 
   return (
     <li
-      title={`${player.name}${player.team ? `, ${player.team}` : ""}${spot.onBye ? " (bye)" : ""}${spot.unavailable ? " (not counted as playing)" : ""}${spot.tradedIn ? " (traded in)" : ""}`}
-      className={`${CARD_WIDTH} relative min-h-[3.75rem] rounded-md border px-1.5 py-1 leading-tight ${
+      title={`${player.name}${notes.length ? ` (${notes.join(", ")})` : ""}`}
+      className={`flex min-h-[4.25rem] min-w-0 flex-col justify-between gap-1 rounded-md border px-1.5 py-1 leading-tight ${
         spot.onBye
           ? "border-slate-700 bg-slate-950 text-slate-400 opacity-60"
           : spot.unavailable
             ? "border-dashed border-red-400/70 bg-red-950/40 text-slate-200"
             : spot.tradedIn
-            ? "border-emerald-500/60 bg-emerald-500/10 text-white"
-            : "border-slate-700 bg-slate-800/60 text-white"
+              ? "border-emerald-500/60 bg-emerald-500/10 text-white"
+              : "border-slate-700 bg-slate-800/60 text-white"
       }`}
     >
-      {/* Status corner. */}
-      {hasBadge && (
-        <span className="absolute right-0.5 top-0.5">
-          <AvailabilityBadge info={availability} size="xs" />
-        </span>
-      )}
+      {/* Full name for screen readers; the short name below is visual. */}
+      <span className="sr-only">
+        {player.name}
+        {notes.length ? `, ${notes.join(", ")}` : ""}
+      </span>
 
-      {/* Room for the corner badge (TEST is the widest). */}
-      <p
-        className={`truncate text-[11px] font-semibold ${
-          !hasBadge ? "" : availability.status === "test" ? "pr-10" : "pr-8"
-        }`}
-      >
-        {cardName(spot)}
-      </p>
+      {/* Line 1: team logo and name. Wraps at spaces and hyphens, never cut off. */}
+      <span aria-hidden="true" className="flex min-w-0 items-start gap-1">
+        <TeamChip team={player.team} size={14} className="mt-px" />
+        <span className="min-w-0 break-normal text-[11px] font-semibold">{cardName(spot)}</span>
+      </span>
 
-      <p className="mt-0.5 flex items-center gap-1">
-        <TeamChip team={player.team} size={14} />
-        <span className="truncate text-[10.5px] tabular-nums text-slate-300">
+      {/* Line 2: price on the left; status, IN, BYE and TBC on the right. */}
+      <span className="flex items-end justify-between gap-1">
+        <span aria-hidden="true" className="text-[10.5px] tabular-nums text-slate-300">
           {price === null ? "-" : formatMoney(price)}
         </span>
-      </p>
+        <span aria-hidden={!hasBadge || undefined} className="flex flex-wrap justify-end gap-0.5">
+          {hasBadge && <AvailabilityBadge info={availability} size="xs" />}
+          {spot.tradedIn && <span aria-hidden="true" className={`${TAG} bg-emerald-500/30 text-emerald-100`}>IN</span>}
+          {spot.onBye && <span aria-hidden="true" className={`${TAG} bg-slate-600 text-slate-100`}>BYE</span>}
+          {spot.placeholder && <span aria-hidden="true" className={`${TAG} bg-violet-500/30 text-violet-100`}>TBC</span>}
+        </span>
+      </span>
 
-      <p className="mt-0.5 flex h-3.5 gap-1">
-        {spot.tradedIn && (
-          <span className="rounded bg-emerald-500/30 px-1 text-[9.5px] font-bold leading-3.5 text-emerald-100">
-            IN
-          </span>
-        )}
-        {spot.unavailable && (
-          <span className="rounded bg-red-500/30 px-1 text-[9.5px] font-bold leading-3.5 text-red-100">
-            Not counted
-          </span>
-        )}
-        {spot.onBye && (
-          <span className="rounded bg-slate-600 px-1 text-[9.5px] font-bold leading-3.5 text-slate-100">
-            BYE
-          </span>
-        )}
-        {spot.placeholder && (
-          <span className="rounded bg-violet-500/30 px-1 text-[9.5px] font-bold leading-3.5 text-violet-100">
-            TBC
-          </span>
-        )}
-      </p>
+      {spot.unavailable && (
+        <span aria-hidden="true" className={`${TAG} self-start bg-red-500/30 text-red-100`}>
+          Not counted
+        </span>
+      )}
     </li>
   );
 }

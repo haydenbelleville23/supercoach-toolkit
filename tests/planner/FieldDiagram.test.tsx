@@ -91,3 +91,55 @@ describe("FieldDiagram", () => {
     expect(screen.getByText("Tom Stewart").parentElement).toHaveTextContent("Out:");
   });
 });
+
+describe("FieldDiagram cards", () => {
+  const names = [
+    "Luke Davies-Uniacke",
+    "Jason Horne-Francis",
+    "Sam Ralphsmith",
+    "Jordan Ridley",
+    "Jake Lloyd",
+    "Nick Daicos",
+  ];
+  const sixDefenders: FieldLayout = {
+    lines: [{ area: "field", position: "DEF", spots: names.map((n, i) => spot(20 + i, player(20 + i, n, "NTH"))) }],
+    tradedOut: [],
+    playingOnField: 6,
+    onFieldSlots: 23,
+    playingTotal: 6,
+    squadSize: 31,
+  };
+
+  it("puts at most three cards in a row, so six defenders make two rows", () => {
+    render(<FieldDiagram round={11} layout={sixDefenders} priceFor={() => 300_000} />);
+    const list = screen.getByText("Defenders").nextElementSibling!;
+    expect(list.tagName).toBe("UL");
+    expect(list.className).toContain("grid-cols-3");
+    expect(list.className).toContain("sm:grid-cols-[repeat(3,9rem)]");
+    expect(list.children).toHaveLength(6);
+  });
+
+  it("never truncates long names, and gives the full name to screen readers", () => {
+    render(<FieldDiagram round={11} layout={sixDefenders} priceFor={() => 300_000} />);
+    for (const short of ["L. Davies-Uniacke", "J. Horne-Francis", "S. Ralphsmith"]) {
+      const shown = screen.getByText(short);
+      expect(shown.className).not.toMatch(/truncate|line-clamp|text-ellipsis/);
+      expect(shown.closest("li")!.className).not.toMatch(/truncate|overflow-hidden/);
+    }
+    for (const full of ["Luke Davies-Uniacke", "Jason Horne-Francis", "Sam Ralphsmith"]) {
+      expect(screen.getByText(new RegExp(`^${full}, NTH`))).toHaveClass("sr-only");
+    }
+  });
+
+  it("puts the price on the left and the markers on the right of line 2", () => {
+    const tradedIn: FieldLayout = {
+      ...sixDefenders,
+      lines: [{ area: "field", position: "DEF", spots: [spot(1, player(1, "Jordan Ridley", "ESS"), { tradedIn: true })] }],
+    };
+    render(<FieldDiagram round={11} layout={tradedIn} priceFor={(id) => (id === 1 ? 350_000 : 1)} />);
+    const ridley = screen.getByText("J. Ridley").closest("li")!;
+    const line2 = screen.getByText("$350,000").parentElement!;
+    expect(line2.closest("li")).toBe(ridley);
+    expect(line2.lastElementChild).toHaveTextContent("IN");
+  });
+});
