@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 
+import SiteAnalytics from "@/components/analytics/SiteAnalytics";
 import DebugBanner from "@/components/layout/DebugBanner";
+import { shouldTrackAnalytics } from "@/lib/analytics";
 import {
   absoluteUrl,
   BRAND,
@@ -88,6 +90,11 @@ export default function RootLayout({
       <body className="flex min-h-full flex-col">
         <DebugBanner />
         {children}
+        {/* Page views only, and only on the production deployment. */}
+        {shouldTrackAnalytics({
+          VERCEL_ENV: process.env.VERCEL_ENV,
+          DEBUG_AS_OF_ROUND: process.env.DEBUG_AS_OF_ROUND,
+        }) && <SiteAnalytics />}
       </body>
     </html>
   );

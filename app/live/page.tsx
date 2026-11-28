@@ -5,9 +5,12 @@ import Header from "@/components/layout/Header";
 import DataTable, { type DataTableColumn } from "@/components/ui/DataTable";
 import PlayerCell from "@/components/ui/PlayerCell";
 import PageHeader from "@/components/layout/PageHeader";
+import CopyLinkButton from "@/components/live/CopyLinkButton";
 import LiveViewToggle from "@/components/live/LiveViewToggle";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import {
   type ReactNode,
+  Suspense,
   useEffect,
   useMemo,
   useState,
@@ -16,8 +19,16 @@ import {
 import {
   CURRENT_COMPLETED_ROUND,
   DEBUG_AS_OF_ROUND,
+  SEASON_YEAR,
 } from "@/data/season";
+import { gameIdFor } from "@/lib/games/buildGames";
 import { getFixtures } from "@/lib/fixtures";
+import {
+  GAME_PARAM,
+  parseGameParam,
+  resolveSelectedFixtureId,
+  withGameParam,
+} from "@/lib/liveMatch/gameParam";
 import { formatChange, formatMoney } from "@/lib/format";
 import {
   buildLiveRoundContext,
@@ -110,6 +121,17 @@ function TeamLogo({
 
 /** The round the live feed is expected to be playing. */
 const LIVE_ROUND = CURRENT_COMPLETED_ROUND + 1;
+
+/**
+ * A feed game's id in the results archive's form ("2026-10-brl-gee"), from
+ * the scheduled fixture the page shows for it; null if it isn't scheduled.
+ */
+function liveGameId(fixture: DfsLiveFixture): string | null {
+  const scheduled = getScheduleFixture(fixture);
+  return scheduled
+    ? gameIdFor(SEASON_YEAR, scheduled.round, fixture.homeTeam, fixture.awayTeam)
+    : null;
+}
 
 function isScheduledGame(
   homeTeam: string,
@@ -340,7 +362,32 @@ function LiveMessage({
   );
 }
 
+/**
+ * The selected match is in the address (?game=<DFS fixture id>), so the
+ * page reads the query string; that needs a Suspense boundary.
+ */
 export default function LivePage() {
+  return (
+    <Suspense
+      fallback={
+        <LiveLayout>
+          <LiveLoadingState />
+        </LiveLayout>
+      }
+    >
+      <LiveScores />
+    </Suspense>
+  );
+}
+
+function LiveScores() {
+  // ?game=<id>: the match to show once the feed has loaded. Unknown or
+  // malformed ids fall back silently to the page's own selection.
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
+  const requestedGame = parseGameParam(searchParams.get(GAME_PARAM));
+
   const [feedState, setFeedState] =
     useState<FeedState>({
       data: null,
@@ -462,11 +509,18 @@ export default function LivePage() {
   const fixtures =
     feedState.data?.fixtures ?? [];
 
+  const shownFixtureId = resolveSelectedFixtureId(
+    fixtures,
+    requestedGame,
+    liveGameId,
+    selectedFixtureId,
+  );
+
   const selectedFixture =
     fixtures.find(
       (fixture) =>
         fixture.id ===
-        selectedFixtureId,
+        shownFixtureId,
     ) ?? null;
 
   const selectedLivePlayers =
@@ -787,6 +841,19 @@ export default function LivePage() {
     setSelectedFixtureId(fixtureId);
     setSelectedTeam("home");
     setManualScores({});
+
+    // Keep the choice in the address: replace (no new history entry), no
+    // scroll jump. Polling is unaffected.
+    router.replace(
+      `${pathname}${withGameParam(
+        searchParams.toString(),
+        (() => {
+          const picked = fixtures.find((fixture) => fixture.id === fixtureId);
+          return picked ? liveGameId(picked) : null;
+        })(),
+      )}`,
+      { scroll: false },
+    );
   }
 
   if (DEBUG_AS_OF_ROUND !== null) {
@@ -908,7 +975,14 @@ export default function LivePage() {
           })}
         </div>
 
-        <section className="mt-5 overflow-hidden rounded-2xl border border-slate-800 bg-gradient-to-r from-slate-900 via-slate-900 to-slate-950">
+        <section className="relative mt-5 overflow-hidden rounded-2xl border border-slate-800 bg-gradient-to-r from-slate-900 via-slate-900 to-slate-950">
+          <CopyLinkButton
+            className="absolute right-3 top-3 z-10 flex flex-col items-end"
+            getUrl={() =>
+              `${window.location.origin}${pathname}${withGameParam(window.location.search, liveGameId(selectedFixture))}`
+            }
+          />
+
           <div className="grid min-h-[210px] grid-cols-[1fr_auto_1fr] items-center gap-3 px-4 py-8 sm:gap-5 sm:px-10">
             <div className="flex flex-col items-center gap-3 sm:flex-row">
               <TeamLogo

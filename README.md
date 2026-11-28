@@ -83,6 +83,31 @@ projections as of Round 10 beside the prices actually published later, with
 the error per round (`--player <id>` for one player, `--mode` to change the
 projection), and writes a CSV to `scripts/output/`.
 
+## Analytics (Vercel Web Analytics)
+
+The site counts page views with Vercel Web Analytics (`@vercel/analytics`,
+`components/analytics/SiteAnalytics.tsx`). It only loads on the production
+deployment (`VERCEL_ENV=production`) and never while `DEBUG_AS_OF_ROUND`
+is set (`shouldTrackAnalytics` in `lib/analytics.ts`), so previews, local
+development and debug builds send nothing. The internal pages
+(/magic-number, /engine, /debug) are dropped before sending. No custom
+events.
+
+To turn it on in the dashboard:
+
+1. Open the project in the Vercel dashboard.
+2. Open the **Analytics** tab.
+3. Click **Enable Web Analytics** (the **Enable** button), then redeploy.
+   Vercel adds its `/_vercel/insights/*` routes on the next deployment.
+
+The Hobby plan includes 50,000 events a month, shared across all projects
+on the account. Hobby can't buy more: once the limit is passed, collection
+pauses (after a short grace period) until it resets, or until you move to
+Pro. See [Vercel's limits and pricing](https://vercel.com/docs/analytics/limits-and-pricing).
+
+What it records is described on [/privacy](app/privacy/page.tsx), based on
+[Vercel's Web Analytics privacy page](https://vercel.com/docs/analytics/privacy-policy).
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:

@@ -17,3 +17,17 @@ export function hideInternalPageInProduction(): void {
     notFound();
   }
 }
+
+/** The internal research pages (never counted by analytics). */
+export const INTERNAL_PAGE_PATHS = ["/magic-number", "/engine", "/debug"] as const;
+
+/** Whether a path (or full URL) is one of the internal pages or below one. */
+export function isInternalPath(pathOrUrl: string): boolean {
+  let path: string;
+  try {
+    path = new URL(pathOrUrl, "https://footynomics.local").pathname;
+  } catch {
+    return false;
+  }
+  return INTERNAL_PAGE_PATHS.some((page) => path === page || path.startsWith(`${page}/`));
+}
