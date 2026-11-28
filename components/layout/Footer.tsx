@@ -42,6 +42,10 @@ export default function Footer() {
             <Link href="/which-ruck" className="text-brand-green hover:text-white">
               Which ruck are you?
             </Link>
+            <span aria-hidden="true" className="mx-2 text-slate-600">·</span>
+            <Link href="/privacy" className="text-slate-300 hover:text-white">
+              Privacy
+            </Link>
           </p>
         </div>
       </div>
