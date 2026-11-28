@@ -65,10 +65,12 @@ function feedFor(game: DfsLiveFixture, points: number): DfsLiveFeed {
         dreamTeamPoints: 0,
         quarterScores: { q1: 0, q2: 0, q3: 0, q4: 0 },
         timeOnGroundPercentage: 80,
+        timeOnGroundKnown: true,
         position: "",
         jumperNumber: 1,
         benchReason: null,
         onBench: false,
+        onBenchKnown: true,
       })),
   };
 }

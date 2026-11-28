@@ -4,9 +4,7 @@ import { DEBUG_AS_OF_ROUND } from "@/lib/asOf/debugAsOfRound";
 import {
   normaliseDfsLiveFeed,
 } from "@/lib/liveMatch/dfsAustralia";
-
-const DFS_LIVE_URL =
-  "https://dfsaustralia-apps.com/shiny/afl-live-scoring/liveScoring2026.json";
+import { DFS_LIVE_URL } from "@/lib/liveMatch/dfsLiveUrl";
 
 export const revalidate = 30;
 

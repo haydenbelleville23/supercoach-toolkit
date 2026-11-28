@@ -10,6 +10,11 @@ import {
   AVAILABILITY_SPECIFIER,
   availabilitySource,
 } from "./lib/availability/alias";
+import {
+  LIVE_SAMPLE_FIXTURE_FILE,
+  LIVE_SAMPLE_SPECIFIER,
+  liveSampleSource,
+} from "./lib/liveMatch/sampleAlias";
 
 /**
  * DEBUG_AS_OF_ROUND=N shows the site as it was straight after Round N.
@@ -44,6 +49,13 @@ resolveAlias[AVAILABILITY_SPECIFIER] = `./${availabilitySource({
   asOfRound,
   fileExists: existsSync(AVAILABILITY_FILE),
   fixtureExists: existsSync(AVAILABILITY_FIXTURE_FILE),
+})}`;
+
+// Live page sample feed: the invented sample (debug lock only) or a
+// no-data stub. See lib/liveMatch/sampleAlias.ts.
+resolveAlias[LIVE_SAMPLE_SPECIFIER] = `./${liveSampleSource({
+  asOfRound,
+  fixtureExists: existsSync(LIVE_SAMPLE_FIXTURE_FILE),
 })}`;
 
 const nextConfig: NextConfig = {
